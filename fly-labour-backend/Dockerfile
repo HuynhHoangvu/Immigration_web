@@ -5,9 +5,10 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
+COPY tsconfig.json ./
 
-# Dùng npx thay vì nest trực tiếp
-RUN npx nest build
+# Build bằng tsc thay vì nest build
+RUN ./node_modules/.bin/tsc -p tsconfig.json
 
 FROM node:20-alpine
 WORKDIR /app
