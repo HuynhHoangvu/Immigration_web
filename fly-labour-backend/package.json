@@ -8,7 +8,7 @@
     "start:dev": "nest start --watch",
     "migration:run": "ts-node -r tsconfig-paths/register node_modules/typeorm/cli.js migration:run -d src/config/database.config.ts",
     "migration:revert": "ts-node -r tsconfig-paths/register node_modules/typeorm/cli.js migration:revert -d src/config/database.config.ts",
-    "seed": "ts-node -r tsconfig-paths/register src/database/seeds/run-seeds.ts"
+    "start:prod": "npm run seed && node dist/main"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
