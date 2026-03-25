@@ -48,11 +48,12 @@ async function bootstrap() {
     .build()
   SwaggerModule.setup('api', app, SwaggerModule.createDocument(app, config))
 
+  app.getHttpAdapter().get('/health', (_req: any, res: any) => {
+    res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() })
+  })
+
   const port = process.env.PORT || 3000
-  app.getHttpAdapter().get('/health', (req: any, res: any) => {
-  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() })
-})
-  await app.listen(port)
+  await app.listen(port, '0.0.0.0')
 
   console.log('\n🦅 ================================')
   console.log(`🚀 Backend:  http://localhost:${port}`)

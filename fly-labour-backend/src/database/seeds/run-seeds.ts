@@ -9,16 +9,28 @@ import { Category } from '../../modules/categories/category.entity'
 import { Job, JobCountry, JobType, JobStatus } from '../../modules/jobs/job.entity'
 import { News } from '../../modules/news/news.entity'
 
-const AppDataSource = new DataSource({
-  type: 'postgres',
-  host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT || '5432'),
-  username: process.env.DB_USERNAME || 'postgres',
-  password: process.env.DB_PASSWORD || '123456',
-  database: process.env.DB_NAME || 'fly_labour',
-  entities: [User, Category, Job, News],
-  synchronize: true,
-})
+const databaseUrl = process.env.DATABASE_URL
+
+const AppDataSource = new DataSource(
+  databaseUrl
+    ? {
+        type: 'postgres',
+        url: databaseUrl,
+        ssl: { rejectUnauthorized: false },
+        entities: [User, Category, Job, News],
+        synchronize: true,
+      }
+    : {
+        type: 'postgres',
+        host: process.env.DB_HOST || 'localhost',
+        port: parseInt(process.env.DB_PORT || '5432'),
+        username: process.env.DB_USERNAME || 'postgres',
+        password: process.env.DB_PASSWORD || '123456',
+        database: process.env.DB_NAME || 'fly_labour',
+        entities: [User, Category, Job, News],
+        synchronize: true,
+      }
+)
 
 async function seed() {
   await AppDataSource.initialize()
