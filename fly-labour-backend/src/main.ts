@@ -8,14 +8,13 @@ import { NestExpressApplication } from '@nestjs/platform-express'
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
 
-  // CORS — cho phép frontend localhost:5173 gọi API
+  // 1. CẬP NHẬT CORS: Thêm dấu * hoặc domain của Railway nếu cần
   app.enableCors({
-    origin: ['http://localhost:5173', 'http://localhost:3001', 'http://127.0.0.1:5173'],
+    origin: true, // Cho phép tất cả các nguồn trong quá trình test, hoặc liệt kê domain Railway của bạn vào đây
     credentials: true,
     methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT', 'OPTIONS'],
   })
 
-  // Tự động validate DTO
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
     forbidNonWhitelisted: true,
@@ -23,10 +22,8 @@ async function bootstrap() {
     transformOptions: { enableImplicitConversion: true },
   }))
 
-  // Serve ảnh upload tĩnh tại /uploads/...
   app.useStaticAssets(join(__dirname, '..', 'uploads'), { prefix: '/uploads' })
 
-  // Swagger API docs tại /api
   const config = new DocumentBuilder()
     .setTitle('🦅 Fly Labour API')
     .setDescription('API tuyển dụng lao động quốc tế — Úc · Canada · New Zealand')
@@ -35,16 +32,19 @@ async function bootstrap() {
     .build()
   SwaggerModule.setup('api', app, SwaggerModule.createDocument(app, config))
 
-  const port = process.env.PORT || 3000
+  // Route healthcheck bạn đã viết rất tốt
   app.getHttpAdapter().get('/health', (req: any, res: any) => {
-  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() })
-})
-  await app.listen(port)
+    res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() })
+  })
+
+  const port = process.env.PORT || 3000
+  
+  // 2. QUAN TRỌNG NHẤT: Thêm '0.0.0.0' ở đây
+  await app.listen(port, '0.0.0.0')
 
   console.log('\n🦅 ================================')
-  console.log(`🚀 Backend:  http://localhost:${port}`)
-  console.log(`📖 API Docs: http://localhost:${port}/api`)
-  console.log(`🖼️  Uploads:  http://localhost:${port}/uploads`)
+  console.log(`🚀 Backend:  http://0.0.0.0:${port}`)
+  console.log(`📖 API Docs: http://0.0.0.0:${port}/api`)
   console.log('🦅 ================================\n')
 }
 bootstrap()
