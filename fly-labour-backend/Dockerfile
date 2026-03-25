@@ -1,14 +1,17 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
 
+# Fix permission issue trên Alpine
+RUN apk add --no-cache python3 make g++
+
 COPY package*.json ./
 RUN npm ci
 
 COPY . .
 COPY tsconfig.json ./
 
-# Build bằng tsc thay vì nest build
-RUN ./node_modules/.bin/tsc -p tsconfig.json
+# Dùng node trực tiếp thay vì ./bin/
+RUN node node_modules/@nestjs/cli/bin/nest.js build
 
 FROM node:20-alpine
 WORKDIR /app
