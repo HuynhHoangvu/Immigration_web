@@ -14,6 +14,4 @@ RUN npm run build
 
 RUN mkdir -p uploads/jobs uploads/news
 
-EXPOSE 3000
-
 CMD ["node", "dist/main"]
