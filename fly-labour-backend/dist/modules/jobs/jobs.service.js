@@ -19,16 +19,9 @@ const typeorm_2 = require("typeorm");
 const job_entity_1 = require("./job.entity");
 const fs_1 = require("fs");
 const path_1 = require("path");
-const storage_1 = require("@google-cloud/storage");
-const storage = new storage_1.Storage({
-    projectId: process.env.GCS_PROJECT_ID,
-    credentials: JSON.parse(process.env.GCS_CREDENTIALS || '{}'),
-});
-const bucket = storage.bucket(process.env.GCS_BUCKET_NAME || 'fly-labour-uploads');
 let JobsService = class JobsService {
-    constructor(jobsRepo, storage) {
+    constructor(jobsRepo) {
         this.jobsRepo = jobsRepo;
-        this.storage = storage;
     }
     async findAll(query) {
         const { page = 1, limit = 12, search, country, categoryId, jobType, isHot } = query;
@@ -83,14 +76,14 @@ let JobsService = class JobsService {
     async create(dto, file) {
         const job = this.jobsRepo.create(dto);
         if (file)
-            job.image = this.saveFile(file);
+            job.image = await this.saveFile(file);
         return this.jobsRepo.save(job);
     }
     async update(id, dto, file) {
         const job = await this.findOneRaw(id);
         Object.assign(job, dto);
         if (file)
-            job.image = this.saveFile(file);
+            job.image = await this.saveFile(file);
         return this.jobsRepo.save(job);
     }
     async remove(id) {
@@ -124,20 +117,13 @@ let JobsService = class JobsService {
         return job;
     }
     async saveFile(file) {
-        if (process.env.GCS_BUCKET_NAME) {
-            const filename = `jobs/${Date.now()}-${file.originalname.replace(/\s/g, '-')}`;
-            const blob = bucket.file(filename);
-            await blob.save(file.buffer, {
-                metadata: { contentType: file.mimetype },
-                public: true,
-            });
-            return `https://storage.googleapis.com/${process.env.GCS_BUCKET_NAME}/${filename}`;
+        const uploadDir = (0, path_1.join)(process.cwd(), 'uploads', 'jobs');
+        if (!(0, fs_1.existsSync)(uploadDir)) {
+            (0, fs_1.mkdirSync)(uploadDir, { recursive: true });
         }
-        const dir = (0, path_1.join)(process.cwd(), 'uploads', 'jobs');
-        if (!(0, fs_1.existsSync)(dir))
-            (0, fs_1.mkdirSync)(dir, { recursive: true });
-        const filename = `${Date.now()}${(0, path_1.extname)(file.originalname)}`;
-        (0, fs_1.writeFileSync)((0, path_1.join)(dir, filename), file.buffer);
+        const filename = `${Date.now()}-${file.originalname.replace(/\s/g, '-')}`;
+        const filePath = (0, path_1.join)(uploadDir, filename);
+        (0, fs_1.writeFileSync)(filePath, file.buffer);
         return `/uploads/jobs/${filename}`;
     }
 };
@@ -145,7 +131,6 @@ exports.JobsService = JobsService;
 exports.JobsService = JobsService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(job_entity_1.Job)),
-    __metadata("design:paramtypes", [typeorm_2.Repository,
-        storage_1.Storage])
+    __metadata("design:paramtypes", [typeorm_2.Repository])
 ], JobsService);
 //# sourceMappingURL=jobs.service.js.map

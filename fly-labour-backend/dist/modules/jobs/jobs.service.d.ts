@@ -1,11 +1,9 @@
 import { Repository } from 'typeorm';
 import { Job } from './job.entity';
 import { CreateJobDto, UpdateJobDto, QueryJobDto } from './dto/job.dto';
-import { Storage } from '@google-cloud/storage';
 export declare class JobsService {
     private jobsRepo;
-    private storage;
-    constructor(jobsRepo: Repository<Job>, storage: Storage);
+    constructor(jobsRepo: Repository<Job>);
     findAll(query: QueryJobDto): Promise<{
         data: Job[];
         meta: {

@@ -26,17 +26,30 @@ exports.AppModule = AppModule = __decorate([
             typeorm_1.TypeOrmModule.forRootAsync({
                 imports: [config_1.ConfigModule],
                 inject: [config_1.ConfigService],
-                useFactory: (cfg) => ({
-                    type: 'postgres',
-                    host: cfg.get('DB_HOST', 'localhost'),
-                    port: cfg.get('DB_PORT', 5432),
-                    username: cfg.get('DB_USERNAME', 'postgres'),
-                    password: cfg.get('DB_PASSWORD', '123456'),
-                    database: cfg.get('DB_NAME', 'fly_labour'),
-                    entities: [__dirname + '/**/*.entity{.ts,.js}'],
-                    synchronize: cfg.get('NODE_ENV') !== 'production',
-                    logging: cfg.get('NODE_ENV') === 'development',
-                }),
+                useFactory: (cfg) => {
+                    const databaseUrl = cfg.get('DATABASE_URL');
+                    if (databaseUrl) {
+                        return {
+                            type: 'postgres',
+                            url: databaseUrl,
+                            ssl: { rejectUnauthorized: false },
+                            entities: [__dirname + '/**/*.entity{.ts,.js}'],
+                            synchronize: true,
+                            logging: false,
+                        };
+                    }
+                    return {
+                        type: 'postgres',
+                        host: cfg.get('DB_HOST', 'localhost'),
+                        port: cfg.get('DB_PORT', 5432),
+                        username: cfg.get('DB_USERNAME', 'postgres'),
+                        password: cfg.get('DB_PASSWORD', '123456'),
+                        database: cfg.get('DB_NAME', 'fly_labour'),
+                        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+                        synchronize: cfg.get('NODE_ENV') !== 'production',
+                        logging: cfg.get('NODE_ENV') === 'development',
+                    };
+                },
             }),
             auth_module_1.AuthModule,
             users_module_1.UsersModule,
