@@ -6,9 +6,13 @@ COPY package*.json ./
 
 RUN npm install
 
+RUN chmod +x node_modules/.bin/*
+
 COPY . .
 
-RUN ./node_modules/.bin/nest build
+RUN npm run build
+
+RUN mkdir -p uploads/jobs uploads/news
 
 EXPOSE 3000
 

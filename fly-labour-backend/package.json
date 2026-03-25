@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Fly Labour - Backend API NestJS + PostgreSQL",
   "scripts": {
-    "build": "nest build",
+    "build": "node ./node_modules/@nestjs/cli/bin/nest.js build",
     "start": "node dist/main",
     "start:dev": "nest start --watch",
     "migration:run": "ts-node -r tsconfig-paths/register node_modules/typeorm/cli.js migration:run -d src/config/database.config.ts",
