@@ -22,4 +22,8 @@ export declare class ApplicationsController {
     getStats(): Promise<any[]>;
     findOne(id: string): Promise<import("./application.entity").Application>;
     updateStatus(id: string, dto: UpdateApplicationStatusDto): Promise<import("./application.entity").Application>;
+    withdraw(id: string, req: any): Promise<import("./application.entity").Application>;
+    employerUpdateStatus(id: string, body: {
+        status: string;
+    }, req: any): Promise<import("./application.entity").Application>;
 }

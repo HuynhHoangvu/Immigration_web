@@ -21,6 +21,13 @@ export declare class UsersController {
         createdAt: Date;
         updatedAt: Date;
     }>;
+    changePassword(req: any, dto: {
+        currentPassword: string;
+        newPassword: string;
+        confirmPassword: string;
+    }): Promise<{
+        message: string;
+    }>;
     findAll(query: {
         page?: number;
         limit?: number;

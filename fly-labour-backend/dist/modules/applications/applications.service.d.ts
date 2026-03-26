@@ -11,6 +11,7 @@ export declare class CreateApplicationDto {
     experience?: string;
     languageLevel?: string;
     coverLetter?: string;
+    cvUrl?: string;
 }
 export declare class UpdateApplicationStatusDto {
     status: ApplicationStatus;
@@ -39,4 +40,6 @@ export declare class ApplicationsService {
     getStatsByStatus(): Promise<any[]>;
     findByUser(userId: string): Promise<Application[]>;
     findByEmployer(employerId: string): Promise<Application[]>;
+    withdraw(id: string, userId: string): Promise<Application>;
+    employerUpdateStatus(id: string, employerId: string, status: ApplicationStatus): Promise<Application>;
 }

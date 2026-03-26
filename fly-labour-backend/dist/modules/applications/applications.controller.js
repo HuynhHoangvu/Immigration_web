@@ -44,6 +44,12 @@ let ApplicationsController = class ApplicationsController {
     updateStatus(id, dto) {
         return this.appsService.updateStatus(id, dto);
     }
+    withdraw(id, req) {
+        return this.appsService.withdraw(id, req.user.id);
+    }
+    employerUpdateStatus(id, body, req) {
+        return this.appsService.employerUpdateStatus(id, req.user.id, body.status);
+    }
 };
 exports.ApplicationsController = ApplicationsController;
 __decorate([
@@ -115,6 +121,29 @@ __decorate([
     __metadata("design:paramtypes", [String, applications_service_1.UpdateApplicationStatusDto]),
     __metadata("design:returntype", void 0)
 ], ApplicationsController.prototype, "updateStatus", null);
+__decorate([
+    (0, common_1.Patch)(':id/withdraw'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)('JWT'),
+    (0, swagger_1.ApiOperation)({ summary: '[User] Rút đơn ứng tuyển' }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], ApplicationsController.prototype, "withdraw", null);
+__decorate([
+    (0, common_1.Patch)(':id/employer-status'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, employer_guard_1.EmployerGuard),
+    (0, swagger_1.ApiBearerAuth)('JWT'),
+    (0, swagger_1.ApiOperation)({ summary: '[Employer] Cập nhật trạng thái đơn của ứng viên' }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object, Object]),
+    __metadata("design:returntype", void 0)
+], ApplicationsController.prototype, "employerUpdateStatus", null);
 exports.ApplicationsController = ApplicationsController = __decorate([
     (0, swagger_1.ApiTags)('📋 Đơn ứng tuyển'),
     (0, common_1.Controller)('applications'),

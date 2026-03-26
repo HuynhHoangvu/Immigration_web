@@ -16,6 +16,7 @@ exports.UsersService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
+const bcrypt = require("bcryptjs");
 const user_entity_1 = require("./user.entity");
 let UsersService = class UsersService {
     constructor(usersRepo) {
@@ -80,6 +81,21 @@ let UsersService = class UsersService {
             throw new common_1.NotFoundException('Không tìm thấy người dùng');
         await this.usersRepo.remove(user);
         return { message: 'Đã xóa tài khoản' };
+    }
+    async changePassword(id, dto) {
+        if (dto.newPassword !== dto.confirmPassword)
+            throw new common_1.BadRequestException('Mật khẩu xác nhận không khớp');
+        if (dto.newPassword.length < 6)
+            throw new common_1.BadRequestException('Mật khẩu mới phải có ít nhất 6 ký tự');
+        const user = await this.usersRepo.findOne({ where: { id } });
+        if (!user)
+            throw new common_1.NotFoundException();
+        const valid = await bcrypt.compare(dto.currentPassword, user.password);
+        if (!valid)
+            throw new common_1.UnauthorizedException('Mật khẩu hiện tại không đúng');
+        user.password = await bcrypt.hash(dto.newPassword, 12);
+        await this.usersRepo.save(user);
+        return { message: 'Đổi mật khẩu thành công' };
     }
 };
 exports.UsersService = UsersService;

@@ -72,6 +72,11 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateApplicationDto.prototype, "coverLetter", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ required: false }),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateApplicationDto.prototype, "cvUrl", void 0);
 class UpdateApplicationStatusDto {
 }
 exports.UpdateApplicationStatusDto = UpdateApplicationStatusDto;
@@ -140,6 +145,26 @@ let ApplicationsService = class ApplicationsService {
             .where('job.createdById = :employerId', { employerId })
             .orderBy('app.createdAt', 'DESC')
             .getMany();
+    }
+    async withdraw(id, userId) {
+        const app = await this.appsRepo.findOne({ where: { id }, relations: ['job'] });
+        if (!app)
+            throw new common_1.NotFoundException('Không tìm thấy đơn ứng tuyển');
+        if (app.userId !== userId)
+            throw new common_1.ForbiddenException('Bạn không có quyền rút đơn này');
+        if (app.status === application_entity_1.ApplicationStatus.WITHDRAWN)
+            throw new common_1.ForbiddenException('Đơn đã được rút trước đó');
+        app.status = application_entity_1.ApplicationStatus.WITHDRAWN;
+        return this.appsRepo.save(app);
+    }
+    async employerUpdateStatus(id, employerId, status) {
+        const app = await this.appsRepo.findOne({ where: { id }, relations: ['job'] });
+        if (!app)
+            throw new common_1.NotFoundException('Không tìm thấy đơn ứng tuyển');
+        if (app.job?.createdById !== employerId)
+            throw new common_1.ForbiddenException('Bạn không có quyền cập nhật đơn này');
+        app.status = status;
+        return this.appsRepo.save(app);
     }
 };
 exports.ApplicationsService = ApplicationsService;

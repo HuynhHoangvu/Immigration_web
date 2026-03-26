@@ -97,4 +97,11 @@ export declare class UsersService {
     remove(id: string): Promise<{
         message: string;
     }>;
+    changePassword(id: string, dto: {
+        currentPassword: string;
+        newPassword: string;
+        confirmPassword: string;
+    }): Promise<{
+        message: string;
+    }>;
 }

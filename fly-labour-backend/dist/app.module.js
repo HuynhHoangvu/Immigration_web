@@ -16,6 +16,9 @@ const jobs_module_1 = require("./modules/jobs/jobs.module");
 const applications_module_1 = require("./modules/applications/applications.module");
 const categories_module_1 = require("./modules/categories/categories.module");
 const news_module_1 = require("./modules/news/news.module");
+const contact_module_1 = require("./modules/contact/contact.module");
+const settings_module_1 = require("./modules/settings/settings.module");
+const upload_module_1 = require("./modules/upload/upload.module");
 const path_1 = require("path");
 const logger = new common_1.Logger('TypeORM');
 let AppModule = class AppModule {
@@ -33,10 +36,11 @@ exports.AppModule = AppModule = __decorate([
                     const nodeEnv = cfg.get('NODE_ENV', 'development');
                     const isProduction = nodeEnv !== 'development';
                     if (databaseUrl) {
+                        const isInternalUrl = databaseUrl.includes('.internal');
                         return {
                             type: 'postgres',
                             url: databaseUrl,
-                            ssl: { rejectUnauthorized: false },
+                            ssl: isInternalUrl ? false : { rejectUnauthorized: false },
                             entities: [(0, path_1.join)(__dirname, '**', '*.entity{.ts,.js}')],
                             synchronize: !isProduction,
                             logging: !isProduction,
@@ -73,6 +77,9 @@ exports.AppModule = AppModule = __decorate([
             applications_module_1.ApplicationsModule,
             categories_module_1.CategoriesModule,
             news_module_1.NewsModule,
+            contact_module_1.ContactModule,
+            settings_module_1.SettingsModule,
+            upload_module_1.UploadModule,
         ],
     })
 ], AppModule);
