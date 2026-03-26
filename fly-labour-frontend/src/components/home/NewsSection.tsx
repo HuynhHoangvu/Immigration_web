@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Calendar } from "lucide-react";
-import { newsApi } from "@/services/api";
+import { newsApi, getImageUrl } from "@/services/api";
 import type { News } from "@/types";
 import { formatDate } from "@/utils/helpers";
 
@@ -50,7 +50,7 @@ export default function NewsSection() {
               <div className="h-44 bg-gradient-to-br from-brand-yellow/10 to-brand-orange/5 border-b border-brand-border flex items-center justify-center">
                 {item.image ? (
                   <img
-                    src={item.image}
+                    src={getImageUrl(item.image)}
                     alt={item.title}
                     className="w-full h-full object-cover"
                   />

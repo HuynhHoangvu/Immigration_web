@@ -53,4 +53,20 @@ export class UsersService {
     const { password, ...rest } = user
     return rest
   }
+
+  async updateByAdmin(id: string, dto: { fullName?: string; phone?: string; role?: string; isActive?: boolean }) {
+    const user = await this.usersRepo.findOne({ where: { id } })
+    if (!user) throw new NotFoundException('Không tìm thấy người dùng')
+    Object.assign(user, dto)
+    await this.usersRepo.save(user)
+    const { password, ...rest } = user
+    return rest
+  }
+
+  async remove(id: string) {
+    const user = await this.usersRepo.findOne({ where: { id } })
+    if (!user) throw new NotFoundException('Không tìm thấy người dùng')
+    await this.usersRepo.remove(user)
+    return { message: 'Đã xóa tài khoản' }
+  }
 }

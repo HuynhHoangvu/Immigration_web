@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Param, Query, Body, UseGuards, Request } from '@nestjs/common'
+import { Controller, Get, Patch, Delete, Param, Query, Body, UseGuards, Request } from '@nestjs/common'
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger'
 import { UsersService } from './users.service'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
@@ -44,4 +44,18 @@ export class UsersController {
   @ApiBearerAuth('JWT')
   @ApiOperation({ summary: '[Admin] Khóa / Mở khóa tài khoản' })
   toggleActive(@Param('id') id: string) { return this.usersService.toggleActive(id) }
+
+  @Patch(':id')
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  @ApiBearerAuth('JWT')
+  @ApiOperation({ summary: '[Admin] Sửa thông tin người dùng' })
+  updateByAdmin(@Param('id') id: string, @Body() dto: { fullName?: string; phone?: string; role?: string; isActive?: boolean }) {
+    return this.usersService.updateByAdmin(id, dto)
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  @ApiBearerAuth('JWT')
+  @ApiOperation({ summary: '[Admin] Xóa tài khoản' })
+  remove(@Param('id') id: string) { return this.usersService.remove(id) }
 }

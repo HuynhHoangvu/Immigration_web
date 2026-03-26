@@ -83,6 +83,8 @@ export const usersApi = {
   toggleActive: (id: string) => api.patch(`/users/${id}/toggle-active`),
   getStats:     () => api.get('/users/stats'),
   updateMe:     (data: Record<string, any>) => api.patch('/users/me', data),
+  updateAdmin:  (id: string, data: Record<string, any>) => api.patch(`/users/${id}`, data),
+  remove:       (id: string) => api.delete(`/users/${id}`),
 }
 
 // ── News ──────────────────────────────────────
@@ -90,7 +92,14 @@ export const newsApi = {
   getAll:     () => api.get('/news'),
   getAllAdmin: () => api.get('/news/admin/all'),
   getOne:     (slug: string) => api.get(`/news/${slug}`),
-  create:     (data: Record<string, any>) => api.post('/news', data),
-  update:     (id: string, data: Record<string, any>) => api.patch(`/news/${id}`, data),
+  create:     (data: FormData) => api.post('/news', data),
+  update:     (id: string, data: FormData) => api.patch(`/news/${id}`, data),
   remove:     (id: string) => api.delete(`/news/${id}`),
+}
+
+// Helper: chuyển path ảnh upload (/uploads/...) thành URL đầy đủ
+export const getImageUrl = (image?: string) => {
+  if (!image) return ''
+  if (image.startsWith('http')) return image
+  return `${BASE_URL}${image}`
 }

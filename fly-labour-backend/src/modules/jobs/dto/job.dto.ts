@@ -1,7 +1,7 @@
 import { IsString, IsEnum, IsOptional, IsNumber, IsBoolean, IsDateString } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 import { Transform, Type } from 'class-transformer'
-import { JobCountry, JobType, JobStatus } from '../job.entity'
+import { JobType, JobStatus } from '../job.entity'
 
 export class CreateJobDto {
   @ApiProperty({ example: 'Công nhân Hái Quả Mùa Vụ' })
@@ -28,9 +28,9 @@ export class CreateJobDto {
   @IsString() @IsOptional()
   location?: string
 
-  @ApiProperty({ enum: JobCountry })
-  @IsEnum(JobCountry)
-  country: JobCountry
+  @ApiProperty({ example: 'australia' })
+  @IsString()
+  country: string
 
   @ApiProperty({ enum: JobType, required: false })
   @IsEnum(JobType) @IsOptional()

@@ -1,4 +1,4 @@
-export type Country = 'australia' | 'canada' | 'new_zealand' | 'norway' | 'germany' | 'portugal' | 'czech' | 'us'
+export type Country = string // cho phép quốc gia tự do (không chỉ enum cứng)
 export type JobType = 'full_time' | 'part_time' | 'contract' | 'seasonal'
 export type JobStatus = 'active' | 'paused' | 'closed' | 'draft'
 export type AppStatus = 'pending' | 'reviewing' | 'approved' | 'rejected' | 'withdrawn'

@@ -1,70 +1,102 @@
 import { useEffect, useState } from 'react'
-import { Search, Eye, Lock, Unlock, X } from 'lucide-react'
+import { Search, Pencil, Trash2, Lock, Unlock, X, CheckCircle, Plus } from 'lucide-react'
 import { formatDate } from '@/utils/helpers'
 import toast from 'react-hot-toast'
 import type { User } from '@/types'
 import { usersApi } from '@/services/api'
 
-const MOCK_USERS: User[] = [
-  { id: '1', fullName: 'Nguyễn Văn An', email: 'an@example.com', phone: '0901111111', role: 'user', isActive: true, createdAt: '2025-01-10T00:00:00Z' },
-  { id: '2', fullName: 'Trần Thị Bình', email: 'binh@example.com', phone: '0902222222', role: 'user', isActive: true, createdAt: '2025-01-15T00:00:00Z' },
-  { id: '3', fullName: 'Lê Văn Cường', email: 'cuong@example.com', phone: '0903333333', role: 'user', isActive: false, createdAt: '2025-01-18T00:00:00Z' },
-  { id: '4', fullName: 'Phạm Thị Dung', email: 'dung@example.com', phone: '0904444444', role: 'user', isActive: true, createdAt: '2025-01-20T00:00:00Z' },
-  { id: '5', fullName: 'Hoàng Văn Em', email: 'em@example.com', phone: '0905555555', role: 'user', isActive: true, createdAt: '2025-02-01T00:00:00Z' },
-  { id: '6', fullName: 'Admin Fly Labour', email: 'admin@flylabour.com', phone: '0901234567', role: 'admin', isActive: true, createdAt: '2024-12-01T00:00:00Z' },
-]
+type EditForm = { fullName: string; phone: string; role: string; isActive: boolean }
+type AddForm  = { fullName: string; email: string; phone: string; password: string; role: string }
+
+const EMPTY_EDIT: EditForm = { fullName: '', phone: '', role: 'user', isActive: true }
+const EMPTY_ADD:  AddForm  = { fullName: '', email: '', phone: '', password: '', role: 'user' }
 
 export default function AdminUsersPage() {
-   const [users, setUsers] = useState<User[]>([]);
-   const [total, setTotal] = useState(0);
-   const [loading, setLoading] = useState(true);
-   const [search, setSearch] = useState("");
-   const [selected, setSelected] = useState<User | null>(null);
+  const [users, setUsers]   = useState<User[]>([])
+  const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState('')
+  const [editModal, setEditModal] = useState<User | null>(null)
+  const [editForm, setEditForm]   = useState<EditForm>(EMPTY_EDIT)
+  const [deleting, setDeleting]   = useState<string | null>(null)
+  const [saving, setSaving]       = useState(false)
 
-   const loadUsers = () => {
-     setLoading(true);
-     usersApi
-       .getAll({ search, limit: 50 })
-       .then((r) => {
-         setUsers(r.data.data);
-         setTotal(r.data.meta.total);
-       })
-       .catch(() => {})
-       .finally(() => setLoading(false));
-   };
+  const loadUsers = () => {
+    setLoading(true)
+    usersApi.getAll({ search, limit: 100 })
+      .then(r => setUsers(r.data.data))
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }
 
-   useEffect(() => {
-     loadUsers();
-   }, [search]);
+  useEffect(() => { loadUsers() }, [search])
 
-   const toggleActive = async (id: string) => {
-     try {
-       await usersApi.toggleActive(id);
-       setUsers((us) =>
-         us.map((u) => (u.id === id ? { ...u, isActive: !u.isActive } : u)),
-       );
-       toast.success("Đã cập nhật trạng thái tài khoản");
-     } catch {
-       toast.error("Cập nhật thất bại");
-     }
-   };
-  const filtered = users.filter(
-    (u) =>
-      !search ||
-      u.fullName.toLowerCase().includes(search.toLowerCase()) ||
-      u.email.toLowerCase().includes(search.toLowerCase()),
-  );
+  const openEdit = (u: User) => {
+    setEditForm({ fullName: u.fullName, phone: u.phone || '', role: u.role, isActive: u.isActive })
+    setEditModal(u)
+  }
+
+  const handleSaveEdit = async () => {
+    if (!editModal) return
+    if (!editForm.fullName.trim()) { toast.error('Vui lòng nhập họ tên'); return }
+    setSaving(true)
+    try {
+      await usersApi.updateAdmin(editModal.id, editForm)
+      toast.success('Đã cập nhật tài khoản')
+      setEditModal(null)
+      loadUsers()
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || 'Cập nhật thất bại')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleDelete = async (id: string) => {
+    try {
+      await usersApi.remove(id)
+      toast.success('Đã xóa tài khoản')
+      setDeleting(null)
+      loadUsers()
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || 'Xóa thất bại')
+    }
+  }
+
+  const toggleActive = async (id: string) => {
+    try {
+      await usersApi.toggleActive(id)
+      setUsers(us => us.map(u => u.id === id ? { ...u, isActive: !u.isActive } : u))
+      toast.success('Đã cập nhật trạng thái tài khoản')
+    } catch {
+      toast.error('Cập nhật thất bại')
+    }
+  }
+
+  const filtered = users.filter(u =>
+    !search ||
+    u.fullName.toLowerCase().includes(search.toLowerCase()) ||
+    u.email.toLowerCase().includes(search.toLowerCase())
+  )
+
+  const setEF = (k: keyof EditForm) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+    setEditForm(f => ({ ...f, [k]: e.target.value }))
+
   return (
     <div className="space-y-5">
-      <div>
-        <h1 className="text-xl font-bold text-white">Quản lý Khách hàng</h1>
-        <p className="text-brand-muted text-sm">{users.length} tài khoản · {users.filter(u => u.isActive).length} đang hoạt động</p>
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <h1 className="text-xl font-bold text-white">Quản lý Khách hàng</h1>
+          <p className="text-brand-muted text-sm">
+            {users.length} tài khoản · {users.filter(u => u.isActive).length} đang hoạt động
+          </p>
+        </div>
       </div>
 
       <div className="card-dark p-4">
         <div className="relative max-w-sm">
           <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted" />
-          <input value={search} onChange={e => setSearch(e.target.value)} className="input-dark pl-9 py-2 text-sm h-10" placeholder="Tìm tên, email..." />
+          <input value={search} onChange={e => setSearch(e.target.value)}
+            className="input-dark pl-9 py-2 text-sm h-10" placeholder="Tìm tên, email..." />
         </div>
       </div>
 
@@ -82,11 +114,16 @@ export default function AdminUsersPage() {
               </tr>
             </thead>
             <tbody>
-              {filtered.map(user => (
+              {loading ? (
+                <tr><td colSpan={6} className="py-12 text-center text-brand-muted text-sm">Đang tải...</td></tr>
+              ) : filtered.length === 0 ? (
+                <tr><td colSpan={6} className="py-12 text-center text-brand-muted text-sm">Không tìm thấy người dùng</td></tr>
+              ) : filtered.map(user => (
                 <tr key={user.id} className="border-b border-brand-border/40 hover:bg-white/[0.02] transition-colors">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-xl flex items-center justify-center text-black text-xs font-bold shrink-0" style={{background: user.role === 'admin' ? 'linear-gradient(135deg,#F5A623,#EA580C)' : 'linear-gradient(135deg,#3B82F6,#8B5CF6)'}}>
+                      <div className="w-8 h-8 rounded-xl flex items-center justify-center text-black text-xs font-bold shrink-0"
+                        style={{ background: user.role === 'admin' ? 'linear-gradient(135deg,#F5A623,#EA580C)' : 'linear-gradient(135deg,#3B82F6,#8B5CF6)' }}>
                         {user.fullName.charAt(0)}
                       </div>
                       <div>
@@ -109,12 +146,20 @@ export default function AdminUsersPage() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-end gap-1">
-                      <button onClick={() => setSelected(user)} className="w-7 h-7 rounded-lg flex items-center justify-center text-brand-muted hover:text-white hover:bg-white/10 transition-colors">
-                        <Eye size={13} />
+                      <button onClick={() => openEdit(user)}
+                        className="w-7 h-7 rounded-lg flex items-center justify-center text-brand-muted hover:text-brand-yellow hover:bg-brand-yellow/10 transition-colors">
+                        <Pencil size={13} />
                       </button>
                       {user.role !== 'admin' && (
-                        <button onClick={() => toggleActive(user.id)} className={`w-7 h-7 rounded-lg flex items-center justify-center transition-colors ${user.isActive ? 'text-brand-muted hover:text-red-400 hover:bg-red-500/10' : 'text-brand-muted hover:text-green-400 hover:bg-green-500/10'}`}>
+                        <button onClick={() => toggleActive(user.id)}
+                          className={`w-7 h-7 rounded-lg flex items-center justify-center transition-colors ${user.isActive ? 'text-brand-muted hover:text-red-400 hover:bg-red-500/10' : 'text-brand-muted hover:text-green-400 hover:bg-green-500/10'}`}>
                           {user.isActive ? <Lock size={13} /> : <Unlock size={13} />}
+                        </button>
+                      )}
+                      {user.role !== 'admin' && (
+                        <button onClick={() => setDeleting(user.id)}
+                          className="w-7 h-7 rounded-lg flex items-center justify-center text-brand-muted hover:text-red-400 hover:bg-red-500/10 transition-colors">
+                          <Trash2 size={13} />
                         </button>
                       )}
                     </div>
@@ -126,34 +171,73 @@ export default function AdminUsersPage() {
         </div>
       </div>
 
-      {/* User detail panel */}
-      {selected && (
-        <div className="fixed inset-0 z-50 flex justify-end">
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setSelected(null)} />
-          <div className="relative w-80 bg-brand-card border-l border-brand-border overflow-y-auto">
+      {/* ── Edit Modal ── */}
+      {editModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setEditModal(null)} />
+          <div className="relative bg-brand-card border border-brand-border rounded-2xl w-full max-w-md shadow-2xl">
             <div className="flex items-center justify-between p-5 border-b border-brand-border">
-              <h2 className="font-semibold text-white text-sm">Chi tiết người dùng</h2>
-              <button onClick={() => setSelected(null)}><X size={16} className="text-brand-muted hover:text-white" /></button>
+              <h2 className="font-semibold text-white">✏️ Chỉnh sửa tài khoản</h2>
+              <button onClick={() => setEditModal(null)}><X size={18} className="text-brand-muted hover:text-white" /></button>
             </div>
             <div className="p-5 space-y-4">
-              <div className="text-center">
-                <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-black text-2xl font-bold mx-auto mb-3" style={{background: selected.role === 'admin' ? 'linear-gradient(135deg,#F5A623,#EA580C)' : 'linear-gradient(135deg,#3B82F6,#8B5CF6)'}}>
-                  {selected.fullName.charAt(0)}
+              <div className="flex items-center gap-3 p-3 bg-brand-dark rounded-xl">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-black text-sm font-bold shrink-0"
+                  style={{ background: editModal.role === 'admin' ? 'linear-gradient(135deg,#F5A623,#EA580C)' : 'linear-gradient(135deg,#3B82F6,#8B5CF6)' }}>
+                  {editModal.fullName.charAt(0)}
                 </div>
-                <p className="text-white font-semibold">{selected.fullName}</p>
-                <p className="text-brand-muted text-sm">{selected.email}</p>
+                <div>
+                  <p className="text-white text-sm font-medium">{editModal.fullName}</p>
+                  <p className="text-brand-muted text-xs">{editModal.email}</p>
+                </div>
               </div>
-              {[
-                { label: 'Số điện thoại', value: selected.phone || '—' },
-                { label: 'Vai trò', value: selected.role === 'admin' ? '👑 Admin' : '👤 User' },
-                { label: 'Ngày đăng ký', value: formatDate(selected.createdAt) },
-                { label: 'Trạng thái', value: selected.isActive ? '✅ Hoạt động' : '🔒 Đã khóa' },
-              ].map(item => (
-                <div key={item.label} className="p-3 bg-brand-dark rounded-xl">
-                  <p className="text-xs text-brand-muted">{item.label}</p>
-                  <p className="text-white text-sm mt-0.5">{item.value}</p>
-                </div>
-              ))}
+
+              <div>
+                <label className="text-xs text-brand-muted mb-1.5 block">Họ tên *</label>
+                <input value={editForm.fullName} onChange={setEF('fullName')} className="input-dark" placeholder="Họ và tên" />
+              </div>
+              <div>
+                <label className="text-xs text-brand-muted mb-1.5 block">Số điện thoại</label>
+                <input value={editForm.phone} onChange={setEF('phone')} className="input-dark" placeholder="0901234567" />
+              </div>
+              <div>
+                <label className="text-xs text-brand-muted mb-1.5 block">Vai trò</label>
+                <select value={editForm.role} onChange={setEF('role')} className="input-dark">
+                  <option value="user">👤 User</option>
+                  <option value="admin">👑 Admin</option>
+                </select>
+              </div>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" checked={editForm.isActive}
+                  onChange={e => setEditForm(f => ({ ...f, isActive: e.target.checked }))}
+                  className="w-4 h-4 accent-brand-yellow" />
+                <span className="text-sm text-white">Tài khoản đang hoạt động</span>
+              </label>
+
+              <div className="flex gap-3 pt-1">
+                <button onClick={handleSaveEdit} disabled={saving}
+                  className="btn-primary flex-1 flex items-center justify-center gap-2 py-3 disabled:opacity-60">
+                  <CheckCircle size={15} /> {saving ? 'Đang lưu...' : 'Lưu thay đổi'}
+                </button>
+                <button onClick={() => setEditModal(null)} className="btn-outline px-6">Hủy</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Confirm Delete ── */}
+      {deleting && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setDeleting(null)} />
+          <div className="relative bg-brand-card border border-red-500/30 rounded-2xl p-6 max-w-sm w-full text-center shadow-2xl">
+            <p className="text-4xl mb-3">🗑️</p>
+            <h3 className="text-white font-semibold mb-2">Xác nhận xóa tài khoản?</h3>
+            <p className="text-brand-muted text-sm mb-5">Tài khoản và toàn bộ dữ liệu liên quan sẽ bị xóa vĩnh viễn.</p>
+            <div className="flex gap-3">
+              <button onClick={() => handleDelete(deleting)}
+                className="flex-1 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white text-sm font-semibold">Xóa</button>
+              <button onClick={() => setDeleting(null)} className="flex-1 btn-outline py-2.5 text-sm">Hủy</button>
             </div>
           </div>
         </div>

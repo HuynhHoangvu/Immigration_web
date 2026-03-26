@@ -1,15 +1,26 @@
-import type { Country, JobType, AppStatus } from '@/types'
+import type { JobType, AppStatus } from '@/types'
 
-export const COUNTRY_LABELS: Record<Country, string> = {
-  australia: '🇦🇺 Úc',
-  canada: '🇨🇦 Canada',
+const COUNTRY_MAP: Record<string, string> = {
+  australia:   '🇦🇺 Úc',
+  canada:      '🇨🇦 Canada',
   new_zealand: '🇳🇿 New Zealand',
-  norway: '🇳🇴 Na Uy',
-  germany: '🇩🇪 Đức',
-  portugal: '🇵🇹 Bồ Đào Nha',
-  czech: '🇨🇿 Séc',
-  us: '🇺🇸 Mỹ',
+  norway:      '🇳🇴 Na Uy',
+  germany:     '🇩🇪 Đức',
+  portugal:    '🇵🇹 Bồ Đào Nha',
+  czech:       '🇨🇿 Séc',
+  us:          '🇺🇸 Mỹ',
+  uk:          '🇬🇧 Anh Quốc',
+  japan:       '🇯🇵 Nhật Bản',
+  singapore:   '🇸🇬 Singapore',
+  south_korea: '🇰🇷 Hàn Quốc',
+  taiwan:      '🇹🇼 Đài Loan',
+  uae:         '🇦🇪 UAE',
 }
+
+// Trả về label nếu có trong danh sách, ngược lại trả về chính giá trị đó
+export const COUNTRY_LABELS: Record<string, string> = new Proxy(COUNTRY_MAP, {
+  get: (target, key: string) => target[key] ?? key,
+})
 
 export const JOBTYPE_LABELS: Record<JobType, string> = {
   full_time: 'Toàn thời gian',

@@ -4,7 +4,7 @@ import { MOCK_JOBS, MOCK_CATEGORIES } from '@/utils/mockData'
 import type { Category, Job } from '@/types'
 import { COUNTRY_LABELS, JOBTYPE_LABELS, formatSalary, formatDate } from '@/utils/helpers'
 import toast from 'react-hot-toast'
-import { categoriesApi, jobsApi } from '@/services/api'
+import { categoriesApi, jobsApi, getImageUrl } from '@/services/api'
 
 const STATUS_COLORS = {
   active:  'text-green-400 bg-green-400/10 border-green-400/20',
@@ -14,8 +14,27 @@ const STATUS_COLORS = {
 }
 const STATUS_LABELS = { active: 'Hoạt động', paused: 'Tạm dừng', closed: 'Đã đóng', draft: 'Nháp' }
 
+// Danh sách quốc gia có sẵn
+const PRESET_COUNTRIES = [
+  { value: 'australia',   label: '🇦🇺 Úc (Australia)' },
+  { value: 'canada',      label: '🇨🇦 Canada' },
+  { value: 'new_zealand', label: '🇳🇿 New Zealand' },
+  { value: 'uk',          label: '🇬🇧 Anh Quốc (UK)' },
+  { value: 'germany',     label: '🇩🇪 Đức (Germany)' },
+  { value: 'japan',       label: '🇯🇵 Nhật Bản (Japan)' },
+  { value: 'norway',      label: '🇳🇴 Na Uy (Norway)' },
+  { value: 'portugal',    label: '🇵🇹 Bồ Đào Nha (Portugal)' },
+  { value: 'czech',       label: '🇨🇿 Séc (Czech Republic)' },
+  { value: 'us',          label: '🇺🇸 Mỹ (USA)' },
+  { value: 'singapore',   label: '🇸🇬 Singapore' },
+  { value: 'south_korea', label: '🇰🇷 Hàn Quốc (Korea)' },
+  { value: 'taiwan',      label: '🇹🇼 Đài Loan (Taiwan)' },
+  { value: 'uae',         label: '🇦🇪 UAE' },
+  { value: '__other__',   label: '✏️ Khác (nhập tay)...' },
+]
+
 type FormData = {
-  title: string; company: string; location: string; country: string;
+  title: string; company: string; location: string; country: string; countryCustom: string;
   jobType: string; status: string; salaryMin: string; salaryMax: string;
   salaryCurrency: string; slots: string; deadline: string;
   isHot: boolean; isFeatured: boolean; categoryId: string;
@@ -24,7 +43,7 @@ type FormData = {
 }
 
 const EMPTY_FORM: FormData = {
-  title: '', company: '', location: '', country: 'australia',
+  title: '', company: '', location: '', country: 'australia', countryCustom: '',
   jobType: 'full_time', status: 'active', salaryMin: '', salaryMax: '',
   salaryCurrency: 'AUD', slots: '', deadline: '', isHot: false, isFeatured: false,
   categoryId: '', description: '', requirements: '', benefits: '', imagePreview: '',
@@ -64,9 +83,12 @@ export default function AdminJobsPage() {
 
   const openAdd = () => { setForm(EMPTY_FORM); setEditing(null); setUrlInput(''); setModal('add') }
   const openEdit = (job: Job) => {
+    const isPreset = PRESET_COUNTRIES.some(c => c.value === job.country && c.value !== '__other__')
     setForm({
       title: job.title, company: job.company || '', location: job.location || '',
-      country: job.country, jobType: job.jobType, status: job.status,
+      country: isPreset ? job.country : '__other__',
+      countryCustom: isPreset ? '' : (job.country || ''),
+      jobType: job.jobType, status: job.status,
       salaryMin: job.salaryMin?.toString() || '', salaryMax: job.salaryMax?.toString() || '',
       salaryCurrency: job.salaryCurrency || 'AUD', slots: job.slots?.toString() || '',
       deadline: job.deadline?.slice(0, 10) || '', isHot: job.isHot, isFeatured: job.isFeatured,
@@ -129,18 +151,23 @@ export default function AdminJobsPage() {
     try {
       const fd = new FormData();
 
-      // Gắn từng field, bỏ qua imagePreview và giá trị rỗng
-      const skipKeys = ["imagePreview"];
+      // Gắn từng field, bỏ qua imagePreview, countryCustom và giá trị rỗng
+      const skipKeys = ["imagePreview", "countryCustom"];
       Object.entries(form).forEach(([k, v]) => {
         if (skipKeys.includes(k)) return;
         if (v === "" || v === undefined || v === null) return;
-        // isHot, isFeatured phải gửi string 'true'/'false'
         if (typeof v === "boolean") {
           fd.append(k, v ? "true" : "false");
         } else {
           fd.append(k, String(v));
         }
       });
+
+      // Nếu chọn "Khác", ghi đè country bằng giá trị nhập tay
+      if (form.country === '__other__') {
+        if (!form.countryCustom.trim()) { toast.error('Vui lòng nhập tên quốc gia'); setSaving(false); return }
+        fd.set('country', form.countryCustom.trim())
+      }
 
       // Xử lý ảnh
       if (imgTab === "url" && urlInput.trim()) {
@@ -253,7 +280,7 @@ export default function AdminJobsPage() {
                     <div className="w-10 h-10 rounded-xl overflow-hidden bg-brand-dark border border-brand-border flex-shrink-0">
                       {job.image ? (
                         <img
-                          src={job.image}
+                          src={getImageUrl(job.image)}
                           alt={job.title}
                           className="w-full h-full object-cover"
                         />
@@ -286,14 +313,7 @@ export default function AdminJobsPage() {
                   </td>
                   <td className="px-4 py-3 hidden sm:table-cell">
                     <span className="badge-country text-xs">
-                      {job.country === "australia"
-                        ? "🇦🇺"
-                        : job.country === "canada"
-                          ? "🇨🇦"
-                          : "🇳🇿"}{" "}
-                      {COUNTRY_LABELS[job.country]
-                        .replace(/🇦🇺|🇨🇦|🇳🇿/g, "")
-                        .trim()}
+                      {COUNTRY_LABELS[job.country]}
                     </span>
                   </td>
                   <td className="px-4 py-3 hidden md:table-cell">
@@ -537,22 +557,19 @@ export default function AdminJobsPage() {
                   <label className="text-xs text-brand-muted mb-1.5 block">
                     Quốc gia
                   </label>
-                  <select
-                    value={form.country}
-                    onChange={set("country")}
-                    className="input-dark"
-                  >
-                    <option value="australia">🇦🇺 Úc (Australia)</option>
-                    <option value="canada">🇨🇦 Canada</option>
-                    <option value="new_zealand">🇳🇿 New Zealand</option>
-                    <option value="uk">🇬🇧 Anh Quốc (UK)</option>
-                    <option value="germany">🇩🇪 Đức (Germany)</option>
-                    <option value="japan">🇯🇵 Nhật Bản (Japan)</option>
-                    <option value="norway">🇳🇴 Na Uy (Norway)</option>
-                    <option value="portugal">🇵🇹 Bồ Đào Nha (Portugal)</option>
-                    <option value="czech">🇨🇿 Séc (Czech)</option>
-                    <option value="us">🇺🇸 Mỹ (USA)</option>
+                  <select value={form.country} onChange={set("country")} className="input-dark">
+                    {PRESET_COUNTRIES.map(c => (
+                      <option key={c.value} value={c.value}>{c.label}</option>
+                    ))}
                   </select>
+                  {form.country === '__other__' && (
+                    <input
+                      value={form.countryCustom}
+                      onChange={e => setForm(f => ({ ...f, countryCustom: e.target.value }))}
+                      className="input-dark mt-2"
+                      placeholder="Nhập tên quốc gia (VD: Malaysia, Israel...)"
+                    />
+                  )}
                 </div>
                 <div>
                   <label className="text-xs text-brand-muted mb-1.5 block">

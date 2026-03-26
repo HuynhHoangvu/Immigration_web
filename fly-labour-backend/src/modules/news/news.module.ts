@@ -1,5 +1,10 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, UseGuards } from '@nestjs/common'
-import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger'
+import {
+  Controller, Get, Post, Patch, Delete,
+  Body, Param, UseGuards, UseInterceptors, UploadedFile
+} from '@nestjs/common'
+import { FileInterceptor } from '@nestjs/platform-express'
+import { ApiTags, ApiBearerAuth, ApiOperation, ApiConsumes } from '@nestjs/swagger'
+import { memoryStorage } from 'multer'
 import { NewsService, CreateNewsDto } from './news.service'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 import { AdminGuard } from '../../common/guards/admin.guard'
@@ -29,14 +34,20 @@ export class NewsController {
   @UseGuards(JwtAuthGuard, AdminGuard)
   @ApiBearerAuth('JWT')
   @ApiOperation({ summary: '[Admin] Tạo bài viết' })
-  create(@Body() dto: CreateNewsDto) { return this.newsService.create(dto) }
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('image', { storage: memoryStorage() }))
+  create(@Body() dto: CreateNewsDto, @UploadedFile() file?: Express.Multer.File) {
+    return this.newsService.create(dto, file)
+  }
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard, AdminGuard)
   @ApiBearerAuth('JWT')
   @ApiOperation({ summary: '[Admin] Cập nhật bài viết' })
-  update(@Param('id') id: string, @Body() dto: Partial<CreateNewsDto>) {
-    return this.newsService.update(id, dto)
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('image', { storage: memoryStorage() }))
+  update(@Param('id') id: string, @Body() dto: Partial<CreateNewsDto>, @UploadedFile() file?: Express.Multer.File) {
+    return this.newsService.update(id, dto, file)
   }
 
   @Delete(':id')

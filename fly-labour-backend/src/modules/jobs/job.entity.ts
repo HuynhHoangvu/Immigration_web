@@ -1,7 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm'
 import { Category } from '../categories/category.entity'
 
-export enum JobCountry { AUSTRALIA = 'australia', CANADA = 'canada', NEW_ZEALAND = 'new_zealand', NORWAY = 'norway', GERMANY = 'germany', PORTUGAL = 'portugal', CZECH = 'czech', US = 'us' }
 export enum JobType { FULL_TIME = 'full_time', PART_TIME = 'part_time', CONTRACT = 'contract', SEASONAL = 'seasonal' }
 export enum JobStatus { ACTIVE = 'active', PAUSED = 'paused', CLOSED = 'closed', DRAFT = 'draft' }
 
@@ -28,8 +27,8 @@ export class Job {
   @Column({ nullable: true })
   location: string
 
-  @Column({ type: 'enum', enum: JobCountry })
-  country: JobCountry
+  @Column({ type: 'varchar', length: 100 })
+  country: string
 
   @Column({ type: 'enum', enum: JobType, default: JobType.FULL_TIME })
   jobType: JobType
