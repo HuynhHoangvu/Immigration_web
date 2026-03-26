@@ -32,9 +32,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    # Đảm bảo sh -c chạy đúng lệnh seed
     command: >
-      sh -c "node dist/database/seeds/run-seeds.js && node dist/main"
+      sh -c "node dist/database/migrate.js && node dist/database/seeds/run-seeds.js && node dist/main"
 
   frontend:
     build:
