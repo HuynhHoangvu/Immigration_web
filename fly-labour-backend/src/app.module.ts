@@ -30,7 +30,7 @@ const logger = new Logger('TypeORM')
             // Railway: Cần SSL cho external URL, nội bộ (.internal) đôi khi cũng cần tùy version
             ssl: { rejectUnauthorized: false },
             entities: [join(__dirname, '**', '*.entity{.ts,.js}')],
-            synchronize: true,
+            synchronize: !isProduction,
             logging: !isProduction,
             retryAttempts: 5,
             retryDelay: 3000,
