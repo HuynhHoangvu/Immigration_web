@@ -2,31 +2,30 @@ import { DataSource } from 'typeorm'
 import * as dotenv from 'dotenv'
 dotenv.config()
 
-const databaseUrl = process.env.DATABASE_URL
-
-const ds = new DataSource(
-  databaseUrl
-    ? {
-        type: 'postgres',
-        url: databaseUrl,
-        ssl: { rejectUnauthorized: false },
-        extra: { max: 2, connectionTimeoutMillis: 10000 },
-      }
-    : {
-        type: 'postgres',
-        host: process.env.DB_HOST || 'localhost',
-        port: parseInt(process.env.DB_PORT || '5432'),
-        username: process.env.DB_USERNAME || 'postgres',
-        password: process.env.DB_PASSWORD || '123456',
-        database: process.env.DB_NAME || 'fly_labour',
-      }
-)
-
 async function migrate() {
+  const databaseUrl = process.env.DATABASE_URL
+
+  console.log('🔗 Đang kiểm tra URL kết nối:', databaseUrl ? 'Đã nhận DATABASE_URL' : 'Dùng local fallback')
+
+  const ds = new DataSource(
+    databaseUrl
+      ? {
+          type: 'postgres',
+          url: databaseUrl,
+          ssl: { rejectUnauthorized: false },
+          extra: { max: 2, connectionTimeoutMillis: 15000 },
+        }
+      : {
+          type: 'postgres',
+          host: process.env.DB_HOST || 'localhost',
+          port: parseInt(process.env.DB_PORT || '5432'),
+          username: process.env.DB_USERNAME || 'postgres',
+          password: process.env.DB_PASSWORD || '123456',
+          database: process.env.DB_NAME || 'fly_labour',
+        }
+  )
+
   await ds.initialize()
-  console.log('🔗 Đang kiểm tra URL kết nối:', databaseUrl ? 'Đã nhận DATABASE_URL' : 'Đang dùng DB_HOST mặc định');
-  
-  await ds.initialize() // <-- Nếu sai mật khẩu, nó sẽ văng lỗi ngay tại đây
   console.log('🔧 Bắt đầu migration...')
 
   // Đổi country từ PostgreSQL enum → varchar (idempotent)
@@ -48,8 +47,7 @@ async function migrate() {
     $$;
   `)
 
-  // Add employer role to users_role_enum (idempotent, PG 9.3+)
-  // ALTER TYPE ... ADD VALUE IF NOT EXISTS runs outside PL/pgSQL to avoid transaction issues
+  // Add employer role to users_role_enum (idempotent)
   const enumExists = await ds.query(`
     SELECT 1 FROM pg_type WHERE typname = 'users_role_enum'
   `)
@@ -71,7 +69,7 @@ async function migrate() {
     $$;
   `)
 
-  // Add createdById to jobs table (links job to employer who created it)
+  // Add createdById to jobs table (idempotent)
   await ds.query(`
     DO $$
     BEGIN
@@ -87,6 +85,6 @@ async function migrate() {
 }
 
 migrate().catch(err => {
-  console.error('❌ Migration thất bại:', err)
+  console.error('❌ Migration thất bại:', err.message)
   process.exit(1)
 })
