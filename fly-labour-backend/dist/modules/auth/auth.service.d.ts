@@ -18,6 +18,9 @@ export declare class AuthService {
             address: string;
             role: UserRole;
             isActive: boolean;
+            companyName: string;
+            companyDescription: string;
+            website: string;
             createdAt: Date;
             updatedAt: Date;
         };
@@ -34,6 +37,9 @@ export declare class AuthService {
             address: string;
             role: UserRole;
             isActive: boolean;
+            companyName: string;
+            companyDescription: string;
+            website: string;
             createdAt: Date;
             updatedAt: Date;
         };
@@ -48,6 +54,9 @@ export declare class AuthService {
         address: string;
         role: UserRole;
         isActive: boolean;
+        companyName: string;
+        companyDescription: string;
+        website: string;
         createdAt: Date;
         updatedAt: Date;
     }>;

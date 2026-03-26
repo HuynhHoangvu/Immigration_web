@@ -58,13 +58,16 @@ export const jobsApi = {
 
 // ── Applications ──────────────────────────────
 export const applicationsApi = {
-  create:       (data: Record<string, any>) => api.post('/applications', data),
-  getAll:       (params?: Record<string, any>) => api.get('/applications', { params }),
-  getOne:       (id: string) => api.get(`/applications/${id}`),
-  updateStatus: (id: string, status: string, adminNote?: string) =>
+  create:               (data: Record<string, any>) => api.post('/applications', data),
+  getAll:               (params?: Record<string, any>) => api.get('/applications', { params }),
+  getOne:               (id: string) => api.get(`/applications/${id}`),
+  updateStatus:         (id: string, status: string, adminNote?: string) =>
     api.patch(`/applications/${id}/status`, { status, adminNote }),
-  getMy:        () => api.get('/applications/my'),
-  getStats:     () => api.get('/applications/stats'),
+  getMy:                () => api.get('/applications/my'),
+  getStats:             () => api.get('/applications/stats'),
+  withdraw:             (id: string) => api.patch(`/applications/${id}/withdraw`),
+  employerUpdateStatus: (id: string, status: string) =>
+    api.patch(`/applications/${id}/employer-status`, { status }),
 }
 
 // ── Categories ────────────────────────────────
@@ -78,13 +81,15 @@ export const categoriesApi = {
 
 // ── Users ─────────────────────────────────────
 export const usersApi = {
-  getAll:       (params?: Record<string, any>) => api.get('/users', { params }),
-  getOne:       (id: string) => api.get(`/users/${id}`),
-  toggleActive: (id: string) => api.patch(`/users/${id}/toggle-active`),
-  getStats:     () => api.get('/users/stats'),
-  updateMe:     (data: Record<string, any>) => api.patch('/users/me', data),
-  updateAdmin:  (id: string, data: Record<string, any>) => api.patch(`/users/${id}`, data),
-  remove:       (id: string) => api.delete(`/users/${id}`),
+  getAll:         (params?: Record<string, any>) => api.get('/users', { params }),
+  getOne:         (id: string) => api.get(`/users/${id}`),
+  toggleActive:   (id: string) => api.patch(`/users/${id}/toggle-active`),
+  getStats:       () => api.get('/users/stats'),
+  updateMe:       (data: Record<string, any>) => api.patch('/users/me', data),
+  changePassword: (data: { currentPassword: string; newPassword: string; confirmPassword: string }) =>
+    api.patch('/users/me/change-password', data),
+  updateAdmin:    (id: string, data: Record<string, any>) => api.patch(`/users/${id}`, data),
+  remove:         (id: string) => api.delete(`/users/${id}`),
 }
 
 // ── Employer ──────────────────────────────────
@@ -104,6 +109,30 @@ export const newsApi = {
   create:     (data: FormData) => api.post('/news', data),
   update:     (id: string, data: FormData) => api.patch(`/news/${id}`, data),
   remove:     (id: string) => api.delete(`/news/${id}`),
+}
+
+// ── Contact ───────────────────────────────────
+export const contactApi = {
+  send:     (data: { name: string; email: string; phone?: string; message: string }) =>
+    api.post('/contact', data),
+  getAll:   () => api.get('/contact'),
+  markRead: (id: string) => api.patch(`/contact/${id}/read`),
+  remove:   (id: string) => api.delete(`/contact/${id}`),
+}
+
+// ── Settings ──────────────────────────────────
+export const settingsApi = {
+  getAll: () => api.get('/settings'),
+  save:   (data: Record<string, string>) => api.put('/settings', data),
+}
+
+// ── Upload ────────────────────────────────────
+export const uploadApi = {
+  cv: (file: File) => {
+    const fd = new FormData()
+    fd.append('file', file)
+    return api.post('/upload/cv', fd, { headers: { 'Content-Type': 'multipart/form-data' } })
+  },
 }
 
 // Helper: chuyển path ảnh upload (/uploads/...) thành URL đầy đủ

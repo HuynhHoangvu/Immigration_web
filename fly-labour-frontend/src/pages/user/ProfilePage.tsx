@@ -9,6 +9,10 @@ import {
   Save,
   X,
   LogOut,
+  Lock,
+  Eye,
+  EyeOff,
+  XCircle,
 } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 import { applicationsApi, usersApi } from "@/services/api";
@@ -28,6 +32,10 @@ export default function ProfilePage() {
   });
   const [myApps, setMyApps] = useState<Application[]>([]);
   const [loadingApps, setLoadingApps] = useState(true);
+  const [showChangePass, setShowChangePass] = useState(false);
+  const [showPass, setShowPass] = useState(false);
+  const [changingPass, setChangingPass] = useState(false);
+  const [passForm, setPassForm] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -61,6 +69,36 @@ export default function ProfilePage() {
     logout();
     toast.success("Đã đăng xuất");
     navigate("/");
+  };
+
+  const handleWithdraw = async (appId: string) => {
+    if (!confirm('Bạn có chắc muốn rút đơn này không?')) return;
+    try {
+      await applicationsApi.withdraw(appId);
+      setMyApps(prev => prev.map(a => a.id === appId ? { ...a, status: 'withdrawn' as any } : a));
+      toast.success('Đã rút đơn ứng tuyển');
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || 'Rút đơn thất bại');
+    }
+  };
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!passForm.currentPassword || !passForm.newPassword || !passForm.confirmPassword) {
+      toast.error('Vui lòng điền đầy đủ thông tin');
+      return;
+    }
+    setChangingPass(true);
+    try {
+      await usersApi.changePassword(passForm);
+      toast.success('Đổi mật khẩu thành công');
+      setShowChangePass(false);
+      setPassForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || 'Đổi mật khẩu thất bại');
+    } finally {
+      setChangingPass(false);
+    }
   };
 
   return (
@@ -223,6 +261,53 @@ export default function ProfilePage() {
               </div>
             </div>
 
+            {/* Change password */}
+            <div className="card-dark p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-white flex items-center gap-2">
+                  <Lock size={16} className="text-brand-yellow" /> Đổi mật khẩu
+                </h3>
+                <button
+                  onClick={() => setShowChangePass(!showChangePass)}
+                  className="text-xs text-brand-yellow hover:text-brand-orange transition-colors"
+                >
+                  {showChangePass ? 'Đóng' : 'Đổi mật khẩu'}
+                </button>
+              </div>
+              {showChangePass && (
+                <form onSubmit={handleChangePassword} className="space-y-3">
+                  {[
+                    { label: 'Mật khẩu hiện tại', key: 'currentPassword' },
+                    { label: 'Mật khẩu mới', key: 'newPassword' },
+                    { label: 'Xác nhận mật khẩu mới', key: 'confirmPassword' },
+                  ].map(f => (
+                    <div key={f.key}>
+                      <label className="text-xs text-brand-muted mb-1.5 block">{f.label}</label>
+                      <div className="relative">
+                        <input
+                          type={showPass ? 'text' : 'password'}
+                          value={passForm[f.key as keyof typeof passForm]}
+                          onChange={e => setPassForm(p => ({ ...p, [f.key]: e.target.value }))}
+                          className="input-dark pr-11"
+                          placeholder="••••••••"
+                        />
+                        <button type="button" onClick={() => setShowPass(!showPass)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-muted hover:text-white">
+                          {showPass ? <EyeOff size={15} /> : <Eye size={15} />}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  <button type="submit" disabled={changingPass} className="btn-primary flex items-center gap-2 px-5 py-2.5 text-sm">
+                    {changingPass
+                      ? <><span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" /> Đang đổi...</>
+                      : <><Save size={13} /> Đổi mật khẩu</>
+                    }
+                  </button>
+                </form>
+              )}
+            </div>
+
             {/* My applications */}
             <div className="card-dark p-6">
               <h3 className="font-semibold text-white mb-4">
@@ -271,6 +356,15 @@ export default function ProfilePage() {
                       >
                         {APP_STATUS_LABELS[app.status]?.label}
                       </span>
+                      {app.status === 'pending' && (
+                        <button
+                          onClick={() => handleWithdraw(app.id)}
+                          title="Rút đơn"
+                          className="shrink-0 text-red-400 hover:text-red-300 transition-colors"
+                        >
+                          <XCircle size={16} />
+                        </button>
+                      )}
                     </div>
                   ))}
                 </div>

@@ -18,6 +18,7 @@ const swagger_1 = require("@nestjs/swagger");
 const applications_service_1 = require("./applications.service");
 const jwt_auth_guard_1 = require("../../common/guards/jwt-auth.guard");
 const admin_guard_1 = require("../../common/guards/admin.guard");
+const employer_guard_1 = require("../../common/guards/employer.guard");
 let ApplicationsController = class ApplicationsController {
     constructor(appsService) {
         this.appsService = appsService;
@@ -27,6 +28,9 @@ let ApplicationsController = class ApplicationsController {
     }
     myApplications(req) {
         return this.appsService.findByUser(req.user.id);
+    }
+    getEmployerApplications(req) {
+        return this.appsService.findByEmployer(req.user.id);
     }
     findAll(query) {
         return this.appsService.findAll(query);
@@ -55,12 +59,22 @@ __decorate([
     (0, common_1.Get)('my'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, swagger_1.ApiBearerAuth)('JWT'),
-    (0, swagger_1.ApiOperation)({ summary: 'Đơn ứng tuyển của tôi' }),
+    (0, swagger_1.ApiOperation)({ summary: 'My applications' }),
     __param(0, (0, common_1.Request)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], ApplicationsController.prototype, "myApplications", null);
+__decorate([
+    (0, common_1.Get)('employer'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, employer_guard_1.EmployerGuard),
+    (0, swagger_1.ApiBearerAuth)('JWT'),
+    (0, swagger_1.ApiOperation)({ summary: '[Employer] Applications received for my job listings' }),
+    __param(0, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], ApplicationsController.prototype, "getEmployerApplications", null);
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, admin_guard_1.AdminGuard),

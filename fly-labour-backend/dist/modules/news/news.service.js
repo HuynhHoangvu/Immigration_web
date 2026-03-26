@@ -19,6 +19,8 @@ const typeorm_2 = require("typeorm");
 const news_entity_1 = require("./news.entity");
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
+const fs_1 = require("fs");
+const path_1 = require("path");
 class CreateNewsDto {
 }
 exports.CreateNewsDto = CreateNewsDto;
@@ -68,14 +70,19 @@ let NewsService = class NewsService {
             throw new common_1.NotFoundException('Không tìm thấy bài viết');
         return n;
     }
-    async create(dto) {
-        return this.newsRepo.save(this.newsRepo.create(dto));
+    async create(dto, file) {
+        const n = this.newsRepo.create(dto);
+        if (file)
+            n.image = await this.saveFile(file);
+        return this.newsRepo.save(n);
     }
-    async update(id, dto) {
+    async update(id, dto, file) {
         const n = await this.newsRepo.findOne({ where: { id } });
         if (!n)
             throw new common_1.NotFoundException();
         Object.assign(n, dto);
+        if (file)
+            n.image = await this.saveFile(file);
         return this.newsRepo.save(n);
     }
     async remove(id) {
@@ -84,6 +91,14 @@ let NewsService = class NewsService {
             throw new common_1.NotFoundException();
         await this.newsRepo.remove(n);
         return { message: 'Đã xóa bài viết' };
+    }
+    async saveFile(file) {
+        const uploadDir = (0, path_1.join)(process.cwd(), 'uploads', 'news');
+        if (!(0, fs_1.existsSync)(uploadDir))
+            (0, fs_1.mkdirSync)(uploadDir, { recursive: true });
+        const filename = `${Date.now()}-${file.originalname.replace(/\s/g, '-')}`;
+        (0, fs_1.writeFileSync)((0, path_1.join)(uploadDir, filename), file.buffer);
+        return `/uploads/news/${filename}`;
     }
 };
 exports.NewsService = NewsService;

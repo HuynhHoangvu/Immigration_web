@@ -1,11 +1,15 @@
-import { useState } from 'react'
-import { Save, Eye, EyeOff, Bell, Globe, Shield, Palette } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Save, Eye, EyeOff, Bell, Globe, Shield } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { settingsApi, usersApi } from '@/services/api'
+import { useAuthStore } from '@/store/authStore'
 
 export default function AdminSettingsPage() {
+  const { user } = useAuthStore()
   const [activeTab, setActiveTab] = useState<'general'|'contact'|'security'|'notification'>('general')
   const [showPass, setShowPass] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const [general, setGeneral] = useState({
     siteName: 'Fly Labour', tagline: 'Kết nối lao động Việt Nam với thế giới',
@@ -18,14 +22,54 @@ export default function AdminSettingsPage() {
   const [security, setSecurity] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' })
 
   const [notifs, setNotifs] = useState({
-    newApplication: true, newUser: true, jobExpiring: true, emailNotif: false,
+    newApplication: 'true', newUser: 'true', jobExpiring: 'true', emailNotif: 'false',
   })
 
+  useEffect(() => {
+    settingsApi.getAll()
+      .then(r => {
+        const s = r.data
+        if (Object.keys(s).length > 0) {
+          setGeneral(prev => ({ ...prev, ...Object.fromEntries(Object.entries(s).filter(([k]) => Object.keys(prev).includes(k))) }) as typeof general)
+          setNotifs(prev => ({ ...prev, ...Object.fromEntries(Object.entries(s).filter(([k]) => Object.keys(prev).includes(k))) }) as typeof notifs)
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [])
+
   const handleSave = async () => {
+    if (activeTab === 'security') {
+      if (!security.currentPassword || !security.newPassword || !security.confirmPassword) {
+        toast.error('Vui lòng điền đầy đủ thông tin')
+        return
+      }
+      setSaving(true)
+      try {
+        await usersApi.changePassword(security)
+        toast.success('Đổi mật khẩu thành công')
+        setSecurity({ currentPassword: '', newPassword: '', confirmPassword: '' })
+      } catch (err: any) {
+        toast.error(err?.response?.data?.message || 'Đổi mật khẩu thất bại')
+      } finally {
+        setSaving(false)
+      }
+      return
+    }
+
     setSaving(true)
-    await new Promise(r => setTimeout(r, 800))
-    setSaving(false)
-    toast.success('Đã lưu cài đặt')
+    try {
+      const allSettings: Record<string, string> = {
+        ...general,
+        ...notifs,
+      }
+      await settingsApi.save(allSettings)
+      toast.success('Đã lưu cài đặt')
+    } catch {
+      toast.error('Lưu thất bại')
+    } finally {
+      setSaving(false)
+    }
   }
 
   const TABS = [
@@ -118,20 +162,23 @@ export default function AdminSettingsPage() {
             { key: 'newUser', label: 'Người dùng đăng ký mới', desc: 'Thông báo khi có tài khoản mới' },
             { key: 'jobExpiring', label: 'Bài đăng sắp hết hạn', desc: 'Nhắc nhở 3 ngày trước khi bài đăng hết hạn' },
             { key: 'emailNotif', label: 'Thông báo qua Email', desc: 'Gửi tổng hợp qua email hàng ngày' },
-          ].map(item => (
-            <div key={item.key} className="flex items-center justify-between p-4 bg-brand-dark rounded-xl">
-              <div>
-                <p className="text-white text-sm font-medium">{item.label}</p>
-                <p className="text-brand-muted text-xs mt-0.5">{item.desc}</p>
+          ].map(item => {
+            const isOn = notifs[item.key as keyof typeof notifs] === 'true'
+            return (
+              <div key={item.key} className="flex items-center justify-between p-4 bg-brand-dark rounded-xl">
+                <div>
+                  <p className="text-white text-sm font-medium">{item.label}</p>
+                  <p className="text-brand-muted text-xs mt-0.5">{item.desc}</p>
+                </div>
+                <button
+                  onClick={() => setNotifs(n=>({...n,[item.key]: isOn ? 'false' : 'true'}))}
+                  className={`w-11 h-6 rounded-full transition-all duration-300 relative ${isOn ? 'bg-brand-yellow' : 'bg-brand-border'}`}
+                >
+                  <span className="absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all duration-300" style={{left: isOn ? '22px' : '2px'}} />
+                </button>
               </div>
-              <button
-                onClick={() => setNotifs(n=>({...n,[item.key]:!n[item.key as keyof typeof n]}))}
-                className={`w-11 h-6 rounded-full transition-all duration-300 relative ${notifs[item.key as keyof typeof notifs] ? 'bg-brand-yellow' : 'bg-brand-border'}`}
-              >
-                <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all duration-300 ${notifs[item.key as keyof typeof notifs] ? 'left-5.5 translate-x-0.5' : 'left-0.5'}`} style={{left: notifs[item.key as keyof typeof notifs] ? '22px' : '2px'}} />
-              </button>
-            </div>
-          ))}
+            )
+          })}
         </div>
       )}
 

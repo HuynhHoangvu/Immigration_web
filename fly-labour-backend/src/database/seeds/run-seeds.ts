@@ -9,31 +9,31 @@ import { Category } from '../../modules/categories/category.entity'
 import { Job, JobType, JobStatus } from '../../modules/jobs/job.entity'
 import { News } from '../../modules/news/news.entity'
 
-const databaseUrl = process.env.DATABASE_URL
-
-const AppDataSource = new DataSource(
-  databaseUrl
-    ? {
-        type: 'postgres',
-        url: databaseUrl,
-        ssl: { rejectUnauthorized: false },
-        entities: [User, Category, Job, News],
-        synchronize: true,
-        extra: { max: 2, connectionTimeoutMillis: 10000 },
-      }
-    : {
-        type: 'postgres',
-        host: process.env.DB_HOST || 'localhost',
-        port: parseInt(process.env.DB_PORT || '5432'),
-        username: process.env.DB_USERNAME || 'postgres',
-        password: process.env.DB_PASSWORD || '123456',
-        database: process.env.DB_NAME || 'fly_labour',
-        entities: [User, Category, Job, News],
-        synchronize: true,
-      }
-)
-
 async function seed() {
+  const databaseUrl = process.env.DATABASE_URL
+
+  const AppDataSource = new DataSource(
+    databaseUrl
+      ? {
+          type: 'postgres',
+          url: databaseUrl,
+          ssl: { rejectUnauthorized: false },
+          entities: [User, Category, Job, News],
+          synchronize: true,
+          extra: { max: 2, connectionTimeoutMillis: 10000 },
+        }
+      : {
+          type: 'postgres',
+          host: process.env.DB_HOST || 'localhost',
+          port: parseInt(process.env.DB_PORT || '5432'),
+          username: process.env.DB_USERNAME || 'postgres',
+          password: process.env.DB_PASSWORD || '123456',
+          database: process.env.DB_NAME || 'fly_labour',
+          entities: [User, Category, Job, News],
+          synchronize: true,
+        }
+  )
+
   await AppDataSource.initialize()
   console.log('🌱 Bắt đầu seed dữ liệu...')
 
@@ -211,4 +211,4 @@ async function seed() {
   console.log('📧 User:  user@example.com / User@123')
 }
 
-seed().catch(err => { console.error('❌ Seed thất bại:', err); process.exit(1) })
+seed().catch(err => { console.error('❌ Seed thất bại:', err.message); process.exit(1) })

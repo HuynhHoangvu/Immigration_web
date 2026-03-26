@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Application, ApplicationStatus } from './application.entity'
@@ -16,6 +16,7 @@ export class CreateApplicationDto {
   @ApiProperty({ required: false }) @IsOptional() experience?: string
   @ApiProperty({ required: false }) @IsOptional() languageLevel?: string
   @ApiProperty({ required: false }) @IsOptional() coverLetter?: string
+  @ApiProperty({ required: false }) @IsOptional() cvUrl?: string
 }
 
 export class UpdateApplicationStatusDto {
@@ -88,5 +89,22 @@ export class ApplicationsService {
       .where('job.createdById = :employerId', { employerId })
       .orderBy('app.createdAt', 'DESC')
       .getMany()
+  }
+
+  async withdraw(id: string, userId: string) {
+    const app = await this.appsRepo.findOne({ where: { id }, relations: ['job'] })
+    if (!app) throw new NotFoundException('Không tìm thấy đơn ứng tuyển')
+    if (app.userId !== userId) throw new ForbiddenException('Bạn không có quyền rút đơn này')
+    if (app.status === ApplicationStatus.WITHDRAWN) throw new ForbiddenException('Đơn đã được rút trước đó')
+    app.status = ApplicationStatus.WITHDRAWN
+    return this.appsRepo.save(app)
+  }
+
+  async employerUpdateStatus(id: string, employerId: string, status: ApplicationStatus) {
+    const app = await this.appsRepo.findOne({ where: { id }, relations: ['job'] })
+    if (!app) throw new NotFoundException('Không tìm thấy đơn ứng tuyển')
+    if (app.job?.createdById !== employerId) throw new ForbiddenException('Bạn không có quyền cập nhật đơn này')
+    app.status = status
+    return this.appsRepo.save(app)
   }
 }

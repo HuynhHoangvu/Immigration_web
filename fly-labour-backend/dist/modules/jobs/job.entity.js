@@ -9,20 +9,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Job = exports.JobStatus = exports.JobType = exports.JobCountry = void 0;
+exports.Job = exports.JobStatus = exports.JobType = void 0;
 const typeorm_1 = require("typeorm");
 const category_entity_1 = require("../categories/category.entity");
-var JobCountry;
-(function (JobCountry) {
-    JobCountry["AUSTRALIA"] = "australia";
-    JobCountry["CANADA"] = "canada";
-    JobCountry["NEW_ZEALAND"] = "new_zealand";
-    JobCountry["NORWAY"] = "norway";
-    JobCountry["GERMANY"] = "germany";
-    JobCountry["PORTUGAL"] = "portugal";
-    JobCountry["CZECH"] = "czech";
-    JobCountry["US"] = "us";
-})(JobCountry || (exports.JobCountry = JobCountry = {}));
+const user_entity_1 = require("../users/user.entity");
 var JobType;
 (function (JobType) {
     JobType["FULL_TIME"] = "full_time";
@@ -69,7 +59,7 @@ __decorate([
     __metadata("design:type", String)
 ], Job.prototype, "location", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'enum', enum: JobCountry }),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 100, nullable: true, default: 'australia' }),
     __metadata("design:type", String)
 ], Job.prototype, "country", void 0);
 __decorate([
@@ -125,6 +115,15 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Job.prototype, "categoryId", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, { nullable: true, eager: false }),
+    (0, typeorm_1.JoinColumn)({ name: 'createdById' }),
+    __metadata("design:type", user_entity_1.User)
+], Job.prototype, "createdBy", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Job.prototype, "createdById", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

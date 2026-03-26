@@ -69,7 +69,7 @@ let JobsService = class JobsService {
     async findOne(id) {
         const job = await this.jobsRepo.findOne({ where: { id }, relations: ['category'] });
         if (!job)
-            throw new common_1.NotFoundException('Không tìm thấy bài đăng này');
+            throw new common_1.NotFoundException('Job not found');
         await this.jobsRepo.increment({ id }, 'viewCount', 1);
         return job;
     }
@@ -89,7 +89,42 @@ let JobsService = class JobsService {
     async remove(id) {
         const job = await this.findOneRaw(id);
         await this.jobsRepo.remove(job);
-        return { message: 'Đã xóa bài đăng thành công' };
+        return { message: 'Job deleted successfully' };
+    }
+    async findByEmployer(employerId, query) {
+        const { page = 1, limit = 20 } = query;
+        const qb = this.jobsRepo.createQueryBuilder('job')
+            .leftJoinAndSelect('job.category', 'category')
+            .where('job.createdById = :employerId', { employerId })
+            .orderBy('job.createdAt', 'DESC')
+            .skip((page - 1) * limit)
+            .take(limit);
+        const [data, total] = await qb.getManyAndCount();
+        return { data, meta: { total, page: +page, limit: +limit, totalPages: Math.ceil(total / limit) } };
+    }
+    async createByEmployer(dto, employerId, file) {
+        const job = this.jobsRepo.create({ ...dto, createdById: employerId });
+        if (file)
+            job.image = await this.saveFile(file);
+        return this.jobsRepo.save(job);
+    }
+    async updateByEmployer(id, employerId, dto, file) {
+        const job = await this.findOneRaw(id);
+        if (job.createdById !== employerId) {
+            throw new common_1.ForbiddenException('You can only edit your own job listings');
+        }
+        Object.assign(job, dto);
+        if (file)
+            job.image = await this.saveFile(file);
+        return this.jobsRepo.save(job);
+    }
+    async deleteByEmployer(id, employerId) {
+        const job = await this.findOneRaw(id);
+        if (job.createdById !== employerId) {
+            throw new common_1.ForbiddenException('You can only delete your own job listings');
+        }
+        await this.jobsRepo.remove(job);
+        return { message: 'Job deleted successfully' };
     }
     async getStats() {
         const [totalJobs, activeJobs, totalUsers] = await Promise.all([
@@ -113,7 +148,7 @@ let JobsService = class JobsService {
     async findOneRaw(id) {
         const job = await this.jobsRepo.findOne({ where: { id } });
         if (!job)
-            throw new common_1.NotFoundException('Không tìm thấy bài đăng');
+            throw new common_1.NotFoundException('Job not found');
         return job;
     }
     async saveFile(file) {

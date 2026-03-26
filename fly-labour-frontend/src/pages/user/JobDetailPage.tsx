@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   MapPin, Clock, Users, TrendingUp, Calendar, ArrowLeft,
-  Eye, CheckCircle, Building2, Globe,
+  Eye, CheckCircle, Building2, Globe, FileText, Upload,
 } from "lucide-react";
 import { getCountryLabels, getJobTypeLabel, formatSalary, formatDate } from "@/utils/helpers";
 import { useAuthStore } from "@/store/authStore";
 import { useT } from "@/hooks/useT";
-import { jobsApi, applicationsApi } from "@/services/api";
+import { jobsApi, applicationsApi, uploadApi, getImageUrl } from "@/services/api";
 import type { Job } from "@/types";
 import toast from "react-hot-toast";
 
@@ -47,7 +47,10 @@ export default function JobDetailPage() {
     experience: "",
     languageLevel: "",
     coverLetter: "",
+    cvUrl: "",
   });
+  const [cvFile, setCvFile] = useState<File | null>(null);
+  const [uploadingCv, setUploadingCv] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -101,6 +104,23 @@ export default function JobDetailPage() {
     }
     setShowForm(true);
     setTimeout(() => document.getElementById("apply-form")?.scrollIntoView({ behavior: "smooth" }), 100);
+  };
+
+  const handleCvChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setCvFile(file);
+    setUploadingCv(true);
+    try {
+      const res = await uploadApi.cv(file);
+      setForm(f => ({ ...f, cvUrl: res.data.url }));
+      toast.success('Đã upload CV');
+    } catch {
+      toast.error('Upload CV thất bại');
+      setCvFile(null);
+    } finally {
+      setUploadingCv(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -310,6 +330,19 @@ export default function JobDetailPage() {
                       <label className="text-xs text-brand-muted mb-1.5 block">{d.coverLetter}</label>
                       <textarea value={form.coverLetter} onChange={(e) => setForm({ ...form, coverLetter: e.target.value })}
                         className="input-dark h-28 resize-none" placeholder={d.coverPlaceholder} />
+                    </div>
+                    <div className="sm:col-span-2">
+                      <label className="text-xs text-brand-muted mb-1.5 block">CV / Hồ sơ (PDF, DOC)</label>
+                      <label className={`flex items-center gap-3 p-4 rounded-xl border-2 border-dashed cursor-pointer transition-colors ${form.cvUrl ? 'border-green-500/40 bg-green-500/5' : 'border-brand-border hover:border-brand-yellow/40 bg-brand-dark'}`}>
+                        <input type="file" accept=".pdf,.doc,.docx" onChange={handleCvChange} className="hidden" disabled={uploadingCv} />
+                        {uploadingCv ? (
+                          <><span className="w-4 h-4 border-2 border-brand-yellow border-t-transparent rounded-full animate-spin shrink-0" /><span className="text-sm text-brand-muted">Đang upload...</span></>
+                        ) : form.cvUrl ? (
+                          <><FileText size={16} className="text-green-400 shrink-0" /><span className="text-sm text-green-400 truncate">{cvFile?.name || 'CV đã upload'}</span></>
+                        ) : (
+                          <><Upload size={16} className="text-brand-muted shrink-0" /><span className="text-sm text-brand-muted">Click để chọn file CV (tối đa 10MB)</span></>
+                        )}
+                      </label>
                     </div>
                   </div>
                   <div className="flex gap-3 pt-2">

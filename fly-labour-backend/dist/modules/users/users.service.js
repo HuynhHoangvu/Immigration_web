@@ -65,6 +65,22 @@ let UsersService = class UsersService {
         const { password, ...rest } = user;
         return rest;
     }
+    async updateByAdmin(id, dto) {
+        const user = await this.usersRepo.findOne({ where: { id } });
+        if (!user)
+            throw new common_1.NotFoundException('Không tìm thấy người dùng');
+        Object.assign(user, dto);
+        await this.usersRepo.save(user);
+        const { password, ...rest } = user;
+        return rest;
+    }
+    async remove(id) {
+        const user = await this.usersRepo.findOne({ where: { id } });
+        if (!user)
+            throw new common_1.NotFoundException('Không tìm thấy người dùng');
+        await this.usersRepo.remove(user);
+        return { message: 'Đã xóa tài khoản' };
+    }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([

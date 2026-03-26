@@ -47,6 +47,10 @@ async function migrate() {
     $$;
   `)
 
+  // Xóa enum type cũ nếu còn tồn tại (tránh TypeORM tự cleanup phá dữ liệu)
+  await ds.query(`DROP TYPE IF EXISTS "public"."jobs_country_enum"`)
+  console.log('✅ jobs_country_enum cleaned up')
+
   // Add employer role to users_role_enum (idempotent)
   const enumExists = await ds.query(`
     SELECT 1 FROM pg_type WHERE typname = 'users_role_enum'

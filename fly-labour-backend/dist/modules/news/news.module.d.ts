@@ -6,8 +6,8 @@ export declare class NewsController {
     findAll(): Promise<News[]>;
     findAllAdmin(): Promise<News[]>;
     findOne(slug: string): Promise<News>;
-    create(dto: CreateNewsDto): Promise<News>;
-    update(id: string, dto: Partial<CreateNewsDto>): Promise<News>;
+    create(dto: CreateNewsDto, file?: Express.Multer.File): Promise<News>;
+    update(id: string, dto: Partial<CreateNewsDto>, file?: Express.Multer.File): Promise<News>;
     remove(id: string): Promise<{
         message: string;
     }>;

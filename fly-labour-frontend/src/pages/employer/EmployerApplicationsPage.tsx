@@ -1,15 +1,22 @@
 ﻿import { useState, useEffect } from 'react'
-import { FileText, Search, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react'
-import { employerApi } from '@/services/api'
+import { FileText, Search, ExternalLink, ChevronDown, ChevronUp, CheckCircle, XCircle, Clock } from 'lucide-react'
+import { employerApi, applicationsApi, getImageUrl } from '@/services/api'
 import { APP_STATUS_LABELS, formatDate } from '@/utils/helpers'
 import toast from 'react-hot-toast'
 import type { Application } from '@/types'
+
+const EMPLOYER_STATUS_OPTIONS = [
+  { value: 'reviewing', label: 'Đang xem xét', icon: Clock, color: 'text-blue-400 border-blue-400/30 bg-blue-400/5' },
+  { value: 'approved', label: 'Phê duyệt', icon: CheckCircle, color: 'text-green-400 border-green-400/30 bg-green-400/5' },
+  { value: 'rejected', label: 'Từ chối', icon: XCircle, color: 'text-red-400 border-red-400/30 bg-red-400/5' },
+]
 
 export default function EmployerApplicationsPage() {
   const [apps, setApps] = useState<Application[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
   const [expanded, setExpanded] = useState<string | null>(null)
+  const [updatingId, setUpdatingId] = useState<string | null>(null)
 
   useEffect(() => {
     employerApi.getApplications()
@@ -17,6 +24,19 @@ export default function EmployerApplicationsPage() {
       .catch(() => toast.error('Failed to load applications'))
       .finally(() => setLoading(false))
   }, [])
+
+  const handleStatusChange = async (appId: string, status: string) => {
+    setUpdatingId(appId)
+    try {
+      const res = await applicationsApi.employerUpdateStatus(appId, status)
+      setApps(prev => prev.map(a => a.id === appId ? { ...a, status: res.data.status } : a))
+      toast.success('Đã cập nhật trạng thái')
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || 'Cập nhật thất bại')
+    } finally {
+      setUpdatingId(null)
+    }
+  }
 
   const filtered = apps.filter(a =>
     !search ||
@@ -109,13 +129,32 @@ export default function EmployerApplicationsPage() {
                       <div>
                         <p className="text-brand-muted text-xs mb-1">CV / Resume</p>
                         <a
-                          href={app.cvUrl}
+                          href={app.cvUrl.startsWith('http') ? app.cvUrl : `${(import.meta as any).env?.VITE_API_URL || 'http://localhost:3000'}${app.cvUrl}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-2 text-brand-yellow hover:text-brand-orange text-sm transition-colors"
                         >
-                          <FileText size={14} /> View CV <ExternalLink size={12} />
+                          <FileText size={14} /> Xem CV <ExternalLink size={12} />
                         </a>
+                      </div>
+                    )}
+
+                    {/* Status actions */}
+                    {app.status !== 'withdrawn' && (
+                      <div>
+                        <p className="text-brand-muted text-xs mb-2">Cập nhật trạng thái</p>
+                        <div className="flex flex-wrap gap-2">
+                          {EMPLOYER_STATUS_OPTIONS.map(opt => (
+                            <button
+                              key={opt.value}
+                              disabled={app.status === opt.value || updatingId === app.id}
+                              onClick={() => handleStatusChange(app.id, opt.value)}
+                              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-medium transition-all ${app.status === opt.value ? opt.color + ' opacity-100' : 'border-brand-border text-brand-muted hover:border-white/20 hover:text-white'} disabled:opacity-50 disabled:cursor-not-allowed`}
+                            >
+                              <opt.icon size={12} /> {opt.label}
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     )}
                   </div>

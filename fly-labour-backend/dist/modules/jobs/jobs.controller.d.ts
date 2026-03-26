@@ -13,7 +13,20 @@ export declare class JobsController {
         };
     }>;
     findHot(): Promise<import("./job.entity").Job[]>;
-    findOne(id: string): Promise<import("./job.entity").Job>;
+    findEmployerJobs(req: any, query: QueryJobDto): Promise<{
+        data: import("./job.entity").Job[];
+        meta: {
+            total: number;
+            page: number;
+            limit: number;
+            totalPages: number;
+        };
+    }>;
+    createByEmployer(dto: CreateJobDto, req: any, file?: Express.Multer.File): Promise<import("./job.entity").Job>;
+    updateByEmployer(id: string, dto: UpdateJobDto, req: any, file?: Express.Multer.File): Promise<import("./job.entity").Job>;
+    deleteByEmployer(id: string, req: any): Promise<{
+        message: string;
+    }>;
     findAllAdmin(query: QueryJobDto): Promise<{
         data: import("./job.entity").Job[];
         meta: {
@@ -35,4 +48,5 @@ export declare class JobsController {
     remove(id: string): Promise<{
         message: string;
     }>;
+    findOne(id: string): Promise<import("./job.entity").Job>;
 }

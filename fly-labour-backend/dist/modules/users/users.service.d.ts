@@ -17,6 +17,9 @@ export declare class UsersService {
             address: string;
             role: import("./user.entity").UserRole;
             isActive: boolean;
+            companyName: string;
+            companyDescription: string;
+            website: string;
             createdAt: Date;
             updatedAt: Date;
         }[];
@@ -36,6 +39,9 @@ export declare class UsersService {
         address: string;
         role: import("./user.entity").UserRole;
         isActive: boolean;
+        companyName: string;
+        companyDescription: string;
+        website: string;
         createdAt: Date;
         updatedAt: Date;
     }>;
@@ -62,7 +68,33 @@ export declare class UsersService {
         address: string;
         role: import("./user.entity").UserRole;
         isActive: boolean;
+        companyName: string;
+        companyDescription: string;
+        website: string;
         createdAt: Date;
         updatedAt: Date;
+    }>;
+    updateByAdmin(id: string, dto: {
+        fullName?: string;
+        phone?: string;
+        role?: string;
+        isActive?: boolean;
+    }): Promise<{
+        id: string;
+        email: string;
+        fullName: string;
+        phone: string;
+        avatar: string;
+        address: string;
+        role: import("./user.entity").UserRole;
+        isActive: boolean;
+        companyName: string;
+        companyDescription: string;
+        website: string;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
+    remove(id: string): Promise<{
+        message: string;
     }>;
 }

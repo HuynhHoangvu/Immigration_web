@@ -8,17 +8,27 @@ const user_entity_1 = require("../../modules/users/user.entity");
 const category_entity_1 = require("../../modules/categories/category.entity");
 const job_entity_1 = require("../../modules/jobs/job.entity");
 const news_entity_1 = require("../../modules/news/news.entity");
-const AppDataSource = new typeorm_1.DataSource({
-    type: 'postgres',
-    host: process.env.DB_HOST || 'localhost',
-    port: parseInt(process.env.DB_PORT || '5432'),
-    username: process.env.DB_USERNAME || 'postgres',
-    password: process.env.DB_PASSWORD || '123456',
-    database: process.env.DB_NAME || 'fly_labour',
-    entities: [user_entity_1.User, category_entity_1.Category, job_entity_1.Job, news_entity_1.News],
-    synchronize: true,
-});
 async function seed() {
+    const databaseUrl = process.env.DATABASE_URL;
+    const AppDataSource = new typeorm_1.DataSource(databaseUrl
+        ? {
+            type: 'postgres',
+            url: databaseUrl,
+            ssl: { rejectUnauthorized: false },
+            entities: [user_entity_1.User, category_entity_1.Category, job_entity_1.Job, news_entity_1.News],
+            synchronize: true,
+            extra: { max: 2, connectionTimeoutMillis: 10000 },
+        }
+        : {
+            type: 'postgres',
+            host: process.env.DB_HOST || 'localhost',
+            port: parseInt(process.env.DB_PORT || '5432'),
+            username: process.env.DB_USERNAME || 'postgres',
+            password: process.env.DB_PASSWORD || '123456',
+            database: process.env.DB_NAME || 'fly_labour',
+            entities: [user_entity_1.User, category_entity_1.Category, job_entity_1.Job, news_entity_1.News],
+            synchronize: true,
+        });
     await AppDataSource.initialize();
     console.log('🌱 Bắt đầu seed dữ liệu...');
     const userRepo = AppDataSource.getRepository(user_entity_1.User);
@@ -72,7 +82,7 @@ async function seed() {
                 title: 'Công nhân Hái Quả Mùa Vụ',
                 company: 'Sunshine Farms',
                 location: 'Queensland',
-                country: job_entity_1.JobCountry.AUSTRALIA,
+                country: 'australia',
                 jobType: job_entity_1.JobType.SEASONAL,
                 status: job_entity_1.JobStatus.ACTIVE,
                 salaryMin: 2800, salaryMax: 3500, salaryCurrency: 'AUD',
@@ -88,7 +98,7 @@ async function seed() {
                 title: 'Kỹ thuật viên Nail cao cấp',
                 company: 'Melbourne Nail Studio',
                 location: 'Melbourne',
-                country: job_entity_1.JobCountry.AUSTRALIA,
+                country: 'australia',
                 jobType: job_entity_1.JobType.FULL_TIME,
                 status: job_entity_1.JobStatus.ACTIVE,
                 salaryMin: 3200, salaryMax: 4500, salaryCurrency: 'AUD',
@@ -104,7 +114,7 @@ async function seed() {
                 title: 'Thợ Hàn Công Nghiệp',
                 company: 'BC Steel Works',
                 location: 'British Columbia',
-                country: job_entity_1.JobCountry.CANADA,
+                country: 'canada',
                 jobType: job_entity_1.JobType.FULL_TIME,
                 status: job_entity_1.JobStatus.ACTIVE,
                 salaryMin: 3500, salaryMax: 5000, salaryCurrency: 'CAD',
@@ -120,7 +130,7 @@ async function seed() {
                 title: 'Đầu bếp Việt Nam',
                 company: 'Pho Saigon Restaurant',
                 location: 'Auckland',
-                country: job_entity_1.JobCountry.NEW_ZEALAND,
+                country: 'new_zealand',
                 jobType: job_entity_1.JobType.FULL_TIME,
                 status: job_entity_1.JobStatus.ACTIVE,
                 salaryMin: 2900, salaryMax: 3800, salaryCurrency: 'NZD',
@@ -136,7 +146,7 @@ async function seed() {
                 title: 'Lái Xe Container Hạng Nặng',
                 company: 'TransOz Logistics',
                 location: 'Perth',
-                country: job_entity_1.JobCountry.AUSTRALIA,
+                country: 'australia',
                 jobType: job_entity_1.JobType.FULL_TIME,
                 status: job_entity_1.JobStatus.ACTIVE,
                 salaryMin: 4000, salaryMax: 5500, salaryCurrency: 'AUD',
@@ -187,5 +197,5 @@ async function seed() {
     console.log('📧 Admin: admin@flylabour.com / Admin@123');
     console.log('📧 User:  user@example.com / User@123');
 }
-seed().catch(err => { console.error('❌ Seed thất bại:', err); process.exit(1); });
+seed().catch(err => { console.error('❌ Seed thất bại:', err.message); process.exit(1); });
 //# sourceMappingURL=run-seeds.js.map

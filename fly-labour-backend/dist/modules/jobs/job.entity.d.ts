@@ -1,14 +1,5 @@
 import { Category } from '../categories/category.entity';
-export declare enum JobCountry {
-    AUSTRALIA = "australia",
-    CANADA = "canada",
-    NEW_ZEALAND = "new_zealand",
-    NORWAY = "norway",
-    GERMANY = "germany",
-    PORTUGAL = "portugal",
-    CZECH = "czech",
-    US = "us"
-}
+import { User } from '../users/user.entity';
 export declare enum JobType {
     FULL_TIME = "full_time",
     PART_TIME = "part_time",
@@ -29,7 +20,7 @@ export declare class Job {
     benefits: string;
     company: string;
     location: string;
-    country: JobCountry;
+    country: string;
     jobType: JobType;
     status: JobStatus;
     salaryMin: number;
@@ -43,6 +34,8 @@ export declare class Job {
     viewCount: number;
     category: Category;
     categoryId: string;
+    createdBy: User;
+    createdById: string;
     createdAt: Date;
     updatedAt: Date;
 }

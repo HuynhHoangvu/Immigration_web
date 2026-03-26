@@ -29,6 +29,20 @@ export declare class JobsService {
     remove(id: string): Promise<{
         message: string;
     }>;
+    findByEmployer(employerId: string, query: QueryJobDto): Promise<{
+        data: Job[];
+        meta: {
+            total: number;
+            page: number;
+            limit: number;
+            totalPages: number;
+        };
+    }>;
+    createByEmployer(dto: CreateJobDto, employerId: string, file?: Express.Multer.File): Promise<Job>;
+    updateByEmployer(id: string, employerId: string, dto: UpdateJobDto, file?: Express.Multer.File): Promise<Job>;
+    deleteByEmployer(id: string, employerId: string): Promise<{
+        message: string;
+    }>;
     getStats(): Promise<{
         totalJobs: number;
         activeJobs: number;

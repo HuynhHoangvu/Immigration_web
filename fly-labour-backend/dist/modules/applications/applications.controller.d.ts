@@ -4,6 +4,7 @@ export declare class ApplicationsController {
     constructor(appsService: ApplicationsService);
     create(dto: CreateApplicationDto, req: any): Promise<import("./application.entity").Application>;
     myApplications(req: any): Promise<import("./application.entity").Application[]>;
+    getEmployerApplications(req: any): Promise<import("./application.entity").Application[]>;
     findAll(query: {
         page?: number;
         limit?: number;

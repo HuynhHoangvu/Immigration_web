@@ -63,4 +63,20 @@ export class ApplicationsController {
   updateStatus(@Param('id') id: string, @Body() dto: UpdateApplicationStatusDto) {
     return this.appsService.updateStatus(id, dto)
   }
+
+  @Patch(':id/withdraw')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT')
+  @ApiOperation({ summary: '[User] Rút đơn ứng tuyển' })
+  withdraw(@Param('id') id: string, @Request() req: any) {
+    return this.appsService.withdraw(id, req.user.id)
+  }
+
+  @Patch(':id/employer-status')
+  @UseGuards(JwtAuthGuard, EmployerGuard)
+  @ApiBearerAuth('JWT')
+  @ApiOperation({ summary: '[Employer] Cập nhật trạng thái đơn của ứng viên' })
+  employerUpdateStatus(@Param('id') id: string, @Body() body: { status: string }, @Request() req: any) {
+    return this.appsService.employerUpdateStatus(id, req.user.id, body.status as any)
+  }
 }

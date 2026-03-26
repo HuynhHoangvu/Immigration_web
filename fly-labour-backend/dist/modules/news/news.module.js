@@ -14,7 +14,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NewsModule = exports.NewsController = void 0;
 const common_1 = require("@nestjs/common");
+const platform_express_1 = require("@nestjs/platform-express");
 const swagger_1 = require("@nestjs/swagger");
+const multer_1 = require("multer");
 const news_service_1 = require("./news.service");
 const jwt_auth_guard_1 = require("../../common/guards/jwt-auth.guard");
 const admin_guard_1 = require("../../common/guards/admin.guard");
@@ -28,9 +30,11 @@ let NewsController = class NewsController {
     findAll() { return this.newsService.findAll(); }
     findAllAdmin() { return this.newsService.findAllAdmin(); }
     findOne(slug) { return this.newsService.findOne(slug); }
-    create(dto) { return this.newsService.create(dto); }
-    update(id, dto) {
-        return this.newsService.update(id, dto);
+    create(dto, file) {
+        return this.newsService.create(dto, file);
+    }
+    update(id, dto, file) {
+        return this.newsService.update(id, dto, file);
     }
     remove(id) { return this.newsService.remove(id); }
 };
@@ -63,9 +67,12 @@ __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, admin_guard_1.AdminGuard),
     (0, swagger_1.ApiBearerAuth)('JWT'),
     (0, swagger_1.ApiOperation)({ summary: '[Admin] Tạo bài viết' }),
+    (0, swagger_1.ApiConsumes)('multipart/form-data'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('image', { storage: (0, multer_1.memoryStorage)() })),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [news_service_1.CreateNewsDto]),
+    __metadata("design:paramtypes", [news_service_1.CreateNewsDto, Object]),
     __metadata("design:returntype", void 0)
 ], NewsController.prototype, "create", null);
 __decorate([
@@ -73,10 +80,13 @@ __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, admin_guard_1.AdminGuard),
     (0, swagger_1.ApiBearerAuth)('JWT'),
     (0, swagger_1.ApiOperation)({ summary: '[Admin] Cập nhật bài viết' }),
+    (0, swagger_1.ApiConsumes)('multipart/form-data'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('image', { storage: (0, multer_1.memoryStorage)() })),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, Object, Object]),
     __metadata("design:returntype", void 0)
 ], NewsController.prototype, "update", null);
 __decorate([

@@ -15,6 +15,9 @@ export declare class AuthController {
             address: string;
             role: import("../users/user.entity").UserRole;
             isActive: boolean;
+            companyName: string;
+            companyDescription: string;
+            website: string;
             createdAt: Date;
             updatedAt: Date;
         };
@@ -31,6 +34,9 @@ export declare class AuthController {
             address: string;
             role: import("../users/user.entity").UserRole;
             isActive: boolean;
+            companyName: string;
+            companyDescription: string;
+            website: string;
             createdAt: Date;
             updatedAt: Date;
         };
@@ -45,6 +51,9 @@ export declare class AuthController {
         address: string;
         role: import("../users/user.entity").UserRole;
         isActive: boolean;
+        companyName: string;
+        companyDescription: string;
+        website: string;
         createdAt: Date;
         updatedAt: Date;
     }>;

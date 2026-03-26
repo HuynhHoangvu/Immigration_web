@@ -29,7 +29,11 @@ let AuthService = class AuthService {
         if (exists)
             throw new common_1.ConflictException('Email này đã được sử dụng');
         const hashed = await bcrypt.hash(dto.password, 12);
-        const user = this.usersRepo.create({ ...dto, password: hashed });
+        const user = this.usersRepo.create({
+            ...dto,
+            password: hashed,
+            role: dto.role
+        });
         await this.usersRepo.save(user);
         const { password, ...result } = user;
         return {

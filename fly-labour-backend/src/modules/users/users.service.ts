@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable, NotFoundException, BadRequestException, UnauthorizedException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
+import * as bcrypt from 'bcryptjs'
 import { User } from './user.entity'
 
 @Injectable()
@@ -68,5 +69,17 @@ export class UsersService {
     if (!user) throw new NotFoundException('Không tìm thấy người dùng')
     await this.usersRepo.remove(user)
     return { message: 'Đã xóa tài khoản' }
+  }
+
+  async changePassword(id: string, dto: { currentPassword: string; newPassword: string; confirmPassword: string }) {
+    if (dto.newPassword !== dto.confirmPassword) throw new BadRequestException('Mật khẩu xác nhận không khớp')
+    if (dto.newPassword.length < 6) throw new BadRequestException('Mật khẩu mới phải có ít nhất 6 ký tự')
+    const user = await this.usersRepo.findOne({ where: { id } })
+    if (!user) throw new NotFoundException()
+    const valid = await bcrypt.compare(dto.currentPassword, user.password)
+    if (!valid) throw new UnauthorizedException('Mật khẩu hiện tại không đúng')
+    user.password = await bcrypt.hash(dto.newPassword, 12)
+    await this.usersRepo.save(user)
+    return { message: 'Đổi mật khẩu thành công' }
   }
 }

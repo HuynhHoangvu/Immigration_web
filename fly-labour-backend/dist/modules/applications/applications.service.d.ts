@@ -38,4 +38,5 @@ export declare class ApplicationsService {
     updateStatus(id: string, dto: UpdateApplicationStatusDto): Promise<Application>;
     getStatsByStatus(): Promise<any[]>;
     findByUser(userId: string): Promise<Application[]>;
+    findByEmployer(employerId: string): Promise<Application[]>;
 }

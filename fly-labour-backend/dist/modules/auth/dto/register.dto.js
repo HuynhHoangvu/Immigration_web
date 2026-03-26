@@ -16,13 +16,13 @@ class RegisterDto {
 }
 exports.RegisterDto = RegisterDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'Nguyễn Văn A' }),
+    (0, swagger_1.ApiProperty)({ example: 'John Smith' }),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], RegisterDto.prototype, "fullName", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: 'user@example.com' }),
-    (0, class_validator_1.IsEmail)({}, { message: 'Email không hợp lệ' }),
+    (0, class_validator_1.IsEmail)({}, { message: 'Invalid email address' }),
     __metadata("design:type", String)
 ], RegisterDto.prototype, "email", void 0);
 __decorate([
@@ -33,7 +33,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({ example: 'Password@123', minLength: 8 }),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.MinLength)(8, { message: 'Mật khẩu tối thiểu 8 ký tự' }),
+    (0, class_validator_1.MinLength)(8, { message: 'Password must be at least 8 characters' }),
     __metadata("design:type", String)
 ], RegisterDto.prototype, "password", void 0);
 __decorate([
@@ -42,4 +42,23 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], RegisterDto.prototype, "address", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ required: false, enum: ['user', 'employer'], description: 'Account type: job seeker or employer' }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsIn)(['user', 'employer']),
+    __metadata("design:type", String)
+], RegisterDto.prototype, "role", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ required: false }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], RegisterDto.prototype, "companyName", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ required: false }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], RegisterDto.prototype, "website", void 0);
 //# sourceMappingURL=register.dto.js.map

@@ -18,6 +18,14 @@ export class UsersController {
     return this.usersService.updateProfile(req.user.id, dto)
   }
 
+  @Patch('me/change-password')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT')
+  @ApiOperation({ summary: 'Đổi mật khẩu' })
+  changePassword(@Request() req: any, @Body() dto: { currentPassword: string; newPassword: string; confirmPassword: string }) {
+    return this.usersService.changePassword(req.user.id, dto)
+  }
+
   // Admin routes
   @Get()
   @UseGuards(JwtAuthGuard, AdminGuard)

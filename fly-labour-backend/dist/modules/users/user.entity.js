@@ -16,6 +16,7 @@ var UserRole;
 (function (UserRole) {
     UserRole["ADMIN"] = "admin";
     UserRole["USER"] = "user";
+    UserRole["EMPLOYER"] = "employer";
 })(UserRole || (exports.UserRole = UserRole = {}));
 let User = class User {
 };
@@ -57,6 +58,18 @@ __decorate([
     (0, typeorm_1.Column)({ default: true }),
     __metadata("design:type", Boolean)
 ], User.prototype, "isActive", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "companyName", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "companyDescription", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "website", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

@@ -1,7 +1,10 @@
-﻿import { BrowserRouter, Routes, Route } from "react-router-dom";
+﻿import React, { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import BackgroundMusic from "@/components/ui/BackgroundMusic";
 import { useT } from "@/hooks/useT";
+import { contactApi } from "@/services/api";
 
 // Layouts
 import Header from "@/components/layout/Header";
@@ -13,6 +16,8 @@ import AdminLayout from "@/components/admin/AdminLayout";
 import HomePage from "@/pages/user/HomePage";
 import JobsPage from "@/pages/user/JobsPage";
 import JobDetailPage from "@/pages/user/JobDetailPage";
+import NewsPage from "@/pages/user/NewsPage";
+import NewsDetailPage from "@/pages/user/NewsDetailPage";
 import LoginPage from "@/pages/user/LoginPage";
 import RegisterPage from "@/pages/user/RegisterPage";
 import ProfilePage from "@/pages/user/ProfilePage";
@@ -44,26 +49,27 @@ function UserLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
-function NewsPage() {
-  const { t } = useT();
-  const n = t('news');
-  return (
-    <UserLayout>
-      <div className="min-h-screen pt-28 px-6">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="section-title mb-8">
-            {n.title} <span className="gradient-text">{n.titleGradient}</span>
-          </h1>
-          <p className="text-brand-muted">{n.comingSoon}</p>
-        </div>
-      </div>
-    </UserLayout>
-  );
-}
-
 function ContactPage() {
   const { t } = useT();
   const c = t('contact');
+  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
+  const [sending, setSending] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name || !form.email || !form.message) return;
+    setSending(true);
+    try {
+      await contactApi.send(form);
+      toast.success('Đã gửi liên hệ thành công! Chúng tôi sẽ phản hồi sớm.');
+      setForm({ name: '', email: '', phone: '', message: '' });
+    } catch {
+      toast.error('Gửi thất bại, vui lòng thử lại');
+    } finally {
+      setSending(false);
+    }
+  };
+
   return (
     <UserLayout>
       <div className="min-h-screen pt-28 px-6">
@@ -72,22 +78,42 @@ function ContactPage() {
             {c.title} <span className="gradient-text">{c.titleGradient}</span>
           </h1>
           <p className="text-brand-muted mb-8">{c.subtitle}</p>
-          <div className="card-dark p-8 space-y-4">
-            {[
-              { label: c.name, type: "text", placeholder: c.namePlaceholder },
-              { label: c.email, type: "email", placeholder: "email@example.com" },
-              { label: c.phone, type: "tel", placeholder: c.phonePlaceholder },
-            ].map((f) => (
-              <div key={f.label}>
-                <label className="text-xs text-brand-muted mb-1.5 block">{f.label}</label>
-                <input type={f.type} className="input-dark" placeholder={f.placeholder} />
+          <div className="card-dark p-8">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {[
+                { label: c.name, key: 'name', type: 'text', placeholder: c.namePlaceholder },
+                { label: c.email, key: 'email', type: 'email', placeholder: 'email@example.com' },
+                { label: c.phone, key: 'phone', type: 'tel', placeholder: c.phonePlaceholder },
+              ].map((f) => (
+                <div key={f.key}>
+                  <label className="text-xs text-brand-muted mb-1.5 block">{f.label}</label>
+                  <input
+                    type={f.type}
+                    value={form[f.key as keyof typeof form]}
+                    onChange={e => setForm(fm => ({ ...fm, [f.key]: e.target.value }))}
+                    className="input-dark"
+                    placeholder={f.placeholder}
+                    required={f.key !== 'phone'}
+                  />
+                </div>
+              ))}
+              <div>
+                <label className="text-xs text-brand-muted mb-1.5 block">{c.message}</label>
+                <textarea
+                  value={form.message}
+                  onChange={e => setForm(fm => ({ ...fm, message: e.target.value }))}
+                  className="input-dark h-28 resize-none"
+                  placeholder={c.messagePlaceholder}
+                  required
+                />
               </div>
-            ))}
-            <div>
-              <label className="text-xs text-brand-muted mb-1.5 block">{c.message}</label>
-              <textarea className="input-dark h-28 resize-none" placeholder={c.messagePlaceholder} />
-            </div>
-            <button className="btn-primary w-full py-3">{c.send}</button>
+              <button type="submit" disabled={sending} className="btn-primary w-full py-3 flex items-center justify-center gap-2">
+                {sending
+                  ? <><span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" /> Đang gửi...</>
+                  : c.send
+                }
+              </button>
+            </form>
           </div>
         </div>
       </div>
@@ -135,7 +161,8 @@ export default function App() {
         <Route path="/" element={<UserLayout><HomePage /></UserLayout>} />
         <Route path="/jobs" element={<UserLayout><JobsPage /></UserLayout>} />
         <Route path="/jobs/:id" element={<UserLayout><JobDetailPage /></UserLayout>} />
-        <Route path="/news" element={<NewsPage />} />
+        <Route path="/news" element={<UserLayout><NewsPage /></UserLayout>} />
+        <Route path="/news/:slug" element={<UserLayout><NewsDetailPage /></UserLayout>} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />

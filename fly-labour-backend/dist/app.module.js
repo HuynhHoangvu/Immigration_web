@@ -16,6 +16,8 @@ const jobs_module_1 = require("./modules/jobs/jobs.module");
 const applications_module_1 = require("./modules/applications/applications.module");
 const categories_module_1 = require("./modules/categories/categories.module");
 const news_module_1 = require("./modules/news/news.module");
+const path_1 = require("path");
+const logger = new common_1.Logger('TypeORM');
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -28,14 +30,25 @@ exports.AppModule = AppModule = __decorate([
                 inject: [config_1.ConfigService],
                 useFactory: (cfg) => {
                     const databaseUrl = cfg.get('DATABASE_URL');
+                    const nodeEnv = cfg.get('NODE_ENV', 'development');
+                    const isProduction = nodeEnv !== 'development';
                     if (databaseUrl) {
                         return {
                             type: 'postgres',
                             url: databaseUrl,
                             ssl: { rejectUnauthorized: false },
-                            entities: [__dirname + '/**/*.entity{.ts,.js}'],
-                            synchronize: true,
-                            logging: false,
+                            entities: [(0, path_1.join)(__dirname, '**', '*.entity{.ts,.js}')],
+                            synchronize: !isProduction,
+                            logging: !isProduction,
+                            retryAttempts: 5,
+                            retryDelay: 3000,
+                            connectTimeoutMS: 30000,
+                            extra: {
+                                max: 20,
+                                connectionTimeoutMillis: 30000,
+                                idleTimeoutMillis: 30000,
+                                statement_timeout: 30000,
+                            },
                         };
                     }
                     return {
@@ -45,9 +58,12 @@ exports.AppModule = AppModule = __decorate([
                         username: cfg.get('DB_USERNAME', 'postgres'),
                         password: cfg.get('DB_PASSWORD', '123456'),
                         database: cfg.get('DB_NAME', 'fly_labour'),
-                        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-                        synchronize: cfg.get('NODE_ENV') !== 'production',
-                        logging: cfg.get('NODE_ENV') === 'development',
+                        entities: [(0, path_1.join)(__dirname, '**', '*.entity{.ts,.js}')],
+                        synchronize: true,
+                        logging: true,
+                        retryAttempts: 5,
+                        retryDelay: 3000,
+                        connectTimeoutMS: 30000,
                     };
                 },
             }),

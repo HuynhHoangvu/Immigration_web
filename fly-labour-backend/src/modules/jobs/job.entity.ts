@@ -28,7 +28,7 @@ export class Job {
   @Column({ nullable: true })
   location: string
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100, nullable: true, default: 'australia' })
   country: string
 
   @Column({ type: 'enum', enum: JobType, default: JobType.FULL_TIME })

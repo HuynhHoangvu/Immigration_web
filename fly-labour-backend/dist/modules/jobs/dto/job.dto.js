@@ -52,8 +52,8 @@ __decorate([
     __metadata("design:type", String)
 ], CreateJobDto.prototype, "location", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ enum: job_entity_1.JobCountry }),
-    (0, class_validator_1.IsEnum)(job_entity_1.JobCountry),
+    (0, swagger_1.ApiProperty)({ example: 'australia' }),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateJobDto.prototype, "country", void 0);
 __decorate([

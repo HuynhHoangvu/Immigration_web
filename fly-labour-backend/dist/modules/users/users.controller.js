@@ -31,6 +31,10 @@ let UsersController = class UsersController {
     getStats() { return this.usersService.getStats(); }
     findOne(id) { return this.usersService.findOne(id); }
     toggleActive(id) { return this.usersService.toggleActive(id); }
+    updateByAdmin(id, dto) {
+        return this.usersService.updateByAdmin(id, dto);
+    }
+    remove(id) { return this.usersService.remove(id); }
 };
 exports.UsersController = UsersController;
 __decorate([
@@ -83,6 +87,27 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "toggleActive", null);
+__decorate([
+    (0, common_1.Patch)(':id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, admin_guard_1.AdminGuard),
+    (0, swagger_1.ApiBearerAuth)('JWT'),
+    (0, swagger_1.ApiOperation)({ summary: '[Admin] Sửa thông tin người dùng' }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "updateByAdmin", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, admin_guard_1.AdminGuard),
+    (0, swagger_1.ApiBearerAuth)('JWT'),
+    (0, swagger_1.ApiOperation)({ summary: '[Admin] Xóa tài khoản' }),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "remove", null);
 exports.UsersController = UsersController = __decorate([
     (0, swagger_1.ApiTags)('👥 Người dùng'),
     (0, common_1.Controller)('users'),

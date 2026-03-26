@@ -7,6 +7,9 @@ import { JobsModule } from './modules/jobs/jobs.module'
 import { ApplicationsModule } from './modules/applications/applications.module'
 import { CategoriesModule } from './modules/categories/categories.module'
 import { NewsModule } from './modules/news/news.module'
+import { ContactModule } from './modules/contact/contact.module'
+import { SettingsModule } from './modules/settings/settings.module'
+import { UploadModule } from './modules/upload/upload.module'
 import { join } from 'path'
 
 const logger = new Logger('TypeORM')
@@ -24,11 +27,14 @@ const logger = new Logger('TypeORM')
         const isProduction = nodeEnv !== 'development';
 
         if (databaseUrl) {
+          // Kiểm tra xem URL có phải là mạng nội bộ của Railway không
+          const isInternalUrl = databaseUrl.includes('.internal');
+
           return {
             type: 'postgres',
             url: databaseUrl,
-            // Railway: Cần SSL cho external URL, nội bộ (.internal) đôi khi cũng cần tùy version
-            ssl: { rejectUnauthorized: false },
+            // Nếu là nội bộ -> Tắt SSL (false). Nếu là Public -> Bật SSL
+            ssl: isInternalUrl ? false : { rejectUnauthorized: false }, 
             entities: [join(__dirname, '**', '*.entity{.ts,.js}')],
             synchronize: !isProduction,
             logging: !isProduction,
@@ -68,6 +74,9 @@ const logger = new Logger('TypeORM')
     ApplicationsModule,
     CategoriesModule,
     NewsModule,
+    ContactModule,
+    SettingsModule,
+    UploadModule,
   ],
 })
 export class AppModule {}

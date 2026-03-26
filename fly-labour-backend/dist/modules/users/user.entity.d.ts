@@ -1,6 +1,7 @@
 export declare enum UserRole {
     ADMIN = "admin",
-    USER = "user"
+    USER = "user",
+    EMPLOYER = "employer"
 }
 export declare class User {
     id: string;
@@ -12,6 +13,9 @@ export declare class User {
     password: string;
     role: UserRole;
     isActive: boolean;
+    companyName: string;
+    companyDescription: string;
+    website: string;
     createdAt: Date;
     updatedAt: Date;
 }
