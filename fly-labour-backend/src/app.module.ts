@@ -31,8 +31,10 @@ import { join } from 'path'
             synchronize: true, 
             logging: nodeEnv === 'development',
             extra: {
-              max: 10,
-              connectionTimeoutMillis: 10000,
+              max: 20,
+              connectionTimeoutMillis: 30000,
+              idleTimeoutMillis: 30000,
+              statement_timeout: 30000,
             },
           };
         }
