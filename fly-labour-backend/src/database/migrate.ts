@@ -24,6 +24,9 @@ const ds = new DataSource(
 
 async function migrate() {
   await ds.initialize()
+  console.log('🔗 Đang kiểm tra URL kết nối:', databaseUrl ? 'Đã nhận DATABASE_URL' : 'Đang dùng DB_HOST mặc định');
+  
+  await ds.initialize() // <-- Nếu sai mật khẩu, nó sẽ văng lỗi ngay tại đây
   console.log('🔧 Bắt đầu migration...')
 
   // Đổi country từ PostgreSQL enum → varchar (idempotent)
