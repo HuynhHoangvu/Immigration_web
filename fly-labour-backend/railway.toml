@@ -4,7 +4,5 @@ dockerfilePath = "Dockerfile"
 
 [deploy]
 startCommand = "node dist/database/migrate.js && node dist/database/seeds/run-seeds.js && node dist/main"
-healthcheckPath = "/health"
-healthcheckTimeout = 120
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 3
