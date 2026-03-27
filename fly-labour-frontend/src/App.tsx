@@ -4,7 +4,6 @@ import { Toaster } from "react-hot-toast";
 import toast from "react-hot-toast";
 import BackgroundMusic from "@/components/ui/BackgroundMusic";
 import { useT } from "@/hooks/useT";
-import { useLangStore } from "@/store/langStore";
 import { contactApi } from "@/services/api";
 
 // Layouts
@@ -38,24 +37,6 @@ import EmployerDashboard from "@/pages/employer/EmployerDashboard";
 import EmployerJobsPage from "@/pages/employer/EmployerJobsPage";
 import EmployerApplicationsPage from "@/pages/employer/EmployerApplicationsPage";
 
-function FloatingLangToggle() {
-  const { lang, toggle } = useLangStore();
-  return (
-    <button
-      onClick={toggle}
-      title="Switch language / Đổi ngôn ngữ"
-      className="fixed left-5 bottom-8 z-50 flex items-center rounded-2xl border border-brand-border bg-brand-card shadow-2xl overflow-hidden text-xs font-bold hover:border-brand-yellow/50 transition-colors"
-    >
-      <span className={`flex items-center gap-1 px-3 py-2.5 transition-colors ${lang === 'vi' ? 'bg-brand-yellow text-black' : 'text-gray-400 hover:text-white'}`}>
-        🇻🇳 VI
-      </span>
-      <span className="w-px h-5 bg-brand-border" />
-      <span className={`flex items-center gap-1 px-3 py-2.5 transition-colors ${lang === 'en' ? 'bg-brand-yellow text-black' : 'text-gray-400 hover:text-white'}`}>
-        🇬🇧 EN
-      </span>
-    </button>
-  );
-}
 
 function UserLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -64,7 +45,6 @@ function UserLayout({ children }: { children: React.ReactNode }) {
       {children}
       <Footer />
       <FloatingContact />
-      <FloatingLangToggle />
       <BackgroundMusic src="/music/background.mp3" autoPlay={true} />
     </div>
   );
