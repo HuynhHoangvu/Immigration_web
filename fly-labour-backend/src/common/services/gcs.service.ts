@@ -13,16 +13,32 @@ export class GcsService {
     this.bucketName = process.env.GCS_BUCKET_NAME || ''
 
     const keyJson = process.env.GCS_KEY_JSON
+    const privateKey = process.env.GCS_PRIVATE_KEY
+    const clientEmail = process.env.GCS_CLIENT_EMAIL
+    const projectId = process.env.GCS_PROJECT_ID
+
     if (keyJson) {
+      // Format 1: full JSON (ưu tiên)
       try {
         const credentials = JSON.parse(keyJson)
         this.storage = new Storage({ credentials })
+        this.logger.log('GCS khởi tạo từ GCS_KEY_JSON')
       } catch {
-        this.logger.error('GCS_KEY_JSON không hợp lệ, không thể parse JSON')
+        this.logger.error('GCS_KEY_JSON không hợp lệ')
         this.storage = new Storage()
       }
+    } else if (privateKey && clientEmail) {
+      // Format 2: từng biến riêng lẻ (Railway)
+      this.storage = new Storage({
+        projectId,
+        credentials: {
+          client_email: clientEmail,
+          private_key: privateKey.replace(/\\n/g, '\n'),
+        },
+      })
+      this.logger.log('GCS khởi tạo từ GCS_PRIVATE_KEY + GCS_CLIENT_EMAIL')
     } else {
-      // Local: dùng Application Default Credentials
+      this.logger.warn('Không có GCS credentials — upload sẽ thất bại')
       this.storage = new Storage()
     }
   }
