@@ -2,16 +2,16 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { categoriesApi } from "@/services/api";
+import { useT } from "@/hooks/useT";
 import type { Category } from "@/types";
 
 export default function CategoriesSection() {
   const [cats, setCats] = useState<Category[]>([]);
+  const { t } = useT()
+  const h = t('home')
 
   useEffect(() => {
-    categoriesApi
-      .getAll()
-      .then((res) => setCats(res.data))
-      .catch(() => {});
+    categoriesApi.getAll().then((res) => setCats(res.data)).catch(() => {});
   }, []);
 
   return (
@@ -20,17 +20,14 @@ export default function CategoriesSection() {
         <div className="flex items-end justify-between mb-10">
           <div>
             <p className="text-brand-yellow text-sm font-semibold uppercase tracking-widest mb-2">
-              Khám phá ngành nghề
+              {h.catBadge}
             </p>
             <h2 className="section-title">
-              Danh mục <span className="gradient-text">Việc làm</span>
+              <span className="gradient-text">{h.catTitle}</span>
             </h2>
           </div>
-          <Link
-            to="/jobs"
-            className="btn-outline text-sm px-4 py-2 flex items-center gap-1.5 whitespace-nowrap"
-          >
-            Xem tất cả <ArrowRight size={14} />
+          <Link to="/jobs" className="btn-outline text-sm px-4 py-2 flex items-center gap-1.5 whitespace-nowrap">
+            {h.viewAll} <ArrowRight size={14} />
           </Link>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">

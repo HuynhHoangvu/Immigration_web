@@ -217,6 +217,88 @@ const en = {
     titleGradient: '& Blog',
     comingSoon: 'News page — coming soon',
   },
+
+  home: {
+    // Latest jobs section
+    latestBadge: 'Recently Added',
+    latestTitle: 'Latest Jobs',
+    viewAll: 'View All',
+    readMore: 'Read More',
+
+    // CTA section
+    ctaBadge: 'Ready to change?',
+    ctaTitle: 'Start your journey',
+    ctaTitleAccent: 'abroad',
+    ctaDesc: 'Register today for free consultation and stay updated on the latest job opportunities.',
+    ctaRegister: 'Register Free',
+    ctaConsult: 'Get Advice',
+
+    // WhyChooseUs
+    whyBadge: 'Why choose us?',
+    whyTitle: 'Fly Labour —',
+    whyTitleAccent: 'Your Partner',
+    whySubtitle: 'alongside you',
+    whyDesc: 'With over 8 years of experience in overseas labor placement, Fly Labour is the leading trusted agency connecting Vietnamese workers with quality jobs in developed countries.',
+    findJob: 'Find Jobs',
+    freeConsult: 'Free Consultation',
+    statsLabels: ['Workers Placed', 'Success Rate', 'Experience', 'Partner Nations'],
+    statsValues: ['1,200+', '96%', '8+ yrs', '3 countries'],
+    statsIcons: ['✈️', '🏆', '⭐', '🌏'],
+    featureTitles: ['Trustworthy & Transparent', 'Wide Network', 'Fast Processing', 'Post-departure Support'],
+    featureDescs: [
+      'Clear contracts, no hidden fees. 100% committed to protecting workers\' rights.',
+      'Partnered with 200+ reputable employers in Australia, Canada, and New Zealand.',
+      'Fast consultation and document processing, with full support until departure.',
+      '24/7 support team to help workers settle into life abroad.',
+    ],
+
+    // Categories
+    catBadge: 'Explore Industries',
+    catTitle: 'Job Categories',
+
+    // News
+    newsBadge: 'Latest Updates',
+    newsTitle: 'News',
+    newsTitleAccent: '& Announcements',
+    allNews: 'All News',
+    newsTags: ['Visa', 'Recruitment', 'Guide', 'News', 'Opportunity'],
+
+    // FlashSale
+    endsIn: 'Ends in:',
+
+    // Hero
+    hiring: 'Now Hiring',
+    heroSearch: 'Search jobs, industries...',
+    heroSearchBtn: 'Search',
+    heroViewAll: 'All Jobs',
+    heroCategories: ['🌾 Farm', '💅 Nail', '⚙️ Engineering', '🏗️ Construction', '🍽️ Restaurant'],
+    slides: [
+      {
+        badge: '🇦🇺 Australia · 2026',
+        title: 'Golden Opportunity',
+        titleAccent: 'IN THE LAND OF KANGAROO',
+        subtitle: 'Over 200+ positions waiting for you in Australia. Salary 3,000–5,500 AUD/month. Visa, food & accommodation included.',
+        statsLabels: ['Open Positions', 'Workers Placed', 'Success Rate'],
+        statsValues: ['200+', '1,200+', '96%'],
+      },
+      {
+        badge: '🇨🇦 Canada · 2026',
+        title: 'Long-term Settlement',
+        titleAccent: 'IN THE MAPLE LEAF COUNTRY',
+        subtitle: 'Canada opens immigration for skilled workers. Permanent Residency (PR) opportunity after 2 years of work.',
+        statsLabels: ['Open Positions', 'PR Support', 'Salary'],
+        statsValues: ['150+', '100%', '$4k+'],
+      },
+      {
+        badge: '🇳🇿 New Zealand · 2026',
+        title: 'Green Living',
+        titleAccent: 'IN NEW ZEALAND',
+        subtitle: 'Ideal living environment, stunning nature. Many industries are looking for Vietnamese workers.',
+        statsLabels: ['Open Positions', 'Visa Support', 'Quality of Life'],
+        statsValues: ['80+', '100%', 'Top 10'],
+      },
+    ],
+  },
 }
 
 const vi: typeof en = {
@@ -435,6 +517,81 @@ const vi: typeof en = {
     title: 'Tin tức',
     titleGradient: '& Blog',
     comingSoon: 'Trang tin tức — đang phát triển',
+  },
+
+  home: {
+    latestBadge: 'Mới đăng gần đây',
+    latestTitle: 'Việc làm Mới nhất',
+    viewAll: 'Xem tất cả',
+    readMore: 'Đọc thêm',
+
+    ctaBadge: 'Sẵn sàng thay đổi?',
+    ctaTitle: 'Bắt đầu hành trình',
+    ctaTitleAccent: 'xuất ngoại của bạn',
+    ctaDesc: 'Đăng ký ngay hôm nay để nhận tư vấn miễn phí và cập nhật những cơ hội việc làm mới nhất.',
+    ctaRegister: 'Đăng ký miễn phí',
+    ctaConsult: 'Tư vấn ngay',
+
+    whyBadge: 'Tại sao chọn chúng tôi?',
+    whyTitle: 'Fly Labour —',
+    whyTitleAccent: 'Đồng hành',
+    whySubtitle: 'cùng bạn',
+    whyDesc: 'Với hơn 8 năm kinh nghiệm trong lĩnh vực xuất khẩu lao động, Fly Labour tự hào là đơn vị uy tín hàng đầu kết nối lao động Việt Nam với cơ hội việc làm chất lượng cao tại các quốc gia phát triển.',
+    findJob: 'Tìm việc ngay',
+    freeConsult: 'Tư vấn miễn phí',
+    statsLabels: ['Lao động đã xuất cảnh', 'Tỉ lệ thành công', 'Kinh nghiệm', 'Đối tác tuyển dụng'],
+    statsValues: ['1,200+', '96%', '8+ năm', '3 quốc gia'],
+    statsIcons: ['✈️', '🏆', '⭐', '🌏'],
+    featureTitles: ['Uy tín & Minh bạch', 'Mạng lưới rộng khắp', 'Xử lý hồ sơ nhanh', 'Hỗ trợ sau xuất cảnh'],
+    featureDescs: [
+      'Hợp đồng rõ ràng, không thu phí ẩn. Cam kết bảo vệ quyền lợi người lao động 100%.',
+      'Đối tác với 200+ nhà tuyển dụng uy tín tại Úc, Canada và New Zealand.',
+      'Quy trình tư vấn và xử lý hồ sơ nhanh chóng, hỗ trợ xuyên suốt đến khi xuất cảnh.',
+      'Đội ngũ hỗ trợ 24/7, giúp người lao động ổn định cuộc sống tại nước ngoài.',
+    ],
+
+    catBadge: 'Khám phá ngành nghề',
+    catTitle: 'Danh mục Việc làm',
+
+    newsBadge: 'Cập nhật mới nhất',
+    newsTitle: 'Tin tức',
+    newsTitleAccent: '& Thông báo',
+    allNews: 'Tất cả tin',
+    newsTags: ['Visa', 'Tuyển dụng', 'Hướng dẫn', 'Tin tức', 'Cơ hội'],
+
+    endsIn: 'Kết thúc sau:',
+
+    hiring: 'Đang tuyển dụng',
+    heroSearch: 'Tìm kiếm việc làm, ngành nghề...',
+    heroSearchBtn: 'Tìm kiếm',
+    heroViewAll: 'Tất cả',
+    heroCategories: ['🌾 Farm', '💅 Nail', '⚙️ Kỹ thuật', '🏗️ Xây dựng', '🍽️ Nhà hàng'],
+    slides: [
+      {
+        badge: '🇦🇺 Australia · 2026',
+        title: 'Cơ hội vàng',
+        titleAccent: 'TẠI XỨ SỞ KANGAROO',
+        subtitle: 'Hơn 200+ vị trí đang chờ bạn tại Úc. Thu nhập 3.000–5.500 AUD/tháng. Bao visa, bao ăn ở.',
+        statsLabels: ['Việc đang tuyển', 'Đã xuất cảnh', 'Tỉ lệ thành công'],
+        statsValues: ['200+', '1,200+', '96%'],
+      },
+      {
+        badge: '🇨🇦 Canada · 2026',
+        title: 'Định cư lâu dài',
+        titleAccent: 'TẠI ĐẤT NƯỚC LÁ PHONG',
+        subtitle: 'Canada mở cửa nhập cư lao động tay nghề. Cơ hội thường trú (PR) sau 2 năm làm việc.',
+        statsLabels: ['Vị trí tuyển dụng', 'Hỗ trợ PR', 'Thu nhập'],
+        statsValues: ['150+', '100%', '$4k+'],
+      },
+      {
+        badge: '🇳🇿 New Zealand · 2026',
+        title: 'Cuộc sống xanh',
+        titleAccent: 'TẠI NEW ZEALAND',
+        subtitle: 'Môi trường sống lý tưởng, thiên nhiên tuyệt đẹp. Nhiều ngành đang cần lao động Việt Nam.',
+        statsLabels: ['Vị trí mở', 'Hỗ trợ visa', 'Chất lượng sống'],
+        statsValues: ['80+', '100%', 'Top 10'],
+      },
+    ],
   },
 }
 

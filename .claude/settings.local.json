@@ -5,7 +5,8 @@
       "Bash(xargs grep:*)",
       "Bash(xargs wc:*)",
       "Bash(wc -l /d/Fly_Visa/Fly-2/fly-labour/Fly-labour/fly-labour-frontend/src/pages/*/*.tsx)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(grep:*)"
     ]
   }
 }

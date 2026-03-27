@@ -2,12 +2,16 @@ import { useState, useEffect, useRef } from 'react'
 import { Flame, ChevronLeft, ChevronRight, Clock } from 'lucide-react'
 import JobCard from '@/components/jobs/JobCard'
 import { jobsApi } from '@/services/api'
+import { useT } from '@/hooks/useT'
 import type { Job } from '@/types'
 
 function Countdown() {
   const [time, setTime] = useState({ h: 23, m: 59, s: 47 })
+  const { t } = useT()
+  const h = t('home')
+
   useEffect(() => {
-    const t = setInterval(() => {
+    const timer = setInterval(() => {
       setTime(prev => {
         if (prev.s > 0) return { ...prev, s: prev.s - 1 }
         if (prev.m > 0) return { ...prev, m: prev.m - 1, s: 59 }
@@ -15,13 +19,14 @@ function Countdown() {
         return { h: 23, m: 59, s: 59 }
       })
     }, 1000)
-    return () => clearInterval(t)
+    return () => clearInterval(timer)
   }, [])
+
   const pad = (n: number) => String(n).padStart(2, '0')
   return (
     <div className="flex items-center gap-1.5">
       <Clock size={14} className="text-brand-orange" />
-      <span className="text-brand-muted text-xs">Kết thúc sau:</span>
+      <span className="text-brand-muted text-xs">{h.endsIn}</span>
       {[time.h, time.m, time.s].map((v, i) => (
         <span key={i} className="flex items-center gap-0.5">
           <span className="bg-brand-orange text-white text-xs font-mono font-bold px-1.5 py-0.5 rounded">{pad(v)}</span>

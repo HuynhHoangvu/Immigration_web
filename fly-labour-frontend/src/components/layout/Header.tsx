@@ -121,15 +121,19 @@ export default function Header() {
 
           {/* Right side */}
           <div className="flex items-center gap-2">
-            {/* Language toggle */}
+            {/* Language toggle pill */}
             <button
               onClick={toggle}
-              className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-lg border border-brand-border text-xs font-semibold text-gray-300 hover:border-brand-yellow/50 hover:text-brand-yellow transition-colors"
-              title="Switch language"
+              title="Switch language / Đổi ngôn ngữ"
+              className="hidden md:flex items-center rounded-xl border border-brand-border overflow-hidden hover:border-brand-yellow/50 transition-colors text-xs font-bold"
             >
-              <span>{lang === 'vi' ? '🇻🇳 VI' : '🇬🇧 EN'}</span>
-              <span className="text-gray-500">|</span>
-              <span className="text-gray-500">{lang === 'vi' ? 'EN' : 'VI'}</span>
+              <span className={`flex items-center gap-1 px-2.5 py-1.5 transition-colors ${lang === 'vi' ? 'bg-brand-yellow text-black' : 'text-gray-400 hover:text-gray-200'}`}>
+                🇻🇳 VI
+              </span>
+              <span className="w-px h-4 bg-brand-border" />
+              <span className={`flex items-center gap-1 px-2.5 py-1.5 transition-colors ${lang === 'en' ? 'bg-brand-yellow text-black' : 'text-gray-400 hover:text-gray-200'}`}>
+                🇬🇧 EN
+              </span>
             </button>
 
             {isAuthenticated && user ? (
@@ -237,10 +241,15 @@ export default function Header() {
           <div className="px-6 py-3 border-b border-brand-border/50">
             <button
               onClick={toggle}
-              className="flex items-center gap-2 text-sm text-gray-300 hover:text-brand-yellow transition-colors"
+              className="flex items-center rounded-xl border border-brand-border overflow-hidden text-xs font-bold"
             >
-              <span>{lang === 'vi' ? '🇻🇳' : '🇬🇧'}</span>
-              <span>{lang === 'vi' ? 'Tiếng Việt → English' : 'English → Tiếng Việt'}</span>
+              <span className={`flex items-center gap-1 px-3 py-2 transition-colors ${lang === 'vi' ? 'bg-brand-yellow text-black' : 'text-gray-400'}`}>
+                🇻🇳 Tiếng Việt
+              </span>
+              <span className="w-px h-5 bg-brand-border" />
+              <span className={`flex items-center gap-1 px-3 py-2 transition-colors ${lang === 'en' ? 'bg-brand-yellow text-black' : 'text-gray-400'}`}>
+                🇬🇧 English
+              </span>
             </button>
           </div>
           {!isAuthenticated && (
