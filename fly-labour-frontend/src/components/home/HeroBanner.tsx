@@ -174,9 +174,9 @@ export default function HeroBanner() {
               <span style={{ color: "#ffffff", display: "inline" }}>
                 {slide.title}
               </span>
-                            <br />             {" "}
+                            <br />            
               <span style={{ color: config.accent }}>{slide.titleAccent}</span> 
-                       {" "}
+                 
             </h1>
                        {" "}
             <p
