@@ -14,7 +14,7 @@ export default function JobsPage() {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const { t } = useT();
-  const j = t('jobs');
+  const j = t("jobs");
 
   const search = searchParams.get("search") || "";
   const country = searchParams.get("country") || "";
@@ -23,7 +23,10 @@ export default function JobsPage() {
   const sort = searchParams.get("sort") || "newest";
 
   useEffect(() => {
-    categoriesApi.getAll().then((r) => setCats(r.data)).catch(() => {});
+    categoriesApi
+      .getAll()
+      .then((r) => setCats(r.data))
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -40,16 +43,16 @@ export default function JobsPage() {
 
   const COUNTRIES: { value: Country | ""; label: string }[] = [
     { value: "", label: j.allCountries },
-    ...getCountriesList() as { value: Country; label: string }[],
+    ...(getCountriesList() as { value: Country; label: string }[]),
   ];
 
-  const jt = t('jobType');
+  const jt = t("jobType");
   const JOB_TYPES: { value: JobType | ""; label: string }[] = [
     { value: "", label: j.allTypes },
     { value: "full_time", label: jt.full_time },
     { value: "part_time", label: jt.part_time },
-    { value: "contract",  label: jt.contract },
-    { value: "seasonal",  label: jt.seasonal },
+    { value: "contract", label: jt.contract },
+    { value: "seasonal", label: jt.seasonal },
   ];
 
   const setParam = (key: string, val: string) => {
@@ -61,12 +64,14 @@ export default function JobsPage() {
   const clearAll = () => setSearchParams({});
   const hasFilters = !!(search || country || jobType || categoryId);
 
-  const activeCount = [search, country, jobType, categoryId].filter(Boolean).length;
+  const activeCount = [search, country, jobType, categoryId].filter(
+    Boolean,
+  ).length;
 
   const SORT_OPTIONS = [
-    { value: 'newest', label: j.newest },
-    { value: 'hot', label: j.sortHot ?? 'Hot nhất' },
-    { value: 'salary_desc', label: j.sortSalary ?? 'Lương cao nhất' },
+    { value: "newest", label: j.newest },
+    { value: "hot", label: j.sortHot ?? "Hot nhất" },
+    { value: "salary_desc", label: j.sortSalary ?? "Lương cao nhất" },
   ];
 
   return (
@@ -83,7 +88,10 @@ export default function JobsPage() {
           <div className="flex flex-col gap-3">
             {/* Row 1: Search input */}
             <div className="relative max-w-2xl">
-              <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-muted" />
+              <Search
+                size={16}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-muted"
+              />
               <input
                 value={search}
                 onChange={(e) => setParam("search", e.target.value)}
@@ -107,19 +115,33 @@ export default function JobsPage() {
                 <select
                   value={country}
                   onChange={(e) => setParam("country", e.target.value)}
-                  className={`appearance-none h-10 pl-3 pr-8 rounded-xl text-sm border transition-colors cursor-pointer outline-none
-                    ${country
-                      ? "bg-brand-yellow/10 border-brand-yellow/40 text-brand-yellow"
-                      : "bg-white/5 border-brand-border text-gray-300 hover:border-brand-yellow/30 hover:text-white"
-                    }`}
+                  className={`appearance-none h-10 pl-3 pr-8 rounded-xl text-sm border transition-colors cursor-pointer outline-none focus:ring-2 focus:ring-brand-yellow/50
+        ${
+          country
+            ? "bg-brand-yellow text-brand-dark border-brand-yellow font-medium"
+            : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50 dark:bg-[#1e1e1e] dark:border-white/10 dark:text-gray-300 dark:hover:bg-white/10"
+        }`}
                 >
+                  <option
+                    value=""
+                    className="bg-white text-gray-900 dark:bg-[#1e1e1e] dark:text-gray-200"
+                  >
+                    Tất cả quốc gia
+                  </option>
                   {COUNTRIES.map((c) => (
-                    <option key={c.value} value={c.value} className="bg-brand-dark text-white">
+                    <option
+                      key={c.value}
+                      value={c.value}
+                      className="bg-white text-gray-900 dark:bg-[#1e1e1e] dark:text-gray-200"
+                    >
                       {c.label}
                     </option>
                   ))}
                 </select>
-                <ChevronDown size={12} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-current opacity-60" />
+                <ChevronDown
+                  size={12}
+                  className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-current opacity-60"
+                />
               </div>
 
               {/* Job Type */}
@@ -127,19 +149,33 @@ export default function JobsPage() {
                 <select
                   value={jobType}
                   onChange={(e) => setParam("jobType", e.target.value)}
-                  className={`appearance-none h-10 pl-3 pr-8 rounded-xl text-sm border transition-colors cursor-pointer outline-none
-                    ${jobType
-                      ? "bg-brand-yellow/10 border-brand-yellow/40 text-brand-yellow"
-                      : "bg-white/5 border-brand-border text-gray-300 hover:border-brand-yellow/30 hover:text-white"
-                    }`}
+                  className={`appearance-none h-10 pl-3 pr-8 rounded-xl text-sm border transition-colors cursor-pointer outline-none focus:ring-2 focus:ring-brand-yellow/50
+        ${
+          jobType
+            ? "bg-brand-yellow text-brand-dark border-brand-yellow font-medium"
+            : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50 dark:bg-[#1e1e1e] dark:border-white/10 dark:text-gray-300 dark:hover:bg-white/10"
+        }`}
                 >
+                  <option
+                    value=""
+                    className="bg-white text-gray-900 dark:bg-[#1e1e1e] dark:text-gray-200"
+                  >
+                    Tất cả loại hình
+                  </option>
                   {JOB_TYPES.map((tp) => (
-                    <option key={tp.value} value={tp.value} className="bg-brand-dark text-white">
+                    <option
+                      key={tp.value}
+                      value={tp.value}
+                      className="bg-white text-gray-900 dark:bg-[#1e1e1e] dark:text-gray-200"
+                    >
                       {tp.label}
                     </option>
                   ))}
                 </select>
-                <ChevronDown size={12} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-current opacity-60" />
+                <ChevronDown
+                  size={12}
+                  className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-current opacity-60"
+                />
               </div>
 
               {/* Category */}
@@ -147,32 +183,45 @@ export default function JobsPage() {
                 <select
                   value={categoryId}
                   onChange={(e) => setParam("categoryId", e.target.value)}
-                  className={`appearance-none h-10 pl-3 pr-8 rounded-xl text-sm border transition-colors cursor-pointer outline-none
-                    ${categoryId
-                      ? "bg-brand-yellow/10 border-brand-yellow/40 text-brand-yellow"
-                      : "bg-white/5 border-brand-border text-gray-300 hover:border-brand-yellow/30 hover:text-white"
-                    }`}
+                  className={`appearance-none h-10 pl-3 pr-8 rounded-xl text-sm border transition-colors cursor-pointer outline-none focus:ring-2 focus:ring-brand-yellow/50
+        ${
+          categoryId
+            ? "bg-brand-yellow text-brand-dark border-brand-yellow font-medium"
+            : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50 dark:bg-[#1e1e1e] dark:border-white/10 dark:text-gray-300 dark:hover:bg-white/10"
+        }`}
                 >
-                  <option value="" className="bg-brand-dark text-white">{j.allCategories}</option>
+                  <option
+                    value=""
+                    className="bg-white text-gray-900 dark:bg-[#1e1e1e] dark:text-gray-200"
+                  >
+                    {j.allCategories}
+                  </option>
                   {cats.map((c) => (
-                    <option key={c.id} value={c.id} className="bg-brand-dark text-white">
+                    <option
+                      key={c.id}
+                      value={c.id}
+                      className="bg-white text-gray-900 dark:bg-[#1e1e1e] dark:text-gray-200"
+                    >
                       {c.icon} {c.name}
                     </option>
                   ))}
                 </select>
-                <ChevronDown size={12} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-current opacity-60" />
+                <ChevronDown
+                  size={12}
+                  className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-current opacity-60"
+                />
               </div>
 
               {/* Clear all */}
               {hasFilters && (
                 <button
                   onClick={clearAll}
-                  className="h-10 px-3 rounded-xl border border-red-500/30 text-red-400 text-sm hover:bg-red-500/10 transition-colors flex items-center gap-1.5"
+                  className="h-10 px-3 rounded-xl border border-red-500/30 text-red-500 bg-red-50/50 hover:bg-red-50 dark:text-red-400 dark:bg-transparent dark:hover:bg-red-500/10 text-sm transition-colors flex items-center gap-1.5"
                 >
                   <X size={13} />
                   {j.clearAll}
                   {activeCount > 1 && (
-                    <span className="w-4 h-4 rounded-full bg-red-500/20 text-red-400 text-xs flex items-center justify-center font-semibold">
+                    <span className="w-4 h-4 rounded-full bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-400 text-xs flex items-center justify-center font-semibold">
                       {activeCount}
                     </span>
                   )}
@@ -187,7 +236,8 @@ export default function JobsPage() {
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="flex items-center justify-between mb-5">
           <span className="text-sm text-brand-muted">
-            {j.found} <span className="text-white font-semibold">{total}</span> {j.positions}
+            {j.found} <span className="text-white font-semibold">{total}</span>{" "}
+            {j.positions}
           </span>
           <div className="flex items-center gap-2 text-xs text-brand-muted">
             <span>{j.sort}</span>
@@ -197,11 +247,20 @@ export default function JobsPage() {
                 onChange={(e) => setParam("sort", e.target.value)}
                 className="appearance-none bg-transparent text-white hover:text-brand-yellow transition-colors cursor-pointer outline-none pr-4"
               >
-                {SORT_OPTIONS.map(o => (
-                  <option key={o.value} value={o.value} className="bg-brand-dark text-white">{o.label}</option>
+                {SORT_OPTIONS.map((o) => (
+                  <option
+                    key={o.value}
+                    value={o.value}
+                    className="bg-brand-dark text-white"
+                  >
+                    {o.label}
+                  </option>
                 ))}
               </select>
-              <ChevronDown size={12} className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 opacity-60" />
+              <ChevronDown
+                size={12}
+                className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 opacity-60"
+              />
             </div>
           </div>
         </div>
@@ -209,7 +268,10 @@ export default function JobsPage() {
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 items-stretch">
             {[...Array(8)].map((_, i) => (
-              <div key={i} className="h-72 bg-brand-card rounded-2xl animate-pulse border border-brand-border" />
+              <div
+                key={i}
+                className="h-72 bg-brand-card rounded-2xl animate-pulse border border-brand-border"
+              />
             ))}
           </div>
         ) : jobs.length === 0 ? (
@@ -217,7 +279,10 @@ export default function JobsPage() {
             <p className="text-4xl mb-3">🔍</p>
             <p className="text-white font-semibold mb-1">{j.noResults}</p>
             <p className="text-brand-muted text-sm">{j.noResultsSub}</p>
-            <button onClick={clearAll} className="mt-4 btn-outline text-sm px-5 py-2">
+            <button
+              onClick={clearAll}
+              className="mt-4 btn-outline text-sm px-5 py-2"
+            >
               {j.clearFilters}
             </button>
           </div>

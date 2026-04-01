@@ -75,8 +75,6 @@ type FormData = {
   requirements: string;
   benefits: string;
   imagePreview: string;
-  image2: string;
-  image3: string;
 };
 
 const EMPTY_FORM: FormData = {
@@ -99,8 +97,6 @@ const EMPTY_FORM: FormData = {
   requirements: "",
   benefits: "",
   imagePreview: "",
-  image2: "",
-  image3: "",
 };
 
 // Default images per category for suggestion
@@ -173,8 +169,6 @@ export default function AdminJobsPage() {
       requirements: job.requirements || "",
       benefits: job.benefits || "",
       imagePreview: job.image || "",
-      image2: job.images?.[0] || "",
-      image3: job.images?.[1] || "",
     });
     setUrlInput(job.image || "");
     fileObjRef.current = null;
@@ -241,8 +235,8 @@ export default function AdminJobsPage() {
     try {
       const fd = new FormData();
 
-      // Gắn từng field, bỏ qua imagePreview, countryCustom, image2, image3 và giá trị rỗng
-      const skipKeys = ["imagePreview", "countryCustom", "image2", "image3"];
+      // Gắn từng field, bỏ qua imagePreview, countryCustom và giá trị rỗng
+      const skipKeys = ["imagePreview", "countryCustom"];
       Object.entries(form).forEach(([k, v]) => {
         if (skipKeys.includes(k)) return;
         if (v === "" || v === undefined || v === null) return;
@@ -252,12 +246,6 @@ export default function AdminJobsPage() {
           fd.append(k, String(v));
         }
       });
-
-      // Gắn gallery images (image2, image3) nếu có
-      const galleryImgs = [form.image2, form.image3].filter(Boolean);
-      if (galleryImgs.length > 0) {
-        fd.append("images", JSON.stringify(galleryImgs));
-      }
 
       // Nếu chọn "Khác", ghi đè country bằng giá trị nhập tay
       if (form.country === "__other__") {
@@ -727,53 +715,6 @@ export default function AdminJobsPage() {
                     </button>
                   </div>
                 )}
-              </div>
-
-              {/* ── GALLERY IMAGES ── */}
-              <div className="space-y-3">
-                <label className="text-xs text-brand-muted font-semibold uppercase tracking-wider block">
-                  Ảnh phụ (gallery trang chi tiết)
-                </label>
-                <div className="grid grid-cols-2 gap-3">
-                  {[
-                    { key: "image2" as const, label: "Ảnh phụ 1" },
-                    { key: "image3" as const, label: "Ảnh phụ 2" },
-                  ].map(({ key, label }) => (
-                    <div key={key} className="space-y-1.5">
-                      {form[key] && (
-                        <div className="relative h-20 rounded-lg overflow-hidden border border-brand-border">
-                          <img
-                            src={form[key]}
-                            alt={label}
-                            className="w-full h-full object-cover"
-                            onError={() =>
-                              setForm((f) => ({ ...f, [key]: "" }))
-                            }
-                          />
-                          <button
-                            onClick={() =>
-                              setForm((f) => ({ ...f, [key]: "" }))
-                            }
-                            className="absolute top-1 right-1 bg-black/70 hover:bg-red-500 text-white rounded-md p-0.5 transition-colors"
-                          >
-                            <X size={10} />
-                          </button>
-                        </div>
-                      )}
-                      <input
-                        value={form[key]}
-                        onChange={(e) =>
-                          setForm((f) => ({ ...f, [key]: e.target.value }))
-                        }
-                        className="input-dark text-xs py-2"
-                        placeholder={`${label} — dán URL ảnh`}
-                      />
-                    </div>
-                  ))}
-                </div>
-                <p className="text-[11px] text-brand-muted/60">
-                  Hiển thị dưới dạng mosaic trong trang chi tiết việc làm
-                </p>
               </div>
 
               {/* ── JOB INFO ── */}
