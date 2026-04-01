@@ -6,14 +6,14 @@
 
 /* ── Theme variables ──────────────────────────────────────── */
 :root {
-  --surface:       #FAFBFC;       /* Light gray background - nhẹ hơn */
+  --surface:       #F5EAE0;       /* Earth/brown tone background */
   --surface-card:  #FFFFFF;       /* White cards */
-  --surface-panel: #F5F6F8;       /* Slightly darker for panel/input bg */
-  --text-base:     #1F2937;       /* Dark gray text */
-  --text-muted:    #6B7280;       /* Medium gray for muted text */
-  --border-col:    #E5E7EB;       /* Light border */
-  --border-line:   #D1D5DB;       /* Slightly darker border */
-  --scrollbar-track: #EEF2F5;     /* Light scrollbar */
+  --surface-panel: #F9F5F0;       /* Slightly darker for panel/input bg */
+  --text-base:     #3E2723;       /* Dark brown text */
+  --text-muted:    #8D6E63;       /* Brown-gray for muted text */
+  --border-col:    #EFEBE9;       /* Light brown border */
+  --border-line:   #D7CCC8;       /* Darker brown border */
+  --scrollbar-track: #EFE0D9;     /* Brown-tinted scrollbar */
   --accent-primary: #e4a808;      /* Gold remains constant */
   --accent-secondary: #fdd52f;    /* Light gold */
 }
@@ -63,22 +63,26 @@ html.dark {
   }
 
   /* Light mode text color overrides - override Tailwind utilities */
-  html:not(.dark) .text-white { color: #1F2937 !important; }
-  html:not(.dark) .text-gray-300 { color: #6B7280 !important; }
-  html:not(.dark) .text-gray-400 { color: #9CA3AF !important; }
-  html:not(.dark) .text-gray-500 { color: #6B7280 !important; }
-  html:not(.dark) .text-gray-600 { color: #4B5563 !important; }
-  html:not(.dark) .text-gray-700 { color: #374151 !important; }
-  html:not(.dark) .text-gray-800 { color: #1F2937 !important; }
-  html:not(.dark) .text-gray-900 { color: #111827 !important; }
-  html:not(.dark) .bg-gray-50 { background-color: #F9FAFB !important; }
-  html:not(.dark) .bg-gray-100 { background-color: #F3F4F6 !important; }
+  html:not(.dark) .text-gray-300 { color: #8D6E63 !important; }
+  html:not(.dark) .text-gray-400 { color: #A1887F !important; }
+  html:not(.dark) .text-gray-500 { color: #8D6E63 !important; }
+  html:not(.dark) .text-gray-600 { color: #6D4C41 !important; }
+  html:not(.dark) .text-gray-700 { color: #5D4037 !important; }
+  html:not(.dark) .text-gray-800 { color: #3E2723 !important; }
+  html:not(.dark) .text-gray-900 { color: #3E2723 !important; }
+  html:not(.dark) .bg-gray-50 { background-color: #F9F5F0 !important; }
+  html:not(.dark) .bg-gray-100 { background-color: #F5EAE0 !important; }
   html:not(.dark) .bg-white { background-color: #FFFFFF !important; }
-  html:not(.dark) .border-gray-100 { border-color: #F3F4F6 !important; }
-  html:not(.dark) .border-gray-200 { border-color: #E5E7EB !important; }
-  html:not(.dark) .border-gray-300 { border-color: #D1D5DB !important; }
+  html:not(.dark) .border-gray-100 { border-color: #F5EAE0 !important; }
+  html:not(.dark) .border-gray-200 { border-color: #EFEBE9 !important; }
+  html:not(.dark) .border-gray-300 { border-color: #D7CCC8 !important; }
   html:not(.dark) .bg-brand-dark { background: var(--surface-panel) !important; }
   html:not(.dark) .bg-brand-card { background: var(--surface-card) !important; }
+  
+  /* Hero banner - keep text white in light mode */
+  html:not(.dark) .hero-banner .text-white { color: #FFFFFF !important; }
+  html:not(.dark) .hero-banner .text-gray-300 { color: rgba(255,255,255,0.85) !important; }
+  html:not(.dark) .hero-banner .text-gray-400 { color: rgba(255,255,255,0.65) !important; }
 
   /* Dark mode text color overrides */
   html.dark .text-white { color: #E0E0E0 !important; }
