@@ -680,7 +680,7 @@ export default function AdminJobsPage() {
           />
           <div className="relative bg-brand-card border border-brand-border rounded-2xl w-full max-w-2xl max-h-[92vh] overflow-y-auto shadow-2xl">
             <div className="flex items-center justify-between p-5 border-b border-brand-border sticky top-0 bg-brand-card z-10">
-              <h2 className="font-semibold text-white">
+              <h2 className="font-semibold text-slate-900 dark:text-white">
                 {modal === "add"
                   ? "➕ Thêm bài đăng mới"
                   : "✏️ Chỉnh sửa bài đăng"}

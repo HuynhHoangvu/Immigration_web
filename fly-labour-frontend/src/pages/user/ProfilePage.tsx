@@ -132,7 +132,9 @@ export default function ProfilePage() {
               >
                 {user.fullName.charAt(0)}
               </div>
-              <h2 className="font-semibold text-white">{user.fullName}</h2>
+              <h2 className="font-semibold text-slate-900 dark:text-white">
+                {user.fullName}
+              </h2>
               <p className="text-brand-muted text-sm">{user.email}</p>
               <span
                 className={`inline-block mt-2 text-xs px-2.5 py-0.5 rounded-full font-medium ${
@@ -189,7 +191,7 @@ export default function ProfilePage() {
             {/* Edit profile */}
             <div className="card-dark p-6">
               <div className="flex items-center justify-between mb-5">
-                <h3 className="font-semibold text-white flex items-center gap-2">
+                <h3 className="font-semibold text-slate-900 dark:text-white flex items-center gap-2">
                   <User size={16} className="text-brand-gold" /> Th�ng tin c�
                   nh�n
                 </h3>
@@ -280,7 +282,7 @@ export default function ProfilePage() {
             {/* Change password */}
             <div className="card-dark p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-white flex items-center gap-2">
+                <h3 className="font-semibold text-slate-900 dark:text-white flex items-center gap-2">
                   <Lock size={16} className="text-brand-gold" /> �?i m?t kh?u
                 </h3>
                 <button
@@ -346,7 +348,7 @@ export default function ProfilePage() {
 
             {/* My applications */}
             <div className="card-dark p-6">
-              <h3 className="font-semibold text-white mb-4">
+              <h3 className="font-semibold text-slate-900 dark:text-white mb-4">
                 ?? �on ?ng tuy?n c?a t�i
               </h3>
 

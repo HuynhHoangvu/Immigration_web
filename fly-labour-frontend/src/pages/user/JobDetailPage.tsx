@@ -316,7 +316,7 @@ export default function JobDetailPage() {
                   </span>
                 </div>
 
-                <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-2">
                   {job.title}
                 </h1>
                 {job.company && (
@@ -346,7 +346,7 @@ export default function JobDetailPage() {
                         size={16}
                         className="text-brand-muted mx-auto mb-1"
                       />
-                      <p className="text-white text-sm font-medium">
+                      <p className="text-slate-700 dark:text-white text-sm font-medium">
                         {job.location}
                       </p>
                       <p className="text-brand-muted text-xs">{d.location}</p>
@@ -358,7 +358,7 @@ export default function JobDetailPage() {
                         size={16}
                         className="text-brand-muted mx-auto mb-1"
                       />
-                      <p className="text-white text-sm font-medium">
+                      <p className="text-slate-700 dark:text-white text-sm font-medium">
                         {job.slots} {d.slots_label}
                       </p>
                       <p className="text-brand-muted text-xs">{d.slots}</p>
@@ -370,7 +370,7 @@ export default function JobDetailPage() {
                         size={16}
                         className="text-brand-muted mx-auto mb-1"
                       />
-                      <p className="text-white text-sm font-medium">
+                      <p className="text-slate-700 dark:text-white text-sm font-medium">
                         {formatDate(job.deadline)}
                       </p>
                       <p className="text-brand-muted text-xs">{d.deadline}</p>
@@ -380,45 +380,9 @@ export default function JobDetailPage() {
               </div>
             </div>
 
-            {/* Photo gallery */}
-            {(() => {
-              const countryGallery =
-                COUNTRY_GALLERY[job.country] ?? DEFAULT_GALLERY;
-              return (
-                <div className="grid grid-cols-3 gap-2 rounded-2xl overflow-hidden">
-                  <div className="col-span-2 h-48 overflow-hidden">
-                    <img
-                      src={countryGallery[0]}
-                      alt=""
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <div className="flex-1 overflow-hidden">
-                      <img
-                        src={countryGallery[1]}
-                        alt=""
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                      />
-                    </div>
-                    <div className="flex-1 overflow-hidden">
-                      <img
-                        src={countryGallery[2]}
-                        alt=""
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                      />
-                    </div>
-                  </div>
-                </div>
-              );
-            })()}
-
             {/* Description */}
             <div className="card-dark p-6">
-              <h2 className="font-semibold text-white text-lg mb-4 flex items-center gap-2">
+              <h2 className="font-semibold text-slate-900 dark:text-white text-lg mb-4 flex items-center gap-2">
                 <Globe size={18} className="text-brand-gold" />{" "}
                 {d.jobDescription}
               </h2>
@@ -429,7 +393,7 @@ export default function JobDetailPage() {
 
             {job.requirements && (
               <div className="card-dark p-6">
-                <h2 className="font-semibold text-white text-lg mb-4">
+                <h2 className="font-semibold text-slate-900 dark:text-white text-lg mb-4">
                   {d.requirements}
                 </h2>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-sm whitespace-pre-line">
@@ -440,7 +404,7 @@ export default function JobDetailPage() {
 
             {job.benefits && (
               <div className="card-dark p-6">
-                <h2 className="font-semibold text-white text-lg mb-4">
+                <h2 className="font-semibold text-slate-900 dark:text-white text-lg mb-4">
                   {d.benefits}
                 </h2>
                 <div className="space-y-2">
@@ -466,7 +430,7 @@ export default function JobDetailPage() {
             {/* Apply form */}
             {showForm && !submitted && (
               <div className="card-dark p-6" id="apply-form">
-                <h2 className="font-semibold text-white text-lg mb-6">
+                <h2 className="font-semibold text-slate-900 dark:text-white text-lg mb-6">
                   {d.applyTitle}
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -686,7 +650,7 @@ export default function JobDetailPage() {
                   size={48}
                   className="text-green-400 mx-auto mb-3"
                 />
-                <h3 className="text-white font-semibold text-lg mb-2">
+                <h3 className="text-slate-900 dark:text-white font-semibold text-lg mb-2">
                   {d.successTitle}
                 </h3>
                 <p className="text-brand-muted text-sm">{d.successSub}</p>
@@ -732,7 +696,7 @@ export default function JobDetailPage() {
               <div className="mt-4 pt-4 border-t border-brand-border space-y-2 text-xs text-brand-muted">
                 <div className="flex justify-between">
                   <span>{d.posted}</span>
-                  <span className="text-white">
+                  <span className="text-slate-900 dark:text-white">
                     {formatDate(job.createdAt)}
                   </span>
                 </div>
@@ -746,7 +710,7 @@ export default function JobDetailPage() {
                 )}
                 <div className="flex justify-between">
                   <span>{d.views}</span>
-                  <span className="text-white flex items-center gap-1">
+                  <span className="text-slate-900 dark:text-white flex items-center gap-1">
                     <Eye size={11} />
                     {job.viewCount}
                   </span>
@@ -756,7 +720,7 @@ export default function JobDetailPage() {
 
             {relatedJobs.length > 0 && (
               <div className="card-dark p-5">
-                <h3 className="font-semibold text-white text-sm mb-4">
+                <h3 className="font-semibold text-slate-900 dark:text-white text-sm mb-4">
                   {d.related}
                 </h3>
                 <div className="space-y-3">
@@ -766,7 +730,7 @@ export default function JobDetailPage() {
                       to={`/jobs/${rj.id}`}
                       className="block p-3 bg-brand-dark rounded-xl hover:bg-white/5 transition-colors group"
                     >
-                      <p className="text-sm text-white group-hover:text-brand-gold transition-colors line-clamp-1">
+                      <p className="text-sm text-slate-900 dark:text-white group-hover:text-brand-gold transition-colors line-clamp-1">
                         {rj.title}
                       </p>
                       <p className="text-xs text-brand-muted mt-0.5">
