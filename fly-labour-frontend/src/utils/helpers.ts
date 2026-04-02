@@ -69,7 +69,7 @@ export const APP_STATUS_LABELS: Record<AppStatus, { label: string; color: string
   reviewing: { label: 'Under Review',    color: 'text-blue-400 bg-blue-400/10 border-blue-400/20' },
   approved:  { label: 'Approved',        color: 'text-green-400 bg-green-400/10 border-green-400/20' },
   rejected:  { label: 'Rejected',        color: 'text-red-400 bg-red-400/10 border-red-400/20' },
-  withdrawn: { label: 'Withdrawn',       color: 'text-gray-400 bg-gray-400/10 border-gray-400/20' },
+  withdrawn: { label: 'Withdrawn',       color: 'text-slate-900 bg-gray-400/10 border-gray-400/20' },
 }
 
 export function getAppStatusLabel(status: AppStatus): { label: string; color: string } {
@@ -79,7 +79,7 @@ export function getAppStatusLabel(status: AppStatus): { label: string; color: st
     reviewing: 'text-blue-400 bg-blue-400/10 border-blue-400/20',
     approved:  'text-green-400 bg-green-400/10 border-green-400/20',
     rejected:  'text-red-400 bg-red-400/10 border-red-400/20',
-    withdrawn: 'text-gray-400 bg-gray-400/10 border-gray-400/20',
+    withdrawn: 'text-slate-900 bg-gray-400/10 border-gray-400/20',
   }
   return { label: s[status] ?? status, color: colors[status] }
 }

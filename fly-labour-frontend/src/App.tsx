@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import toast from "react-hot-toast";
@@ -70,10 +70,10 @@ function ContactPage() {
     setSending(true);
     try {
       await contactApi.send(form);
-      toast.success('Đã gửi liên hệ thành công! Chúng tôi sẽ phản hồi sớm.');
+      toast.success('�� g?i li�n h? th�nh c�ng! Ch�ng t�i s? ph?n h?i s?m.');
       setForm({ name: '', email: '', phone: '', message: '' });
     } catch {
-      toast.error('Gửi thất bại, vui lòng thử lại');
+      toast.error('G?i th?t b?i, vui l�ng th? l?i');
     } finally {
       setSending(false);
     }
@@ -118,7 +118,7 @@ function ContactPage() {
               </div>
               <button type="submit" disabled={sending} className="btn-primary w-full py-3 flex items-center justify-center gap-2">
                 {sending
-                  ? <><span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" /> Đang gửi...</>
+                  ? <><span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" /> �ang g?i...</>
                   : c.send
                 }
               </button>

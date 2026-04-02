@@ -30,7 +30,7 @@ export default function NewsDetailPage() {
   if (loading) {
     return (
       <div className="min-h-screen pt-28 flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-brand-yellow border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -86,7 +86,7 @@ export default function NewsDetailPage() {
             {article.title}
           </h1>
           {article.excerpt && (
-            <p className="text-brand-muted text-lg leading-relaxed border-l-4 border-brand-yellow pl-4">
+            <p className="text-brand-muted text-lg leading-relaxed border-l-4 border-brand-gold pl-4">
               {article.excerpt}
             </p>
           )}
@@ -95,7 +95,7 @@ export default function NewsDetailPage() {
         {/* Content */}
         {article.content && (
           <div className="card-dark p-8">
-            <div className="prose prose-invert max-w-none text-gray-300 leading-relaxed whitespace-pre-line text-sm">
+            <div className="prose prose-invert max-w-none text-slate-900 leading-relaxed whitespace-pre-line text-sm">
               {article.content}
             </div>
           </div>

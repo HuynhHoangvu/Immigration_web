@@ -79,13 +79,13 @@ export default function FlashSaleJobs() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => scroll("left")}
-              className="w-9 h-9 rounded-xl border border-brand-border bg-brand-card flex items-center justify-center text-gray-400 hover:text-white hover:border-brand-yellow/50 transition-colors"
+              className="w-9 h-9 rounded-xl border border-brand-border bg-brand-card flex items-center justify-center text-slate-900 hover:text-white hover:border-brand-gold/50 transition-colors"
             >
               <ChevronLeft size={16} />
             </button>
             <button
               onClick={() => scroll("right")}
-              className="w-9 h-9 rounded-xl border border-brand-border bg-brand-card flex items-center justify-center text-gray-400 hover:text-white hover:border-brand-yellow/50 transition-colors"
+              className="w-9 h-9 rounded-xl border border-brand-border bg-brand-card flex items-center justify-center text-slate-900 hover:text-white hover:border-brand-gold/50 transition-colors"
             >
               <ChevronRight size={16} />
             </button>

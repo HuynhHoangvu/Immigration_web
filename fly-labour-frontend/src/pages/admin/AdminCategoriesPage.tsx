@@ -95,13 +95,13 @@ export default function AdminCategoriesPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {cats.map(cat => (
-            <div key={cat.id} className={`card-dark p-5 relative group transition-all duration-300 ${!cat.isActive ? 'opacity-50' : 'hover:border-brand-yellow/30'}`}>
+            <div key={cat.id} className={`card-dark p-5 relative group transition-all duration-300 ${!cat.isActive ? 'opacity-50' : 'hover:border-brand-gold/30'}`}>
               <div className="flex items-start justify-between mb-3">
-                <div className="w-12 h-12 rounded-xl bg-brand-yellow/5 border border-brand-yellow/10 flex items-center justify-center text-2xl">
+                <div className="w-12 h-12 rounded-xl bg-brand-gold/5 border border-brand-gold/10 flex items-center justify-center text-2xl">
                   {cat.icon}
                 </div>
                 <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button onClick={() => openEdit(cat)} className="w-7 h-7 rounded-lg flex items-center justify-center text-brand-muted hover:text-brand-yellow hover:bg-brand-yellow/10 transition-colors">
+                  <button onClick={() => openEdit(cat)} className="w-7 h-7 rounded-lg flex items-center justify-center text-brand-muted hover:text-brand-gold hover:bg-brand-gold/10 transition-colors">
                     <Pencil size={12} />
                   </button>
                   <button onClick={() => setDeleting(cat.id)} className="w-7 h-7 rounded-lg flex items-center justify-center text-brand-muted hover:text-red-400 hover:bg-red-500/10 transition-colors">
@@ -147,7 +147,7 @@ export default function AdminCategoriesPage() {
                 <div className="grid grid-cols-10 gap-1.5">
                   {ICON_OPTIONS.map(ic => (
                     <button key={ic} onClick={() => setForm(f => ({ ...f, icon: ic }))}
-                      className={`w-9 h-9 rounded-lg text-xl flex items-center justify-center border transition-all ${form.icon === ic ? 'bg-brand-yellow/20 border-brand-yellow/50' : 'bg-brand-dark border-brand-border hover:border-brand-yellow/30'}`}>
+                      className={`w-9 h-9 rounded-lg text-xl flex items-center justify-center border transition-all ${form.icon === ic ? 'bg-brand-gold/20 border-brand-gold/50' : 'bg-brand-dark border-brand-border hover:border-brand-gold/30'}`}>
                       {ic}
                     </button>
                   ))}
@@ -177,7 +177,7 @@ export default function AdminCategoriesPage() {
                   <input type="number" value={form.sortOrder} onChange={set('sortOrder')} className="input-dark" />
                 </div>
                 <label className="flex items-center gap-2 cursor-pointer mt-5">
-                  <input type="checkbox" checked={form.isActive} onChange={e => setForm(f => ({ ...f, isActive: e.target.checked }))} className="w-4 h-4 accent-brand-yellow" />
+                  <input type="checkbox" checked={form.isActive} onChange={e => setForm(f => ({ ...f, isActive: e.target.checked }))} className="w-4 h-4 accent-brand-gold" />
                   <span className="text-sm text-white">Hiển thị</span>
                 </label>
               </div>

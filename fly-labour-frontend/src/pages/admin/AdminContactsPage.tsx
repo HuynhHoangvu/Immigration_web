@@ -90,7 +90,7 @@ export default function AdminContactsPage() {
           <p className="text-brand-muted text-sm mt-0.5">
             {contacts.length} liên hệ
             {unreadCount > 0 && (
-              <span className="ml-2 text-brand-yellow font-medium">
+              <span className="ml-2 text-brand-gold font-medium">
                 · {unreadCount} chưa đọc
               </span>
             )}
@@ -134,19 +134,19 @@ export default function AdminContactsPage() {
               <div
                 key={c.id}
                 onClick={() => openDetail(c)}
-                className={`bg-brand-card border rounded-2xl p-4 cursor-pointer transition-all hover:border-brand-yellow/30 ${
+                className={`bg-brand-card border rounded-2xl p-4 cursor-pointer transition-all hover:border-brand-gold/30 ${
                   selected?.id === c.id
-                    ? "border-brand-yellow/40 bg-brand-yellow/5"
+                    ? "border-brand-gold/40 bg-brand-gold/5"
                     : c.isRead
                       ? "border-brand-border"
-                      : "border-brand-yellow/20 bg-brand-yellow/[0.03]"
+                      : "border-brand-gold/20 bg-brand-gold/[0.03]"
                 }`}
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-start gap-3 min-w-0">
                     {/* Avatar */}
                     <div
-                      className="w-9 h-9 rounded-xl flex items-center justify-center text-black font-bold text-sm shrink-0"
+                      className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-900 font-bold text-sm shrink-0"
                       style={{
                         background: "linear-gradient(135deg,#e4a808,#fdd52f)",
                       }}
@@ -159,7 +159,7 @@ export default function AdminContactsPage() {
                           {c.name}
                         </p>
                         {!c.isRead && (
-                          <span className="w-2 h-2 rounded-full bg-brand-yellow shrink-0" />
+                          <span className="w-2 h-2 rounded-full bg-brand-gold shrink-0" />
                         )}
                       </div>
                       <p className="text-brand-muted text-xs truncate">
@@ -182,7 +182,7 @@ export default function AdminContactsPage() {
                     ) : (
                       <Mail
                         size={12}
-                        className="text-brand-yellow ml-auto mt-1"
+                        className="text-brand-gold ml-auto mt-1"
                       />
                     )}
                   </div>
@@ -206,7 +206,7 @@ export default function AdminContactsPage() {
               {/* Detail header */}
               <div className="flex items-center justify-between px-5 py-4 border-b border-brand-border">
                 <div className="flex items-center gap-2">
-                  <Eye size={15} className="text-brand-yellow" />
+                  <Eye size={15} className="text-brand-gold" />
                   <span className="text-white font-semibold text-sm">
                     Chi tiết liên hệ
                   </span>

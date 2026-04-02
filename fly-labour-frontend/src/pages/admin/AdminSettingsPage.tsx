@@ -90,7 +90,7 @@ export default function AdminSettingsPage() {
       <div className="flex gap-1.5 flex-wrap">
         {TABS.map(t => (
           <button key={t.id} onClick={() => setActiveTab(t.id)}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm transition-colors ${activeTab === t.id ? 'bg-brand-yellow/15 text-brand-yellow border border-brand-yellow/30' : 'text-brand-muted hover:text-white bg-brand-card border border-brand-border hover:border-white/20'}`}>
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm transition-colors ${activeTab === t.id ? 'bg-brand-gold/15 text-brand-gold border border-brand-gold/30' : 'text-brand-muted hover:text-white bg-brand-card border border-brand-border hover:border-white/20'}`}>
             <t.icon size={14} /> {t.label}
           </button>
         ))}
@@ -98,7 +98,7 @@ export default function AdminSettingsPage() {
 
       {activeTab === 'general' && (
         <div className="card-dark p-6 space-y-4">
-          <h3 className="font-semibold text-white flex items-center gap-2"><Globe size={16} className="text-brand-yellow" /> Thông tin website</h3>
+          <h3 className="font-semibold text-white flex items-center gap-2"><Globe size={16} className="text-brand-gold" /> Thông tin website</h3>
           {[
             { label: 'Tên website', key: 'siteName', placeholder: 'Fly Labour' },
             { label: 'Slogan', key: 'tagline', placeholder: 'Kết nối lao động Việt Nam...' },
@@ -113,7 +113,7 @@ export default function AdminSettingsPage() {
 
       {activeTab === 'contact' && (
         <div className="card-dark p-6 space-y-4">
-          <h3 className="font-semibold text-white flex items-center gap-2"><Bell size={16} className="text-brand-yellow" /> Thông tin liên hệ</h3>
+          <h3 className="font-semibold text-white flex items-center gap-2"><Bell size={16} className="text-brand-gold" /> Thông tin liên hệ</h3>
           {[
             { label: 'Hotline', key: 'hotline', placeholder: '0901 234 567' },
             { label: 'Email liên hệ', key: 'email', placeholder: 'info@flylabour.com' },
@@ -132,7 +132,7 @@ export default function AdminSettingsPage() {
 
       {activeTab === 'security' && (
         <div className="card-dark p-6 space-y-4">
-          <h3 className="font-semibold text-white flex items-center gap-2"><Shield size={16} className="text-brand-yellow" /> Đổi mật khẩu</h3>
+          <h3 className="font-semibold text-white flex items-center gap-2"><Shield size={16} className="text-brand-gold" /> Đổi mật khẩu</h3>
           {[
             { label: 'Mật khẩu hiện tại', key: 'currentPassword' },
             { label: 'Mật khẩu mới', key: 'newPassword' },
@@ -148,7 +148,7 @@ export default function AdminSettingsPage() {
               </div>
             </div>
           ))}
-          <div className="p-4 bg-brand-yellow/5 border border-brand-yellow/20 rounded-xl text-xs text-brand-muted">
+          <div className="p-4 bg-brand-gold/5 border border-brand-gold/20 rounded-xl text-xs text-brand-muted">
             💡 Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường và số.
           </div>
         </div>
@@ -156,7 +156,7 @@ export default function AdminSettingsPage() {
 
       {activeTab === 'notification' && (
         <div className="card-dark p-6 space-y-4">
-          <h3 className="font-semibold text-white flex items-center gap-2"><Bell size={16} className="text-brand-yellow" /> Cài đặt thông báo</h3>
+          <h3 className="font-semibold text-white flex items-center gap-2"><Bell size={16} className="text-brand-gold" /> Cài đặt thông báo</h3>
           {[
             { key: 'newApplication', label: 'Đơn ứng tuyển mới', desc: 'Nhận thông báo khi có người nộp đơn mới' },
             { key: 'newUser', label: 'Người dùng đăng ký mới', desc: 'Thông báo khi có tài khoản mới' },
@@ -172,7 +172,7 @@ export default function AdminSettingsPage() {
                 </div>
                 <button
                   onClick={() => setNotifs(n=>({...n,[item.key]: isOn ? 'false' : 'true'}))}
-                  className={`w-11 h-6 rounded-full transition-all duration-300 relative ${isOn ? 'bg-brand-yellow' : 'bg-brand-border'}`}
+                  className={`w-11 h-6 rounded-full transition-all duration-300 relative ${isOn ? 'bg-brand-gold' : 'bg-brand-border'}`}
                 >
                   <span className="absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all duration-300" style={{left: isOn ? '22px' : '2px'}} />
                 </button>

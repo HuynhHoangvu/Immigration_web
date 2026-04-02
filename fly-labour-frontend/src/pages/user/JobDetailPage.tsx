@@ -163,7 +163,7 @@ export default function JobDetailPage() {
   if (loading)
     return (
       <div className="min-h-screen pt-28 flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-brand-yellow border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full animate-spin" />
       </div>
     );
 
@@ -284,7 +284,7 @@ export default function JobDetailPage() {
                   <span className="badge-country backdrop-blur-sm bg-black/40">
                     {flag} {countryName}
                   </span>
-                  <span className="bg-black/40 backdrop-blur-sm text-gray-200 text-xs px-2.5 py-0.5 rounded-full border border-white/20">
+                  <span className="bg-black/40 backdrop-blur-sm text-slate-900 text-xs px-2.5 py-0.5 rounded-full border border-white/20">
                     {getJobTypeLabel(job.jobType)}
                   </span>
                 </div>
@@ -293,7 +293,7 @@ export default function JobDetailPage() {
                     <span className="badge-hot backdrop-blur-sm">🔥 Hot</span>
                   )}
                   {job.isFeatured && (
-                    <span className="bg-brand-yellow/90 text-black text-xs font-bold px-2 py-0.5 rounded-full">
+                    <span className="bg-brand-gold/90 text-slate-900 text-xs font-bold px-2 py-0.5 rounded-full">
                       {d.featured}
                     </span>
                   )}
@@ -304,14 +304,14 @@ export default function JobDetailPage() {
                 <div className="flex gap-2 flex-wrap mb-4">
                   {job.isHot && <span className="badge-hot">🔥 Hot</span>}
                   {job.isFeatured && (
-                    <span className="bg-brand-yellow/20 text-brand-yellow text-xs font-bold px-2 py-0.5 rounded-full uppercase">
+                    <span className="bg-brand-gold/20 text-brand-gold text-xs font-bold px-2 py-0.5 rounded-full uppercase">
                       {d.featured}
                     </span>
                   )}
                   <span className="badge-country">
                     {flag} {countryName}
                   </span>
-                  <span className="bg-white/5 text-gray-400 text-xs px-2 py-0.5 rounded border border-white/10">
+                  <span className="bg-white/5 text-slate-900 text-xs px-2 py-0.5 rounded border border-white/10">
                     {getJobTypeLabel(job.jobType)}
                   </span>
                 </div>
@@ -326,12 +326,12 @@ export default function JobDetailPage() {
                 )}
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  <div className="bg-brand-yellow/5 border border-brand-yellow/20 rounded-xl p-3 text-center">
+                  <div className="bg-brand-gold/5 border border-brand-gold/20 rounded-xl p-3 text-center">
                     <TrendingUp
                       size={16}
-                      className="text-brand-yellow mx-auto mb-1"
+                      className="text-brand-gold mx-auto mb-1"
                     />
-                    <p className="text-brand-yellow font-semibold text-sm">
+                    <p className="text-brand-gold font-semibold text-sm">
                       {formatSalary(
                         job.salaryMin,
                         job.salaryMax,
@@ -419,10 +419,10 @@ export default function JobDetailPage() {
             {/* Description */}
             <div className="card-dark p-6">
               <h2 className="font-semibold text-white text-lg mb-4 flex items-center gap-2">
-                <Globe size={18} className="text-brand-yellow" />{" "}
+                <Globe size={18} className="text-brand-gold" />{" "}
                 {d.jobDescription}
               </h2>
-              <p className="text-gray-300 leading-relaxed text-sm whitespace-pre-line">
+              <p className="text-slate-900 leading-relaxed text-sm whitespace-pre-line">
                 {job.description}
               </p>
             </div>
@@ -432,7 +432,7 @@ export default function JobDetailPage() {
                 <h2 className="font-semibold text-white text-lg mb-4">
                   {d.requirements}
                 </h2>
-                <p className="text-gray-300 leading-relaxed text-sm whitespace-pre-line">
+                <p className="text-slate-900 leading-relaxed text-sm whitespace-pre-line">
                   {job.requirements}
                 </p>
               </div>
@@ -450,7 +450,7 @@ export default function JobDetailPage() {
                     .map((b, i) => (
                       <div
                         key={i}
-                        className="flex items-start gap-2 text-sm text-gray-300"
+                        className="flex items-start gap-2 text-sm text-slate-900"
                       >
                         <CheckCircle
                           size={15}
@@ -613,7 +613,7 @@ export default function JobDetailPage() {
                         CV / Hồ sơ (PDF, DOC)
                       </label>
                       <label
-                        className={`flex items-center gap-3 p-4 rounded-xl border-2 border-dashed cursor-pointer transition-colors ${form.cvUrl ? "border-green-500/40 bg-green-500/5" : "border-brand-border hover:border-brand-yellow/40 bg-brand-dark"}`}
+                        className={`flex items-center gap-3 p-4 rounded-xl border-2 border-dashed cursor-pointer transition-colors ${form.cvUrl ? "border-green-500/40 bg-green-500/5" : "border-brand-border hover:border-brand-gold/40 bg-brand-dark"}`}
                       >
                         <input
                           type="file"
@@ -624,7 +624,7 @@ export default function JobDetailPage() {
                         />
                         {uploadingCv ? (
                           <>
-                            <span className="w-4 h-4 border-2 border-brand-yellow border-t-transparent rounded-full animate-spin shrink-0" />
+                            <span className="w-4 h-4 border-2 border-brand-gold border-t-transparent rounded-full animate-spin shrink-0" />
                             <span className="text-sm text-brand-muted">
                               Đang upload...
                             </span>
@@ -698,7 +698,7 @@ export default function JobDetailPage() {
           <div className="space-y-5">
             <div className="card-dark p-5 sticky top-24">
               <div className="text-center mb-5">
-                <p className="text-brand-yellow font-semibold text-xl mb-0.5">
+                <p className="text-brand-gold font-semibold text-xl mb-0.5">
                   {formatSalary(
                     job.salaryMin,
                     job.salaryMax,
@@ -766,13 +766,13 @@ export default function JobDetailPage() {
                       to={`/jobs/${rj.id}`}
                       className="block p-3 bg-brand-dark rounded-xl hover:bg-white/5 transition-colors group"
                     >
-                      <p className="text-sm text-white group-hover:text-brand-yellow transition-colors line-clamp-1">
+                      <p className="text-sm text-white group-hover:text-brand-gold transition-colors line-clamp-1">
                         {rj.title}
                       </p>
                       <p className="text-xs text-brand-muted mt-0.5">
                         {rj.company}
                       </p>
-                      <p className="text-xs text-brand-yellow mt-1">
+                      <p className="text-xs text-brand-gold mt-1">
                         {formatSalary(
                           rj.salaryMin,
                           rj.salaryMax,

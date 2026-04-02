@@ -69,6 +69,7 @@ async function seed() {
             { name: 'Y tế', nameEn: 'Healthcare', icon: '🏥', description: 'Y tá, chăm sóc người cao tuổi', sortOrder: 6 },
             { name: 'Logistics', nameEn: 'Logistics', icon: '🚛', description: 'Lái xe, kho vận, giao hàng', sortOrder: 7 },
             { name: 'Công nghệ', nameEn: 'IT', icon: '💻', description: 'Lập trình viên, IT support', sortOrder: 8 },
+            { name: 'Dịch vụ', nameEn: 'Services', icon: '💼', description: 'Bán lẻ, dịch vụ khách hàng, văn phòng', sortOrder: 9 },
         ];
         const savedCats = await catRepo.save(categories.map(c => catRepo.create(c)));
         console.log(`✅ Tạo ${savedCats.length} danh mục`);

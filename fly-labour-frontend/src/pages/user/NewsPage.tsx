@@ -87,7 +87,7 @@ export default function NewsPage() {
             {/* Featured article */}
             {featured && (
               <Link to={`/news/${featured.slug}`} className="group block">
-                <div className="card-dark overflow-hidden rounded-2xl md:grid md:grid-cols-2 hover:border-brand-yellow/30 transition-colors border border-brand-border">
+                <div className="card-dark overflow-hidden rounded-2xl md:grid md:grid-cols-2 hover:border-brand-gold/30 transition-colors border border-brand-border">
                   <div className="relative h-56 md:h-full overflow-hidden bg-brand-dark">
                     {featured.image ? (
                       <img
@@ -99,7 +99,7 @@ export default function NewsPage() {
                       <div className="w-full h-full flex items-center justify-center text-6xl">📰</div>
                     )}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent to-brand-card/20" />
-                    <span className="absolute top-4 left-4 bg-brand-yellow text-black text-xs font-bold px-3 py-1 rounded-full">
+                    <span className="absolute top-4 left-4 bg-brand-gold text-slate-900 text-xs font-bold px-3 py-1 rounded-full">
                       Nổi bật
                     </span>
                   </div>
@@ -108,7 +108,7 @@ export default function NewsPage() {
                       <Calendar size={12} />
                       {formatDate(featured.createdAt)}
                     </div>
-                    <h2 className="text-2xl font-bold text-white mb-3 group-hover:text-brand-yellow transition-colors leading-snug">
+                    <h2 className="text-2xl font-bold text-white mb-3 group-hover:text-brand-gold transition-colors leading-snug">
                       {featured.title}
                     </h2>
                     {featured.excerpt && (
@@ -116,7 +116,7 @@ export default function NewsPage() {
                         {featured.excerpt}
                       </p>
                     )}
-                    <span className="inline-flex items-center gap-1.5 text-brand-yellow text-sm font-medium group-hover:gap-3 transition-all">
+                    <span className="inline-flex items-center gap-1.5 text-brand-gold text-sm font-medium group-hover:gap-3 transition-all">
                       Đọc tiếp <ArrowRight size={14} />
                     </span>
                   </div>
@@ -131,7 +131,7 @@ export default function NewsPage() {
                   <Link
                     key={article.id}
                     to={`/news/${article.slug}`}
-                    className="group card-dark rounded-2xl overflow-hidden hover:border-brand-yellow/30 transition-colors border border-brand-border flex flex-col"
+                    className="group card-dark rounded-2xl overflow-hidden hover:border-brand-gold/30 transition-colors border border-brand-border flex flex-col"
                   >
                     <div className="relative h-44 overflow-hidden bg-brand-dark">
                       {article.image ? (
@@ -149,7 +149,7 @@ export default function NewsPage() {
                         <Calendar size={11} />
                         {formatDate(article.createdAt)}
                       </div>
-                      <h3 className="text-white font-semibold mb-2 group-hover:text-brand-yellow transition-colors line-clamp-2 leading-snug">
+                      <h3 className="text-white font-semibold mb-2 group-hover:text-brand-gold transition-colors line-clamp-2 leading-snug">
                         {article.title}
                       </h3>
                       {article.excerpt && (
@@ -157,7 +157,7 @@ export default function NewsPage() {
                           {article.excerpt}
                         </p>
                       )}
-                      <span className="inline-flex items-center gap-1 text-brand-yellow text-xs font-medium mt-3 group-hover:gap-2 transition-all">
+                      <span className="inline-flex items-center gap-1 text-brand-gold text-xs font-medium mt-3 group-hover:gap-2 transition-all">
                         Đọc tiếp <ArrowRight size={12} />
                       </span>
                     </div>

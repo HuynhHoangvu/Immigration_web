@@ -173,17 +173,17 @@ export default function AdminNewsPage() {
                     {n.excerpt && <p className="text-brand-muted text-xs line-clamp-1 mt-0.5">{n.excerpt}</p>}
                   </td>
                   <td className="px-4 py-3 hidden md:table-cell">
-                    <code className="text-xs text-brand-yellow bg-brand-yellow/5 px-2 py-0.5 rounded">{n.slug}</code>
+                    <code className="text-xs text-brand-gold bg-brand-gold/5 px-2 py-0.5 rounded">{n.slug}</code>
                   </td>
                   <td className="px-4 py-3 hidden sm:table-cell text-brand-muted text-xs">{formatDate(n.createdAt)}</td>
                   <td className="px-4 py-3">
-                    <button onClick={() => handleTogglePublish(n)} className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border font-medium transition-colors ${n.isPublished ? 'text-green-400 bg-green-400/10 border-green-400/20 hover:bg-green-400/20' : 'text-gray-400 bg-white/5 border-white/10 hover:border-white/20'}`}>
+                    <button onClick={() => handleTogglePublish(n)} className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border font-medium transition-colors ${n.isPublished ? 'text-green-400 bg-green-400/10 border-green-400/20 hover:bg-green-400/20' : 'text-slate-900 bg-white/5 border-white/10 hover:border-white/20'}`}>
                       {n.isPublished ? <><Eye size={11} /> Đã đăng</> : <><EyeOff size={11} /> Ẩn</>}
                     </button>
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-end gap-1">
-                      <button onClick={() => openEdit(n)} className="w-7 h-7 rounded-lg flex items-center justify-center text-brand-muted hover:text-brand-yellow hover:bg-brand-yellow/10 transition-colors">
+                      <button onClick={() => openEdit(n)} className="w-7 h-7 rounded-lg flex items-center justify-center text-brand-muted hover:text-brand-gold hover:bg-brand-gold/10 transition-colors">
                         <Pencil size={13} />
                       </button>
                       <button onClick={() => setDeleting(n.id)} className="w-7 h-7 rounded-lg flex items-center justify-center text-brand-muted hover:text-red-400 hover:bg-red-500/10 transition-colors">
@@ -236,10 +236,10 @@ export default function AdminNewsPage() {
 
                 {/* Tabs */}
                 <div className="flex gap-1.5 text-xs">
-                  <button onClick={() => setImgTab('upload')} className={`px-3 py-1.5 rounded-lg border transition-colors ${imgTab === 'upload' ? 'bg-brand-yellow/15 border-brand-yellow/30 text-brand-yellow' : 'border-brand-border text-brand-muted hover:text-white'}`}>
+                  <button onClick={() => setImgTab('upload')} className={`px-3 py-1.5 rounded-lg border transition-colors ${imgTab === 'upload' ? 'bg-brand-gold/15 border-brand-gold/30 text-brand-gold' : 'border-brand-border text-brand-muted hover:text-white'}`}>
                     📁 Upload từ máy
                   </button>
-                  <button onClick={() => setImgTab('url')} className={`px-3 py-1.5 rounded-lg border transition-colors ${imgTab === 'url' ? 'bg-brand-yellow/15 border-brand-yellow/30 text-brand-yellow' : 'border-brand-border text-brand-muted hover:text-white'}`}>
+                  <button onClick={() => setImgTab('url')} className={`px-3 py-1.5 rounded-lg border transition-colors ${imgTab === 'url' ? 'bg-brand-gold/15 border-brand-gold/30 text-brand-gold' : 'border-brand-border text-brand-muted hover:text-white'}`}>
                     🔗 Nhập URL ảnh
                   </button>
                 </div>
@@ -248,8 +248,8 @@ export default function AdminNewsPage() {
                   <div>
                     <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
                     <button onClick={() => fileRef.current?.click()}
-                      className="w-full border-2 border-dashed border-brand-border hover:border-brand-yellow/40 rounded-xl py-4 flex flex-col items-center gap-2 text-brand-muted hover:text-white transition-all duration-200 group">
-                      <Upload size={20} className="group-hover:text-brand-yellow transition-colors" />
+                      className="w-full border-2 border-dashed border-brand-border hover:border-brand-gold/40 rounded-xl py-4 flex flex-col items-center gap-2 text-brand-muted hover:text-white transition-all duration-200 group">
+                      <Upload size={20} className="group-hover:text-brand-gold transition-colors" />
                       <span className="text-sm">Nhấn để chọn ảnh</span>
                       <span className="text-xs opacity-60">JPG, PNG, WEBP — tối đa 5MB</span>
                     </button>
@@ -283,7 +283,7 @@ export default function AdminNewsPage() {
                 <textarea value={form.content} onChange={setField('content')} className="input-dark h-48 resize-none" placeholder="Nội dung chi tiết bài viết..." />
               </div>
               <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" checked={form.isPublished} onChange={e => setForm(f => ({ ...f, isPublished: e.target.checked }))} className="w-4 h-4 accent-brand-yellow" />
+                <input type="checkbox" checked={form.isPublished} onChange={e => setForm(f => ({ ...f, isPublished: e.target.checked }))} className="w-4 h-4 accent-brand-gold" />
                 <span className="text-sm text-white">Đăng ngay (hiển thị công khai)</span>
               </label>
 

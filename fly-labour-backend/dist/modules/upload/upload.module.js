@@ -39,7 +39,7 @@ __decorate([
     (0, swagger_1.ApiConsumes)('multipart/form-data'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
         storage: (0, multer_1.memoryStorage)(),
-        limits: { fileSize: 10 * 1024 * 1024 },
+        limits: { fileSize: 20 * 1024 * 1024 },
         fileFilter: (_req, file, cb) => {
             const allowed = ['.pdf', '.doc', '.docx'];
             const ext = (0, path_1.extname)(file.originalname).toLowerCase();

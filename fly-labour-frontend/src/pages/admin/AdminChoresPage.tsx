@@ -194,14 +194,14 @@ export default function AdminChoresPage() {
                     onClick={() => setSelectedDate(isSelected ? null : dateStr)}
                     className={`h-16 rounded-xl p-1.5 text-left transition-all duration-150 border ${
                       isSelected
-                        ? 'bg-brand-yellow/15 border-brand-yellow/30'
+                        ? 'bg-brand-gold/15 border-brand-gold/30'
                         : isToday
-                        ? 'bg-white/5 border-brand-yellow/20'
+                        ? 'bg-white/5 border-brand-gold/20'
                         : 'border-transparent hover:bg-white/5'
                     }`}
                   >
                     <span className={`text-xs font-semibold block mb-1 ${
-                      isToday ? 'text-brand-yellow' : isSelected ? 'text-brand-yellow' : 'text-white'
+                      isToday ? 'text-brand-gold' : isSelected ? 'text-brand-gold' : 'text-white'
                     }`}>
                       {day}
                     </span>
@@ -238,7 +238,7 @@ export default function AdminChoresPage() {
                 <h3 className="text-white font-semibold text-sm">{selectedDate}</h3>
                 <button
                   onClick={() => openNew(selectedDate)}
-                  className="flex items-center gap-1 text-xs text-brand-yellow hover:text-yellow-300 transition-colors"
+                  className="flex items-center gap-1 text-xs text-brand-gold hover:text-yellow-300 transition-colors"
                 >
                   <Plus size={13} /> Thêm
                 </button>
@@ -248,7 +248,7 @@ export default function AdminChoresPage() {
                 <div className="flex-1 flex flex-col items-center justify-center text-center py-8">
                   <p className="text-3xl mb-2">📅</p>
                   <p className="text-brand-muted text-sm">Không có công việc</p>
-                  <button onClick={() => openNew(selectedDate)} className="mt-3 text-xs text-brand-yellow hover:underline">
+                  <button onClick={() => openNew(selectedDate)} className="mt-3 text-xs text-brand-gold hover:underline">
                     Tạo công việc mới
                   </button>
                 </div>

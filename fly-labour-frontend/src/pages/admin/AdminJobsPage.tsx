@@ -25,8 +25,8 @@ const STATUS_COLORS = {
   active: "text-green-400 bg-green-400/10 border-green-400/20",
   paused: "text-yellow-400 bg-yellow-400/10 border-yellow-400/20",
   closed: "text-red-400 bg-red-400/10 border-red-400/20",
-  draft: "text-gray-400 bg-gray-400/10 border-gray-400/20",
-  pending_review: "text-orange-400 bg-orange-400/10 border-orange-400/20",
+  draft: "text-slate-900 bg-gray-400/10 border-gray-400/20",
+  pending_review: "text-amber-400 bg-orange-400/10 border-amber-400/20",
 };
 const STATUS_LABELS = {
   active: "Hoạt động",
@@ -125,8 +125,12 @@ export default function AdminJobsPage() {
   const [saving, setSaving] = useState(false);
   const [imgTab, setImgTab] = useState<"upload" | "url">("upload");
   const [urlInput, setUrlInput] = useState("");
-  const [salaryPeriod, setSalaryPeriod] = useState<"hourly" | "weekly" | "monthly" | "yearly">("monthly");
-  const [tableSalaryPeriod, setTableSalaryPeriod] = useState<"hourly" | "weekly" | "monthly" | "yearly">("monthly");
+  const [salaryPeriod, setSalaryPeriod] = useState<
+    "hourly" | "weekly" | "monthly" | "yearly"
+  >("monthly");
+  const [tableSalaryPeriod, setTableSalaryPeriod] = useState<
+    "hourly" | "weekly" | "monthly" | "yearly"
+  >("monthly");
   const fileRef = useRef<HTMLInputElement>(null);
   const fileObjRef = useRef<File | null>(null);
 
@@ -143,10 +147,17 @@ export default function AdminJobsPage() {
   const getSalaryEstimates = (value: number, period: string) => {
     let monthly: number;
     switch (period) {
-      case "hourly": monthly = (value * 40 * 52) / 12; break;
-      case "weekly": monthly = (value * 52) / 12; break;
-      case "yearly": monthly = value / 12; break;
-      default: monthly = value;
+      case "hourly":
+        monthly = (value * 40 * 52) / 12;
+        break;
+      case "weekly":
+        monthly = (value * 52) / 12;
+        break;
+      case "yearly":
+        monthly = value / 12;
+        break;
+      default:
+        monthly = value;
     }
     const fmt = (n: number) =>
       n >= 1000 ? `${(n / 1000).toFixed(1)}k` : n.toFixed(0);
@@ -159,7 +170,8 @@ export default function AdminJobsPage() {
   };
 
   const openAdd = () => {
-    setForm(EMPTY_FORM);
+    const lastCurrency = localStorage.getItem("lastSalaryCurrency") || "AUD";
+    setForm({ ...EMPTY_FORM, salaryCurrency: lastCurrency });
     setEditing(null);
     setUrlInput("");
     fileObjRef.current = null;
@@ -346,6 +358,12 @@ export default function AdminJobsPage() {
     ) =>
       setForm((f) => ({ ...f, [k]: e.target.value }));
 
+  const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const currency = e.target.value;
+    localStorage.setItem("lastSalaryCurrency", currency);
+    setForm((f) => ({ ...f, salaryCurrency: currency }));
+  };
+
   return (
     <div className="space-y-5">
       {/* Header */}
@@ -354,7 +372,7 @@ export default function AdminJobsPage() {
           <h1 className="text-xl font-bold text-white flex items-center gap-2">
             Quản lý Việc làm
             {pendingJobs.length > 0 && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-orange-400/20 text-orange-400 border border-orange-400/30 font-semibold">
+              <span className="text-xs px-2 py-0.5 rounded-full bg-orange-400/20 text-amber-400 border border-amber-400/30 font-semibold">
                 {pendingJobs.length} chờ duyệt
               </span>
             )}
@@ -399,7 +417,7 @@ export default function AdminJobsPage() {
             onClick={() => setStatusFilter(tab.value)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
               statusFilter === tab.value
-                ? "bg-brand-yellow/15 border-brand-yellow/40 text-brand-yellow"
+                ? "bg-brand-gold/15 border-brand-gold/40 text-brand-gold"
                 : "border-brand-border text-brand-muted hover:border-white/20 hover:text-white"
             }`}
           >
@@ -423,17 +441,24 @@ export default function AdminJobsPage() {
           />
         </div>
         <div className="flex items-center gap-2 ml-auto">
-          <span className="text-xs text-brand-muted whitespace-nowrap">Hiển thị lương:</span>
+          <span className="text-xs text-brand-muted whitespace-nowrap">
+            Hiển thị lương:
+          </span>
           <div className="flex rounded-lg border border-brand-border overflow-hidden text-xs">
             {(["hourly", "weekly", "monthly", "yearly"] as const).map((p) => {
-              const label = { hourly: "Giờ", weekly: "Tuần", monthly: "Tháng", yearly: "Năm" }[p];
+              const label = {
+                hourly: "Giờ",
+                weekly: "Tuần",
+                monthly: "Tháng",
+                yearly: "Năm",
+              }[p];
               return (
                 <button
                   key={p}
                   onClick={() => setTableSalaryPeriod(p)}
                   className={`px-3 py-1.5 font-medium transition-colors ${
                     tableSalaryPeriod === p
-                      ? "bg-brand-yellow/20 text-brand-yellow"
+                      ? "bg-brand-gold/20 text-brand-gold"
                       : "text-brand-muted hover:text-white hover:bg-white/5"
                   }`}
                 >
@@ -461,7 +486,15 @@ export default function AdminJobsPage() {
                   Quốc gia
                 </th>
                 <th className="text-left px-4 py-3 text-xs text-brand-muted uppercase tracking-wide font-semibold hidden md:table-cell">
-                  Lương / {{ hourly: "Giờ", weekly: "Tuần", monthly: "Tháng", yearly: "Năm" }[tableSalaryPeriod]}
+                  Lương /{" "}
+                  {
+                    {
+                      hourly: "Giờ",
+                      weekly: "Tuần",
+                      monthly: "Tháng",
+                      yearly: "Năm",
+                    }[tableSalaryPeriod]
+                  }
                 </th>
                 <th className="text-left px-4 py-3 text-xs text-brand-muted uppercase tracking-wide font-semibold hidden lg:table-cell">
                   Nguồn đăng
@@ -512,7 +545,7 @@ export default function AdminJobsPage() {
                           </span>
                         )}
                         {job.isFeatured && (
-                          <span className="bg-brand-yellow/20 text-brand-yellow text-[10px] font-bold px-1.5 py-0 rounded-full">
+                          <span className="bg-brand-gold/20 text-brand-gold text-[10px] font-bold px-1.5 py-0 rounded-full">
                             Nổi bật
                           </span>
                         )}
@@ -526,15 +559,29 @@ export default function AdminJobsPage() {
                   </td>
                   <td className="px-4 py-3 hidden md:table-cell">
                     {job.salaryMin || job.salaryMax ? (
-                      <span className="text-brand-yellow text-xs font-medium">
+                      <span className="text-brand-gold text-xs font-medium">
                         {(() => {
                           const cur = job.salaryCurrency || "";
                           if (tableSalaryPeriod === "monthly") {
-                            return formatSalary(job.salaryMin, job.salaryMax, cur);
+                            return formatSalary(
+                              job.salaryMin,
+                              job.salaryMax,
+                              cur,
+                            );
                           }
-                          const minE = job.salaryMin ? getSalaryEstimates(job.salaryMin, "monthly")[tableSalaryPeriod] : null;
-                          const maxE = job.salaryMax ? getSalaryEstimates(job.salaryMax, "monthly")[tableSalaryPeriod] : null;
-                          const range = [minE, maxE].filter(Boolean).join(" – ");
+                          const minE = job.salaryMin
+                            ? getSalaryEstimates(job.salaryMin, "monthly")[
+                                tableSalaryPeriod
+                              ]
+                            : null;
+                          const maxE = job.salaryMax
+                            ? getSalaryEstimates(job.salaryMax, "monthly")[
+                                tableSalaryPeriod
+                              ]
+                            : null;
+                          const range = [minE, maxE]
+                            .filter(Boolean)
+                            .join(" – ");
                           return range ? `${cur} ${range}` : "—";
                         })()}
                       </span>
@@ -554,7 +601,7 @@ export default function AdminJobsPage() {
                         </span>
                       </div>
                     ) : (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-brand-yellow/15 text-brand-yellow border border-brand-yellow/20 font-medium">
+                      <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-brand-gold/15 text-brand-gold border border-brand-gold/20 font-medium">
                         Fly Labour
                       </span>
                     )}
@@ -599,7 +646,7 @@ export default function AdminJobsPage() {
                       </a>
                       <button
                         onClick={() => openEdit(job)}
-                        className="w-7 h-7 rounded-lg flex items-center justify-center text-brand-muted hover:text-brand-yellow hover:bg-brand-yellow/10 transition-colors"
+                        className="w-7 h-7 rounded-lg flex items-center justify-center text-brand-muted hover:text-brand-gold hover:bg-brand-gold/10 transition-colors"
                       >
                         <Pencil size={13} />
                       </button>
@@ -686,13 +733,13 @@ export default function AdminJobsPage() {
                 <div className="flex gap-1.5 text-xs">
                   <button
                     onClick={() => setImgTab("upload")}
-                    className={`px-3 py-1.5 rounded-lg border transition-colors ${imgTab === "upload" ? "bg-brand-yellow/15 border-brand-yellow/30 text-brand-yellow" : "border-brand-border text-brand-muted hover:text-white"}`}
+                    className={`px-3 py-1.5 rounded-lg border transition-colors ${imgTab === "upload" ? "bg-brand-gold/15 border-brand-gold/30 text-brand-gold" : "border-brand-border text-brand-muted hover:text-white"}`}
                   >
                     📁 Upload từ máy
                   </button>
                   <button
                     onClick={() => setImgTab("url")}
-                    className={`px-3 py-1.5 rounded-lg border transition-colors ${imgTab === "url" ? "bg-brand-yellow/15 border-brand-yellow/30 text-brand-yellow" : "border-brand-border text-brand-muted hover:text-white"}`}
+                    className={`px-3 py-1.5 rounded-lg border transition-colors ${imgTab === "url" ? "bg-brand-gold/15 border-brand-gold/30 text-brand-gold" : "border-brand-border text-brand-muted hover:text-white"}`}
                   >
                     🔗 Nhập URL ảnh
                   </button>
@@ -709,11 +756,11 @@ export default function AdminJobsPage() {
                     />
                     <button
                       onClick={() => fileRef.current?.click()}
-                      className="w-full border-2 border-dashed border-brand-border hover:border-brand-yellow/40 rounded-xl py-4 flex flex-col items-center gap-2 text-brand-muted hover:text-white transition-all duration-200 group"
+                      className="w-full border-2 border-dashed border-brand-border hover:border-brand-gold/40 rounded-xl py-4 flex flex-col items-center gap-2 text-brand-muted hover:text-white transition-all duration-200 group"
                     >
                       <Upload
                         size={20}
-                        className="group-hover:text-brand-yellow transition-colors"
+                        className="group-hover:text-brand-gold transition-colors"
                       />
                       <span className="text-sm">Nhấn để chọn ảnh</span>
                       <span className="text-xs opacity-60">
@@ -743,14 +790,14 @@ export default function AdminJobsPage() {
 
                 {/* Suggested images by category */}
                 {form.categoryId && SUGGESTED_IMAGES[form.categoryId] && (
-                  <div className="flex items-center gap-3 p-3 bg-brand-yellow/5 border border-brand-yellow/15 rounded-xl">
+                  <div className="flex items-center gap-3 p-3 bg-brand-gold/5 border border-brand-gold/15 rounded-xl">
                     <img
                       src={SUGGESTED_IMAGES[form.categoryId]}
                       alt="suggested"
                       className="w-12 h-10 rounded-lg object-cover border border-brand-border"
                     />
                     <div className="flex-1">
-                      <p className="text-xs text-brand-yellow font-medium">
+                      <p className="text-xs text-brand-gold font-medium">
                         💡 Ảnh gợi ý theo danh mục
                       </p>
                       <p className="text-xs text-brand-muted mt-0.5">
@@ -877,14 +924,28 @@ export default function AdminJobsPage() {
                   </label>
                   <select
                     value={form.salaryCurrency}
-                    onChange={set("salaryCurrency")}
+                    onChange={handleCurrencyChange}
                     className="input-dark"
                   >
-                    <option value="USD">USD (Mỹ)</option>
-                    <option value="AUD">AUD (Úc)</option>
-                    <option value="CAD">CAD (Canada)</option>
-                    <option value="NZD">NZD (New Zealand)</option>
-                    <option value="EUR">EUR (Châu Âu)</option>
+                    <option value="AUD">🇦🇺 AUD (Úc)</option>
+                    <option value="CAD">🇨🇦 CAD (Canada)</option>
+                    <option value="NZD">🇳🇿 NZD (New Zealand)</option>
+                    <option value="USD">🇺🇸 USD (Mỹ)</option>
+                    <option value="GBP">🇬🇧 GBP (Anh)</option>
+                    <option value="EUR">🇪🇺 EUR (Châu Âu)</option>
+                    <option value="JPY">🇯🇵 JPY (Nhật Bản)</option>
+                    <option value="KRW">🇰🇷 KRW (Hàn Quốc)</option>
+                    <option value="SGD">🇸🇬 SGD (Singapore)</option>
+                    <option value="TWD">🇹🇼 TWD (Đài Loan)</option>
+                    <option value="NOK">🇳🇴 NOK (Na Uy)</option>
+                    <option value="CHF">🇨🇭 CHF (Thụy Sĩ)</option>
+                    <option value="CNY">🇨🇳 CNY (Trung Quốc)</option>
+                    <option value="THB">🇹🇭 THB (Thái Lan)</option>
+                    <option value="INR">🇮🇳 INR (Ấn Độ)</option>
+                    <option value="MYR">🇲🇾 MYR (Malaysia)</option>
+                    <option value="IDR">🇮🇩 IDR (Indonesia)</option>
+                    <option value="PHP">🇵🇭 PHP (Philippines)</option>
+                    <option value="VND">🇻🇳 VND (Việt Nam)</option>
                   </select>
                 </div>
                 <div>
@@ -893,7 +954,15 @@ export default function AdminJobsPage() {
                   </label>
                   <select
                     value={salaryPeriod}
-                    onChange={(e) => setSalaryPeriod(e.target.value as "hourly" | "weekly" | "monthly" | "yearly")}
+                    onChange={(e) =>
+                      setSalaryPeriod(
+                        e.target.value as
+                          | "hourly"
+                          | "weekly"
+                          | "monthly"
+                          | "yearly",
+                      )
+                    }
                     className="input-dark"
                   >
                     <option value="hourly">Theo giờ</option>
@@ -903,24 +972,49 @@ export default function AdminJobsPage() {
                   </select>
                 </div>
                 {(form.salaryMin || form.salaryMax) && (
-                  <div className="sm:col-span-2 p-3 bg-brand-yellow/5 border border-brand-yellow/20 rounded-xl">
-                    <p className="text-xs text-brand-yellow font-semibold mb-2 flex items-center gap-1.5">
-                      <Clock size={12} /> Ước lượng lương ({form.salaryCurrency})
+                  <div className="sm:col-span-2 p-3 bg-brand-gold/5 border border-brand-gold/20 rounded-xl">
+                    <p className="text-xs text-brand-gold font-semibold mb-2 flex items-center gap-1.5">
+                      <Clock size={12} /> Ước lượng lương ({form.salaryCurrency}
+                      )
                     </p>
                     <div className="grid grid-cols-4 gap-2">
-                      {(["hourly", "weekly", "monthly", "yearly"] as const).map((p) => {
-                        const labels = { hourly: "/ giờ", weekly: "/ tuần", monthly: "/ tháng", yearly: "/ năm" };
-                        const minEst = form.salaryMin ? getSalaryEstimates(Number(form.salaryMin), salaryPeriod)[p] : null;
-                        const maxEst = form.salaryMax ? getSalaryEstimates(Number(form.salaryMax), salaryPeriod)[p] : null;
-                        return (
-                          <div key={p} className={`rounded-lg p-2 text-center border ${p === salaryPeriod ? "border-brand-yellow/40 bg-brand-yellow/10" : "border-brand-border bg-brand-dark/40"}`}>
-                            <p className="text-[10px] text-brand-muted mb-1">{labels[p]}</p>
-                            <p className="text-xs font-semibold text-white leading-tight">
-                              {minEst && maxEst ? `${minEst} – ${maxEst}` : minEst || maxEst || "—"}
-                            </p>
-                          </div>
-                        );
-                      })}
+                      {(["hourly", "weekly", "monthly", "yearly"] as const).map(
+                        (p) => {
+                          const labels = {
+                            hourly: "/ giờ",
+                            weekly: "/ tuần",
+                            monthly: "/ tháng",
+                            yearly: "/ năm",
+                          };
+                          const minEst = form.salaryMin
+                            ? getSalaryEstimates(
+                                Number(form.salaryMin),
+                                salaryPeriod,
+                              )[p]
+                            : null;
+                          const maxEst = form.salaryMax
+                            ? getSalaryEstimates(
+                                Number(form.salaryMax),
+                                salaryPeriod,
+                              )[p]
+                            : null;
+                          return (
+                            <div
+                              key={p}
+                              className={`rounded-lg p-2 text-center border ${p === salaryPeriod ? "border-brand-gold/40 bg-brand-gold/10" : "border-brand-border bg-brand-dark/40"}`}
+                            >
+                              <p className="text-[10px] text-brand-muted mb-1">
+                                {labels[p]}
+                              </p>
+                              <p className="text-xs font-semibold text-white leading-tight">
+                                {minEst && maxEst
+                                  ? `${minEst} – ${maxEst}`
+                                  : minEst || maxEst || "—"}
+                              </p>
+                            </div>
+                          );
+                        },
+                      )}
                     </div>
                   </div>
                 )}
@@ -976,10 +1070,30 @@ export default function AdminJobsPage() {
                     onChange={set("status")}
                     className="input-dark"
                   >
-                    <option value="active">Hoạt động</option>
-                    <option value="paused">Tạm dừng</option>
-                    <option value="closed">Đã đóng</option>
-                    <option value="draft">Nháp</option>
+                    <option
+                      value="active"
+                      style={{ backgroundColor: "#10b981", color: "#fff" }}
+                    >
+                      Hoạt động
+                    </option>
+                    <option
+                      value="paused"
+                      style={{ backgroundColor: "#f59e0b", color: "#000" }}
+                    >
+                      Tạm dừng
+                    </option>
+                    <option
+                      value="closed"
+                      style={{ backgroundColor: "#ef4444", color: "#fff" }}
+                    >
+                      Đã đóng
+                    </option>
+                    <option
+                      value="draft"
+                      style={{ backgroundColor: "#6b7280", color: "#fff" }}
+                    >
+                      Nháp
+                    </option>
                   </select>
                 </div>
                 <div className="sm:col-span-2 flex gap-6">
@@ -1001,7 +1115,7 @@ export default function AdminJobsPage() {
                       onChange={(e) =>
                         setForm((f) => ({ ...f, isFeatured: e.target.checked }))
                       }
-                      className="w-4 h-4 accent-brand-yellow"
+                      className="w-4 h-4 accent-brand-gold"
                     />
                     <span className="text-sm text-white">⭐ Nổi bật</span>
                   </label>

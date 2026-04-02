@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Outlet, Navigate } from "react-router-dom";
 import { Bell, X, CheckCheck } from "lucide-react";
 import AdminSidebar from "@/components/admin/AdminSidebar";
@@ -20,7 +20,7 @@ export default function AdminLayout() {
     return <Navigate to="/login" replace />;
   }
 
-  // Load đơn pending mới nhất làm thông báo
+  // Load don pending m?i nh?t l�m th�ng b�o
   const loadNotifs = () => {
     setLoading(true);
     applicationsApi
@@ -35,12 +35,12 @@ export default function AdminLayout() {
 
   useEffect(() => {
     loadNotifs();
-    // Tự refresh mỗi 60 giây
+    // T? refresh m?i 60 gi�y
     const interval = setInterval(loadNotifs, 60000);
     return () => clearInterval(interval);
   }, []);
 
-  // Đóng khi click ra ngoài
+  // ��ng khi click ra ngo�i
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
@@ -53,7 +53,7 @@ export default function AdminLayout() {
 
   const handleOpen = () => {
     setNotifOpen((o) => !o);
-    if (!notifOpen) setUnread(0); // đánh dấu đã đọc khi mở
+    if (!notifOpen) setUnread(0); // d�nh d?u d� d?c khi m?
   };
 
   return (
@@ -82,13 +82,13 @@ export default function AdminLayout() {
         <header className="flex items-center justify-between px-5 py-3 border-b border-brand-border bg-brand-card/80 backdrop-blur shrink-0">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="md:hidden text-gray-400 hover:text-white"
+            className="md:hidden text-slate-900 hover:text-white"
           >
-            ☰
+            ?
           </button>
           <div className="flex-1 hidden md:block">
             <p className="text-xs text-brand-muted">
-              Fly Labour · Admin Dashboard
+              Fly Labour � Admin Dashboard
             </p>
           </div>
 
@@ -97,7 +97,7 @@ export default function AdminLayout() {
             <div ref={notifRef} className="relative">
               <button
                 onClick={handleOpen}
-                className="relative w-9 h-9 rounded-xl bg-brand-dark border border-brand-border flex items-center justify-center text-brand-muted hover:text-white hover:border-brand-yellow/40 transition-colors"
+                className="relative w-9 h-9 rounded-xl bg-brand-dark border border-brand-border flex items-center justify-center text-brand-muted hover:text-white hover:border-brand-gold/40 transition-colors"
               >
                 <Bell size={16} />
                 {unread > 0 && (
@@ -107,15 +107,15 @@ export default function AdminLayout() {
                 )}
               </button>
 
-              {/* Dropdown thông báo */}
+              {/* Dropdown th�ng b�o */}
               {notifOpen && (
                 <div className="absolute right-0 top-full mt-2 w-80 bg-brand-card border border-brand-border rounded-2xl shadow-2xl shadow-black/50 z-50 overflow-hidden">
                   {/* Header */}
                   <div className="flex items-center justify-between px-4 py-3 border-b border-brand-border">
                     <div className="flex items-center gap-2">
-                      <Bell size={14} className="text-brand-yellow" />
+                      <Bell size={14} className="text-brand-gold" />
                       <span className="font-semibold text-white text-sm">
-                        Thông báo
+                        Th�ng b�o
                       </span>
                       {notifications.length > 0 && (
                         <span className="bg-brand-orange text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
@@ -144,9 +144,9 @@ export default function AdminLayout() {
                       </div>
                     ) : notifications.length === 0 ? (
                       <div className="py-10 text-center">
-                        <p className="text-3xl mb-2">🎉</p>
+                        <p className="text-3xl mb-2">??</p>
                         <p className="text-brand-muted text-sm">
-                          Không có thông báo mới
+                          Kh�ng c� th�ng b�o m?i
                         </p>
                       </div>
                     ) : (
@@ -158,7 +158,7 @@ export default function AdminLayout() {
                           >
                             {/* Avatar */}
                             <div
-                              className="w-8 h-8 rounded-lg flex items-center justify-center text-black text-xs font-bold shrink-0 mt-0.5"
+                              className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-900 text-xs font-bold shrink-0 mt-0.5"
                               style={{
                                 background:
                                   "linear-gradient(135deg,#e4a808,#fdd52f)",
@@ -168,10 +168,10 @@ export default function AdminLayout() {
                             </div>
                             <div className="flex-1 min-w-0">
                               <p className="text-white text-xs font-medium">
-                                <span className="text-brand-yellow">
+                                <span className="text-brand-gold">
                                   {app.fullName}
                                 </span>{" "}
-                                vừa ứng tuyển
+                                v?a ?ng tuy?n
                               </p>
                               <p className="text-brand-muted text-xs truncate mt-0.5">
                                 {app.job?.title}
@@ -195,10 +195,10 @@ export default function AdminLayout() {
                   <div className="border-t border-brand-border p-2">
                     <a
                       href="/admin/applications"
-                      className="flex items-center justify-center gap-1.5 w-full py-2 rounded-xl text-xs text-brand-yellow hover:bg-brand-yellow/10 transition-colors font-medium"
+                      className="flex items-center justify-center gap-1.5 w-full py-2 rounded-xl text-xs text-brand-gold hover:bg-brand-gold/10 transition-colors font-medium"
                       onClick={() => setNotifOpen(false)}
                     >
-                      Xem tất cả đơn ứng tuyển →
+                      Xem t?t c? don ?ng tuy?n ?
                     </a>
                   </div>
                 </div>
@@ -207,7 +207,7 @@ export default function AdminLayout() {
 
             {/* Avatar */}
             <div
-              className="w-8 h-8 rounded-xl flex items-center justify-center text-black font-bold text-xs"
+              className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-900 font-bold text-xs"
               style={{ background: "linear-gradient(135deg,#e4a808,#fdd52f)" }}
             >
               {user?.fullName?.charAt(0)}

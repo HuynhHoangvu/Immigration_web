@@ -115,16 +115,16 @@ export default function JobsPage() {
                 <select
                   value={country}
                   onChange={(e) => setParam("country", e.target.value)}
-                  className={`appearance-none h-10 pl-3 pr-8 rounded-xl text-sm border transition-colors cursor-pointer outline-none focus:ring-2 focus:ring-brand-yellow/50
+                  className={`appearance-none h-10 pl-3 pr-8 rounded-xl text-sm border transition-colors cursor-pointer outline-none focus:ring-2 focus:ring-brand-gold/50
         ${
           country
-            ? "bg-brand-yellow text-brand-dark border-brand-yellow font-medium"
-            : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50 dark:bg-[#1e1e1e] dark:border-white/10 dark:text-gray-300 dark:hover:bg-white/10"
+            ? "bg-brand-gold text-brand-dark border-brand-gold font-medium"
+            : "bg-white border-gray-200 text-slate-900 hover:bg-gray-50 dark:bg-[#1e1e1e] dark:border-white/10 dark:text-slate-900 dark:hover:bg-white/10"
         }`}
                 >
                   <option
                     value=""
-                    className="bg-white text-gray-900 dark:bg-[#1e1e1e] dark:text-gray-200"
+                    className="bg-white text-slate-900 dark:bg-[#1e1e1e] dark:text-slate-900"
                   >
                     Tất cả quốc gia
                   </option>
@@ -132,7 +132,7 @@ export default function JobsPage() {
                     <option
                       key={c.value}
                       value={c.value}
-                      className="bg-white text-gray-900 dark:bg-[#1e1e1e] dark:text-gray-200"
+                      className="bg-white text-slate-900 dark:bg-[#1e1e1e] dark:text-slate-900"
                     >
                       {c.label}
                     </option>
@@ -149,16 +149,16 @@ export default function JobsPage() {
                 <select
                   value={jobType}
                   onChange={(e) => setParam("jobType", e.target.value)}
-                  className={`appearance-none h-10 pl-3 pr-8 rounded-xl text-sm border transition-colors cursor-pointer outline-none focus:ring-2 focus:ring-brand-yellow/50
+                  className={`appearance-none h-10 pl-3 pr-8 rounded-xl text-sm border transition-colors cursor-pointer outline-none focus:ring-2 focus:ring-brand-gold/50
         ${
           jobType
-            ? "bg-brand-yellow text-brand-dark border-brand-yellow font-medium"
-            : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50 dark:bg-[#1e1e1e] dark:border-white/10 dark:text-gray-300 dark:hover:bg-white/10"
+            ? "bg-brand-gold text-brand-dark border-brand-gold font-medium"
+            : "bg-white border-gray-200 text-slate-900 hover:bg-gray-50 dark:bg-[#1e1e1e] dark:border-white/10 dark:text-slate-900 dark:hover:bg-white/10"
         }`}
                 >
                   <option
                     value=""
-                    className="bg-white text-gray-900 dark:bg-[#1e1e1e] dark:text-gray-200"
+                    className="bg-white text-slate-900 dark:bg-[#1e1e1e] dark:text-slate-900"
                   >
                     Tất cả loại hình
                   </option>
@@ -166,7 +166,7 @@ export default function JobsPage() {
                     <option
                       key={tp.value}
                       value={tp.value}
-                      className="bg-white text-gray-900 dark:bg-[#1e1e1e] dark:text-gray-200"
+                      className="bg-white text-slate-900 dark:bg-[#1e1e1e] dark:text-slate-900"
                     >
                       {tp.label}
                     </option>
@@ -183,16 +183,16 @@ export default function JobsPage() {
                 <select
                   value={categoryId}
                   onChange={(e) => setParam("categoryId", e.target.value)}
-                  className={`appearance-none h-10 pl-3 pr-8 rounded-xl text-sm border transition-colors cursor-pointer outline-none focus:ring-2 focus:ring-brand-yellow/50
+                  className={`appearance-none h-10 pl-3 pr-8 rounded-xl text-sm border transition-colors cursor-pointer outline-none focus:ring-2 focus:ring-brand-gold/50
         ${
           categoryId
-            ? "bg-brand-yellow text-brand-dark border-brand-yellow font-medium"
-            : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50 dark:bg-[#1e1e1e] dark:border-white/10 dark:text-gray-300 dark:hover:bg-white/10"
+            ? "bg-brand-gold text-brand-dark border-brand-gold font-medium"
+            : "bg-white border-gray-200 text-slate-900 hover:bg-gray-50 dark:bg-[#1e1e1e] dark:border-white/10 dark:text-slate-900 dark:hover:bg-white/10"
         }`}
                 >
                   <option
                     value=""
-                    className="bg-white text-gray-900 dark:bg-[#1e1e1e] dark:text-gray-200"
+                    className="bg-white text-slate-900 dark:bg-[#1e1e1e] dark:text-slate-900"
                   >
                     {j.allCategories}
                   </option>
@@ -200,7 +200,7 @@ export default function JobsPage() {
                     <option
                       key={c.id}
                       value={c.id}
-                      className="bg-white text-gray-900 dark:bg-[#1e1e1e] dark:text-gray-200"
+                      className="bg-white text-slate-900 dark:bg-[#1e1e1e] dark:text-slate-900"
                     >
                       {c.icon} {c.name}
                     </option>
@@ -245,7 +245,7 @@ export default function JobsPage() {
               <select
                 value={sort}
                 onChange={(e) => setParam("sort", e.target.value)}
-                className="appearance-none bg-transparent text-white hover:text-brand-yellow transition-colors cursor-pointer outline-none pr-4"
+                className="appearance-none bg-transparent text-white hover:text-brand-gold transition-colors cursor-pointer outline-none pr-4"
               >
                 {SORT_OPTIONS.map((o) => (
                   <option

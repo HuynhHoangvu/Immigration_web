@@ -82,6 +82,70 @@ All endpoints under `/auth`, `/jobs`, `/applications`, `/users`, `/categories`, 
 Auth: `Authorization: Bearer <JWT>` header injected automatically by Axios interceptor.
 See `fly-labour-frontend/src/services/api.ts:1` for all endpoint definitions.
 
+## Admin — Lưu ý quan trọng
+
+### AdminJobsPage (`fly-labour-frontend/src/pages/admin/AdminJobsPage.tsx`)
+- **Danh mục** trong modal chỉnh sửa: KHÔNG hardcode option nào — chỉ dùng `cats.map()` từ API (`categoriesApi.getAllAdmin()`). Nếu thêm hardcode sẽ gây trùng value và select không đổi được.
+- **Salary calculator (modal):** `salaryPeriod` state (hourly/weekly/monthly/yearly) + hàm `getSalaryEstimates()` tính ước lượng 4 chu kỳ dựa trên 40h/tuần, 52 tuần/năm. Giá trị lưu DB là tháng.
+- **Hiển thị lương bảng:** `tableSalaryPeriod` state — toggle Giờ/Tuần/Tháng/Năm ở thanh search, header cột và cell tự cập nhật theo.
+
+### AdminCategoriesPage (`fly-labour-frontend/src/pages/admin/AdminCategoriesPage.tsx`)
+- Đã kết nối thật vào API — KHÔNG còn dùng `MOCK_CATEGORIES`.
+- Tạo/sửa/xóa/toggle isActive đều gọi `categoriesApi` và reload từ backend.
+- Thêm danh mục mới (như "Dịch vụ") trực tiếp qua trang này, không cần chạy seed hay hardcode.
+
+### Categories — Seed
+- Seed (`fly-labour-backend/src/database/seeds/run-seeds.ts`) chỉ chạy khi DB trống (`catCount === 0`).
+- Trên Railway (DB đang có data) thì seed không có tác dụng — dùng trang Admin để thêm danh mục.
+
+## Mobile App (`fly-labour-mobile/`)
+
+React Native + Expo SDK 51. Cùng folder với backend/frontend.
+
+### Tech
+| Layer | Technology |
+|---|---|
+| Framework | React Native 0.74 + Expo SDK 51 |
+| Navigation | Expo Router v3 (file-based) |
+| Styling | NativeWind v4 (Tailwind syntax) |
+| State / Auth | Zustand — token lưu `expo-secure-store` (thay localStorage) |
+| Data fetch | TanStack React Query 5 + Axios |
+| Build | Expo EAS Build |
+
+### Cấu trúc chính
+```
+fly-labour-mobile/
+  app/
+    _layout.tsx          # Root: QueryClient, AuthGuard, Toast
+    (auth)/              # login, register
+    (tabs)/              # index (home), jobs, applications, profile
+    jobs/[id].tsx        # Chi tiết + form nộp đơn
+    employer/index.tsx   # Quản lý tin đăng (employer only)
+    profile/edit.tsx     # Chỉnh sửa hồ sơ + đổi mật khẩu
+  src/
+    services/api.ts      # Axios — đọc token từ SecureStore
+    store/authStore.ts   # hydrate() gọi khi app khởi động
+    types/index.ts       # Copy từ web
+    utils/helpers.ts     # formatSalary, timeAgo, getImageUrl...
+    constants/colors.ts  # Bảng màu dark theme
+    components/ui/       # Button, Input, Badge, LoadingScreen
+    components/jobs/     # JobCard
+    components/home/     # HeroBanner, CategoryGrid
+```
+
+### Lưu ý quan trọng
+- **Env:** tạo file `.env` từ `.env.example`, đặt `EXPO_PUBLIC_API_URL` trỏ tới Railway backend
+- **Auth guard:** nằm trong `app/_layout.tsx` — tự redirect login/tabs dựa trên `isAuthenticated`
+- **Token:** lưu key `fly-labour-token` trong SecureStore, `hydrate()` restore khi mở app
+- **Employer guard:** kiểm tra `user.role === 'employer'` ở component level, chưa có route guard riêng
+
+### Chạy dev
+```bash
+cd fly-labour-mobile
+npm install
+npx expo start
+```
+
 ## Additional Documentation
 
 - [Architectural Patterns](.claude/docs/architectural_patterns.md) — module structure, guards, state management, API conventions

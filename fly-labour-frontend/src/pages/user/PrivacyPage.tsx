@@ -84,7 +84,7 @@ export default function PrivacyPage() {
       <section className="relative pt-32 pb-16 px-6 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#1a0f00] via-brand-dark to-brand-dark" />
         <div className="relative max-w-3xl mx-auto text-center">
-          <Shield size={40} className="text-brand-yellow mx-auto mb-4" />
+          <Shield size={40} className="text-brand-gold mx-auto mb-4" />
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">Chính sách Bảo mật</h1>
           <p className="text-brand-muted">Cập nhật lần cuối: 01/01/2025</p>
           <p className="text-brand-muted text-sm mt-3 max-w-xl mx-auto">
@@ -105,7 +105,7 @@ export default function PrivacyPage() {
                     const parts = line.replace('• **', '').split(':**')
                     return (
                       <p key={i} className="flex gap-2 mt-2">
-                        <span className="text-brand-yellow shrink-0">•</span>
+                        <span className="text-brand-gold shrink-0">•</span>
                         <span><strong className="text-white">{parts[0]}:</strong>{parts[1]}</span>
                       </p>
                     )
@@ -113,7 +113,7 @@ export default function PrivacyPage() {
                   if (line.startsWith('• ')) {
                     return (
                       <p key={i} className="flex gap-2 mt-2">
-                        <span className="text-brand-yellow shrink-0">•</span>
+                        <span className="text-brand-gold shrink-0">•</span>
                         <span>{line.slice(2)}</span>
                       </p>
                     )

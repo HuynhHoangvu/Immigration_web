@@ -1,91 +1,131 @@
-import { useState, useEffect, useCallback } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { ChevronLeft, ChevronRight, Search, MapPin, Briefcase, Play, Pause } from 'lucide-react'
-import { useT } from '@/hooks/useT'
+import { useState, useEffect, useCallback } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Search,
+  MapPin,
+  Briefcase,
+  Play,
+  Pause,
+} from "lucide-react";
+import { useT } from "@/hooks/useT";
 
 const SLIDE_CONFIG = [
-  {
-    ctaLink: '/jobs?country=australia',
-    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600&q=80&fit=crop',
-    imageAlt: 'Australia farm',
-    accent: '#fdd52f',
-  },
-  {
-    ctaLink: '/jobs?country=canada',
-    image: 'https://images.unsplash.com/photo-1503614472-8c93d56e92ce?w=1600&q=80&fit=crop',
-    imageAlt: 'Canada landscape',
-    accent: '#e4a808',
-  },
-  {
-    ctaLink: '/jobs?country=new_zealand',
-    image: 'https://images.unsplash.com/photo-1469521669194-babb45599def?w=1600&q=80&fit=crop',
-    imageAlt: 'New Zealand nature',
-    accent: '#D97706',
-  },
-  {
-    ctaLink: '/jobs?country=japan',
-    image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1600&q=80&fit=crop',
-    imageAlt: 'Japan Tokyo night skyline',
-    accent: '#E83929',
-  },
-  {
-    ctaLink: '/jobs?country=south_korea',
-    image: 'https://images.unsplash.com/photo-1549692520-acc6669e2f0c?w=1600&q=80&fit=crop',
-    imageAlt: 'South Korea Seoul',
-    accent: '#4A90D9',
-  },
-  {
-    ctaLink: '/jobs?country=uk',
-    image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1600&q=80&fit=crop',
-    imageAlt: 'United Kingdom London',
-    accent: '#C8102E',
-  },
-  {
-    ctaLink: '/jobs?country=germany',
-   image: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=1600&q=80&fit=crop',
-    imageAlt: 'Germany landscape',
-    accent: '#F5A623',
-  },
-]
+  {
+    ctaLink: "/jobs?country=australia",
+    image:
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600&q=80&fit=crop",
+    imageAlt: "Australia farm",
+    accent: "#fdd52f",
+  },
+  {
+    ctaLink: "/jobs?country=canada",
+    image:
+      "https://images.unsplash.com/photo-1503614472-8c93d56e92ce?w=1600&q=80&fit=crop",
+    imageAlt: "Canada landscape",
+    accent: "#e4a808",
+  },
+  {
+    ctaLink: "/jobs?country=new_zealand",
+    image:
+      "https://images.unsplash.com/photo-1469521669194-babb45599def?w=1600&q=80&fit=crop",
+    imageAlt: "New Zealand nature",
+    accent: "#D97706",
+  },
+  {
+    ctaLink: "/jobs?country=japan",
+    image:
+      "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1600&q=80&fit=crop",
+    imageAlt: "Japan Tokyo night skyline",
+    accent: "#E83929",
+  },
+  {
+    ctaLink: "/jobs?country=south_korea",
+    image:
+      "https://images.unsplash.com/photo-1549692520-acc6669e2f0c?w=1600&q=80&fit=crop",
+    imageAlt: "South Korea Seoul",
+    accent: "#4A90D9",
+  },
+  {
+    ctaLink: "/jobs?country=uk",
+    image:
+      "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1600&q=80&fit=crop",
+    imageAlt: "United Kingdom London",
+    accent: "#C8102E",
+  },
+  {
+    ctaLink: "/jobs?country=germany",
+    image:
+      "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=1600&q=80&fit=crop",
+    imageAlt: "Germany landscape",
+    accent: "#F5A623",
+  },
+];
 
 const TICKER_ITEMS = [
-  '🇦🇺 Sydney · NSW', '🇦🇺 Melbourne · VIC', '🇦🇺 Brisbane · QLD',
-  '🇦🇺 Perth · WA', '🇦🇺 Adelaide · SA',
-  '🇨🇦 Toronto · ON', '🇨🇦 Vancouver · BC', '🇨🇦 Calgary · AB', '🇨🇦 Montreal · QC',
-  '🇳🇿 Auckland', '🇳🇿 Wellington', '🇳🇿 Christchurch',
-  '🇯🇵 Tokyo', '🇯🇵 Osaka', '🇯🇵 Nagoya', '🇯🇵 Yokohama',
-  '🇰🇷 Seoul', '🇰🇷 Busan', '🇰🇷 Incheon',
-  '🇬🇧 London', '🇬🇧 Manchester', '🇬🇧 Birmingham',
-  '🇩🇪 Berlin', '🇩🇪 Munich', '🇩🇪 Hamburg', '🇩🇪 Frankfurt',
-]
+  "🇦🇺 Sydney · NSW",
+  "🇦🇺 Melbourne · VIC",
+  "🇦🇺 Brisbane · QLD",
+  "🇦🇺 Perth · WA",
+  "🇦🇺 Adelaide · SA",
+  "🇨🇦 Toronto · ON",
+  "🇨🇦 Vancouver · BC",
+  "🇨🇦 Calgary · AB",
+  "🇨🇦 Montreal · QC",
+  "🇳🇿 Auckland",
+  "🇳🇿 Wellington",
+  "🇳🇿 Christchurch",
+  "🇯🇵 Tokyo",
+  "🇯🇵 Osaka",
+  "🇯🇵 Nagoya",
+  "🇯🇵 Yokohama",
+  "🇰🇷 Seoul",
+  "🇰🇷 Busan",
+  "🇰🇷 Incheon",
+  "🇬🇧 London",
+  "🇬🇧 Manchester",
+  "🇬🇧 Birmingham",
+  "🇩🇪 Berlin",
+  "🇩🇪 Munich",
+  "🇩🇪 Hamburg",
+  "🇩🇪 Frankfurt",
+];
 
 export default function HeroBanner() {
-  const [current, setCurrent] = useState(0)
-  const [search, setSearch] = useState('')
-  const [playing, setPlaying] = useState(true)
-  const [loaded, setLoaded] = useState<boolean[]>(() => SLIDE_CONFIG.map(() => false))
-  const navigate = useNavigate()
-  const { t } = useT()
-  const h = t('home')
+  const [current, setCurrent] = useState(0);
+  const [search, setSearch] = useState("");
+  const [playing, setPlaying] = useState(true);
+  const [loaded, setLoaded] = useState<boolean[]>(() =>
+    SLIDE_CONFIG.map(() => false),
+  );
+  const navigate = useNavigate();
+  const { t } = useT();
+  const h = t("home");
 
-  const next = useCallback(() => setCurrent(c => (c + 1) % SLIDE_CONFIG.length), [])
-  const prev = () => setCurrent(c => (c - 1 + SLIDE_CONFIG.length) % SLIDE_CONFIG.length)
+  const next = useCallback(
+    () => setCurrent((c) => (c + 1) % SLIDE_CONFIG.length),
+    [],
+  );
+  const prev = () =>
+    setCurrent((c) => (c - 1 + SLIDE_CONFIG.length) % SLIDE_CONFIG.length);
 
-  useEffect(() => {
-    if (!playing) return
-    const timer = setInterval(next, 9000)
-    return () => clearInterval(timer)
-  }, [next, playing])
+  useEffect(() => {
+    if (!playing) return;
+    const timer = setInterval(next, 9000);
+    return () => clearInterval(timer);
+  }, [next, playing]);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (search.trim()) navigate(`/jobs?search=${encodeURIComponent(search.trim())}`)
-  }
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (search.trim())
+      navigate(`/jobs?search=${encodeURIComponent(search.trim())}`);
+  };
 
-  const config = SLIDE_CONFIG[current]
-  const slide = h.slides[current]
+  const config = SLIDE_CONFIG[current];
+  const slide = h.slides[current];
 
-  return (
+  return (
     <section className="hero-banner relative min-h-screen flex flex-col overflow-hidden">
             {/* Background images with crossfade */}     {" "}
       {SLIDE_CONFIG.map((s, i) => (
@@ -115,8 +155,7 @@ export default function HeroBanner() {
                  {" "}
         </div>
       ))}
-            {/* Overlay — nhẹ hơn để ảnh hiện rõ */}
-           {" "}
+            {/* Overlay — nhẹ hơn để ảnh hiện rõ */}     {" "}
       <div
         className="absolute inset-0 z-10"
         style={{
@@ -124,8 +163,7 @@ export default function HeroBanner() {
             "linear-gradient(105deg, rgba(10,10,10,0.25) 0%, rgba(10,10,10,0.15) 50%, rgba(10,10,10,0.05) 100%)",
         }}
       />
-            {/* Grain texture */}
-           {" "}
+            {/* Grain texture */}     {" "}
       <div
         className="absolute inset-0 z-10 opacity-[0.03] pointer-events-none"
         style={{
@@ -133,8 +171,7 @@ export default function HeroBanner() {
             "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
         }}
       />
-            {/* Accent glow */}
-           {" "}
+            {/* Accent glow */}     {" "}
       <div
         className="absolute top-1/3 right-1/3 w-80 h-80 rounded-full blur-3xl z-10 pointer-events-none transition-all duration-1000"
         style={{ background: config.accent, opacity: 0.07 }}
@@ -154,8 +191,8 @@ export default function HeroBanner() {
               }}
             >
                            {" "}
-              <span className="text-sm text-white">{slide.badge}</span>
-                           {" "}
+              <span className="text-sm text-white">{slide.badge}</span>         
+                 {" "}
               <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
                            {" "}
               <span className="text-xs text-green-400 font-medium">
@@ -174,17 +211,18 @@ export default function HeroBanner() {
               <span style={{ color: "#ffffff", display: "inline" }}>
                 {slide.title}
               </span>
-                            <br />            
+                            <br />           
               <span style={{ color: config.accent }}>{slide.titleAccent}</span> 
                  
             </h1>
                        {" "}
             <p
               className="text-white text-lg mb-8 max-w-xl leading-relaxed"
-              style={{ 
-                animationDelay: "0.1s", 
+              style={{
+                animationDelay: "0.1s",
                 color: "#ffffff",
-                animation: "bounceInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards"
+                animation:
+                  "bounceInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards",
               }}
             >
               {slide.subtitle}
@@ -274,7 +312,7 @@ export default function HeroBanner() {
                     {val}
                   </p>
                                    {" "}
-                  <p className="text-gray-400 text-xs mt-0.5">
+                  <p className="text-white text-xs mt-0.5">
                     {slide.statsLabels[i]}
                   </p>
                                  {" "}
@@ -313,7 +351,7 @@ export default function HeroBanner() {
             className={`px-3 py-2 rounded-xl text-sm transition-all duration-200 border backdrop-blur-sm ${
               i === current
                 ? "text-white"
-                : "text-gray-300 border-white/20 bg-white/10 hover:text-white"
+                : "text-slate-900 border-white/20 bg-white/10 hover:text-white"
             }`}
             style={
               i === current
@@ -378,7 +416,7 @@ export default function HeroBanner() {
                {" "}
         <div className="ticker-wrap">
                    {" "}
-          <div className="ticker-content text-xs text-brand-muted">
+          <div className="ticker-content text-xs text-white/70">
                        {" "}
             {[...TICKER_ITEMS, ...TICKER_ITEMS].map((loc, i) => (
               <span key={i} className="inline-flex items-center gap-1.5 mr-8">
@@ -393,7 +431,8 @@ export default function HeroBanner() {
         </div>
              {" "}
       </div>
-         {" "}      <style>{`
+         {" "}
+      <style>{`
         @keyframes bounceInUp {
           0% {
             opacity: 0;
@@ -404,6 +443,7 @@ export default function HeroBanner() {
             transform: translateY(0) scale(1);
           }
         }
-      `}</style>    </section>
+      `}</style>{" "}
+    </section>
   );
 }

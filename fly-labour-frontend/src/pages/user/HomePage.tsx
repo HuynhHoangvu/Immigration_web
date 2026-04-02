@@ -37,7 +37,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-end justify-between mb-10">
             <div>
-              <p className="text-brand-yellow text-sm font-semibold uppercase tracking-widest mb-2">
+              <p className="text-brand-gold text-sm font-semibold uppercase tracking-widest mb-2">
                 {h.latestBadge}
               </p>
               <h2 className="section-title">
@@ -79,17 +79,19 @@ export default function HomePage() {
       <section className="py-16 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <div className="card-dark p-12 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-brand-yellow/5 via-transparent to-brand-orange/5" />
+            <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/5 via-transparent to-brand-orange/5" />
             <div className="relative">
-              <p className="text-brand-yellow font-semibold text-sm uppercase tracking-widest mb-3">
+              <p className="text-brand-gold font-semibold text-sm uppercase tracking-widest mb-3">
                 {h.ctaBadge}
               </p>
-              <h2 className="font-display text-4xl md:text-5xl text-white tracking-wide mb-4">
+              <h2 className="font-display text-4xl md:text-5xl text-amber-600 tracking-wide mb-4">
                 {h.ctaTitle}
                 <br />
                 <span className="gradient-text">{h.ctaTitleAccent}</span>
               </h2>
-              <p className="text-gray-400 mb-8 max-w-lg mx-auto">{h.ctaDesc}</p>
+              <p className="text-slate-900 dark:text-gray-100 mb-8 max-w-lg mx-auto">
+                {h.ctaDesc}
+              </p>
               <div className="flex justify-center gap-4 flex-wrap">
                 <Link to="/register" className="btn-primary px-8 py-3">
                   {h.ctaRegister}

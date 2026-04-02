@@ -6,15 +6,15 @@
 
 /* ── Theme variables ──────────────────────────────────────── */
 :root {
-  --surface:       #F5EAE0;       /* Earth/brown tone background */
-  --surface-card:  #FFFFFF;       /* White cards */
-  --surface-panel: #F9F5F0;       /* Slightly darker for panel/input bg */
-  --text-base:     #3E2723;       /* Dark brown text */
-  --text-muted:    #8D6E63;       /* Brown-gray for muted text */
-  --border-col:    #EFEBE9;       /* Light brown border */
-  --border-line:   #D7CCC8;       /* Darker brown border */
-  --scrollbar-track: #EFE0D9;     /* Brown-tinted scrollbar */
-  --accent-primary: #e4a808;      /* Gold remains constant */
+  --surface:       #FFFFFF;       /* White light background */
+  --surface-card:  #F8FAFC;       /* Slightly off-white cards */
+  --surface-panel: #F1F5F9;       /* Slightly darker for panel/input bg */
+  --text-base:     #1a1f3a;       /* Navy dark text */
+  --text-muted:    #64748b;       /* Gray-blue for muted text */
+  --border-col:    #E2E8F0;       /* Light gray-blue border */
+  --border-line:   #CBD5E1;       /* Darker gray-blue border */
+  --scrollbar-track: #E2E8F0;     /* Gray-blue-tinted scrollbar */
+  --accent-primary: #e4a808;      /* Gold primary */
   --accent-secondary: #fdd52f;    /* Light gold */
 }
 
@@ -24,15 +24,15 @@
 }
 
 html.dark {
-  --surface:       #121212;        /* Dark background */
-  --surface-card:  #1E1E1E;        /* Card background */
-  --surface-panel: #2A2A2A;        /* Panel background */
-  --text-base:     #E0E0E0;        /* Light text */
-  --text-muted:    #9ca3af;        /* Muted light text */
-  --border-col:    #333333;        /* Dark border */
-  --border-line:   #404040;        /* Darker border */
-  --scrollbar-track: #1E1E1E;      /* Dark scrollbar */
-  --accent-primary: #e4a808;       /* Gold remains constant */
+  --surface:       #1a1f3a;        /* Navy dark background */
+  --surface-card:  #243556;        /* Navy card background */
+  --surface-panel: #2d3e5f;        /* Navy panel background */
+  --text-base:     #F1F5F9;        /* Light text */
+  --text-muted:    #cbd5e1;        /* Muted light text */
+  --border-col:    #334155;        /* Navy border */
+  --border-line:   #475569;        /* Darker navy border */
+  --scrollbar-track: #1a1f3a;      /* Navy scrollbar */
+  --accent-primary: #e4a808;       /* Gold primary */
   --accent-secondary: #fdd52f;     /* Light gold */
 }
 
@@ -99,6 +99,8 @@ html.dark {
   .hero-banner .text-white,
   .hero-banner h1,
   .hero-banner h2 { color: #ffffff !important; }
+  .hero-banner .text-slate-900 { color: rgba(255,255,255,0.7) !important; }
+  .hero-banner .text-brand-muted { color: rgba(255,255,255,0.7) !important; }
   .hero-banner .text-gray-300 { color: rgba(255,255,255,0.85) !important; }
   .hero-banner .text-gray-400 { color: rgba(255,255,255,0.65) !important; }
 
@@ -113,7 +115,7 @@ html.dark {
   /* Selection */
   ::selection {
     background: rgba(228, 168, 8, 0.30);
-    color: #ffea80;
+    color: #e4a808;
   }
 }
 
@@ -144,14 +146,14 @@ html.dark {
     font-family: 'Montserrat', sans-serif;
     font-size: 0.875rem;
     font-weight: 600;
-    color: #ffea80 !important;
-    border: 1.5px solid #ffea80;
+    color: #e4a808 !important;
+    border: 1.5px solid #e4a808;
     background: transparent;
   }
   .btn-outline:hover {
-    background: rgba(255, 234, 128, 0.08);
-    border-color: #f2ee8c;
-    color: #f2ee8c !important;
+    background: rgba(228, 168, 8, 0.08);
+    border-color: #fdd52f;
+    color: #fdd52f !important;
   }
 
   /* ── Cards ────────────────────────────────────────────── */
@@ -198,7 +200,7 @@ html.dark {
     @apply inline-flex items-center gap-1 text-[11px] font-semibold
            px-2.5 py-0.5 rounded-lg;
     background: rgba(228, 168, 8, 0.10);
-    color: #ffea80;
+    color: #e4a808;
     border: 1px solid rgba(228, 168, 8, 0.25);
   }
 
@@ -214,7 +216,7 @@ html.dark {
 
   .section-label {
     @apply text-xs font-bold uppercase tracking-[0.18em];
-    color: #ffea80;
+    color: #fdd52f;
     font-family: 'Montserrat', sans-serif;
   }
 
@@ -239,14 +241,14 @@ html.dark {
     border: 1px solid rgba(228, 168, 8, 0.15);
   }
   html.dark .glass {
-    background: rgba(30, 30, 30, 0.85);
+    background: rgba(36, 53, 86, 0.85);
   }
   html:not(.dark) .glass {
     background: rgba(255, 255, 255, 0.85);
   }
 
   .glass-gold {
-    background: rgba(253, 213, 47, 0.08);
+    background: rgba(228, 168, 8, 0.08);
     backdrop-filter: blur(12px);
     border: 1px solid rgba(228, 168, 8, 0.18);
   }

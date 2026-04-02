@@ -1,4 +1,4 @@
-﻿import { useState } from 'react'
+import { useState } from 'react'
 import { Outlet, Navigate, Link, useLocation } from 'react-router-dom'
 import { LayoutDashboard, Briefcase, ClipboardList, LogOut, X, Home, ChevronRight, UserCircle } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
@@ -6,10 +6,10 @@ import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 
 const NAV = [
-  { label: 'Tổng quan',       icon: LayoutDashboard, href: '/employer' },
-  { label: 'Tin tuyển dụng',  icon: Briefcase,       href: '/employer/jobs' },
-  { label: 'Hồ sơ ứng viên',  icon: ClipboardList,   href: '/employer/applications' },
-  { label: 'Hồ sơ công ty',   icon: UserCircle,      href: '/employer/profile' },
+  { label: 'T?ng quan',       icon: LayoutDashboard, href: '/employer' },
+  { label: 'Tin tuy?n d?ng',  icon: Briefcase,       href: '/employer/jobs' },
+  { label: 'H? so ?ng vi�n',  icon: ClipboardList,   href: '/employer/applications' },
+  { label: 'H? so c�ng ty',   icon: UserCircle,      href: '/employer/profile' },
 ]
 
 function Sidebar({ mobile, onClose }: { mobile?: boolean; onClose?: () => void }) {
@@ -28,11 +28,11 @@ function Sidebar({ mobile, onClose }: { mobile?: boolean; onClose?: () => void }
       <div className="flex items-center justify-between p-5 border-b border-brand-border">
         <Link to="/" className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#e4a808,#fdd52f)' }}>
-            <span className="font-display text-sm text-black font-black">FL</span>
+            <span className="font-display text-sm text-slate-900 font-black">FL</span>
           </div>
           <div>
             <p className="font-display text-sm text-white tracking-wider">FLY <span style={{ color: '#fdd52f' }}>LABOUR</span></p>
-            <p className="text-xs text-brand-muted -mt-0.5">Cổng Nhà tuyển dụng</p>
+            <p className="text-xs text-brand-muted -mt-0.5">C?ng Nh� tuy?n d?ng</p>
           </div>
         </Link>
         {mobile && (
@@ -43,13 +43,13 @@ function Sidebar({ mobile, onClose }: { mobile?: boolean; onClose?: () => void }
       </div>
 
       <div className="px-4 py-4 border-b border-brand-border">
-        <div className="flex items-center gap-3 p-3 bg-brand-yellow/5 rounded-xl">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center text-black font-bold text-xs" style={{ background: 'linear-gradient(135deg,#e4a808,#fdd52f)' }}>
+        <div className="flex items-center gap-3 p-3 bg-brand-gold/5 rounded-xl">
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-900 font-bold text-xs" style={{ background: 'linear-gradient(135deg,#e4a808,#fdd52f)' }}>
             {user?.fullName?.charAt(0) || 'E'}
           </div>
           <div className="min-w-0">
             <p className="text-white text-sm font-medium truncate">{user?.companyName || user?.fullName}</p>
-            <p className="text-brand-yellow text-xs">Nhà tuyển dụng</p>
+            <p className="text-brand-gold text-xs">Nh� tuy?n d?ng</p>
           </div>
         </div>
       </div>
@@ -64,13 +64,13 @@ function Sidebar({ mobile, onClose }: { mobile?: boolean; onClose?: () => void }
               onClick={onClose}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 group ${
                 isActive
-                  ? 'bg-brand-yellow/15 text-brand-yellow border border-brand-yellow/20'
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+                  ? 'bg-brand-gold/15 text-brand-gold border border-brand-gold/20'
+                  : 'text-slate-900 hover:text-white hover:bg-white/5'
               }`}
             >
-              <item.icon size={16} className={isActive ? 'text-brand-yellow' : 'text-brand-muted group-hover:text-white'} />
+              <item.icon size={16} className={isActive ? 'text-brand-gold' : 'text-brand-muted group-hover:text-white'} />
               <span className="flex-1">{item.label}</span>
-              {isActive && <ChevronRight size={13} className="text-brand-yellow" />}
+              {isActive && <ChevronRight size={13} className="text-brand-gold" />}
             </Link>
           )
         })}
@@ -78,10 +78,10 @@ function Sidebar({ mobile, onClose }: { mobile?: boolean; onClose?: () => void }
 
       <div className="p-3 border-t border-brand-border">
         <button onClick={handleLogout} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-red-400 hover:bg-red-500/10 transition-colors">
-          <LogOut size={16} /> Đăng xuất
+          <LogOut size={16} /> �ang xu?t
         </button>
         <Link to="/" className="mt-1 w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-brand-muted hover:text-white hover:bg-white/5 transition-colors">
-          <Home size={16} /> Về trang chính
+          <Home size={16} /> V? trang ch�nh
         </Link>
       </div>
     </div>
@@ -113,9 +113,9 @@ export default function EmployerLayout() {
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <header className="flex items-center justify-between px-5 py-3 border-b border-brand-border bg-brand-card/80 backdrop-blur shrink-0">
-          <button onClick={() => setSidebarOpen(true)} className="md:hidden text-gray-400 hover:text-white">☰</button>
-          <p className="text-xs text-brand-muted hidden md:block">Fly Labour · Cổng Nhà tuyển dụng</p>
-          <div className="w-8 h-8 rounded-xl flex items-center justify-center text-black font-bold text-xs" style={{ background: 'linear-gradient(135deg,#e4a808,#fdd52f)' }}>
+          <button onClick={() => setSidebarOpen(true)} className="md:hidden text-slate-900 hover:text-white">?</button>
+          <p className="text-xs text-brand-muted hidden md:block">Fly Labour � C?ng Nh� tuy?n d?ng</p>
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-900 font-bold text-xs" style={{ background: 'linear-gradient(135deg,#e4a808,#fdd52f)' }}>
             {user?.fullName?.charAt(0)}
           </div>
         </header>

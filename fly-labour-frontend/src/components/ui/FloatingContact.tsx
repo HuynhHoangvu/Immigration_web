@@ -85,8 +85,8 @@ export default function FloatingContact() {
           style={{ background: 'linear-gradient(135deg, #e4a808, #fdd52f)' }}
         >
           {open
-            ? <X size={22} className="text-black" />
-            : <MessageCircle size={22} className="text-black" />
+            ? <X size={22} className="text-slate-900" />
+            : <MessageCircle size={22} className="text-slate-900" />
           }
         </button>
       </div>

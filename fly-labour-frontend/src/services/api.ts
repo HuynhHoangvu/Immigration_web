@@ -23,13 +23,19 @@ api.interceptors.request.use((config) => {
   return config
 })
 
-// Nếu token hết hạn (401) → tự động logout
+// Nếu token hết hạn (401) → tự động logout (chỉ khi gọi protected endpoint)
 api.interceptors.response.use(
   (res) => res,
   (err) => {
     if (err.response?.status === 401) {
-      localStorage.removeItem('fly-labour-auth')
-      window.location.href = '/login'
+      // Chỉ redirect khi gọi protected endpoints (admin, employer, profile, applications)
+      const protectedRoutes = ['/admin', '/employer', '/profile', '/applications/my', '/users/me']
+      const isProtectedEndpoint = protectedRoutes.some(route => err.config?.url?.includes(route))
+      
+      if (isProtectedEndpoint) {
+        localStorage.removeItem('fly-labour-auth')
+        window.location.href = '/login'
+      }
     }
     return Promise.reject(err)
   }

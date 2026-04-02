@@ -1,4 +1,4 @@
-﻿import { useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, UserPlus, Briefcase, User } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
@@ -64,7 +64,7 @@ export default function RegisterPage() {
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-2 mb-5">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#e4a808,#fdd52f)' }}>
-              <span className="font-display text-lg text-black font-black">FL</span>
+              <span className="font-display text-lg text-slate-900 font-black">FL</span>
             </div>
             <span className="font-display text-2xl text-white tracking-wider">FLY <span style={{ color: '#fdd52f' }}>LABOUR</span></span>
           </Link>
@@ -80,8 +80,8 @@ export default function RegisterPage() {
               onClick={() => setAccountType('user')}
               className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${
                 accountType === 'user'
-                  ? 'border-brand-yellow bg-brand-yellow/10 text-brand-yellow'
-                  : 'border-brand-border text-gray-400 hover:border-brand-yellow/40'
+                  ? 'border-brand-gold bg-brand-gold/10 text-brand-gold'
+                  : 'border-brand-border text-slate-900 hover:border-brand-gold/40'
               }`}
             >
               <User size={22} />
@@ -95,8 +95,8 @@ export default function RegisterPage() {
               onClick={() => setAccountType('employer')}
               className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${
                 accountType === 'employer'
-                  ? 'border-brand-yellow bg-brand-yellow/10 text-brand-yellow'
-                  : 'border-brand-border text-gray-400 hover:border-brand-yellow/40'
+                  ? 'border-brand-gold bg-brand-gold/10 text-brand-gold'
+                  : 'border-brand-border text-slate-900 hover:border-brand-gold/40'
               }`}
             >
               <Briefcase size={22} />
@@ -157,8 +157,8 @@ export default function RegisterPage() {
 
             <p className="text-xs text-brand-muted">
               {a.termsText}{' '}
-              <Link to="/" className="text-brand-yellow">{a.termsLink}</Link> {a.and}{' '}
-              <Link to="/" className="text-brand-yellow">{a.privacyLink}</Link>.
+              <Link to="/" className="text-brand-gold">{a.termsLink}</Link> {a.and}{' '}
+              <Link to="/" className="text-brand-gold">{a.privacyLink}</Link>.
             </p>
 
             <button type="submit" disabled={loading} className="btn-primary w-full py-3.5 flex items-center justify-center gap-2">
@@ -171,7 +171,7 @@ export default function RegisterPage() {
 
           <p className="text-center text-sm text-brand-muted mt-6">
             {a.hasAccount}{' '}
-            <Link to="/login" className="text-brand-yellow hover:text-brand-orange transition-colors font-medium">{a.signInLink}</Link>
+            <Link to="/login" className="text-brand-gold hover:text-brand-orange transition-colors font-medium">{a.signInLink}</Link>
           </p>
         </div>
       </div>

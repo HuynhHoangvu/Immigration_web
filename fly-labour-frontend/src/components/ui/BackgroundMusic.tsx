@@ -136,9 +136,9 @@ export default function BackgroundMusic({ autoPlay = true }: Props) {
                 type="range" min="0" max="1" step="0.05"
                 value={volume}
                 onChange={e => setVolume(parseFloat(e.target.value))}
-                className="w-24 accent-brand-yellow cursor-pointer"
+                className="w-24 accent-brand-gold cursor-pointer"
               />
-              <Volume2 size={12} className="text-brand-yellow" />
+              <Volume2 size={12} className="text-brand-gold" />
             </div>
             <p className="text-center text-xs text-brand-muted mt-1">{Math.round(volume * 100)}%</p>
           </div>
@@ -156,14 +156,14 @@ export default function BackgroundMusic({ autoPlay = true }: Props) {
           {/* Play/Pause */}
           <button
             onClick={togglePlay}
-            className="flex items-center gap-2 bg-brand-card border border-brand-border hover:border-brand-yellow/50 rounded-2xl px-3 py-2 transition-all duration-200 group shadow-lg"
+            className="flex items-center gap-2 bg-brand-card border border-brand-border hover:border-brand-gold/50 rounded-2xl px-3 py-2 transition-all duration-200 group shadow-lg"
             title={playing ? 'Tắt nhạc' : 'Bật nhạc'}
           >
             {playing ? (
               <div className="flex items-end gap-0.5 h-4">
                 {[1, 2, 3, 4].map(i => (
                   <div key={i}
-                    className="w-0.5 bg-brand-yellow rounded-full"
+                    className="w-0.5 bg-brand-gold rounded-full"
                     style={{
                       height: `${Math.random() * 60 + 40}%`,
                       animation: `musicBar 0.${4 + i}s ease-in-out infinite alternate`,
@@ -173,7 +173,7 @@ export default function BackgroundMusic({ autoPlay = true }: Props) {
                 ))}
               </div>
             ) : (
-              <Music size={14} className="text-brand-muted group-hover:text-brand-yellow transition-colors" />
+              <Music size={14} className="text-brand-muted group-hover:text-brand-gold transition-colors" />
             )}
             <span className="text-xs text-brand-muted group-hover:text-white transition-colors">
               {playing ? 'Đang phát' : 'Nhạc nền'}
@@ -183,7 +183,7 @@ export default function BackgroundMusic({ autoPlay = true }: Props) {
           {/* Skip */}
           <button
             onClick={handleSkip}
-            className="w-8 h-8 rounded-xl bg-brand-card border border-brand-border hover:border-brand-yellow/50 flex items-center justify-center text-brand-muted hover:text-brand-yellow transition-colors shadow-lg"
+            className="w-8 h-8 rounded-xl bg-brand-card border border-brand-border hover:border-brand-gold/50 flex items-center justify-center text-brand-muted hover:text-brand-gold transition-colors shadow-lg"
             title="Bài kế tiếp"
           >
             <SkipForward size={13} />
@@ -192,7 +192,7 @@ export default function BackgroundMusic({ autoPlay = true }: Props) {
           {/* Volume */}
           <button
             onClick={() => setShowVolume(s => !s)}
-            className="w-8 h-8 rounded-xl bg-brand-card border border-brand-border hover:border-brand-yellow/50 flex items-center justify-center text-brand-muted hover:text-brand-yellow transition-colors shadow-lg"
+            className="w-8 h-8 rounded-xl bg-brand-card border border-brand-border hover:border-brand-gold/50 flex items-center justify-center text-brand-muted hover:text-brand-gold transition-colors shadow-lg"
             title="Âm lượng"
           >
             {volume === 0 ? <VolumeX size={13} /> : <Volume2 size={13} />}

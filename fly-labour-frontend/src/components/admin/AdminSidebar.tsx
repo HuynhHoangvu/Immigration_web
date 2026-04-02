@@ -1,4 +1,4 @@
-﻿import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import {
   LayoutDashboard, Briefcase, Users, ClipboardList,
   Tag, Newspaper, Settings, LogOut, ChevronRight, X, CalendarDays, MessageSquare
@@ -9,14 +9,14 @@ import { useNavigate } from 'react-router-dom'
 
 const NAV = [
   { label: 'Dashboard',         icon: LayoutDashboard, href: '/admin' },
-  { label: 'Quản lý việc làm',  icon: Briefcase,       href: '/admin/jobs' },
-  { label: 'Đơn ứng tuyển',     icon: ClipboardList,   href: '/admin/applications' },
-  { label: 'Khách hàng',        icon: Users,           href: '/admin/users' },
-  { label: 'Danh mục',          icon: Tag,             href: '/admin/categories' },
-  { label: 'Tin tức',           icon: Newspaper,       href: '/admin/news' },
-  { label: 'Lịch công việc',    icon: CalendarDays,    href: '/admin/chores' },
-  { label: 'Liên hệ',           icon: MessageSquare,   href: '/admin/contacts' },
-  { label: 'Cài đặt',           icon: Settings,        href: '/admin/settings' },
+  { label: 'Qu?n l� vi?c l�m',  icon: Briefcase,       href: '/admin/jobs' },
+  { label: '�on ?ng tuy?n',     icon: ClipboardList,   href: '/admin/applications' },
+  { label: 'Kh�ch h�ng',        icon: Users,           href: '/admin/users' },
+  { label: 'Danh m?c',          icon: Tag,             href: '/admin/categories' },
+  { label: 'Tin t?c',           icon: Newspaper,       href: '/admin/news' },
+  { label: 'L?ch c�ng vi?c',    icon: CalendarDays,    href: '/admin/chores' },
+  { label: 'Li�n h?',           icon: MessageSquare,   href: '/admin/contacts' },
+  { label: 'C�i d?t',           icon: Settings,        href: '/admin/settings' },
 ]
 
 interface Props { mobile?: boolean; onClose?: () => void }
@@ -28,7 +28,7 @@ export default function AdminSidebar({ mobile, onClose }: Props) {
 
   const handleLogout = () => {
     logout()
-    toast.success('Đã đăng xuất')
+    toast.success('�� dang xu?t')
     navigate('/')
   }
 
@@ -38,7 +38,7 @@ export default function AdminSidebar({ mobile, onClose }: Props) {
       <div className="flex items-center justify-between p-5 border-b border-brand-border">
         <Link to="/" className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{background:'linear-gradient(135deg,#e4a808,#fdd52f)'}}>
-            <span className="font-display text-sm text-black font-black">FL</span>
+            <span className="font-display text-sm text-slate-900 font-black">FL</span>
           </div>
           <div>
             <p className="font-display text-sm text-white tracking-wider">FLY <span style={{color:'#fdd52f'}}>LABOUR</span></p>
@@ -54,13 +54,13 @@ export default function AdminSidebar({ mobile, onClose }: Props) {
 
       {/* User info */}
       <div className="px-4 py-4 border-b border-brand-border">
-        <div className="flex items-center gap-3 p-3 bg-brand-yellow/5 rounded-xl">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center text-black font-bold text-xs" style={{background:'linear-gradient(135deg,#e4a808,#fdd52f)'}}>
+        <div className="flex items-center gap-3 p-3 bg-brand-gold/5 rounded-xl">
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-900 font-bold text-xs" style={{background:'linear-gradient(135deg,#e4a808,#fdd52f)'}}>
             {user?.fullName?.charAt(0) || 'A'}
           </div>
           <div className="min-w-0">
             <p className="text-white text-sm font-medium truncate">{user?.fullName}</p>
-            <p className="text-brand-yellow text-xs">Quản trị viên</p>
+            <p className="text-brand-gold text-xs">Qu?n tr? vi�n</p>
           </div>
         </div>
       </div>
@@ -76,13 +76,13 @@ export default function AdminSidebar({ mobile, onClose }: Props) {
               onClick={onClose}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 group ${
                 isActive
-                  ? 'bg-brand-yellow/15 text-brand-yellow border border-brand-yellow/20'
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+                  ? 'bg-brand-gold/15 text-brand-gold border border-brand-gold/20'
+                  : 'text-slate-900 hover:text-white hover:bg-white/5'
               }`}
             >
-              <item.icon size={16} className={isActive ? 'text-brand-yellow' : 'text-brand-muted group-hover:text-white'} />
+              <item.icon size={16} className={isActive ? 'text-brand-gold' : 'text-brand-muted group-hover:text-white'} />
               <span className="flex-1">{item.label}</span>
-              {isActive && <ChevronRight size={13} className="text-brand-yellow" />}
+              {isActive && <ChevronRight size={13} className="text-brand-gold" />}
             </Link>
           )
         })}
@@ -95,10 +95,10 @@ export default function AdminSidebar({ mobile, onClose }: Props) {
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-red-400 hover:bg-red-500/10 transition-colors"
         >
           <LogOut size={16} />
-          Đăng xuất
+          �ang xu?t
         </button>
         <Link to="/" className="mt-1 w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-brand-muted hover:text-white hover:bg-white/5 transition-colors">
-          ← Về trang chủ
+          ? V? trang ch?
         </Link>
       </div>
     </div>

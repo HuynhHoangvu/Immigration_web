@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Search, Eye, X, ChevronDown } from 'lucide-react'
 import { MOCK_APPLICATIONS } from '@/utils/mockData'
 import type { Application, AppStatus } from '@/types'
@@ -61,7 +61,7 @@ export default function AdminApplicationsPage() {
        setApps((as) => as.map((a) => (a.id === id ? { ...a, status } : a)));
        if (selected?.id === id)
          setSelected((s) => (s ? { ...s, status } : null));
-       toast.success("Đã cập nhật trạng thái");
+       toast.success("�� c?p nh?t tr?ng th�i");
        // Refresh stats
        applicationsApi.getStats().then((r) => {
          const counts: Record<string, number> = {};
@@ -71,7 +71,7 @@ export default function AdminApplicationsPage() {
          setStatusCounts(counts);
        });
      } catch {
-       toast.error("Cập nhật thất bại");
+       toast.error("C?p nh?t th?t b?i");
      } finally {
        setUpdatingId(null);
      }
@@ -81,10 +81,10 @@ export default function AdminApplicationsPage() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-xl font-bold text-white">Đơn ứng tuyển</h1>
+        <h1 className="text-xl font-bold text-white">�on ?ng tuy?n</h1>
         <p className="text-brand-muted text-sm">
-          {apps.length} đơn ·{" "}
-          {apps.filter((a) => a.status === "pending").length} chờ xét duyệt
+          {apps.length} don �{" "}
+          {apps.filter((a) => a.status === "pending").length} ch? x�t duy?t
         </p>
       </div>
 
@@ -99,15 +99,15 @@ export default function AdminApplicationsPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="input-dark pl-9 py-2 text-sm h-10"
-            placeholder="Tìm tên, email..."
+            placeholder="T�m t�n, email..."
           />
         </div>
         <div className="flex gap-1.5 flex-wrap">
           <button
             onClick={() => setFilterStatus("")}
-            className={`text-xs px-3 py-1.5 rounded-lg border transition-colors ${!filterStatus ? "bg-brand-yellow/15 border-brand-yellow/30 text-brand-yellow" : "border-brand-border text-brand-muted hover:text-white"}`}
+            className={`text-xs px-3 py-1.5 rounded-lg border transition-colors ${!filterStatus ? "bg-brand-gold/15 border-brand-gold/30 text-brand-gold" : "border-brand-border text-brand-muted hover:text-white"}`}
           >
-            Tất cả ({totalAll})
+            T?t c? ({totalAll})
           </button>
           {STATUS_OPTIONS.map((s) => (
             <button
@@ -128,19 +128,19 @@ export default function AdminApplicationsPage() {
             <thead>
               <tr className="border-b border-brand-border bg-brand-dark/50">
                 <th className="text-left px-4 py-3 text-xs text-brand-muted uppercase tracking-wide font-semibold">
-                  Ứng viên
+                  ?ng vi�n
                 </th>
                 <th className="text-left px-4 py-3 text-xs text-brand-muted uppercase tracking-wide font-semibold hidden sm:table-cell">
-                  Vị trí ứng tuyển
+                  V? tr� ?ng tuy?n
                 </th>
                 <th className="text-left px-4 py-3 text-xs text-brand-muted uppercase tracking-wide font-semibold hidden md:table-cell">
-                  Ngày nộp
+                  Ng�y n?p
                 </th>
                 <th className="text-left px-4 py-3 text-xs text-brand-muted uppercase tracking-wide font-semibold">
-                  Trạng thái
+                  Tr?ng th�i
                 </th>
                 <th className="text-right px-4 py-3 text-xs text-brand-muted uppercase tracking-wide font-semibold">
-                  Thao tác
+                  Thao t�c
                 </th>
               </tr>
             </thead>
@@ -153,7 +153,7 @@ export default function AdminApplicationsPage() {
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2.5">
                       <div
-                        className="w-8 h-8 rounded-xl flex items-center justify-center text-black text-xs font-bold shrink-0"
+                        className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-900 text-xs font-bold shrink-0"
                         style={{
                           background: "linear-gradient(135deg,#e4a808,#fdd52f)",
                         }}
@@ -217,7 +217,7 @@ export default function AdminApplicationsPage() {
           </table>
           {filtered.length === 0 && (
             <div className="py-12 text-center text-brand-muted text-sm">
-              Không có đơn nào
+              Kh�ng c� don n�o
             </div>
           )}
         </div>
@@ -233,7 +233,7 @@ export default function AdminApplicationsPage() {
           <div className="relative w-full max-w-md bg-brand-card border-l border-brand-border overflow-y-auto">
             <div className="flex items-center justify-between p-5 border-b border-brand-border sticky top-0 bg-brand-card">
               <h2 className="font-semibold text-white">
-                Chi tiết đơn ứng tuyển
+                Chi ti?t don ?ng tuy?n
               </h2>
               <button onClick={() => setSelected(null)}>
                 <X size={18} className="text-brand-muted hover:text-white" />
@@ -241,9 +241,9 @@ export default function AdminApplicationsPage() {
             </div>
             <div className="p-5 space-y-5">
               {/* Applicant info */}
-              <div className="flex items-center gap-3 p-4 bg-brand-yellow/5 border border-brand-yellow/20 rounded-xl">
+              <div className="flex items-center gap-3 p-4 bg-brand-gold/5 border border-brand-gold/20 rounded-xl">
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center text-black font-bold"
+                  className="w-12 h-12 rounded-xl flex items-center justify-center text-slate-900 font-bold"
                   style={{
                     background: "linear-gradient(135deg,#e4a808,#fdd52f)",
                   }}
@@ -262,7 +262,7 @@ export default function AdminApplicationsPage() {
               {/* Job info */}
               <div className="p-4 bg-brand-dark rounded-xl">
                 <p className="text-xs text-brand-muted mb-1">
-                  Vị trí ứng tuyển
+                  V? tr� ?ng tuy?n
                 </p>
                 <p className="text-white font-medium">{selected.job?.title}</p>
                 <p className="text-brand-muted text-sm">
@@ -274,14 +274,14 @@ export default function AdminApplicationsPage() {
               <div className="grid grid-cols-2 gap-3">
                 {[
                   {
-                    label: "Ngày sinh",
+                    label: "Ng�y sinh",
                     value: selected.dateOfBirth
                       ? formatDate(selected.dateOfBirth)
-                      : "—",
+                      : "�",
                   },
-                  { label: "Địa chỉ", value: selected.address || "—" },
-                  { label: "Học vấn", value: selected.education || "—" },
-                  { label: "Tiếng Anh", value: selected.languageLevel || "—" },
+                  { label: "�?a ch?", value: selected.address || "�" },
+                  { label: "H?c v?n", value: selected.education || "�" },
+                  { label: "Ti?ng Anh", value: selected.languageLevel || "�" },
                 ].map((item) => (
                   <div
                     key={item.label}
@@ -295,15 +295,15 @@ export default function AdminApplicationsPage() {
 
               {selected.experience && (
                 <div className="p-4 bg-brand-dark rounded-xl">
-                  <p className="text-xs text-brand-muted mb-1">Kinh nghiệm</p>
+                  <p className="text-xs text-brand-muted mb-1">Kinh nghi?m</p>
                   <p className="text-white text-sm">{selected.experience}</p>
                 </div>
               )}
 
               {selected.coverLetter && (
                 <div className="p-4 bg-brand-dark rounded-xl">
-                  <p className="text-xs text-brand-muted mb-1">Thư xin việc</p>
-                  <p className="text-gray-300 text-sm leading-relaxed">
+                  <p className="text-xs text-brand-muted mb-1">Thu xin vi?c</p>
+                  <p className="text-slate-900 text-sm leading-relaxed">
                     {selected.coverLetter}
                   </p>
                 </div>
@@ -312,7 +312,7 @@ export default function AdminApplicationsPage() {
               {/* Change status */}
               <div className="p-4 bg-brand-dark rounded-xl">
                 <p className="text-xs text-brand-muted mb-3">
-                  Cập nhật trạng thái
+                  C?p nh?t tr?ng th�i
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {STATUS_OPTIONS.map((s) => (
@@ -332,7 +332,7 @@ export default function AdminApplicationsPage() {
               </div>
 
               <p className="text-xs text-brand-muted text-center">
-                Ngày nộp: {formatDate(selected.createdAt)}
+                Ng�y n?p: {formatDate(selected.createdAt)}
               </p>
             </div>
           </div>

@@ -56,7 +56,7 @@ export default function AboutPage() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-3xl opacity-10"
           style={{ background: 'linear-gradient(135deg,#e4a808,#fdd52f)' }} />
         <div className="relative max-w-4xl mx-auto text-center">
-          <p className="text-brand-yellow text-sm font-medium tracking-widest uppercase mb-4">Về chúng tôi</p>
+          <p className="text-brand-gold text-sm font-medium tracking-widest uppercase mb-4">Về chúng tôi</p>
           <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
             Cầu nối lao động Việt Nam<br />
             <span style={{ background: 'linear-gradient(135deg,#e4a808,#fdd52f)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
@@ -96,7 +96,7 @@ export default function AboutPage() {
       <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <p className="text-brand-yellow text-xs font-semibold tracking-widest uppercase mb-3">Sứ mệnh</p>
+            <p className="text-brand-gold text-xs font-semibold tracking-widest uppercase mb-3">Sứ mệnh</p>
             <h2 className="text-3xl font-bold text-white mb-5">
               Mang lại cơ hội việc làm<br />tốt nhất cho người Việt
             </h2>
@@ -119,7 +119,7 @@ export default function AboutPage() {
               <div key={c.label} className="bg-brand-card border border-brand-border rounded-2xl p-4 text-center">
                 <p className="text-3xl mb-2">{c.flag}</p>
                 <p className="text-white text-sm font-medium">{c.label}</p>
-                <p className="text-brand-yellow text-xs mt-1">{c.jobs}</p>
+                <p className="text-brand-gold text-xs mt-1">{c.jobs}</p>
               </div>
             ))}
           </div>
@@ -130,15 +130,15 @@ export default function AboutPage() {
       <section className="py-20 px-6 bg-brand-card/20">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-brand-yellow text-xs font-semibold tracking-widest uppercase mb-3">Dịch vụ</p>
+            <p className="text-brand-gold text-xs font-semibold tracking-widest uppercase mb-3">Dịch vụ</p>
             <h2 className="text-3xl font-bold text-white">Chúng tôi cung cấp gì?</h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {SERVICES.map(s => (
-              <div key={s.title} className="bg-brand-card border border-brand-border rounded-2xl p-5 hover:border-brand-yellow/30 transition-colors">
+              <div key={s.title} className="bg-brand-card border border-brand-border rounded-2xl p-5 hover:border-brand-gold/30 transition-colors">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
                   style={{ background: 'linear-gradient(135deg,#e4a808,#fdd52f)' }}>
-                  <s.icon size={18} className="text-black" />
+                  <s.icon size={18} className="text-slate-900" />
                 </div>
                 <h3 className="text-white font-semibold mb-2 text-sm">{s.title}</h3>
                 <p className="text-brand-muted text-xs leading-relaxed">{s.desc}</p>
@@ -152,12 +152,12 @@ export default function AboutPage() {
       <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <p className="text-brand-yellow text-xs font-semibold tracking-widest uppercase mb-3">Lý do chọn chúng tôi</p>
+            <p className="text-brand-gold text-xs font-semibold tracking-widest uppercase mb-3">Lý do chọn chúng tôi</p>
             <h2 className="text-3xl font-bold text-white mb-8">Tại sao nên chọn Fly Labour?</h2>
             <ul className="space-y-3">
               {WHYS.map(w => (
                 <li key={w} className="flex items-start gap-3">
-                  <CheckCircle size={16} className="text-brand-yellow shrink-0 mt-0.5" />
+                  <CheckCircle size={16} className="text-brand-gold shrink-0 mt-0.5" />
                   <span className="text-brand-muted text-sm">{w}</span>
                 </li>
               ))}
@@ -168,7 +168,7 @@ export default function AboutPage() {
             <div className="grid grid-cols-2 gap-4">
               {TEAM.map(m => (
                 <div key={m.name} className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center text-black font-bold shrink-0"
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-900 font-bold shrink-0"
                     style={{ background: 'linear-gradient(135deg,#e4a808,#fdd52f)' }}>
                     {m.initial}
                   </div>
@@ -195,7 +195,7 @@ export default function AboutPage() {
               { icon: MapPin, label: 'Địa chỉ', value: '123 Nguyễn Văn Linh, Q.7, TP.HCM' },
             ].map(c => (
               <div key={c.label} className="bg-brand-card border border-brand-border rounded-2xl p-5">
-                <c.icon size={20} className="text-brand-yellow mx-auto mb-3" />
+                <c.icon size={20} className="text-brand-gold mx-auto mb-3" />
                 <p className="text-brand-muted text-xs mb-1">{c.label}</p>
                 <p className="text-white text-sm font-medium">{c.value}</p>
               </div>

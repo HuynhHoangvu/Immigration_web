@@ -66,7 +66,7 @@ export default function ProcessPage() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-3xl opacity-10"
           style={{ background: 'linear-gradient(135deg,#e4a808,#fdd52f)' }} />
         <div className="relative max-w-3xl mx-auto text-center">
-          <p className="text-brand-yellow text-xs font-semibold tracking-widest uppercase mb-4">Quy trình</p>
+          <p className="text-brand-gold text-xs font-semibold tracking-widest uppercase mb-4">Quy trình</p>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-5">
             Quy trình đăng ký<br />
             <span style={{ background: 'linear-gradient(135deg,#e4a808,#fdd52f)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
@@ -84,10 +84,10 @@ export default function ProcessPage() {
         <div className="max-w-4xl mx-auto">
           <div className="space-y-6">
             {STEPS.map((step, i) => (
-              <div key={step.num} className="bg-brand-card border border-brand-border rounded-2xl p-6 flex gap-5 hover:border-brand-yellow/30 transition-colors">
+              <div key={step.num} className="bg-brand-card border border-brand-border rounded-2xl p-6 flex gap-5 hover:border-brand-gold/30 transition-colors">
                 {/* Number + line */}
                 <div className="flex flex-col items-center gap-2 shrink-0">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-black text-sm"
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-slate-900 text-sm"
                     style={{ background: 'linear-gradient(135deg,#e4a808,#fdd52f)' }}>
                     {step.num}
                   </div>
@@ -102,7 +102,7 @@ export default function ProcessPage() {
                       <h3 className="text-white font-semibold text-base mb-2">{step.title}</h3>
                       <p className="text-brand-muted text-sm leading-relaxed">{step.desc}</p>
                     </div>
-                    <span className="shrink-0 text-[11px] px-3 py-1.5 rounded-full bg-brand-yellow/10 border border-brand-yellow/20 text-brand-yellow font-medium whitespace-nowrap">
+                    <span className="shrink-0 text-[11px] px-3 py-1.5 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold font-medium whitespace-nowrap">
                       {step.note}
                     </span>
                   </div>
@@ -117,13 +117,13 @@ export default function ProcessPage() {
       <section className="py-20 px-6 bg-brand-card/20 border-y border-brand-border">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
-            <p className="text-brand-yellow text-xs font-semibold tracking-widest uppercase mb-3">Hồ sơ</p>
+            <p className="text-brand-gold text-xs font-semibold tracking-widest uppercase mb-3">Hồ sơ</p>
             <h2 className="text-3xl font-bold text-white">Giấy tờ cần chuẩn bị</h2>
           </div>
           <div className="grid sm:grid-cols-2 gap-3">
             {DOCS.map(doc => (
               <div key={doc} className="flex items-center gap-3 bg-brand-card border border-brand-border rounded-xl p-3.5">
-                <CheckCircle size={15} className="text-brand-yellow shrink-0" />
+                <CheckCircle size={15} className="text-brand-gold shrink-0" />
                 <span className="text-brand-muted text-sm">{doc}</span>
               </div>
             ))}
@@ -137,7 +137,7 @@ export default function ProcessPage() {
       {/* Support CTA */}
       <section className="py-16 px-6">
         <div className="max-w-2xl mx-auto text-center">
-          <HeadphonesIcon size={36} className="text-brand-yellow mx-auto mb-4" />
+          <HeadphonesIcon size={36} className="text-brand-gold mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-white mb-3">Cần hỗ trợ thêm?</h2>
           <p className="text-brand-muted mb-8">Đội ngũ tư vấn của chúng tôi sẵn sàng giải đáp mọi thắc mắc từ Thứ 2 đến Thứ 7, 8:00 – 18:00.</p>
           <div className="flex flex-wrap items-center justify-center gap-4">

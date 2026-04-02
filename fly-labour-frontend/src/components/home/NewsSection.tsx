@@ -27,7 +27,7 @@ export default function NewsSection() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex items-end justify-between mb-10">
           <div>
-            <p className="text-brand-yellow text-sm font-semibold uppercase tracking-widest mb-2">
+            <p className="text-brand-gold text-sm font-semibold uppercase tracking-widest mb-2">
               {h.newsBadge}
             </p>
             <h2 className="section-title">
@@ -48,9 +48,9 @@ export default function NewsSection() {
             <Link
               key={item.id}
               to={`/news/${item.slug}`}
-              className="card-dark group overflow-hidden hover:-translate-y-1 hover:shadow-2xl hover:shadow-brand-yellow/10 transition-all duration-300"
+              className="card-dark group overflow-hidden hover:-translate-y-1 hover:shadow-2xl hover:shadow-brand-gold/10 transition-all duration-300"
             >
-              <div className="h-44 bg-gradient-to-br from-brand-yellow/10 to-brand-orange/5 border-b border-brand-border flex items-center justify-center">
+              <div className="h-44 bg-gradient-to-br from-brand-gold/10 to-brand-orange/5 border-b border-brand-border flex items-center justify-center">
                 {item.image ? (
                   <img
                     src={getImageUrl(item.image)}
@@ -67,11 +67,11 @@ export default function NewsSection() {
                 <div className="flex items-center gap-1.5 text-xs text-brand-muted mb-3">
                   <Calendar size={11} />
                   {formatDate(item.createdAt)}
-                  <span className="ml-auto text-brand-yellow text-xs font-semibold">
+                  <span className="ml-auto text-brand-gold text-xs font-semibold">
                     {h.newsTags[i % h.newsTags.length]}
                   </span>
                 </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white text-sm leading-snug group-hover:text-brand-yellow transition-colors line-clamp-2 mb-2">
+                <h3 className="font-semibold text-slate-900 dark:text-white text-sm leading-snug group-hover:text-brand-gold transition-colors line-clamp-2 mb-2">
                   {item.title}
                 </h3>
                 {item.excerpt && (
@@ -79,7 +79,7 @@ export default function NewsSection() {
                     {item.excerpt}
                   </p>
                 )}
-                <div className="flex items-center gap-1 mt-4 text-xs text-brand-yellow font-medium">
+                <div className="flex items-center gap-1 mt-4 text-xs text-brand-gold font-medium">
                   {h.readMore} <ArrowRight size={11} />
                 </div>
               </div>

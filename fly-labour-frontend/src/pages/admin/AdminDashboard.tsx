@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   BarChart,
@@ -56,30 +56,30 @@ export default function AdminDashboard() {
 
   const STAT_CARDS = [
     {
-      label: "Tổng người dùng",
-      value: userStats?.total ?? "—",
-      sub: `+${userStats?.thisMonth ?? 0} tháng này`,
+      label: "T?ng ngu?i d�ng",
+      value: userStats?.total ?? "�",
+      sub: `+${userStats?.thisMonth ?? 0} th�ng n�y`,
       icon: Users,
       color: "#fdd52f",
     },
     {
-      label: "Tổng bài đăng",
-      value: jobStats?.totalJobs ?? "—",
-      sub: `${jobStats?.activeJobs ?? 0} đang hoạt động`,
+      label: "T?ng b�i dang",
+      value: jobStats?.totalJobs ?? "�",
+      sub: `${jobStats?.activeJobs ?? 0} dang ho?t d?ng`,
       icon: Briefcase,
       color: "#e4a808",
     },
     {
-      label: "Đơn ứng tuyển",
-      value: totalApps || "—",
-      sub: `${pendingCount} chờ xét duyệt`,
+      label: "�on ?ng tuy?n",
+      value: totalApps || "�",
+      sub: `${pendingCount} ch? x�t duy?t`,
       icon: ClipboardList,
       color: "#06B6D4",
     },
     {
-      label: "Lượt xem tổng",
-      value: jobStats?.totalViews ?? "—",
-      sub: "Tất cả bài đăng",
+      label: "Lu?t xem t?ng",
+      value: jobStats?.totalViews ?? "�",
+      sub: "T?t c? b�i dang",
       icon: Eye,
       color: "#8B5CF6",
     },
@@ -87,19 +87,19 @@ export default function AdminDashboard() {
 
   const byCountry = [
     {
-      name: "🇦🇺 Úc",
+      name: "???? �c",
       value:
         jobStats?.byCountry?.find((c: any) => c.country === "australia")
           ?.count || 0,
     },
     {
-      name: "🇨🇦 Canada",
+      name: "???? Canada",
       value:
         jobStats?.byCountry?.find((c: any) => c.country === "canada")?.count ||
         0,
     },
     {
-      name: "🇳🇿 NZ",
+      name: "???? NZ",
       value:
         jobStats?.byCountry?.find((c: any) => c.country === "new_zealand")
           ?.count || 0,
@@ -111,7 +111,7 @@ export default function AdminDashboard() {
       <div className="space-y-7">
         <div>
           <h1 className="text-2xl font-bold text-white">Dashboard</h1>
-          <p className="text-brand-muted text-sm mt-0.5">Đang tải dữ liệu...</p>
+          <p className="text-brand-muted text-sm mt-0.5">�ang t?i d? li?u...</p>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {[...Array(4)].map((_, i) => (
@@ -129,7 +129,7 @@ export default function AdminDashboard() {
       <div>
         <h1 className="text-2xl font-bold text-white">Dashboard</h1>
         <p className="text-brand-muted text-sm mt-0.5">
-          Tổng quan hoạt động hệ thống
+          T?ng quan ho?t d?ng h? th?ng
         </p>
       </div>
 
@@ -166,7 +166,7 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         <div className="card-dark p-5 lg:col-span-2">
           <h3 className="font-semibold text-white text-sm mb-5">
-            Đơn ứng tuyển & Người dùng mới theo tháng
+            �on ?ng tuy?n & Ngu?i d�ng m?i theo th�ng
           </h3>
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={MONTHLY_DATA} barGap={4}>
@@ -192,13 +192,13 @@ export default function AdminDashboard() {
               />
               <Bar
                 dataKey="apps"
-                name="Đơn ứng tuyển"
+                name="�on ?ng tuy?n"
                 fill="#fdd52f"
                 radius={[6, 6, 0, 0]}
               />
               <Bar
                 dataKey="users"
-                name="Người dùng mới"
+                name="Ngu?i d�ng m?i"
                 fill="#e4a808"
                 radius={[6, 6, 0, 0]}
                 opacity={0.7}
@@ -209,7 +209,7 @@ export default function AdminDashboard() {
 
         <div className="card-dark p-5">
           <h3 className="font-semibold text-white text-sm mb-5">
-            Việc làm theo quốc gia
+            Vi?c l�m theo qu?c gia
           </h3>
           <ResponsiveContainer width="100%" height={160}>
             <PieChart>
@@ -247,7 +247,7 @@ export default function AdminDashboard() {
                     className="w-2.5 h-2.5 rounded-full"
                     style={{ background: PIE_COLORS[i] }}
                   />
-                  <span className="text-gray-300">{c.name}</span>
+                  <span className="text-slate-900">{c.name}</span>
                 </div>
                 <span className="text-white font-semibold">{c.value}</span>
               </div>
@@ -260,7 +260,7 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         <div className="card-dark p-5">
           <h3 className="font-semibold text-white text-sm mb-4">
-            Trạng thái đơn ứng tuyển
+            Tr?ng th�i don ?ng tuy?n
           </h3>
           <div className="space-y-3">
             {appStats.map((item) => (
@@ -279,7 +279,7 @@ export default function AdminDashboard() {
                 </div>
                 <div className="h-1.5 bg-brand-dark rounded-full overflow-hidden">
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-brand-yellow to-brand-orange"
+                    className="h-full rounded-full bg-gradient-to-r from-brand-gold to-brand-orange"
                     style={{
                       width: `${totalApps ? (parseInt(item.count) / totalApps) * 100 : 0}%`,
                     }}
@@ -293,13 +293,13 @@ export default function AdminDashboard() {
         <div className="card-dark p-5 lg:col-span-2">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-white text-sm">
-              Đơn ứng tuyển gần đây
+              �on ?ng tuy?n g?n d�y
             </h3>
             <Link
               to="/admin/applications"
-              className="text-xs text-brand-yellow hover:text-brand-orange transition-colors"
+              className="text-xs text-brand-gold hover:text-brand-orange transition-colors"
             >
-              Xem tất cả →
+              Xem t?t c? ?
             </Link>
           </div>
           <div className="space-y-2">
@@ -309,7 +309,7 @@ export default function AdminDashboard() {
                 className="flex items-center gap-3 p-3 bg-brand-dark rounded-xl hover:bg-white/5 transition-colors"
               >
                 <div
-                  className="w-8 h-8 rounded-xl flex items-center justify-center text-black text-xs font-bold shrink-0"
+                  className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-900 text-xs font-bold shrink-0"
                   style={{
                     background: "linear-gradient(135deg,#e4a808,#fdd52f)",
                   }}
@@ -338,7 +338,7 @@ export default function AdminDashboard() {
             ))}
             {recentApps.length === 0 && (
               <p className="text-center text-brand-muted text-sm py-8">
-                Chưa có đơn ứng tuyển nào
+                Chua c� don ?ng tuy?n n�o
               </p>
             )}
           </div>

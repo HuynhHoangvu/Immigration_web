@@ -105,7 +105,7 @@ export default function FaqPage() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-3xl opacity-10"
           style={{ background: 'linear-gradient(135deg,#e4a808,#fdd52f)' }} />
         <div className="relative max-w-3xl mx-auto text-center">
-          <p className="text-brand-yellow text-xs font-semibold tracking-widest uppercase mb-4">FAQ</p>
+          <p className="text-brand-gold text-xs font-semibold tracking-widest uppercase mb-4">FAQ</p>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-5">
             Câu hỏi<br />
             <span style={{ background: 'linear-gradient(135deg,#e4a808,#fdd52f)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
@@ -121,7 +121,7 @@ export default function FaqPage() {
         <div className="max-w-3xl mx-auto space-y-10">
           {FAQS.map(group => (
             <div key={group.category}>
-              <h2 className="text-brand-yellow text-xs font-semibold tracking-widest uppercase mb-4">{group.category}</h2>
+              <h2 className="text-brand-gold text-xs font-semibold tracking-widest uppercase mb-4">{group.category}</h2>
               <div className="space-y-2">
                 {group.items.map(item => (
                   <FaqItem key={item.q} q={item.q} a={item.a} />

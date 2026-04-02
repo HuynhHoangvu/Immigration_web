@@ -22,7 +22,7 @@ export default function CategoriesSection() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex items-end justify-between mb-10">
           <div>
-            <p className="text-brand-yellow text-sm font-semibold uppercase tracking-widest mb-2">
+            <p className="text-brand-gold text-sm font-semibold uppercase tracking-widest mb-2">
               {h.catBadge}
             </p>
             <h2 className="section-title">
@@ -41,12 +41,12 @@ export default function CategoriesSection() {
             <Link
               key={cat.id}
               to={`/jobs?categoryId=${cat.id}`}
-              className="card-dark p-5 text-center group hover:-translate-y-1 hover:shadow-2xl hover:shadow-brand-yellow/10 transition-all duration-300"
+              className="card-dark p-5 text-center group hover:-translate-y-1 hover:shadow-2xl hover:shadow-brand-gold/10 transition-all duration-300"
             >
-              <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-brand-yellow/5 border border-brand-yellow/10 group-hover:bg-brand-yellow/15 group-hover:border-brand-yellow/30 flex items-center justify-center text-3xl transition-all duration-300">
+              <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-brand-gold/5 border border-brand-gold/10 group-hover:bg-brand-gold/15 group-hover:border-brand-gold/30 flex items-center justify-center text-3xl transition-all duration-300">
                 {cat.icon}
               </div>
-              <h3 className="font-semibold text-gray-900 dark:text-white text-sm group-hover:text-brand-yellow transition-colors">
+              <h3 className="font-semibold text-slate-900 dark:text-white text-sm group-hover:text-brand-gold transition-colors">
                 {lang === "en" ? cat.nameEn || cat.name : cat.name}
               </h3>
               {lang === "en"

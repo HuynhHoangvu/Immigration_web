@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Search, Pencil, Trash2, Lock, Unlock, X, CheckCircle, Plus } from 'lucide-react'
 import { formatDate } from '@/utils/helpers'
 import toast from 'react-hot-toast'
@@ -37,15 +37,15 @@ export default function AdminUsersPage() {
 
   const handleSaveEdit = async () => {
     if (!editModal) return
-    if (!editForm.fullName.trim()) { toast.error('Vui lòng nhập họ tên'); return }
+    if (!editForm.fullName.trim()) { toast.error('Vui l�ng nh?p h? t�n'); return }
     setSaving(true)
     try {
       await usersApi.updateAdmin(editModal.id, editForm)
-      toast.success('Đã cập nhật tài khoản')
+      toast.success('�� c?p nh?t t�i kho?n')
       setEditModal(null)
       loadUsers()
     } catch (err: any) {
-      toast.error(err?.response?.data?.message || 'Cập nhật thất bại')
+      toast.error(err?.response?.data?.message || 'C?p nh?t th?t b?i')
     } finally {
       setSaving(false)
     }
@@ -54,11 +54,11 @@ export default function AdminUsersPage() {
   const handleDelete = async (id: string) => {
     try {
       await usersApi.remove(id)
-      toast.success('Đã xóa tài khoản')
+      toast.success('�� x�a t�i kho?n')
       setDeleting(null)
       loadUsers()
     } catch (err: any) {
-      toast.error(err?.response?.data?.message || 'Xóa thất bại')
+      toast.error(err?.response?.data?.message || 'X�a th?t b?i')
     }
   }
 
@@ -66,9 +66,9 @@ export default function AdminUsersPage() {
     try {
       await usersApi.toggleActive(id)
       setUsers(us => us.map(u => u.id === id ? { ...u, isActive: !u.isActive } : u))
-      toast.success('Đã cập nhật trạng thái tài khoản')
+      toast.success('�� c?p nh?t tr?ng th�i t�i kho?n')
     } catch {
-      toast.error('Cập nhật thất bại')
+      toast.error('C?p nh?t th?t b?i')
     }
   }
 
@@ -85,9 +85,9 @@ export default function AdminUsersPage() {
     <div className="space-y-5">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-xl font-bold text-white">Quản lý Khách hàng</h1>
+          <h1 className="text-xl font-bold text-white">Qu?n l� Kh�ch h�ng</h1>
           <p className="text-brand-muted text-sm">
-            {users.length} tài khoản · {users.filter(u => u.isActive).length} đang hoạt động
+            {users.length} t�i kho?n � {users.filter(u => u.isActive).length} dang ho?t d?ng
           </p>
         </div>
       </div>
@@ -96,7 +96,7 @@ export default function AdminUsersPage() {
         <div className="relative max-w-sm">
           <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted" />
           <input value={search} onChange={e => setSearch(e.target.value)}
-            className="input-dark pl-9 py-2 text-sm h-10" placeholder="Tìm tên, email..." />
+            className="input-dark pl-9 py-2 text-sm h-10" placeholder="T�m t�n, email..." />
         </div>
       </div>
 
@@ -105,24 +105,24 @@ export default function AdminUsersPage() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-brand-border bg-brand-dark/50">
-                <th className="text-left px-4 py-3 text-xs text-brand-muted uppercase tracking-wide font-semibold">Người dùng</th>
-                <th className="text-left px-4 py-3 text-xs text-brand-muted uppercase tracking-wide font-semibold hidden md:table-cell">Số ĐT</th>
-                <th className="text-left px-4 py-3 text-xs text-brand-muted uppercase tracking-wide font-semibold hidden sm:table-cell">Vai trò</th>
-                <th className="text-left px-4 py-3 text-xs text-brand-muted uppercase tracking-wide font-semibold hidden lg:table-cell">Ngày đăng ký</th>
-                <th className="text-left px-4 py-3 text-xs text-brand-muted uppercase tracking-wide font-semibold">Trạng thái</th>
-                <th className="text-right px-4 py-3 text-xs text-brand-muted uppercase tracking-wide font-semibold">Thao tác</th>
+                <th className="text-left px-4 py-3 text-xs text-brand-muted uppercase tracking-wide font-semibold">Ngu?i d�ng</th>
+                <th className="text-left px-4 py-3 text-xs text-brand-muted uppercase tracking-wide font-semibold hidden md:table-cell">S? �T</th>
+                <th className="text-left px-4 py-3 text-xs text-brand-muted uppercase tracking-wide font-semibold hidden sm:table-cell">Vai tr�</th>
+                <th className="text-left px-4 py-3 text-xs text-brand-muted uppercase tracking-wide font-semibold hidden lg:table-cell">Ng�y dang k�</th>
+                <th className="text-left px-4 py-3 text-xs text-brand-muted uppercase tracking-wide font-semibold">Tr?ng th�i</th>
+                <th className="text-right px-4 py-3 text-xs text-brand-muted uppercase tracking-wide font-semibold">Thao t�c</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={6} className="py-12 text-center text-brand-muted text-sm">Đang tải...</td></tr>
+                <tr><td colSpan={6} className="py-12 text-center text-brand-muted text-sm">�ang t?i...</td></tr>
               ) : filtered.length === 0 ? (
-                <tr><td colSpan={6} className="py-12 text-center text-brand-muted text-sm">Không tìm thấy người dùng</td></tr>
+                <tr><td colSpan={6} className="py-12 text-center text-brand-muted text-sm">Kh�ng t�m th?y ngu?i d�ng</td></tr>
               ) : filtered.map(user => (
                 <tr key={user.id} className="border-b border-brand-border/40 hover:bg-white/[0.02] transition-colors">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-xl flex items-center justify-center text-black text-xs font-bold shrink-0"
+                      <div className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-900 text-xs font-bold shrink-0"
                         style={{ background: user.role === 'admin' ? 'linear-gradient(135deg,#e4a808,#fdd52f)' : 'linear-gradient(135deg,#3B82F6,#8B5CF6)' }}>
                         {user.fullName.charAt(0)}
                       </div>
@@ -132,22 +132,22 @@ export default function AdminUsersPage() {
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-3 hidden md:table-cell text-gray-300 text-sm">{user.phone || '—'}</td>
+                  <td className="px-4 py-3 hidden md:table-cell text-slate-900 text-sm">{user.phone || '�'}</td>
                   <td className="px-4 py-3 hidden sm:table-cell">
-                    <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${user.role === 'admin' ? 'text-brand-yellow bg-brand-yellow/10 border-brand-yellow/20' : 'text-gray-400 bg-white/5 border-white/10'}`}>
-                      {user.role === 'admin' ? '👑 Admin' : '👤 User'}
+                    <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${user.role === 'admin' ? 'text-brand-gold bg-brand-gold/10 border-brand-gold/20' : 'text-slate-900 bg-white/5 border-white/10'}`}>
+                      {user.role === 'admin' ? '?? Admin' : '?? User'}
                     </span>
                   </td>
                   <td className="px-4 py-3 hidden lg:table-cell text-brand-muted text-xs">{formatDate(user.createdAt)}</td>
                   <td className="px-4 py-3">
                     <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${user.isActive ? 'text-green-400 bg-green-400/10 border-green-400/20' : 'text-red-400 bg-red-400/10 border-red-400/20'}`}>
-                      {user.isActive ? 'Hoạt động' : 'Đã khóa'}
+                      {user.isActive ? 'Ho?t d?ng' : '�� kh�a'}
                     </span>
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-end gap-1">
                       <button onClick={() => openEdit(user)}
-                        className="w-7 h-7 rounded-lg flex items-center justify-center text-brand-muted hover:text-brand-yellow hover:bg-brand-yellow/10 transition-colors">
+                        className="w-7 h-7 rounded-lg flex items-center justify-center text-brand-muted hover:text-brand-gold hover:bg-brand-gold/10 transition-colors">
                         <Pencil size={13} />
                       </button>
                       {user.role !== 'admin' && (
@@ -171,18 +171,18 @@ export default function AdminUsersPage() {
         </div>
       </div>
 
-      {/* ── Edit Modal ── */}
+      {/* -- Edit Modal -- */}
       {editModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setEditModal(null)} />
           <div className="relative bg-brand-card border border-brand-border rounded-2xl w-full max-w-md shadow-2xl">
             <div className="flex items-center justify-between p-5 border-b border-brand-border">
-              <h2 className="font-semibold text-white">✏️ Chỉnh sửa tài khoản</h2>
+              <h2 className="font-semibold text-white">?? Ch?nh s?a t�i kho?n</h2>
               <button onClick={() => setEditModal(null)}><X size={18} className="text-brand-muted hover:text-white" /></button>
             </div>
             <div className="p-5 space-y-4">
               <div className="flex items-center gap-3 p-3 bg-brand-dark rounded-xl">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-black text-sm font-bold shrink-0"
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-900 text-sm font-bold shrink-0"
                   style={{ background: editModal.role === 'admin' ? 'linear-gradient(135deg,#e4a808,#fdd52f)' : 'linear-gradient(135deg,#3B82F6,#8B5CF6)' }}>
                   {editModal.fullName.charAt(0)}
                 </div>
@@ -193,51 +193,51 @@ export default function AdminUsersPage() {
               </div>
 
               <div>
-                <label className="text-xs text-brand-muted mb-1.5 block">Họ tên *</label>
-                <input value={editForm.fullName} onChange={setEF('fullName')} className="input-dark" placeholder="Họ và tên" />
+                <label className="text-xs text-brand-muted mb-1.5 block">H? t�n *</label>
+                <input value={editForm.fullName} onChange={setEF('fullName')} className="input-dark" placeholder="H? v� t�n" />
               </div>
               <div>
-                <label className="text-xs text-brand-muted mb-1.5 block">Số điện thoại</label>
+                <label className="text-xs text-brand-muted mb-1.5 block">S? di?n tho?i</label>
                 <input value={editForm.phone} onChange={setEF('phone')} className="input-dark" placeholder="0901234567" />
               </div>
               <div>
-                <label className="text-xs text-brand-muted mb-1.5 block">Vai trò</label>
+                <label className="text-xs text-brand-muted mb-1.5 block">Vai tr�</label>
                 <select value={editForm.role} onChange={setEF('role')} className="input-dark">
-                  <option value="user">👤 User</option>
-                  <option value="admin">👑 Admin</option>
+                  <option value="user">?? User</option>
+                  <option value="admin">?? Admin</option>
                 </select>
               </div>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" checked={editForm.isActive}
                   onChange={e => setEditForm(f => ({ ...f, isActive: e.target.checked }))}
-                  className="w-4 h-4 accent-brand-yellow" />
-                <span className="text-sm text-white">Tài khoản đang hoạt động</span>
+                  className="w-4 h-4 accent-brand-gold" />
+                <span className="text-sm text-white">T�i kho?n dang ho?t d?ng</span>
               </label>
 
               <div className="flex gap-3 pt-1">
                 <button onClick={handleSaveEdit} disabled={saving}
                   className="btn-primary flex-1 flex items-center justify-center gap-2 py-3 disabled:opacity-60">
-                  <CheckCircle size={15} /> {saving ? 'Đang lưu...' : 'Lưu thay đổi'}
+                  <CheckCircle size={15} /> {saving ? '�ang luu...' : 'Luu thay d?i'}
                 </button>
-                <button onClick={() => setEditModal(null)} className="btn-outline px-6">Hủy</button>
+                <button onClick={() => setEditModal(null)} className="btn-outline px-6">H?y</button>
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* ── Confirm Delete ── */}
+      {/* -- Confirm Delete -- */}
       {deleting && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setDeleting(null)} />
           <div className="relative bg-brand-card border border-red-500/30 rounded-2xl p-6 max-w-sm w-full text-center shadow-2xl">
-            <p className="text-4xl mb-3">🗑️</p>
-            <h3 className="text-white font-semibold mb-2">Xác nhận xóa tài khoản?</h3>
-            <p className="text-brand-muted text-sm mb-5">Tài khoản và toàn bộ dữ liệu liên quan sẽ bị xóa vĩnh viễn.</p>
+            <p className="text-4xl mb-3">???</p>
+            <h3 className="text-white font-semibold mb-2">X�c nh?n x�a t�i kho?n?</h3>
+            <p className="text-brand-muted text-sm mb-5">T�i kho?n v� to�n b? d? li?u li�n quan s? b? x�a vinh vi?n.</p>
             <div className="flex gap-3">
               <button onClick={() => handleDelete(deleting)}
-                className="flex-1 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white text-sm font-semibold">Xóa</button>
-              <button onClick={() => setDeleting(null)} className="flex-1 btn-outline py-2.5 text-sm">Hủy</button>
+                className="flex-1 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white text-sm font-semibold">X�a</button>
+              <button onClick={() => setDeleting(null)} className="flex-1 btn-outline py-2.5 text-sm">H?y</button>
             </div>
           </div>
         </div>

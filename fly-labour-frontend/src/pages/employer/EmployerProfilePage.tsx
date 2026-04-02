@@ -85,14 +85,14 @@ export default function EmployerProfilePage() {
       {/* Company info card */}
       <div className="card-dark p-6 space-y-5">
         <div className="flex items-center gap-2 mb-1">
-          <Building2 size={17} className="text-brand-yellow" />
+          <Building2 size={17} className="text-brand-gold" />
           <h2 className="font-semibold text-white">Thông tin công ty</h2>
         </div>
 
         {/* Avatar placeholder — company initial */}
         <div className="flex items-center gap-4">
           <div
-            className="w-16 h-16 rounded-2xl flex items-center justify-center text-black font-black text-2xl shrink-0"
+            className="w-16 h-16 rounded-2xl flex items-center justify-center text-slate-900 font-black text-2xl shrink-0"
             style={{ background: 'linear-gradient(135deg,#e4a808,#fdd52f)' }}
           >
             {(info.companyName || info.fullName || 'C').charAt(0).toUpperCase()}
@@ -169,7 +169,7 @@ export default function EmployerProfilePage() {
           </div>
           <div className="flex items-center justify-between py-2 border-b border-brand-border">
             <span className="text-brand-muted">Loại tài khoản</span>
-            <span className="text-brand-yellow font-medium">Nhà tuyển dụng</span>
+            <span className="text-brand-gold font-medium">Nhà tuyển dụng</span>
           </div>
           <div className="flex items-center justify-between py-2">
             <span className="text-brand-muted">Trạng thái</span>
@@ -183,7 +183,7 @@ export default function EmployerProfilePage() {
       {/* Change password */}
       <div className="card-dark p-6 space-y-4">
         <div className="flex items-center gap-2 mb-1">
-          <Lock size={17} className="text-brand-yellow" />
+          <Lock size={17} className="text-brand-gold" />
           <h2 className="font-semibold text-white">Đổi mật khẩu</h2>
         </div>
 
