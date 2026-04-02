@@ -10,6 +10,7 @@ export declare class SettingsController {
     private settingsService;
     constructor(settingsService: SettingsService);
     getAll(): Promise<Record<string, string>>;
+    getAllAdmin(): Promise<Record<string, string>>;
     saveAll(body: Record<string, string>): Promise<Record<string, string>>;
 }
 export declare class SettingsModule {

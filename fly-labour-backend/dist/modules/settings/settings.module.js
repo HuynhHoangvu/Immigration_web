@@ -51,6 +51,9 @@ let SettingsController = class SettingsController {
     getAll() {
         return this.settingsService.getAll();
     }
+    getAllAdmin() {
+        return this.settingsService.getAll();
+    }
     saveAll(body) {
         return this.settingsService.saveAll(body);
     }
@@ -58,13 +61,20 @@ let SettingsController = class SettingsController {
 exports.SettingsController = SettingsController;
 __decorate([
     (0, common_1.Get)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Lấy cài đặt hệ thống (công khai)' }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], SettingsController.prototype, "getAll", null);
+__decorate([
+    (0, common_1.Get)('admin'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, admin_guard_1.AdminGuard),
     (0, swagger_1.ApiBearerAuth)('JWT'),
     (0, swagger_1.ApiOperation)({ summary: '[Admin] Lấy cài đặt hệ thống' }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
-], SettingsController.prototype, "getAll", null);
+], SettingsController.prototype, "getAllAdmin", null);
 __decorate([
     (0, common_1.Put)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, admin_guard_1.AdminGuard),

@@ -21,6 +21,8 @@ async function bootstrap() {
         'http://localhost:5173',
         'http://localhost:3001',
         'http://127.0.0.1:5173',
+        'https://flyimmigration.vn',
+        'https://www.flyimmigration.vn',
         process.env.FRONTEND_URL,
     ].filter(Boolean);
     app.enableCors({
