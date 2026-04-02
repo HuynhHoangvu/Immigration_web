@@ -35,7 +35,11 @@ export default function ProfilePage() {
   const [showChangePass, setShowChangePass] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const [changingPass, setChangingPass] = useState(false);
-  const [passForm, setPassForm] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
+  const [passForm, setPassForm] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -57,7 +61,7 @@ export default function ProfilePage() {
       const res = await usersApi.updateMe(form);
       setUser({ ...user, ...res.data });
       setEditing(false);
-      toast.success("Ðã c?p nh?t h? so");
+      toast.success("ï¿½ï¿½ c?p nh?t h? so");
     } catch {
       toast.error("C?p nh?t th?t b?i");
     } finally {
@@ -67,35 +71,47 @@ export default function ProfilePage() {
 
   const handleLogout = () => {
     logout();
-    toast.success("Ðã dang xu?t");
+    toast.success("ï¿½ï¿½ dang xu?t");
     navigate("/");
   };
 
   const handleWithdraw = async (appId: string) => {
-    if (!confirm('B?n có ch?c mu?n rút don này không?')) return;
+    if (!confirm("B?n cï¿½ ch?c mu?n rï¿½t don nï¿½y khï¿½ng?")) return;
     try {
       await applicationsApi.withdraw(appId);
-      setMyApps(prev => prev.map(a => a.id === appId ? { ...a, status: 'withdrawn' as any } : a));
-      toast.success('Ðã rút don ?ng tuy?n');
+      setMyApps((prev) =>
+        prev.map((a) =>
+          a.id === appId ? { ...a, status: "withdrawn" as any } : a,
+        ),
+      );
+      toast.success("ï¿½ï¿½ rï¿½t don ?ng tuy?n");
     } catch (err: any) {
-      toast.error(err?.response?.data?.message || 'Rút don th?t b?i');
+      toast.error(err?.response?.data?.message || "Rï¿½t don th?t b?i");
     }
   };
 
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!passForm.currentPassword || !passForm.newPassword || !passForm.confirmPassword) {
-      toast.error('Vui lòng di?n d?y d? thông tin');
+    if (
+      !passForm.currentPassword ||
+      !passForm.newPassword ||
+      !passForm.confirmPassword
+    ) {
+      toast.error("Vui lï¿½ng di?n d?y d? thï¿½ng tin");
       return;
     }
     setChangingPass(true);
     try {
       await usersApi.changePassword(passForm);
-      toast.success('Ð?i m?t kh?u thành công');
+      toast.success("ï¿½?i m?t kh?u thï¿½nh cï¿½ng");
       setShowChangePass(false);
-      setPassForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
+      setPassForm({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
     } catch (err: any) {
-      toast.error(err?.response?.data?.message || 'Ð?i m?t kh?u th?t b?i');
+      toast.error(err?.response?.data?.message || "ï¿½?i m?t kh?u th?t b?i");
     } finally {
       setChangingPass(false);
     }
@@ -122,29 +138,29 @@ export default function ProfilePage() {
                 className={`inline-block mt-2 text-xs px-2.5 py-0.5 rounded-full font-medium ${
                   user.role === "admin"
                     ? "bg-brand-gold/20 text-brand-gold border border-brand-gold/30"
-                    : "bg-white/5 text-slate-900 border border-white/10"
+                    : "bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-white/10"
                 }`}
               >
-                {user.role === "admin" ? "?? Admin" : "?? Thành viên"}
+                {user.role === "admin" ? "?? Admin" : "?? Thï¿½nh viï¿½n"}
               </span>
               <div className="mt-4 pt-4 border-t border-brand-border text-xs text-brand-muted">
-                Thành viên t? {formatDate(user.createdAt)}
+                Thï¿½nh viï¿½n t? {formatDate(user.createdAt)}
               </div>
             </div>
 
             <div className="card-dark p-4 space-y-2">
-              <div className="flex items-center gap-2.5 text-sm text-slate-900">
+              <div className="flex items-center gap-2.5 text-sm text-gray-700 dark:text-gray-300">
                 <Mail size={14} className="text-brand-gold shrink-0" />
                 <span className="truncate">{user.email}</span>
               </div>
               {user.phone && (
-                <div className="flex items-center gap-2.5 text-sm text-slate-900">
+                <div className="flex items-center gap-2.5 text-sm text-gray-700 dark:text-gray-300">
                   <Phone size={14} className="text-brand-gold shrink-0" />
                   {user.phone}
                 </div>
               )}
               {user.address && (
-                <div className="flex items-center gap-2.5 text-sm text-slate-900">
+                <div className="flex items-center gap-2.5 text-sm text-gray-700 dark:text-gray-300">
                   <MapPin size={14} className="text-brand-gold shrink-0" />
                   <span>{user.address}</span>
                 </div>
@@ -156,7 +172,7 @@ export default function ProfilePage() {
                 to="/admin"
                 className="w-full btn-primary flex items-center justify-center gap-2 py-2.5 text-sm"
               >
-                ?? Vào Admin Dashboard
+                ?? Vï¿½o Admin Dashboard
               </Link>
             )}
 
@@ -164,7 +180,7 @@ export default function ProfilePage() {
               onClick={handleLogout}
               className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-red-500/30 text-red-400 text-sm hover:bg-red-500/10 transition-colors"
             >
-              <LogOut size={15} /> Ðang xu?t
+              <LogOut size={15} /> ï¿½ang xu?t
             </button>
           </div>
 
@@ -174,8 +190,8 @@ export default function ProfilePage() {
             <div className="card-dark p-6">
               <div className="flex items-center justify-between mb-5">
                 <h3 className="font-semibold text-white flex items-center gap-2">
-                  <User size={16} className="text-brand-gold" /> Thông tin cá
-                  nhân
+                  <User size={16} className="text-brand-gold" /> Thï¿½ng tin cï¿½
+                  nhï¿½n
                 </h3>
                 {!editing ? (
                   <button
@@ -204,7 +220,7 @@ export default function ProfilePage() {
               <div className="space-y-4">
                 {[
                   {
-                    label: "H? và tên",
+                    label: "H? vï¿½ tï¿½n",
                     key: "fullName",
                     placeholder: "Nguy?n Van A",
                   },
@@ -214,7 +230,7 @@ export default function ProfilePage() {
                     placeholder: "0901 234 567",
                   },
                   {
-                    label: "Ð?a ch?",
+                    label: "ï¿½?a ch?",
                     key: "address",
                     placeholder: "Qu?n/Huy?n, T?nh/TP",
                   },
@@ -234,7 +250,7 @@ export default function ProfilePage() {
                       />
                     ) : (
                       <p className="text-white text-sm py-3 px-4 bg-brand-dark rounded-xl">
-                        {(user[f.key as keyof typeof user] as string) || "—"}
+                        {(user[f.key as keyof typeof user] as string) || "ï¿½"}
                       </p>
                     )}
                   </div>
@@ -249,7 +265,7 @@ export default function ProfilePage() {
                     {saving ? (
                       <>
                         <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />{" "}
-                        Ðang luu...
+                        ï¿½ang luu...
                       </>
                     ) : (
                       <>
@@ -265,44 +281,64 @@ export default function ProfilePage() {
             <div className="card-dark p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-white flex items-center gap-2">
-                  <Lock size={16} className="text-brand-gold" /> Ð?i m?t kh?u
+                  <Lock size={16} className="text-brand-gold" /> ï¿½?i m?t kh?u
                 </h3>
                 <button
                   onClick={() => setShowChangePass(!showChangePass)}
                   className="text-xs text-brand-gold hover:text-brand-orange transition-colors"
                 >
-                  {showChangePass ? 'Ðóng' : 'Ð?i m?t kh?u'}
+                  {showChangePass ? "ï¿½ï¿½ng" : "ï¿½?i m?t kh?u"}
                 </button>
               </div>
               {showChangePass && (
                 <form onSubmit={handleChangePassword} className="space-y-3">
                   {[
-                    { label: 'M?t kh?u hi?n t?i', key: 'currentPassword' },
-                    { label: 'M?t kh?u m?i', key: 'newPassword' },
-                    { label: 'Xác nh?n m?t kh?u m?i', key: 'confirmPassword' },
-                  ].map(f => (
+                    { label: "M?t kh?u hi?n t?i", key: "currentPassword" },
+                    { label: "M?t kh?u m?i", key: "newPassword" },
+                    { label: "Xï¿½c nh?n m?t kh?u m?i", key: "confirmPassword" },
+                  ].map((f) => (
                     <div key={f.key}>
-                      <label className="text-xs text-brand-muted mb-1.5 block">{f.label}</label>
+                      <label className="text-xs text-brand-muted mb-1.5 block">
+                        {f.label}
+                      </label>
                       <div className="relative">
                         <input
-                          type={showPass ? 'text' : 'password'}
+                          type={showPass ? "text" : "password"}
                           value={passForm[f.key as keyof typeof passForm]}
-                          onChange={e => setPassForm(p => ({ ...p, [f.key]: e.target.value }))}
+                          onChange={(e) =>
+                            setPassForm((p) => ({
+                              ...p,
+                              [f.key]: e.target.value,
+                            }))
+                          }
                           className="input-dark pr-11"
-                          placeholder="••••••••"
+                          placeholder="ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
                         />
-                        <button type="button" onClick={() => setShowPass(!showPass)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-muted hover:text-white">
+                        <button
+                          type="button"
+                          onClick={() => setShowPass(!showPass)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-muted hover:text-white"
+                        >
                           {showPass ? <EyeOff size={15} /> : <Eye size={15} />}
                         </button>
                       </div>
                     </div>
                   ))}
-                  <button type="submit" disabled={changingPass} className="btn-primary flex items-center gap-2 px-5 py-2.5 text-sm">
-                    {changingPass
-                      ? <><span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" /> Ðang d?i...</>
-                      : <><Save size={13} /> Ð?i m?t kh?u</>
-                    }
+                  <button
+                    type="submit"
+                    disabled={changingPass}
+                    className="btn-primary flex items-center gap-2 px-5 py-2.5 text-sm"
+                  >
+                    {changingPass ? (
+                      <>
+                        <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />{" "}
+                        ï¿½ang d?i...
+                      </>
+                    ) : (
+                      <>
+                        <Save size={13} /> ï¿½?i m?t kh?u
+                      </>
+                    )}
                   </button>
                 </form>
               )}
@@ -311,7 +347,7 @@ export default function ProfilePage() {
             {/* My applications */}
             <div className="card-dark p-6">
               <h3 className="font-semibold text-white mb-4">
-                ?? Ðon ?ng tuy?n c?a tôi
+                ?? ï¿½on ?ng tuy?n c?a tï¿½i
               </h3>
 
               {loadingApps ? (
@@ -327,13 +363,13 @@ export default function ProfilePage() {
                 <div className="text-center py-8">
                   <p className="text-3xl mb-2">??</p>
                   <p className="text-brand-muted text-sm">
-                    B?n chua có don ?ng tuy?n nào
+                    B?n chua cï¿½ don ?ng tuy?n nï¿½o
                   </p>
                   <Link
                     to="/jobs"
                     className="inline-block mt-3 btn-primary text-sm px-5 py-2"
                   >
-                    Tìm vi?c ngay
+                    Tï¿½m vi?c ngay
                   </Link>
                 </div>
               ) : (
@@ -348,7 +384,7 @@ export default function ProfilePage() {
                           {app.job?.title}
                         </p>
                         <p className="text-brand-muted text-xs">
-                          {app.job?.company} · {formatDate(app.createdAt)}
+                          {app.job?.company} ï¿½ {formatDate(app.createdAt)}
                         </p>
                       </div>
                       <span
@@ -356,10 +392,10 @@ export default function ProfilePage() {
                       >
                         {APP_STATUS_LABELS[app.status]?.label}
                       </span>
-                      {app.status === 'pending' && (
+                      {app.status === "pending" && (
                         <button
                           onClick={() => handleWithdraw(app.id)}
-                          title="Rút don"
+                          title="Rï¿½t don"
                           className="shrink-0 text-red-400 hover:text-red-300 transition-colors"
                         >
                           <XCircle size={16} />

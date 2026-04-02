@@ -351,7 +351,7 @@ export default function HeroBanner() {
             className={`px-3 py-2 rounded-xl text-sm transition-all duration-200 border backdrop-blur-sm ${
               i === current
                 ? "text-white"
-                : "text-slate-900 border-white/20 bg-white/10 hover:text-white"
+                : "text-slate-700 dark:text-gray-300 border-slate-300 dark:border-white/20 bg-slate-100 dark:bg-white/10 hover:text-slate-900 dark:hover:text-white"
             }`}
             style={
               i === current

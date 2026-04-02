@@ -25,7 +25,8 @@ const STATUS_COLORS = {
   active: "text-green-400 bg-green-400/10 border-green-400/20",
   paused: "text-yellow-400 bg-yellow-400/10 border-yellow-400/20",
   closed: "text-red-400 bg-red-400/10 border-red-400/20",
-  draft: "text-slate-900 bg-gray-400/10 border-gray-400/20",
+  draft:
+    "text-gray-700 dark:text-gray-400 bg-gray-100 dark:bg-gray-400/10 border-gray-300 dark:border-gray-400/20",
   pending_review: "text-amber-400 bg-orange-400/10 border-amber-400/20",
 };
 const STATUS_LABELS = {

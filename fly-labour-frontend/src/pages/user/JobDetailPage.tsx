@@ -311,7 +311,7 @@ export default function JobDetailPage() {
                   <span className="badge-country">
                     {flag} {countryName}
                   </span>
-                  <span className="bg-white/5 text-slate-900 text-xs px-2 py-0.5 rounded border border-white/10">
+                  <span className="bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-gray-300 text-xs px-2 py-0.5 rounded border border-gray-300 dark:border-white/10">
                     {getJobTypeLabel(job.jobType)}
                   </span>
                 </div>
@@ -422,7 +422,7 @@ export default function JobDetailPage() {
                 <Globe size={18} className="text-brand-gold" />{" "}
                 {d.jobDescription}
               </h2>
-              <p className="text-slate-900 leading-relaxed text-sm whitespace-pre-line">
+              <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-sm whitespace-pre-line">
                 {job.description}
               </p>
             </div>
@@ -432,7 +432,7 @@ export default function JobDetailPage() {
                 <h2 className="font-semibold text-white text-lg mb-4">
                   {d.requirements}
                 </h2>
-                <p className="text-slate-900 leading-relaxed text-sm whitespace-pre-line">
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-sm whitespace-pre-line">
                   {job.requirements}
                 </p>
               </div>
@@ -450,7 +450,7 @@ export default function JobDetailPage() {
                     .map((b, i) => (
                       <div
                         key={i}
-                        className="flex items-start gap-2 text-sm text-slate-900"
+                        className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300"
                       >
                         <CheckCircle
                           size={15}
