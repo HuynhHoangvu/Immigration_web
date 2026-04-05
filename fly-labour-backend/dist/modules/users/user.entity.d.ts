@@ -13,6 +13,7 @@ export declare class User {
     password: string;
     role: UserRole;
     isActive: boolean;
+    cvUrl: string;
     companyName: string;
     companyDescription: string;
     website: string;

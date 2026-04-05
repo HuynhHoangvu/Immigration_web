@@ -52,16 +52,16 @@ export default function NewsDetailPage() {
       {/* Breadcrumb */}
       <div className="border-b border-brand-border bg-brand-card/50">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center gap-2 text-sm text-brand-muted">
-          <Link to="/" className="hover:text-white transition-colors">Trang chủ</Link>
+          <Link to="/" className="hover:text-slate-900 dark:hover:text-white transition-colors">Trang chủ</Link>
           <span>/</span>
-          <Link to="/news" className="hover:text-white transition-colors">Tin tức</Link>
+          <Link to="/news" className="hover:text-slate-900 dark:hover:text-white transition-colors">Tin tức</Link>
           <span>/</span>
-          <span className="text-white truncate max-w-xs">{article.title}</span>
+          <span className="text-slate-900 dark:text-white truncate max-w-xs">{article.title}</span>
         </div>
       </div>
 
       <div className="max-w-4xl mx-auto px-6 py-8">
-        <Link to="/news" className="inline-flex items-center gap-2 text-sm text-brand-muted hover:text-white transition-colors mb-6">
+        <Link to="/news" className="inline-flex items-center gap-2 text-sm text-brand-muted hover:text-slate-900 dark:hover:text-white transition-colors mb-6">
           <ArrowLeft size={15} /> Quay lại Tin tức
         </Link>
 

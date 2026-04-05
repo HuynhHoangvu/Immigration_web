@@ -41,6 +41,18 @@ export class JobsService {
     return { data, meta: { total, page: +page, limit: +limit, totalPages: Math.ceil(total / limit) } };
   }
 
+  async getAvailableFilters() {
+    const jobs = await this.jobsRepo
+      .createQueryBuilder('job')
+      .select(['job.country', 'job.categoryId'])
+      .where('job.status = :status', { status: JobStatus.ACTIVE })
+      .getMany()
+
+    const countries = [...new Set(jobs.map(j => j.country).filter(Boolean))]
+    const categoryIds = [...new Set(jobs.map(j => j.categoryId).filter(Boolean))]
+    return { countries, categoryIds }
+  }
+
   async findHot() {
     return this.jobsRepo.find({
       where: { isHot: true, status: JobStatus.ACTIVE },

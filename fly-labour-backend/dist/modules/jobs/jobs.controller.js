@@ -29,6 +29,9 @@ let JobsController = class JobsController {
     findAll(query) {
         return this.jobsService.findAll(query);
     }
+    getAvailableFilters() {
+        return this.jobsService.getAvailableFilters();
+    }
     findHot() {
         return this.jobsService.findHot();
     }
@@ -81,6 +84,13 @@ __decorate([
     __metadata("design:paramtypes", [job_dto_1.QueryJobDto]),
     __metadata("design:returntype", void 0)
 ], JobsController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('filters/available'),
+    (0, swagger_1.ApiOperation)({ summary: 'Get available filter options (countries, categories)' }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], JobsController.prototype, "getAvailableFilters", null);
 __decorate([
     (0, common_1.Get)('hot'),
     (0, swagger_1.ApiOperation)({ summary: 'Hot / Featured jobs' }),

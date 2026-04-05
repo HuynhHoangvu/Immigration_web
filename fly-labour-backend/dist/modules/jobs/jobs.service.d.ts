@@ -15,6 +15,10 @@ export declare class JobsService {
             totalPages: number;
         };
     }>;
+    getAvailableFilters(): Promise<{
+        countries: string[];
+        categoryIds: string[];
+    }>;
     findHot(): Promise<Job[]>;
     findAllAdmin(query: QueryJobDto): Promise<{
         data: {

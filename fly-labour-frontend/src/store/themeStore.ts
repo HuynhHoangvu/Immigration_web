@@ -7,6 +7,7 @@ interface ThemeState {
   theme: Theme
   toggle: () => void
   setTheme: (theme: Theme) => void
+  hydrate: () => void
 }
 
 function applyTheme(theme: Theme) {
@@ -29,6 +30,21 @@ export const useThemeStore = create<ThemeState>()(
       setTheme: (theme) => {
         applyTheme(theme)
         set({ theme })
+      },
+      hydrate: () => {
+        // Restore theme from localStorage and apply to DOM
+        const stored = localStorage.getItem('fly-labour-theme')
+        if (stored) {
+          try {
+            const { state } = JSON.parse(stored)
+            if (state?.theme) {
+              applyTheme(state.theme)
+              set({ theme: state.theme })
+            }
+          } catch (e) {
+            console.error('Failed to hydrate theme:', e)
+          }
+        }
       },
     }),
     {

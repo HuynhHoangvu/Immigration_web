@@ -6,35 +6,64 @@ export default {
     extend: {
       colors: {
         // ────────────────────────────────────────────────────────────────
-        // BRAND COLORS (Static - không đổi theo theme)
+        // BRAND COLORS (Static - Logo Based)
         // ────────────────────────────────────────────────────────────────
         brand: {
-          yellow:  '#fdd52f',   // Light gold accent
-          gold:    '#e4a808',   // Primary accent
-          lime:    '#f2ee8c',   // Soft lime accent
-          cream:   '#ffea80',   // Cream yellow
-          orange:  '#e4a808',   // Alias for gold
-          secondary: '#505050', // Secondary color
+          gold: {
+            primary: '#e4a808',      // Main brand
+            bright: '#f5b500',       // Hover
+            soft: '#fdd52f',         // Light accent
+            lighter: '#f2ee8c',      // Disabled/bg
+          },
+          orange: {
+            primary: '#ff9500',      // Secondary CTA
+            light: '#ffb84d',        // Hover
+            lighter: '#ffe5cc',      // Background
+          },
+          cream: '#fffbf0',          // Warm white
+          gray: {
+            50: '#fafaf9',
+            100: '#f5f5f3',
+            200: '#e5e5e4',
+            300: '#d4d4d2',
+            400: '#b8b8b6',
+            500: '#a0a09f',
+            600: '#626262',
+            700: '#3d3d3d',
+            800: '#2a2a2a',
+            900: '#1a1a1a',
+          },
+          // Semantic alias for backward compatibility
+          border: 'var(--border-default)',
+          card: '#1a1a19',           // Dark card background
+          dark: '#0f0f0e',           // Deep black background
+          muted: '#7a7a78',          // Muted text color
+          yellow: '#f5b500',         // Hover gold
         },
 
         // ────────────────────────────────────────────────────────────────
-        // THEME COLORS (Dynamic - map với CSS Variables)
+        // THEME COLORS (Dynamic - CSS Variables)
         // ────────────────────────────────────────────────────────────────
         theme: {
-          surface:      'var(--surface)',       // Background
-          card:         'var(--surface-card)',  // Cards
-          panel:        'var(--surface-panel)', // Panels/inputs
+          background: 'var(--background)',
+          surface: 'var(--surface)',
+          surfaceSecondary: 'var(--surface-secondary)',
+          
           text: {
-            base:       'var(--text-base)',
-            muted:      'var(--text-muted)',
+            base: 'var(--text-base)',
+            secondary: 'var(--text-secondary)',
+            tertiary: 'var(--text-tertiary)',
           },
+          
           border: {
-            col:        'var(--border-col)',
-            line:       'var(--border-line)',
+            default: 'var(--border-default)',
+            subtle: 'var(--border-subtle)',
+            strong: 'var(--border-strong)',
           },
+          
           accent: {
-            primary:    'var(--accent-primary)',
-            secondary:  'var(--accent-secondary)',
+            primary: 'var(--accent-primary)',
+            secondary: 'var(--accent-secondary)',
           },
         },
       },

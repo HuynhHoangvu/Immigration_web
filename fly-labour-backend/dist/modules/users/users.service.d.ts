@@ -17,6 +17,7 @@ export declare class UsersService {
             address: string;
             role: import("./user.entity").UserRole;
             isActive: boolean;
+            cvUrl: string;
             companyName: string;
             companyDescription: string;
             website: string;
@@ -39,6 +40,7 @@ export declare class UsersService {
         address: string;
         role: import("./user.entity").UserRole;
         isActive: boolean;
+        cvUrl: string;
         companyName: string;
         companyDescription: string;
         website: string;
@@ -59,6 +61,7 @@ export declare class UsersService {
         phone?: string;
         address?: string;
         avatar?: string;
+        cvUrl?: string;
         companyName?: string;
         companyDescription?: string;
         website?: string;
@@ -71,6 +74,7 @@ export declare class UsersService {
         address: string;
         role: import("./user.entity").UserRole;
         isActive: boolean;
+        cvUrl: string;
         companyName: string;
         companyDescription: string;
         website: string;
@@ -91,6 +95,7 @@ export declare class UsersService {
         address: string;
         role: import("./user.entity").UserRole;
         isActive: boolean;
+        cvUrl: string;
         companyName: string;
         companyDescription: string;
         website: string;

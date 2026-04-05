@@ -52,6 +52,16 @@ let JobsService = class JobsService {
         const [data, total] = await qb.getManyAndCount();
         return { data, meta: { total, page: +page, limit: +limit, totalPages: Math.ceil(total / limit) } };
     }
+    async getAvailableFilters() {
+        const jobs = await this.jobsRepo
+            .createQueryBuilder('job')
+            .select(['job.country', 'job.categoryId'])
+            .where('job.status = :status', { status: job_entity_1.JobStatus.ACTIVE })
+            .getMany();
+        const countries = [...new Set(jobs.map(j => j.country).filter(Boolean))];
+        const categoryIds = [...new Set(jobs.map(j => j.categoryId).filter(Boolean))];
+        return { countries, categoryIds };
+    }
     async findHot() {
         return this.jobsRepo.find({
             where: { isHot: true, status: job_entity_1.JobStatus.ACTIVE },

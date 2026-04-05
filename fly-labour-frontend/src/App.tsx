@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import toast from "react-hot-toast";
 import BackgroundMusic from "@/components/ui/BackgroundMusic";
 import { useT } from "@/hooks/useT";
 import { contactApi } from "@/services/api";
+import { useThemeStore } from "@/store/themeStore";
 
 // Layouts
 import Header from "@/components/layout/Header";
@@ -12,6 +13,8 @@ import ScrollToTop from "@/components/ui/ScrollToTop";
 import Footer from "@/components/layout/Footer";
 import FloatingContact from "@/components/ui/FloatingContact";
 import AdminLayout from "@/components/admin/AdminLayout";
+import { AdminEditBar } from "@/components/admin/AdminEditBar";
+import { useContentStore } from "@/hooks/usePageContent";
 
 // User pages
 import HomePage from "@/pages/user/HomePage";
@@ -45,7 +48,6 @@ import EmployerJobsPage from "@/pages/employer/EmployerJobsPage";
 import EmployerApplicationsPage from "@/pages/employer/EmployerApplicationsPage";
 import EmployerProfilePage from "@/pages/employer/EmployerProfilePage";
 
-
 function UserLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-brand-dark">
@@ -60,8 +62,13 @@ function UserLayout({ children }: { children: React.ReactNode }) {
 
 function ContactPage() {
   const { t } = useT();
-  const c = t('contact');
-  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
+  const c = t("contact");
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
   const [sending, setSending] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -70,10 +77,10 @@ function ContactPage() {
     setSending(true);
     try {
       await contactApi.send(form);
-      toast.success('Ðã g?i liên h? thành công! Chúng tôi s? ph?n h?i s?m.');
-      setForm({ name: '', email: '', phone: '', message: '' });
+      toast.success("ï¿½ï¿½ g?i liï¿½n h? thï¿½nh cï¿½ng! Chï¿½ng tï¿½i s? ph?n h?i s?m.");
+      setForm({ name: "", email: "", phone: "", message: "" });
     } catch {
-      toast.error('G?i th?t b?i, vui lòng th? l?i');
+      toast.error("G?i th?t b?i, vui lï¿½ng th? l?i");
     } finally {
       setSending(false);
     }
@@ -90,37 +97,68 @@ function ContactPage() {
           <div className="card-dark p-8">
             <form onSubmit={handleSubmit} className="space-y-4">
               {[
-                { label: c.name, key: 'name', type: 'text', placeholder: c.namePlaceholder },
-                { label: c.email, key: 'email', type: 'email', placeholder: 'email@example.com' },
-                { label: c.phone, key: 'phone', type: 'tel', placeholder: c.phonePlaceholder },
+                {
+                  label: c.name,
+                  key: "name",
+                  type: "text",
+                  placeholder: c.namePlaceholder,
+                },
+                {
+                  label: c.email,
+                  key: "email",
+                  type: "email",
+                  placeholder: "email@example.com",
+                },
+                {
+                  label: c.phone,
+                  key: "phone",
+                  type: "tel",
+                  placeholder: c.phonePlaceholder,
+                },
               ].map((f) => (
                 <div key={f.key}>
-                  <label className="text-xs text-brand-muted mb-1.5 block">{f.label}</label>
+                  <label className="text-xs text-brand-muted mb-1.5 block">
+                    {f.label}
+                  </label>
                   <input
                     type={f.type}
                     value={form[f.key as keyof typeof form]}
-                    onChange={e => setForm(fm => ({ ...fm, [f.key]: e.target.value }))}
+                    onChange={(e) =>
+                      setForm((fm) => ({ ...fm, [f.key]: e.target.value }))
+                    }
                     className="input-dark"
                     placeholder={f.placeholder}
-                    required={f.key !== 'phone'}
+                    required={f.key !== "phone"}
                   />
                 </div>
               ))}
               <div>
-                <label className="text-xs text-brand-muted mb-1.5 block">{c.message}</label>
+                <label className="text-xs text-brand-muted mb-1.5 block">
+                  {c.message}
+                </label>
                 <textarea
                   value={form.message}
-                  onChange={e => setForm(fm => ({ ...fm, message: e.target.value }))}
+                  onChange={(e) =>
+                    setForm((fm) => ({ ...fm, message: e.target.value }))
+                  }
                   className="input-dark h-28 resize-none"
                   placeholder={c.messagePlaceholder}
                   required
                 />
               </div>
-              <button type="submit" disabled={sending} className="btn-primary w-full py-3 flex items-center justify-center gap-2">
-                {sending
-                  ? <><span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" /> Ðang g?i...</>
-                  : c.send
-                }
+              <button
+                type="submit"
+                disabled={sending}
+                className="btn-primary w-full py-3 flex items-center justify-center gap-2"
+              >
+                {sending ? (
+                  <>
+                    <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />{" "}
+                    ï¿½ang g?i...
+                  </>
+                ) : (
+                  c.send
+                )}
               </button>
             </form>
           </div>
@@ -132,7 +170,7 @@ function ContactPage() {
 
 function NotFound() {
   const { t } = useT();
-  const nf = t('notFound');
+  const nf = t("notFound");
   return (
     <UserLayout>
       <div className="min-h-screen flex items-center justify-center">
@@ -148,9 +186,28 @@ function NotFound() {
   );
 }
 
+function ContentLoader() {
+  const load = useContentStore((s) => s.load);
+  useEffect(() => {
+    load();
+  }, [load]);
+  return null;
+}
+
+function ThemeInitializer() {
+  useEffect(() => {
+    const { hydrate } = useThemeStore.getState();
+    hydrate();
+  }, []);
+  return null;
+}
+
 export default function App() {
   return (
     <BrowserRouter>
+      <ThemeInitializer />
+      <ContentLoader />
+      <AdminEditBar />
       <ScrollToTop />
       <Toaster
         position="top-right"
@@ -168,19 +225,89 @@ export default function App() {
       />
       <Routes>
         {/* User routes */}
-        <Route path="/" element={<UserLayout><HomePage /></UserLayout>} />
-        <Route path="/jobs" element={<UserLayout><JobsPage /></UserLayout>} />
-        <Route path="/jobs/:id" element={<UserLayout><JobDetailPage /></UserLayout>} />
-        <Route path="/news" element={<UserLayout><NewsPage /></UserLayout>} />
-        <Route path="/news/:slug" element={<UserLayout><NewsDetailPage /></UserLayout>} />
-        <Route path="/about" element={<UserLayout><AboutPage /></UserLayout>} />
-        <Route path="/process" element={<UserLayout><ProcessPage /></UserLayout>} />
-        <Route path="/faq" element={<UserLayout><FaqPage /></UserLayout>} />
-        <Route path="/privacy" element={<UserLayout><PrivacyPage /></UserLayout>} />
+        <Route
+          path="/"
+          element={
+            <UserLayout>
+              <HomePage />
+            </UserLayout>
+          }
+        />
+        <Route
+          path="/jobs"
+          element={
+            <UserLayout>
+              <JobsPage />
+            </UserLayout>
+          }
+        />
+        <Route
+          path="/jobs/:id"
+          element={
+            <UserLayout>
+              <JobDetailPage />
+            </UserLayout>
+          }
+        />
+        <Route
+          path="/news"
+          element={
+            <UserLayout>
+              <NewsPage />
+            </UserLayout>
+          }
+        />
+        <Route
+          path="/news/:slug"
+          element={
+            <UserLayout>
+              <NewsDetailPage />
+            </UserLayout>
+          }
+        />
+        <Route
+          path="/about"
+          element={
+            <UserLayout>
+              <AboutPage />
+            </UserLayout>
+          }
+        />
+        <Route
+          path="/process"
+          element={
+            <UserLayout>
+              <ProcessPage />
+            </UserLayout>
+          }
+        />
+        <Route
+          path="/faq"
+          element={
+            <UserLayout>
+              <FaqPage />
+            </UserLayout>
+          }
+        />
+        <Route
+          path="/privacy"
+          element={
+            <UserLayout>
+              <PrivacyPage />
+            </UserLayout>
+          }
+        />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/profile" element={<UserLayout><ProfilePage /></UserLayout>} />
+        <Route
+          path="/profile"
+          element={
+            <UserLayout>
+              <ProfilePage />
+            </UserLayout>
+          }
+        />
 
         {/* Employer routes */}
         <Route path="/employer" element={<EmployerLayout />}>

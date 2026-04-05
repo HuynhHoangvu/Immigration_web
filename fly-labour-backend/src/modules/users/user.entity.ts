@@ -33,6 +33,9 @@ export class User {
   @Column({ default: true })
   isActive: boolean
 
+  @Column({ nullable: true })
+  cvUrl: string
+
   // Employer-specific fields
   @Column({ nullable: true })
   companyName: string

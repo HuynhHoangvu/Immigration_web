@@ -3,7 +3,7 @@ import {
   View, Text, TextInput, FlatList, StyleSheet,
   TouchableOpacity, RefreshControl, ActivityIndicator,
 } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useQuery } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
 import { Search, SlidersHorizontal, X } from 'lucide-react-native'
@@ -23,6 +23,7 @@ const COUNTRIES = [
 ]
 
 export default function JobsScreen() {
+  const insets = useSafeAreaInsets()
   const params = useLocalSearchParams<{ categoryId?: string }>()
   const [search, setSearch] = useState('')
   const [categoryId, setCategoryId] = useState<string | undefined>(params.categoryId)
@@ -30,10 +31,27 @@ export default function JobsScreen() {
   const [showFilters, setShowFilters] = useState(false)
   const [refreshing, setRefreshing] = useState(false)
 
-  const { data: categories } = useQuery<Category[]>({
+  // Fetch available filters (countries & categoryIds có việc làm)
+  const { data: availableFilters } = useQuery({
+    queryKey: ['filters', 'available'],
+    queryFn: () => jobsApi.getAvailableFilters().then(r => r.data),
+  })
+
+  // Fetch all categories (để hiển thị trong filter)
+  const { data: allCategories } = useQuery<Category[]>({
     queryKey: ['categories'],
     queryFn: () => categoriesApi.getAll().then(r => r.data),
   })
+
+  // Lọc categories chỉ những có việc làm
+  const availableCategoryIds = availableFilters?.categoryIds || []
+  const categories = allCategories?.filter(cat => availableCategoryIds.includes(cat.id)) || []
+
+  // Lọc countries chỉ những có việc làm
+  const availableCountryCodes = availableFilters?.countries || []
+  const availableCountries = COUNTRIES.filter(
+    c => c.value === '' || availableCountryCodes.includes(c.value)
+  )
 
   const { data, refetch, isLoading } = useQuery<{ data: Job[]; meta: any }>({
     queryKey: ['jobs', search, categoryId, country],
@@ -50,7 +68,7 @@ export default function JobsScreen() {
   const hasFilters = !!(categoryId || country)
 
   return (
-    <SafeAreaView style={styles.safe} edges={['top']}>
+    <View style={[styles.safe, { paddingTop: insets.top }]}>
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title}>Việc làm</Text>
@@ -82,25 +100,32 @@ export default function JobsScreen() {
       {showFilters && (
         <View style={styles.filtersBlock}>
           <Text style={styles.filterLabel}>Danh mục</Text>
-          {categories && (
+          {categories && categories.length > 0 ? (
             <CategoryGrid categories={categories} selected={categoryId} onSelect={setCategoryId} />
+          ) : (
+            <Text style={styles.emptyFilterText}>Không có danh mục</Text>
           )}
+
           <Text style={[styles.filterLabel, { marginTop: 8, paddingHorizontal: 16 }]}>Quốc gia</Text>
-          <FlatList
-            horizontal
-            data={COUNTRIES}
-            keyExtractor={i => i.value}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.countryRow}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() => setCountry(item.value)}
-                style={[styles.countryChip, country === item.value && styles.countryChipActive]}
-              >
-                <Text style={[styles.countryText, country === item.value && styles.countryTextActive]}>{item.label}</Text>
-              </TouchableOpacity>
-            )}
-          />
+          {availableCountries.length > 1 ? (
+            <FlatList
+              horizontal
+              data={availableCountries}
+              keyExtractor={i => i.value}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.countryRow}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() => setCountry(item.value)}
+                  style={[styles.countryChip, country === item.value && styles.countryChipActive]}
+                >
+                  <Text style={[styles.countryText, country === item.value && styles.countryTextActive]}>{item.label}</Text>
+                </TouchableOpacity>
+              )}
+            />
+          ) : (
+            <Text style={[styles.emptyFilterText, { paddingHorizontal: 16 }]}>Tất cả việc làm ở một quốc gia</Text>
+          )}
         </View>
       )}
 
@@ -136,7 +161,7 @@ export default function JobsScreen() {
           }
         />
       )}
-    </SafeAreaView>
+    </View>
   )
 }
 
@@ -159,6 +184,7 @@ const styles = StyleSheet.create({
 
   filtersBlock: { paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: Colors.border, marginBottom: 10 },
   filterLabel:  { color: Colors.muted, fontSize: 12, fontWeight: '600', paddingHorizontal: 16, marginBottom: 8, textTransform: 'uppercase' },
+  emptyFilterText: { color: Colors.muted, fontSize: 12, paddingHorizontal: 16, marginBottom: 8, fontStyle: 'italic' },
   countryRow:   { paddingHorizontal: 16, gap: 8 },
   countryChip:  { paddingHorizontal: 14, paddingVertical: 7, borderRadius: 99, borderWidth: 1, borderColor: Colors.border, backgroundColor: Colors.card },
   countryChipActive: { borderColor: Colors.yellow, backgroundColor: `${Colors.yellow}15` },

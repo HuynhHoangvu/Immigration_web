@@ -51,6 +51,7 @@ export interface User {
   phone?: string
   avatar?: string
   address?: string
+  cvUrl?: string
   role: UserRole
   isActive: boolean
   companyName?: string

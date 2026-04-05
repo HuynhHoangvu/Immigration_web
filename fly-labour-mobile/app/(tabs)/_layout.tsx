@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router'
-import { Home, Search, FileText, User } from 'lucide-react-native'
+import { Home, Search, FileText, User, Newspaper } from 'lucide-react-native'
 import { Colors } from '@/constants/colors'
 import { useAuthStore } from '@/store/authStore'
 
@@ -31,6 +31,10 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="jobs"
         options={{ title: 'Việc làm', tabBarIcon: ({ color }) => <Search size={22} color={color} /> }}
+      />
+      <Tabs.Screen
+        name="news"
+        options={{ title: 'Tin tức', tabBarIcon: ({ color }) => <Newspaper size={22} color={color} /> }}
       />
       <Tabs.Screen
         name="applications"

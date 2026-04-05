@@ -12,6 +12,10 @@ export declare class JobsController {
             totalPages: number;
         };
     }>;
+    getAvailableFilters(): Promise<{
+        countries: string[];
+        categoryIds: string[];
+    }>;
     findHot(): Promise<import("./job.entity").Job[]>;
     findEmployerJobs(req: any, query: QueryJobDto): Promise<{
         data: import("./job.entity").Job[];

@@ -71,7 +71,7 @@ export default function AboutPage() {
             <Link to="/jobs" className="btn-primary flex items-center gap-2 px-6 py-3">
               Xem việc làm <ArrowRight size={16} />
             </Link>
-            <Link to="/contact" className="px-6 py-3 rounded-xl border border-brand-border text-brand-muted hover:text-white hover:border-white/20 transition-colors text-sm">
+            <Link to="/contact" className="px-6 py-3 rounded-xl border border-brand-border text-brand-muted hover:text-slate-900 dark:hover:text-white hover:border-slate-400 dark:hover:border-white/20 transition-colors text-sm">
               Liên hệ tư vấn
             </Link>
           </div>

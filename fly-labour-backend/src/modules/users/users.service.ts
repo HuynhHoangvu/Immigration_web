@@ -46,7 +46,7 @@ export class UsersService {
     return { total, active, thisMonth }
   }
 
-  async updateProfile(id: string, dto: { fullName?: string; phone?: string; address?: string; avatar?: string; companyName?: string; companyDescription?: string; website?: string }) {
+  async updateProfile(id: string, dto: { fullName?: string; phone?: string; address?: string; avatar?: string; cvUrl?: string; companyName?: string; companyDescription?: string; website?: string }) {
     const user = await this.usersRepo.findOne({ where: { id } })
     if (!user) throw new NotFoundException()
     Object.assign(user, dto)

@@ -1,7 +1,20 @@
 import axios from 'axios'
+import { Platform } from 'react-native'
 import * as SecureStore from 'expo-secure-store'
 
 const BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000'
+
+const TOKEN_KEY = 'fly-labour-token'
+
+const getToken = () =>
+  Platform.OS === 'web'
+    ? Promise.resolve(localStorage.getItem(TOKEN_KEY))
+    : SecureStore.getItemAsync(TOKEN_KEY)
+
+const deleteToken = () =>
+  Platform.OS === 'web'
+    ? Promise.resolve(localStorage.removeItem(TOKEN_KEY))
+    : SecureStore.deleteItemAsync(TOKEN_KEY)
 
 export const api = axios.create({
   baseURL: BASE_URL,
@@ -11,7 +24,7 @@ export const api = axios.create({
 // Gắn JWT token vào mọi request
 api.interceptors.request.use(async (config) => {
   try {
-    const token = await SecureStore.getItemAsync('fly-labour-token')
+    const token = await getToken()
     if (token) config.headers.Authorization = `Bearer ${token}`
   } catch {}
   return config
@@ -22,7 +35,7 @@ api.interceptors.response.use(
   (res) => res,
   async (err) => {
     if (err.response?.status === 401) {
-      await SecureStore.deleteItemAsync('fly-labour-token')
+      await deleteToken()
     }
     return Promise.reject(err)
   }
@@ -39,9 +52,15 @@ export const authApi = {
 
 // ── Jobs ──────────────────────────────────────────────────
 export const jobsApi = {
-  getAll:  (params?: Record<string, any>) => api.get('/jobs', { params }),
-  getHot:  () => api.get('/jobs/hot'),
-  getOne:  (id: string) => api.get(`/jobs/${id}`),
+  getAll:                (params?: Record<string, any>) => api.get('/jobs', { params }),
+  getHot:                () => api.get('/jobs/hot'),
+  getAvailableFilters:   () => api.get('/jobs/filters/available'),
+  getOne:                (id: string) => api.get(`/jobs/${id}`),
+}
+
+// ── Upload ────────────────────────────────────────────────
+export const uploadApi = {
+  uploadCv: (data: FormData) => api.post('/upload/cv', data, { headers: { 'Content-Type': 'multipart/form-data' } }),
 }
 
 // ── Applications ──────────────────────────────────────────
@@ -67,11 +86,13 @@ export const usersApi = {
 
 // ── Employer ──────────────────────────────────────────────
 export const employerApi = {
-  getMyJobs:       (params?: Record<string, any>) => api.get('/jobs/employer/my', { params }),
-  createJob:       (data: FormData) => api.post('/jobs/employer', data, { headers: { 'Content-Type': 'multipart/form-data' } }),
-  updateJob:       (id: string, data: FormData) => api.patch(`/jobs/employer/${id}`, data, { headers: { 'Content-Type': 'multipart/form-data' } }),
-  deleteJob:       (id: string) => api.delete(`/jobs/employer/${id}`),
-  getApplications: () => api.get('/applications/employer'),
+  getMyJobs:              (params?: Record<string, any>) => api.get('/jobs/employer/my', { params }),
+  createJob:              (data: Record<string, any>) => api.post('/jobs/employer', data),
+  updateJob:              (id: string, data: Record<string, any>) => api.patch(`/jobs/employer/${id}`, data),
+  deleteJob:              (id: string) => api.delete(`/jobs/employer/${id}`),
+  getApplications:        () => api.get('/applications/employer'),
+  updateApplicationStatus:(id: string, status: string, note?: string) =>
+    api.patch(`/applications/${id}/employer-status`, { status, note }),
 }
 
 // ── News ──────────────────────────────────────────────────

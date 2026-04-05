@@ -288,7 +288,7 @@ export default function AdminNewsPage() {
                     <td className="px-4 py-3">
                       <button
                         onClick={() => handleTogglePublish(n)}
-                        className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border font-medium transition-colors ${n.isPublished ? "text-green-400 bg-green-400/10 border-green-400/20 hover:bg-green-400/20" : "text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-white/5 border-gray-300 dark:border-white/10 hover:border-gray-400 dark:hover:border-white/20"}`}
+                        className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border font-medium transition-colors ${n.isPublished ? "text-green-400 bg-green-400/10 border-green-400/20 hover:bg-green-400/20" : "text-brand-gray-700 dark:text-brand-gray-300 bg-brand-gray-100 dark:bg-brand-gray-800 border-brand-gray-300 dark:border-brand-gray-700 hover:border-brand-gray-400 dark:hover:border-brand-gray-700"}`}
                       >
                         {n.isPublished ? (
                           <>

@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'expo-router'
 import { ArrowRight } from 'lucide-react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Colors } from '@/constants/colors'
 import { jobsApi, categoriesApi } from '@/services/api'
 import { JobCard } from '@/components/jobs/JobCard'
@@ -14,6 +14,7 @@ import type { Job, Category } from '@/types'
 
 export default function HomeScreen() {
   const router = useRouter()
+  const insets = useSafeAreaInsets()
   const [refreshing, setRefreshing] = useState(false)
 
   const { data: hotJobs, refetch: refetchHot } = useQuery<Job[]>({
@@ -38,7 +39,7 @@ export default function HomeScreen() {
   }, [])
 
   return (
-    <SafeAreaView style={styles.safe} edges={['top']}>
+    <View style={[styles.safe, { paddingTop: insets.top }]}>
       <ScrollView
         style={styles.container}
         showsVerticalScrollIndicator={false}
@@ -95,7 +96,7 @@ export default function HomeScreen() {
 
         <View style={{ height: 20 }} />
       </ScrollView>
-    </SafeAreaView>
+    </View>
   )
 }
 

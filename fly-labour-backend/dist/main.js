@@ -20,13 +20,25 @@ async function bootstrap() {
         'http://localhost:80',
         'http://localhost:5173',
         'http://localhost:3001',
+        'http://localhost:3002',
+        'http://localhost:3005',
+        'http://localhost:8081',
+        'http://localhost:8082',
+        'http://127.0.0.1:8082',
         'http://127.0.0.1:5173',
+        'http://127.0.0.1:8081',
         'https://flyimmigration.vn',
         'https://www.flyimmigration.vn',
         process.env.FRONTEND_URL,
     ].filter(Boolean);
     app.enableCors({
-        origin: allowedOrigins,
+        origin: (origin, callback) => {
+            if (!origin)
+                return callback(null, true);
+            if (allowedOrigins.includes(origin))
+                return callback(null, true);
+            callback(new Error(`Origin ${origin} not allowed`));
+        },
         credentials: true,
         methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT', 'OPTIONS'],
     });

@@ -6,6 +6,10 @@ export declare class UsersController {
         fullName?: string;
         phone?: string;
         address?: string;
+        cvUrl?: string;
+        companyName?: string;
+        companyDescription?: string;
+        website?: string;
     }): Promise<{
         id: string;
         email: string;
@@ -15,6 +19,7 @@ export declare class UsersController {
         address: string;
         role: import("./user.entity").UserRole;
         isActive: boolean;
+        cvUrl: string;
         companyName: string;
         companyDescription: string;
         website: string;
@@ -42,6 +47,7 @@ export declare class UsersController {
             address: string;
             role: import("./user.entity").UserRole;
             isActive: boolean;
+            cvUrl: string;
             companyName: string;
             companyDescription: string;
             website: string;
@@ -69,6 +75,7 @@ export declare class UsersController {
         address: string;
         role: import("./user.entity").UserRole;
         isActive: boolean;
+        cvUrl: string;
         companyName: string;
         companyDescription: string;
         website: string;
@@ -93,6 +100,7 @@ export declare class UsersController {
         address: string;
         role: import("./user.entity").UserRole;
         isActive: boolean;
+        cvUrl: string;
         companyName: string;
         companyDescription: string;
         website: string;

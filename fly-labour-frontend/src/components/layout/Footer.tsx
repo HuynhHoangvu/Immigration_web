@@ -1,10 +1,20 @@
 ﻿import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail, Facebook, Youtube } from "lucide-react";
 import { useT } from "@/hooks/useT";
+import { EditableText } from "@/components/ui/EditableText";
+import { EditableLink } from "@/components/ui/EditableLink";
+import { usePageContent } from "@/hooks/usePageContent";
 
 export default function Footer() {
   const { t } = useT();
   const f = t("footer");
+
+  const address = usePageContent("footer.address", "219A, No Trang Long, Binh Thanh, Ho Chi Minh City");
+  const phone = usePageContent("footer.phone", "0333 318 882");
+  const email = usePageContent("footer.email", "flyvisa@gmail.com");
+  const officeHours = usePageContent("footer.officeHours", f.officeHours);
+  const hoursText = usePageContent("footer.hoursText", f.hoursText);
+  const copyright = usePageContent("footer.copyright", f.copyright);
 
   return (
     <footer className="bg-brand-card border-t border-brand-border mt-20">
@@ -29,36 +39,41 @@ export default function Footer() {
             {f.tagline}
           </p>
           <div className="flex gap-3 mt-5">
-            <a
-              href="https://www.facebook.com/flyimmigration.vn "
+            <EditableLink
+              settingKey="social.facebook"
+              defaultValue="https://www.facebook.com/flyimmigration.vn"
               className="w-9 h-9 rounded-lg flex items-center justify-center text-white transition-colors"
               style={{ backgroundColor: "#1877F2" }}
-            >
-              <Facebook size={16} />
-            </a>
-            <a
-              href="#"
-              className="w-9 h-9 rounded-lg flex items-center justify-center text-white transition-colors"
-              style={{ backgroundColor: "#FF0000" }}
-            >
-              <Youtube size={16} />
-            </a>
-            <a
-              href="https://www.tiktok.com/@flyvisa.immigration?_r=1&_t=ZS-952PBR111k5"
               target="_blank"
               rel="noreferrer"
+              label="Facebook URL"
+            >
+              <Facebook size={16} />
+            </EditableLink>
+            <EditableLink
+              settingKey="social.youtube"
+              defaultValue="#"
+              className="w-9 h-9 rounded-lg flex items-center justify-center text-white transition-colors"
+              style={{ backgroundColor: "#FF0000" }}
+              target="_blank"
+              rel="noreferrer"
+              label="YouTube URL"
+            >
+              <Youtube size={16} />
+            </EditableLink>
+            <EditableLink
+              settingKey="social.tiktok"
+              defaultValue="https://www.tiktok.com/@flyvisa.immigration?_r=1&_t=ZS-952PBR111k5"
               className="w-9 h-9 rounded-lg flex items-center justify-center text-white transition-colors"
               style={{ backgroundColor: "#000000" }}
+              target="_blank"
+              rel="noreferrer"
+              label="TikTok URL"
             >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z" />
               </svg>
-            </a>
+            </EditableLink>
           </div>
         </div>
 
@@ -75,7 +90,7 @@ export default function Footer() {
               <li key={item}>
                 <Link
                   to="/jobs"
-                  className="text-brand-muted hover:text-white text-sm transition-colors"
+                  className="text-brand-muted hover:text-slate-900 dark:hover:text-white text-sm transition-colors"
                 >
                   {item}
                 </Link>
@@ -159,33 +174,23 @@ export default function Footer() {
                 className="mt-0.5 shrink-0"
                 style={{ color: "#fdd52f" }}
               />
-              <span>219A, No Trang Long, Binh Thanh, Ho Chi Minh City</span>
+              <EditableText settingKey="footer.address" defaultValue={address} />
             </li>
             <li className="flex items-center gap-2 text-sm text-brand-muted">
               <Phone size={15} style={{ color: "#fdd52f" }} />
-              <a
-                href="tel:0901234567"
-                className="hover:text-white transition-colors"
-              >
-                0333 318 882
-              </a>
+              <EditableText settingKey="footer.phone" defaultValue={phone} />
             </li>
             <li className="flex items-center gap-2 text-sm text-brand-muted">
               <Mail size={15} style={{ color: "#fdd52f" }} />
-              <a
-                href="mailto:flyvisa@gmail.com"
-                className="hover:text-white transition-colors"
-              >
-                flyvisa@gmail.com
-              </a>
+              <EditableText settingKey="footer.email" defaultValue={email} />
             </li>
           </ul>
           <div className="mt-5 p-3 bg-brand-gold/5 border border-brand-gold/20 rounded-xl">
             <p className="text-xs text-brand-gold font-semibold">
-              {f.officeHours}
+              <EditableText settingKey="footer.officeHours" defaultValue={officeHours} />
             </p>
             <p className="text-xs text-brand-muted mt-1 whitespace-pre-line">
-              {f.hoursText}
+              <EditableText settingKey="footer.hoursText" defaultValue={hoursText} multiline />
             </p>
           </div>
         </div>
@@ -194,12 +199,12 @@ export default function Footer() {
       {/* Bottom */}
       <div className="border-t border-brand-border py-5 px-6">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-brand-muted">
-          <p>{f.copyright}</p>
+          <p><EditableText settingKey="footer.copyright" defaultValue={copyright} /></p>
           <div className="flex gap-4">
-            <Link to="/privacy" className="hover:text-white transition-colors">
+            <Link to="/privacy" className="hover:text-slate-900 dark:hover:text-white transition-colors">
               {f.privacy}
             </Link>
-            <Link to="/faq" className="hover:text-white transition-colors">
+            <Link to="/faq" className="hover:text-slate-900 dark:hover:text-white transition-colors">
               {f.terms}
             </Link>
           </div>

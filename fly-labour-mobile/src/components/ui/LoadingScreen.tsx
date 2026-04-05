@@ -11,6 +11,13 @@ export function LoadingScreen({ message = 'Đang tải...' }: { message?: string
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.dark, alignItems: 'center', justifyContent: 'center', gap: 12 },
-  text:      { color: Colors.muted, fontSize: 14 },
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: Colors.dark,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 12,
+    zIndex: 999,
+  },
+  text: { color: Colors.muted, fontSize: 14 },
 })

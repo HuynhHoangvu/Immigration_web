@@ -14,7 +14,13 @@
       "Bash(node -e \":*)",
       "Bash(node -e \"require\\(''@nestjs/websockets''\\); console.log\\(''ok''\\)\")",
       "Bash(node_modules/.bin/tsc --noEmit)",
-      "Bash(node -e \"const l=require\\(''./package-lock.json''\\); console.log\\(l.packages[''node_modules/@nestjs/websockets'']?.version, l.packages[''node_modules/@nestjs/platform-socket.io'']?.version\\)\")"
+      "Bash(node -e \"const l=require\\(''./package-lock.json''\\); console.log\\(l.packages[''node_modules/@nestjs/websockets'']?.version, l.packages[''node_modules/@nestjs/platform-socket.io'']?.version\\)\")",
+      "Bash(echo \"Started PID: $!\")",
+      "Bash(ls /d/Fly_Visa/Fly-2/fly-labour/Fly-labour/fly-labour-backend/*.tsbuildinfo)",
+      "Bash(node_modules/.bin/nest build:*)",
+      "Bash(node_modules/.bin/tsc)",
+      "Bash(echo \"Exit: $?\")",
+      "Bash(node_modules/.bin/tsc --noIncremental)"
     ]
   }
 }

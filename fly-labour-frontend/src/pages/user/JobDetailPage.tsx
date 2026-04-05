@@ -245,15 +245,23 @@ export default function JobDetailPage() {
       {/* Breadcrumb */}
       <div className="border-b border-brand-border bg-brand-card/50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center gap-2 text-sm text-brand-muted">
-          <Link to="/" className="hover:text-white transition-colors">
+          <Link
+            to="/"
+            className="hover:text-slate-900 dark:hover:text-white transition-colors"
+          >
             {d.home}
           </Link>
           <span>/</span>
-          <Link to="/jobs" className="hover:text-white transition-colors">
+          <Link
+            to="/jobs"
+            className="hover:text-slate-900 dark:hover:text-white transition-colors"
+          >
             {d.jobs}
           </Link>
           <span>/</span>
-          <span className="text-white truncate max-w-xs">{job.title}</span>
+          <span className="text-slate-900 dark:text-white truncate max-w-xs">
+            {job.title}
+          </span>
         </div>
       </div>
 
@@ -262,7 +270,7 @@ export default function JobDetailPage() {
           <div className="lg:col-span-2 space-y-6">
             <Link
               to="/jobs"
-              className="inline-flex items-center gap-2 text-sm text-brand-muted hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 text-sm text-brand-muted hover:text-slate-900 dark:hover:text-white transition-colors"
             >
               <ArrowLeft size={15} /> {d.back}
             </Link>
@@ -284,7 +292,7 @@ export default function JobDetailPage() {
                   <span className="badge-country backdrop-blur-sm bg-black/40">
                     {flag} {countryName}
                   </span>
-                  <span className="bg-black/40 backdrop-blur-sm text-slate-900 text-xs px-2.5 py-0.5 rounded-full border border-white/20">
+                  <span className="bg-black/40 backdrop-blur-sm text-white text-xs px-2.5 py-0.5 rounded-full border border-white/20">
                     {getJobTypeLabel(job.jobType)}
                   </span>
                 </div>
@@ -311,7 +319,7 @@ export default function JobDetailPage() {
                   <span className="badge-country">
                     {flag} {countryName}
                   </span>
-                  <span className="bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-gray-300 text-xs px-2 py-0.5 rounded border border-gray-300 dark:border-white/10">
+                  <span className="text-xs px-2.5 py-0.5 rounded-full border text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700/40 border-gray-300 dark:border-gray-600">
                     {getJobTypeLabel(job.jobType)}
                   </span>
                 </div>

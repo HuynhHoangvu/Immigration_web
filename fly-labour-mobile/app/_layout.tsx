@@ -28,11 +28,17 @@ function AuthGuard() {
     if (isLoading) return
     SplashScreen.hideAsync()
 
-    const inAuth = segments[0] === '(auth)'
-    if (!isAuthenticated && !inAuth) {
-      router.replace('/(auth)/login')
-    } else if (isAuthenticated && inAuth) {
+    const inAuth     = segments[0] === '(auth)'
+    const inEmployer = segments[0] === 'employer'
+    const inProfile  = segments[0] === 'profile'
+
+    // Đuổi khỏi auth screen nếu đã login
+    if (isAuthenticated && inAuth) {
       router.replace('/(tabs)')
+    }
+    // Chỉ bảo vệ các route cần auth thật sự
+    if (!isAuthenticated && (inEmployer || inProfile)) {
+      router.replace('/(auth)/login')
     }
   }, [isAuthenticated, isLoading, segments])
 
@@ -56,6 +62,7 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="jobs/[id]" options={{ headerShown: true, headerTitle: 'Chi tiết việc làm', headerStyle: { backgroundColor: Colors.card }, headerTintColor: Colors.text }} />
         <Stack.Screen name="employer" />
+        <Stack.Screen name="news/[slug]" options={{ headerShown: true, headerTitle: 'Tin tức', headerStyle: { backgroundColor: Colors.card }, headerTintColor: Colors.text }} />
         <Stack.Screen name="profile/edit" options={{ headerShown: true, headerTitle: 'Chỉnh sửa hồ sơ', headerStyle: { backgroundColor: Colors.card }, headerTintColor: Colors.text }} />
       </Stack>
       <Toast />

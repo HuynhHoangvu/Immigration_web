@@ -1,10 +1,17 @@
 import { Link } from "react-router-dom";
 import { CheckCircle, ArrowRight, Briefcase, LogIn } from "lucide-react";
 import { useT } from "@/hooks/useT";
+import { EditableText } from "@/components/ui/EditableText";
+import { usePageContent } from "@/hooks/usePageContent";
 
 export default function EmployerCTASection() {
   const { t } = useT();
   const h = t("home");
+
+  const empBadge = usePageContent("emp.badge", h.empBadge);
+  const empTitle = usePageContent("emp.title", h.empTitle);
+  const empTitleAccent = usePageContent("emp.titleAccent", h.empTitleAccent);
+  const empDesc = usePageContent("emp.desc", h.empDesc);
 
   return (
     <section className="py-16 px-6">
@@ -21,17 +28,17 @@ export default function EmployerCTASection() {
             {/* Left: content */}
             <div className="p-10 lg:p-14">
               <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-brand-gold bg-brand-gold/10 border border-brand-gold/30 rounded-full px-4 py-1.5 mb-6">
-                <Briefcase size={12} /> {h.empBadge}
+                <Briefcase size={12} /> <EditableText settingKey="emp.badge" defaultValue={empBadge} />
               </span>
 
               <h2 className="font-display text-4xl md:text-5xl text-brand-yellow tracking-wide leading-tight mb-4">
-                {h.empTitle}
+                <EditableText settingKey="emp.title" defaultValue={empTitle} />
                 <br />
-                <span className="text-brand-yellow">{h.empTitleAccent}</span>
+                <span className="text-brand-yellow"><EditableText settingKey="emp.titleAccent" defaultValue={empTitleAccent} /></span>
               </h2>
 
               <p className="text-slate-900 dark:text-gray-100 mb-8 max-w-md leading-relaxed">
-                {h.empDesc}
+                <EditableText settingKey="emp.desc" defaultValue={empDesc} multiline />
               </p>
 
               {/* Features list */}

@@ -233,7 +233,7 @@ export default function AdminUsersPage() {
                     </td>
                     <td className="px-4 py-3 hidden sm:table-cell">
                       <span
-                        className={`text-xs px-2 py-0.5 rounded-full border font-medium ${user.role === "admin" ? "text-brand-gold bg-brand-gold/10 border-brand-gold/20" : "text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-white/5 border-gray-300 dark:border-white/10"}`}
+                        className={`text-xs px-2 py-0.5 rounded-full border font-medium ${user.role === "admin" ? "text-brand-gold bg-brand-gold/10 border-brand-gold/20" : "text-brand-gray-700 dark:text-brand-gray-300 bg-brand-gray-100 dark:bg-brand-gray-800 border-brand-gray-300 dark:border-brand-gray-700"}`}
                       >
                         {user.role === "admin" ? "?? Admin" : "?? User"}
                       </span>

@@ -1,18 +1,20 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   View, Text, ScrollView, StyleSheet, TouchableOpacity,
-  Modal, TextInput, Alert, ActivityIndicator, Image,
+  Modal, ActivityIndicator, Image,
 } from 'react-native'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useQuery } from '@tanstack/react-query'
-import { MapPin, Clock, Users, Calendar, Eye, ChevronLeft, X } from 'lucide-react-native'
+import { MapPin, Clock, Users, Calendar, Eye, ChevronLeft, X, Paperclip, FileText } from 'lucide-react-native'
+import * as DocumentPicker from 'expo-document-picker'
 import Toast from 'react-native-toast-message'
 import { Colors } from '@/constants/colors'
-import { jobsApi, applicationsApi } from '@/services/api'
+import { jobsApi, applicationsApi, uploadApi } from '@/services/api'
 import { useAuthStore } from '@/store/authStore'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
+import { DatePicker } from '@/components/ui/DatePicker'
 import { formatSalary, getCountryLabel, JOBTYPE_LABELS, formatDate, getImageUrl } from '@/utils/helpers'
 import type { Job } from '@/types'
 
@@ -22,6 +24,8 @@ export default function JobDetailScreen() {
   const { user } = useAuthStore()
   const [applyModal, setApplyModal] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [cvFile, setCvFile] = useState<{ name: string; uri: string; mimeType?: string; file?: File } | null>(null)
+  const [useSavedCv, setUseSavedCv] = useState(!!user?.cvUrl)
   const [form, setForm] = useState({
     fullName: user?.fullName || '',
     email: user?.email || '',
@@ -40,7 +44,37 @@ export default function JobDetailScreen() {
     enabled: !!id,
   })
 
+  // Sync form khi user load xong từ store (hydrate async)
+  useEffect(() => {
+    if (user) {
+      setForm(f => ({
+        ...f,
+        fullName: f.fullName || user.fullName || '',
+        email:    f.email    || user.email    || '',
+        phone:    f.phone    || user.phone    || '',
+        address:  f.address  || user.address  || '',
+      }))
+    }
+  }, [user])
+
   const set = (k: keyof typeof form) => (v: string) => setForm(f => ({ ...f, [k]: v }))
+
+  const pickCV = async () => {
+    const result = await DocumentPicker.getDocumentAsync({
+      type: ['application/pdf', 'application/msword',
+             'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+      copyToCacheDirectory: true,
+    })
+    if (!result.canceled && result.assets[0]) {
+      const asset = result.assets[0]
+      setCvFile({
+        name: asset.name,
+        uri: asset.uri,
+        mimeType: asset.mimeType ?? 'application/pdf',
+        file: (asset as any).file ?? undefined,
+      })
+    }
+  }
 
   const handleApply = async () => {
     if (!form.fullName || !form.email || !form.phone) {
@@ -49,9 +83,27 @@ export default function JobDetailScreen() {
     }
     setSubmitting(true)
     try {
-      await applicationsApi.create({ ...form, jobId: id })
+      // Loại bỏ field rỗng để tránh lỗi DB (vd: dateOfBirth: "")
+      const cleanForm = Object.fromEntries(
+        Object.entries(form).filter(([_, v]) => v !== '')
+      )
+      let cvUrl: string | undefined
+      if (useSavedCv && user?.cvUrl) {
+        cvUrl = user.cvUrl
+      } else if (cvFile) {
+        const fd = new FormData()
+        if (cvFile.file) {
+          fd.append('file', cvFile.file, cvFile.name)
+        } else {
+          fd.append('file', { uri: cvFile.uri, name: cvFile.name, type: cvFile.mimeType } as any)
+        }
+        const res = await uploadApi.uploadCv(fd)
+        cvUrl = res.data.url
+      }
+      await applicationsApi.create({ ...cleanForm, jobId: id, ...(cvUrl ? { cvUrl } : {}) })
       Toast.show({ type: 'success', text1: 'Nộp đơn thành công! 🎉', text2: 'Chúng tôi sẽ liên hệ sớm.' })
       setApplyModal(false)
+      setCvFile(null)
     } catch (err: any) {
       Toast.show({ type: 'error', text1: err?.response?.data?.message || 'Nộp đơn thất bại' })
     } finally {
@@ -69,10 +121,10 @@ export default function JobDetailScreen() {
   if (!job) return null
 
   return (
-    <>
+    <View style={styles.screen}>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {/* Back button */}
-        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
+        <TouchableOpacity onPress={() => router.canGoBack() ? router.back() : router.replace('/(tabs)')} style={styles.backBtn}>
           <ChevronLeft size={22} color={Colors.text} />
         </TouchableOpacity>
 
@@ -141,19 +193,29 @@ export default function JobDetailScreen() {
             </View>
           )}
 
-          <View style={{ height: 100 }} />
+          <View style={{ height: 16 }} />
         </View>
       </ScrollView>
 
-      {/* Apply button sticky */}
+      {/* Apply bar — luôn hiển thị ở cuối */}
       {user?.role === 'user' && (
         <View style={styles.applyBar}>
           <Button title="Nộp đơn ngay" onPress={() => setApplyModal(true)} fullWidth size="lg" />
         </View>
       )}
+      {!user && (
+        <View style={styles.applyBar}>
+          <View style={styles.guestApplyRow}>
+            <Button title="Đăng nhập để nộp đơn" onPress={() => router.push('/(auth)/login')} fullWidth size="lg" />
+            <TouchableOpacity onPress={() => router.push('/(auth)/register')} style={styles.registerLink}>
+              <Text style={styles.registerLinkText}>Chưa có tài khoản? <Text style={{ color: Colors.yellow }}>Đăng ký</Text></Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
 
       {/* Apply Modal */}
-      <Modal visible={applyModal} animationType="slide" presentationStyle="pageSheet">
+      <Modal visible={applyModal} animationType="slide" presentationStyle="pageSheet" onRequestClose={() => setApplyModal(false)}>
         <View style={styles.modalContainer}>
           <View style={styles.modalHeader}>
             <Text style={styles.modalTitle}>Nộp đơn ứng tuyển</Text>
@@ -167,12 +229,46 @@ export default function JobDetailScreen() {
               <Input label="Họ và tên *" value={form.fullName} onChangeText={set('fullName')} placeholder="Nguyễn Văn A" />
               <Input label="Email *" value={form.email} onChangeText={set('email')} placeholder="email@example.com" keyboardType="email-address" />
               <Input label="Số điện thoại *" value={form.phone} onChangeText={set('phone')} placeholder="0901234567" keyboardType="phone-pad" />
-              <Input label="Ngày sinh" value={form.dateOfBirth} onChangeText={set('dateOfBirth')} placeholder="DD/MM/YYYY" />
+              <DatePicker label="Ngày sinh" value={form.dateOfBirth} onChange={set('dateOfBirth')} />
               <Input label="Địa chỉ" value={form.address} onChangeText={set('address')} placeholder="Tỉnh / Thành phố" />
               <Input label="Trình độ học vấn" value={form.education} onChangeText={set('education')} placeholder="VD: Cao đẳng, Đại học..." />
               <Input label="Kinh nghiệm" value={form.experience} onChangeText={set('experience')} placeholder="Mô tả kinh nghiệm làm việc..." multiline numberOfLines={3} />
               <Input label="Trình độ ngoại ngữ" value={form.languageLevel} onChangeText={set('languageLevel')} placeholder="VD: Tiếng Anh B1, IELTS 5.5..." />
               <Input label="Thư giới thiệu" value={form.coverLetter} onChangeText={set('coverLetter')} placeholder="Viết vài dòng giới thiệu bản thân..." multiline numberOfLines={4} />
+
+              {/* CV Upload */}
+              <View style={styles.cvBlock}>
+                <Text style={styles.cvLabel}>Đính kèm CV (PDF/Word)</Text>
+
+                {user?.cvUrl && (
+                  <TouchableOpacity
+                    onPress={() => { setUseSavedCv(v => !v); setCvFile(null) }}
+                    style={[styles.cvPicker, useSavedCv && styles.cvPickerActive]}
+                    activeOpacity={0.7}
+                  >
+                    <FileText size={16} color={useSavedCv ? Colors.green : Colors.muted} />
+                    <Text style={[styles.cvPickerText, useSavedCv && { color: Colors.green }]} numberOfLines={1}>
+                      {useSavedCv ? '✓ Dùng CV đã lưu trong hồ sơ' : 'Dùng CV đã lưu trong hồ sơ'}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+
+                {!useSavedCv && (
+                  <>
+                    <TouchableOpacity onPress={pickCV} style={styles.cvPicker} activeOpacity={0.7}>
+                      <Paperclip size={16} color={Colors.yellow} />
+                      <Text style={styles.cvPickerText} numberOfLines={1}>
+                        {cvFile ? cvFile.name : 'Hoặc chọn file CV khác...'}
+                      </Text>
+                    </TouchableOpacity>
+                    {cvFile && (
+                      <TouchableOpacity onPress={() => setCvFile(null)}>
+                        <Text style={styles.cvRemove}>✕ Xóa file</Text>
+                      </TouchableOpacity>
+                    )}
+                  </>
+                )}
+              </View>
             </View>
             <View style={styles.modalFooter}>
               <Button title="Gửi đơn" onPress={handleApply} loading={submitting} fullWidth size="lg" />
@@ -182,7 +278,7 @@ export default function JobDetailScreen() {
           </ScrollView>
         </View>
       </Modal>
-    </>
+    </View>
   )
 }
 
@@ -212,9 +308,9 @@ const styles = StyleSheet.create({
   sectionTitle: { color: Colors.text, fontSize: 16, fontWeight: '700' },
   bodyText:     { color: Colors.muted, fontSize: 14, lineHeight: 22 },
 
+  screen: { flex: 1, backgroundColor: Colors.dark },
   applyBar: {
-    position: 'absolute', bottom: 0, left: 0, right: 0,
-    padding: 16, paddingBottom: 32,
+    padding: 16, paddingBottom: 24,
     backgroundColor: Colors.dark,
     borderTopWidth: 1, borderTopColor: Colors.border,
   },
@@ -226,4 +322,21 @@ const styles = StyleSheet.create({
   modalBody:      { flex: 1 },
   modalForm:      { padding: 20, gap: 14 },
   modalFooter:    { padding: 20, gap: 10 },
+
+  guestApplyRow:    { gap: 8 },
+  registerLink:     { alignItems: 'center', paddingVertical: 4 },
+  registerLinkText: { color: Colors.muted, fontSize: 13 },
+
+  cvBlock:      { gap: 6 },
+  cvLabel:      { color: Colors.text, fontSize: 13, fontWeight: '500' },
+  cvPicker: {
+    flexDirection: 'row', alignItems: 'center', gap: 10,
+    borderWidth: 1, borderColor: Colors.border, borderStyle: 'dashed',
+    borderRadius: 10, padding: 12, backgroundColor: Colors.surface,
+  },
+  cvPickerActive: {
+    borderColor: Colors.green, borderStyle: 'solid', backgroundColor: `${Colors.green}10`,
+  },
+  cvPickerText: { flex: 1, color: Colors.muted, fontSize: 13 },
+  cvRemove:     { color: Colors.red, fontSize: 12, marginTop: 2 },
 })

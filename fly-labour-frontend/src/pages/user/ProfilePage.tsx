@@ -140,7 +140,7 @@ export default function ProfilePage() {
                 className={`inline-block mt-2 text-xs px-2.5 py-0.5 rounded-full font-medium ${
                   user.role === "admin"
                     ? "bg-brand-gold/20 text-brand-gold border border-brand-gold/30"
-                    : "bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-white/10"
+                    : "bg-brand-gray-100 dark:bg-brand-gray-800 text-brand-gray-700 dark:text-brand-gray-300 border border-brand-gray-300 dark:border-brand-gray-700"
                 }`}
               >
                 {user.role === "admin" ? "?? Admin" : "?? Th�nh vi�n"}

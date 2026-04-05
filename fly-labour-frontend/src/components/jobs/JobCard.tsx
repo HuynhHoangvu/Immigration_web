@@ -186,9 +186,9 @@ export default function JobCard({ job, compact }: Props) {
           )}
         </div>
 
-        <div className="flex items-center justify-between mt-auto pt-3 border-t border-brand-border/60">
+        <div className="flex items-center justify-between mt-auto pt-3 border-t border-brand-gray-200 dark:border-brand-gray-700">
           {job.category ? (
-            <span className="text-[11px] px-2 py-0.5 bg-gray-100 dark:bg-white/5 rounded-lg text-slate-700 dark:text-gray-900">
+            <span className="text-[11px] px-2 py-0.5 bg-brand-gray-100 dark:bg-brand-gray-800 rounded-lg text-brand-gray-700 dark:text-brand-gray-300">
               {job.category.icon}{" "}
               {lang === "en"
                 ? job.category.nameEn || job.category.name

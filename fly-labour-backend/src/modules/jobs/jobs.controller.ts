@@ -24,6 +24,12 @@ export class JobsController {
     return this.jobsService.findAll(query)
   }
 
+  @Get('filters/available')
+  @ApiOperation({ summary: 'Get available filter options (countries, categories)' })
+  getAvailableFilters() {
+    return this.jobsService.getAvailableFilters()
+  }
+
   @Get('hot')
   @ApiOperation({ summary: 'Hot / Featured jobs' })
   findHot() {

@@ -1,5 +1,7 @@
 import { Shield, Globe, Clock, HeartHandshake } from "lucide-react";
 import { useT } from "@/hooks/useT";
+import { EditableText } from "@/components/ui/EditableText";
+import { usePageContent } from "@/hooks/usePageContent";
 
 const FEATURE_ICONS = [
   <Shield size={24} />,
@@ -11,6 +13,12 @@ const FEATURE_ICONS = [
 export default function WhyChooseUs() {
   const { t } = useT();
   const h = t("home");
+
+  const whyBadge = usePageContent("why.badge", h.whyBadge);
+  const whyTitle = usePageContent("why.title", h.whyTitle);
+  const whyTitleAccent = usePageContent("why.titleAccent", h.whyTitleAccent);
+  const whySubtitle = usePageContent("why.subtitle", h.whySubtitle);
+  const whyDesc = usePageContent("why.desc", h.whyDesc);
 
   return (
     <section className="py-20 relative overflow-hidden">
@@ -35,15 +43,19 @@ export default function WhyChooseUs() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <p className="text-brand-gold text-sm font-semibold uppercase tracking-widest mb-3">
-              {h.whyBadge}
+              <EditableText settingKey="why.badge" defaultValue={whyBadge} />
             </p>
             <h2 className="section-title mb-5">
-              {h.whyTitle}
+              <EditableText settingKey="why.title" defaultValue={whyTitle} />
               <br />
-              <span className="gradient-text">{h.whyTitleAccent}</span>{" "}
-              {h.whySubtitle}
+              <span className="gradient-text">
+                <EditableText settingKey="why.titleAccent" defaultValue={whyTitleAccent} />
+              </span>{" "}
+              <EditableText settingKey="why.subtitle" defaultValue={whySubtitle} />
             </h2>
-            <p className="text-slate-900 leading-relaxed mb-8">{h.whyDesc}</p>
+            <p className="text-slate-900 leading-relaxed mb-8">
+              <EditableText settingKey="why.desc" defaultValue={whyDesc} multiline />
+            </p>
             <div className="flex gap-3">
               <a href="/jobs" className="btn-primary text-sm">
                 {h.findJob}

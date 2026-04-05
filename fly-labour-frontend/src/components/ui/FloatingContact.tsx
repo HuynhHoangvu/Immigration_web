@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { MessageCircle, X, Phone, Facebook } from 'lucide-react'
 import { settingsApi } from '@/services/api'
 
 export default function FloatingContact() {
   const [open, setOpen] = useState(false)
-  const [hotline, setHotline]         = useState('0901 234 567')
-  const [zaloNumber, setZaloNumber]   = useState('0901234567')
+  const [hotline, setHotline] = useState("0333 318 882");
+  const [zaloNumber, setZaloNumber] = useState("0333318882");
   const [messengerUrl, setMessengerUrl] = useState('https://m.me/flylabour')
 
   useEffect(() => {
@@ -57,14 +57,14 @@ export default function FloatingContact() {
               href={c.href}
               target="_blank"
               rel="noreferrer"
-              className={`flex items-center gap-3 bg-brand-card border border-brand-border rounded-2xl px-4 py-2.5 shadow-xl hover:border-white/20 ring-2 ring-transparent ${c.ring} transition-all duration-200`}
+              className={`flex items-center gap-3 bg-white dark:bg-brand-card border border-gray-200 dark:border-brand-border rounded-2xl px-4 py-2.5 shadow-xl hover:border-gray-400 dark:hover:border-white/20 ring-2 ring-transparent ${c.ring} transition-all duration-200`}
             >
               <div className={`w-9 h-9 ${c.bg} rounded-xl flex items-center justify-center text-white shadow-lg shrink-0`}>
                 {c.icon}
               </div>
               <div>
                 <p className="text-xs text-brand-muted leading-none">{c.label}</p>
-                <p className="text-sm text-white font-semibold">{c.value}</p>
+                <p className="text-sm text-black dark:text-white font-semibold">{c.value}</p>
               </div>
             </a>
           ))}

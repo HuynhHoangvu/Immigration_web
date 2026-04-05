@@ -101,7 +101,7 @@ export default function JobsPage() {
               {search && (
                 <button
                   onClick={() => setParam("search", "")}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-brand-muted hover:text-white transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-brand-muted hover:text-slate-900 dark:hover:text-white transition-colors"
                 >
                   <X size={14} />
                 </button>

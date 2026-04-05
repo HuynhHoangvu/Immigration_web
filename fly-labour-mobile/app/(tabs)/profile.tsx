@@ -1,13 +1,14 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useRouter } from 'expo-router'
 import {
   User, Mail, Phone, MapPin, Building2, Globe,
-  ChevronRight, LogOut, Pencil, Briefcase,
+  ChevronRight, LogOut, Pencil, Briefcase, FileText,
 } from 'lucide-react-native'
 import { Colors } from '@/constants/colors'
 import { useAuthStore } from '@/store/authStore'
 import { Badge } from '@/components/ui/Badge'
+import { Button } from '@/components/ui/Button'
 
 const ROLE_LABELS = { user: 'Người tìm việc', employer: 'Nhà tuyển dụng', admin: 'Admin' }
 const ROLE_COLORS = { user: Colors.blue, employer: Colors.yellow, admin: Colors.orange }
@@ -15,6 +16,7 @@ const ROLE_COLORS = { user: Colors.blue, employer: Colors.yellow, admin: Colors.
 export default function ProfileScreen() {
   const router = useRouter()
   const { user, logout } = useAuthStore()
+  const insets = useSafeAreaInsets()
 
   const handleLogout = () => {
     Alert.alert('Đăng xuất', 'Bạn có chắc muốn đăng xuất?', [
@@ -23,12 +25,26 @@ export default function ProfileScreen() {
     ])
   }
 
-  if (!user) return null
+  if (!user) {
+    return (
+      <View style={[styles.safe, { paddingTop: insets.top }]}>
+        <View style={styles.guestWrap}>
+          <Text style={styles.guestIcon}>👤</Text>
+          <Text style={styles.guestTitle}>Chưa đăng nhập</Text>
+          <Text style={styles.guestText}>Đăng nhập để quản lý hồ sơ và theo dõi đơn ứng tuyển</Text>
+          <View style={styles.guestBtns}>
+            <Button title="Đăng nhập" onPress={() => router.push('/(auth)/login')} fullWidth />
+            <Button title="Đăng ký tài khoản mới" onPress={() => router.push('/(auth)/register')} variant="outline" fullWidth />
+          </View>
+        </View>
+      </View>
+    )
+  }
 
   const isEmployer = user.role === 'employer'
 
   return (
-    <SafeAreaView style={styles.safe} edges={['top']}>
+    <View style={[styles.safe, { paddingTop: insets.top }]}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
@@ -103,6 +119,18 @@ export default function ProfileScreen() {
             <ChevronRight size={16} color={Colors.muted} style={styles.menuArrow} />
           </TouchableOpacity>
 
+          <TouchableOpacity onPress={() => router.push('/profile/cv')} style={styles.menuItem}>
+            <FileText size={18} color={Colors.green} />
+            <View style={{ flex: 1 }}>
+              <Text style={styles.menuText}>CV của tôi</Text>
+              {user.cvUrl
+                ? <Text style={styles.menuSub}>Đã có CV • Nhấn để xem / thay</Text>
+                : <Text style={styles.menuSub}>Chưa có CV • Nhấn để tải lên</Text>
+              }
+            </View>
+            <ChevronRight size={16} color={Colors.muted} />
+          </TouchableOpacity>
+
           <TouchableOpacity onPress={handleLogout} style={[styles.menuItem, styles.menuItemDanger]}>
             <LogOut size={18} color={Colors.red} />
             <Text style={[styles.menuText, { color: Colors.red }]}>Đăng xuất</Text>
@@ -111,7 +139,7 @@ export default function ProfileScreen() {
 
         <View style={{ height: 20 }} />
       </ScrollView>
-    </SafeAreaView>
+    </View>
   )
 }
 
@@ -147,6 +175,13 @@ const styles = StyleSheet.create({
     paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: Colors.border,
   },
   menuItemDanger: { borderBottomWidth: 0 },
-  menuText:  { flex: 1, color: Colors.text, fontSize: 15 },
+  menuText:  { color: Colors.text, fontSize: 15 },
+  menuSub:   { color: Colors.muted, fontSize: 11, marginTop: 1 },
   menuArrow: { marginLeft: 'auto' },
+
+  guestWrap:  { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32, gap: 12 },
+  guestIcon:  { fontSize: 56 },
+  guestTitle: { color: Colors.text, fontSize: 20, fontWeight: '700', textAlign: 'center' },
+  guestText:  { color: Colors.muted, fontSize: 14, textAlign: 'center', lineHeight: 22, marginBottom: 8 },
+  guestBtns:  { width: '100%', gap: 10 },
 })
