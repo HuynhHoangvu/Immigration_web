@@ -50,7 +50,10 @@ import EmployerProfilePage from "@/pages/employer/EmployerProfilePage";
 
 function UserLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-brand-dark">
+    <div
+      className="min-h-screen"
+      style={{ backgroundColor: "var(--background)" }}
+    >
       <Header />
       {children}
       <Footer />

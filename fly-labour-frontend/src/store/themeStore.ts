@@ -18,10 +18,16 @@ function applyTheme(theme: Theme) {
   }
 }
 
+// Detect system preference on first load
+function detectSystemPreference(): Theme {
+  if (typeof window === 'undefined') return 'light'
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+}
+
 export const useThemeStore = create<ThemeState>()(
   persist(
     (set, get) => ({
-      theme: 'dark',
+      theme: detectSystemPreference(),
       toggle: () => {
         const next = get().theme === 'dark' ? 'light' : 'dark'
         applyTheme(next)
@@ -44,6 +50,11 @@ export const useThemeStore = create<ThemeState>()(
           } catch (e) {
             console.error('Failed to hydrate theme:', e)
           }
+        } else {
+          // No localStorage found, apply system preference
+          const systemTheme = detectSystemPreference()
+          applyTheme(systemTheme)
+          set({ theme: systemTheme })
         }
       },
     }),

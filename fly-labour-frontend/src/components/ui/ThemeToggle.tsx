@@ -1,14 +1,20 @@
-import { useTheme } from "../../hooks/useTheme";
+import { useThemeStore } from "@/store/themeStore";
+import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
 
 export const ThemeToggle = () => {
-  const { theme, toggleTheme, mounted } = useTheme();
+  const { theme, toggle } = useThemeStore();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   if (!mounted) return null; // Tránh hydration mismatch
 
   return (
     <button
-      onClick={toggleTheme}
+      onClick={toggle}
       aria-label="Toggle theme"
       title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
       className="
