@@ -29,6 +29,7 @@ import AboutPage from "@/pages/user/AboutPage";
 import ProcessPage from "@/pages/user/ProcessPage";
 import FaqPage from "@/pages/user/FaqPage";
 import PrivacyPage from "@/pages/user/PrivacyPage";
+import PolicyPage from "@/pages/user/PolicyPage";
 
 // Admin pages
 import AdminDashboard from "@/pages/admin/AdminDashboard";
@@ -40,6 +41,7 @@ import AdminNewsPage from "@/pages/admin/AdminNewsPage";
 import AdminSettingsPage from "@/pages/admin/AdminSettingsPage";
 import AdminChoresPage from "@/pages/admin/AdminChoresPage";
 import AdminContactsPage from "@/pages/admin/AdminContactsPage";
+import AdminPoliciesPage from "@/pages/admin/AdminPoliciesPage";
 
 // Employer pages
 import EmployerLayout from "@/pages/employer/EmployerLayout";
@@ -300,6 +302,14 @@ export default function App() {
             </UserLayout>
           }
         />
+        <Route
+          path="/policy/:slug"
+          element={
+            <UserLayout>
+              <PolicyPage />
+            </UserLayout>
+          }
+        />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -328,6 +338,7 @@ export default function App() {
           <Route path="users" element={<AdminUsersPage />} />
           <Route path="categories" element={<AdminCategoriesPage />} />
           <Route path="news" element={<AdminNewsPage />} />
+          <Route path="policies" element={<AdminPoliciesPage />} />
           <Route path="settings" element={<AdminSettingsPage />} />
           <Route path="chores" element={<AdminChoresPage />} />
           <Route path="contacts" element={<AdminContactsPage />} />
