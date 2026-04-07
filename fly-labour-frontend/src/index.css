@@ -339,3 +339,20 @@ html.dark {
     transform-origin: center center;
   }
 }
+
+/* ── Global keyframes (dùng trực tiếp bằng animationName, không qua Tailwind) ── */
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes kenBurns {
+  0%   { transform: scale(1)    translate(0, 0); }
+  100% { transform: scale(1.12) translate(-2%, -2%); }
+}
+
+@keyframes kenBurnsReverse {
+  0%   { transform: scale(1.12) translate(2%, 2%); }
+  100% { transform: scale(1)    translate(0, 0); }
+}

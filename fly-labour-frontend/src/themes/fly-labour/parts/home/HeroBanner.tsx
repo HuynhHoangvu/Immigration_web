@@ -60,24 +60,42 @@ const SLIDE_CONFIG = [
 
 // Ken Burns variants — mỗi slide zoom từ hướng khác nhau
 const KB_VARIANTS = [
-  { transformOrigin: "center center",  animationName: "kenBurns" },
-  { transformOrigin: "top left",       animationName: "kenBurnsReverse" },
-  { transformOrigin: "bottom right",   animationName: "kenBurns" },
-  { transformOrigin: "center left",    animationName: "kenBurnsReverse" },
-  { transformOrigin: "top right",      animationName: "kenBurns" },
-  { transformOrigin: "bottom center",  animationName: "kenBurnsReverse" },
-  { transformOrigin: "center right",   animationName: "kenBurns" },
+  { transformOrigin: "center center", animationName: "kenBurns" },
+  { transformOrigin: "top left", animationName: "kenBurnsReverse" },
+  { transformOrigin: "bottom right", animationName: "kenBurns" },
+  { transformOrigin: "center left", animationName: "kenBurnsReverse" },
+  { transformOrigin: "top right", animationName: "kenBurns" },
+  { transformOrigin: "bottom center", animationName: "kenBurnsReverse" },
+  { transformOrigin: "center right", animationName: "kenBurns" },
 ];
 
 const TICKER_ITEMS = [
-  "🇦🇺 Sydney · NSW", "🇦🇺 Melbourne · VIC", "🇦🇺 Brisbane · QLD",
-  "🇦🇺 Perth · WA", "🇦🇺 Adelaide · SA", "🇨🇦 Toronto · ON",
-  "🇨🇦 Vancouver · BC", "🇨🇦 Calgary · AB", "🇨🇦 Montreal · QC",
-  "🇳🇿 Auckland", "🇳🇿 Wellington", "🇳🇿 Christchurch",
-  "🇯🇵 Tokyo", "🇯🇵 Osaka", "🇯🇵 Nagoya", "🇯🇵 Yokohama",
-  "🇰🇷 Seoul", "🇰🇷 Busan", "🇰🇷 Incheon",
-  "🇬🇧 London", "🇬🇧 Manchester", "🇬🇧 Birmingham",
-  "🇩🇪 Berlin", "🇩🇪 Munich", "🇩🇪 Hamburg", "🇩🇪 Frankfurt",
+  "🇦🇺 Sydney · NSW",
+  "🇦🇺 Melbourne · VIC",
+  "🇦🇺 Brisbane · QLD",
+  "🇦🇺 Perth · WA",
+  "🇦🇺 Adelaide · SA",
+  "🇨🇦 Toronto · ON",
+  "🇨🇦 Vancouver · BC",
+  "🇨🇦 Calgary · AB",
+  "🇨🇦 Montreal · QC",
+  "🇳🇿 Auckland",
+  "🇳🇿 Wellington",
+  "🇳🇿 Christchurch",
+  "🇯🇵 Tokyo",
+  "🇯🇵 Osaka",
+  "🇯🇵 Nagoya",
+  "🇯🇵 Yokohama",
+  "🇰🇷 Seoul",
+  "🇰🇷 Busan",
+  "🇰🇷 Incheon",
+  "🇬🇧 London",
+  "🇬🇧 Manchester",
+  "🇬🇧 Birmingham",
+  "🇩🇪 Berlin",
+  "🇩🇪 Munich",
+  "🇩🇪 Hamburg",
+  "🇩🇪 Frankfurt",
 ];
 
 export default function HeroBanner() {
@@ -115,10 +133,16 @@ export default function HeroBanner() {
 
   // Dùng usePageContent để lấy override từ DB (nếu có)
   const slideTitle = usePageContent(`hero.slide.${current}.title`, slide.title);
-  const slideTitleAccent = usePageContent(`hero.slide.${current}.titleAccent`, slide.titleAccent);
-  const slideSubtitle = usePageContent(`hero.slide.${current}.subtitle`, slide.subtitle);
+  const slideTitleAccent = usePageContent(
+    `hero.slide.${current}.titleAccent`,
+    slide.titleAccent,
+  );
+  const slideSubtitle = usePageContent(
+    `hero.slide.${current}.subtitle`,
+    slide.subtitle,
+  );
   const slideBadge = usePageContent(`hero.slide.${current}.badge`, slide.badge);
-  const hiringText = usePageContent('hero.hiring', h.hiring);
+  const hiringText = usePageContent("hero.hiring", h.hiring);
 
   return (
     <section className="hero-banner relative min-h-screen flex flex-col overflow-hidden">
@@ -181,7 +205,6 @@ export default function HeroBanner() {
       <div className="relative z-20 flex-1 flex items-center">
         <div className="max-w-7xl w-full mx-auto px-6 pt-24 pb-20">
           <div className="max-w-6xl">
-
             {/* Badge */}
             <div
               className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-6 border animate-fade-up"
@@ -230,7 +253,8 @@ export default function HeroBanner() {
               style={{
                 animationDelay: "0.1s",
                 color: "#ffffff",
-                animation: "bounceInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards",
+                animation:
+                  "bounceInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards",
               }}
             >
               <EditableText
@@ -265,7 +289,10 @@ export default function HeroBanner() {
                   }}
                 />
               </div>
-              <button type="submit" className="btn-primary text-sm px-6 h-12 whitespace-nowrap">
+              <button
+                type="submit"
+                className="btn-primary text-sm px-6 h-12 whitespace-nowrap"
+              >
                 {h.heroSearchBtn}
               </button>
               <Link
@@ -305,7 +332,10 @@ export default function HeroBanner() {
             >
               {slide.statsValues.map((val: string, i: number) => (
                 <div key={i}>
-                  <p className="font-display text-4xl" style={{ color: config.accent }}>
+                  <p
+                    className="font-display text-4xl"
+                    style={{ color: config.accent }}
+                  >
                     <EditableText
                       settingKey={`hero.slide.${current}.stat.${i}.value`}
                       defaultValue={val}
@@ -320,14 +350,16 @@ export default function HeroBanner() {
                 </div>
               ))}
             </div>
-
           </div>
         </div>
       </div>
 
       {/* Slide index top-right */}
       <div className="absolute top-24 right-8 z-20 hidden lg:flex items-baseline gap-1">
-        <span className="font-display text-4xl" style={{ color: config.accent }}>
+        <span
+          className="font-display text-4xl"
+          style={{ color: config.accent }}
+        >
           {String(current + 1).padStart(2, "0")}
         </span>
         <span className="text-white/20 text-lg mx-1">/</span>
@@ -349,7 +381,11 @@ export default function HeroBanner() {
             }`}
             style={
               i === current
-                ? { borderColor: `${s.accent}60`, background: `${s.accent}20`, color: "#fff" }
+                ? {
+                    borderColor: `${s.accent}60`,
+                    background: `${s.accent}20`,
+                    color: "#fff",
+                  }
                 : {}
             }
           >
@@ -374,7 +410,8 @@ export default function HeroBanner() {
               className="h-1.5 rounded-full transition-all duration-400"
               style={{
                 width: i === current ? "2rem" : "0.5rem",
-                background: i === current ? config.accent : "rgba(255,255,255,0.35)",
+                background:
+                  i === current ? config.accent : "rgba(255,255,255,0.35)",
               }}
             />
           ))}
