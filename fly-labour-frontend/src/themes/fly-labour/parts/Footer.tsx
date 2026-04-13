@@ -23,7 +23,7 @@ export default function Footer() {
     "footer.address",
     "219A Nơ Trang Long, Phường 12, Quận Bình Thạnh, TP. Hồ Chí Minh",
   );
-  const phone = usePageContent("footer.phone", "Hotline: 0866-879-755\nTư vấn: 028 3899 4679\nHồ sơ: 028 3899 4879");
+  const phone = usePageContent("footer.phone", "Hotline: 0866-879-755<br> Tư vấn: 028 3899 4679<br> Hồ sơ: 028 3899 4879");
   const email = usePageContent("footer.email", "visa.service@flyimmigration.vn");
   const officeHours = usePageContent("footer.officeHours", f.officeHours);
   const hoursText = usePageContent("footer.hoursText", f.hoursText);
