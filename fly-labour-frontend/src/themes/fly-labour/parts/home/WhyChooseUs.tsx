@@ -33,7 +33,13 @@ export default function WhyChooseUs() {
               key={i}
               className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl shadow-sm dark:shadow-none p-6 text-center group hover:border-amber-400 dark:hover:border-brand-gold/50 hover:shadow-xl hover:shadow-amber-500/10 transition-all duration-300"
             >
-              <div className="text-4xl mb-2">{h.statsIcons[i]}</div>
+              <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <img
+                  src={`/dashboar_img/${i + 1}.png`}
+                  alt=""
+                  className="w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-500"
+                />
+              </div>
               <p className="font-display text-4xl gradient-text mb-1">{val}</p>
               <p className="text-slate-600 dark:text-brand-muted text-sm font-medium transition-colors">
                 {h.statsLabels[i]}

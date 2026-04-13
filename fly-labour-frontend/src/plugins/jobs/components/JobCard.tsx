@@ -17,6 +17,7 @@ import {
   timeAgo,
 } from "@/core/utils/helpers";
 import { useT } from "@/core/hooks/useT";
+import { getImageUrl } from "@/core/services/api";
 
 // Default images per country if no custom image
 const COUNTRY_IMAGES: Record<string, string> = {
