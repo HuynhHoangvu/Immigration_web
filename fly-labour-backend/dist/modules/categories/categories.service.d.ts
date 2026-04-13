@@ -1,3 +1,4 @@
+import { OnModuleInit } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Category } from './category.entity';
 import { GcsService } from '../../common/services/gcs.service';
@@ -9,10 +10,12 @@ export declare class CreateCategoryDto {
     isActive?: boolean;
     sortOrder?: number;
 }
-export declare class CategoriesService {
+export declare class CategoriesService implements OnModuleInit {
     private catsRepo;
     private gcsService;
+    private readonly logger;
     constructor(catsRepo: Repository<Category>, gcsService: GcsService);
+    onModuleInit(): Promise<void>;
     findAll(): Promise<Category[]>;
     findAllAdmin(): Promise<Category[]>;
     findOne(id: string): Promise<Category>;

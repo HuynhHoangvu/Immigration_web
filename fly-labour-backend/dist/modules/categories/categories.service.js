@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var CategoriesService_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CategoriesService = exports.CreateCategoryDto = void 0;
 const common_1 = require("@nestjs/common");
@@ -56,10 +57,49 @@ __decorate([
     (0, class_transformer_1.Type)(() => Number),
     __metadata("design:type", Number)
 ], CreateCategoryDto.prototype, "sortOrder", void 0);
-let CategoriesService = class CategoriesService {
+let CategoriesService = CategoriesService_1 = class CategoriesService {
     constructor(catsRepo, gcsService) {
         this.catsRepo = catsRepo;
         this.gcsService = gcsService;
+        this.logger = new common_1.Logger(CategoriesService_1.name);
+    }
+    async onModuleInit() {
+        const mapping = {
+            'Nông nghiệp': '1',
+            'Chăm sóc sắc đẹp': '2',
+            'Nail & Spa': '2',
+            'Kỹ thuật': '3',
+            'Xây dựng': '4',
+            'Nhà hàng': '5',
+            'Dịch Vụ - Nhà hàng - Khách sạn': '5',
+            'Y tế': '6',
+            'Logistics': '7',
+            'Công nghệ': '8',
+            'Lao động phổ thông': '9',
+            'Giáo dục': '10',
+            'Dịch vụ': '11',
+        };
+        try {
+            const categories = await this.catsRepo.find();
+            let updatedCount = 0;
+            for (const cat of categories) {
+                const isEmoji = cat.icon && !cat.icon.match(/^\d+$/) && !cat.icon.startsWith('http') && !cat.icon.startsWith('/');
+                if (isEmoji) {
+                    const newIcon = mapping[cat.name];
+                    if (newIcon) {
+                        cat.icon = newIcon;
+                        await this.catsRepo.save(cat);
+                        updatedCount++;
+                    }
+                }
+            }
+            if (updatedCount > 0) {
+                this.logger.log(`✅ Tự động cập nhật ${updatedCount} icon danh mục sang định dạng PNG mới.`);
+            }
+        }
+        catch (err) {
+            this.logger.error('❌ Lỗi khi tự động cập nhật icon danh mục:', err.message);
+        }
     }
     findAll() {
         return this.catsRepo.find({ where: { isActive: true }, order: { sortOrder: 'ASC', name: 'ASC' } });
@@ -100,7 +140,7 @@ let CategoriesService = class CategoriesService {
     }
 };
 exports.CategoriesService = CategoriesService;
-exports.CategoriesService = CategoriesService = __decorate([
+exports.CategoriesService = CategoriesService = CategoriesService_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(category_entity_1.Category)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
