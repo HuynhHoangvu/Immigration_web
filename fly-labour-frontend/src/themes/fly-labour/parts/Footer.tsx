@@ -239,14 +239,38 @@ export default function Footer() {
       {/* Bottom */}
       <div className="border-t border-slate-200 dark:border-white/5 py-6 px-6 transition-colors">
         <div className="max-w-7xl mx-auto space-y-4">
-          {/* BCT registration */}
-          <div className="flex items-center justify-center gap-2 text-xs text-slate-500 dark:text-brand-muted transition-colors">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/20px-Flag_of_Vietnam.svg.png"
-              alt="VN"
-              className="w-4 h-3 object-cover rounded-sm"
-            />
-            <EditableText settingKey="footer.bct" defaultValue={bct} />
+          {/* BCT registration & Logo */}
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6 border-b border-slate-200 dark:border-white/5 pb-6">
+            <Link to="/">
+              <img
+                src="/logo.png"
+                alt="Fly Immigration"
+                className="h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+              />
+            </Link>
+            <div className="h-8 w-px bg-slate-200 dark:bg-white/10 hidden md:block" />
+            <div className="flex items-center gap-4">
+              <a 
+                href="http://online.gov.vn/Home/WebDetails/140726" 
+                target="_blank" 
+                rel="noreferrer"
+                className="transition-transform hover:scale-105"
+              >
+                <img
+                  src="/logo-bct.png"
+                  alt="Đã thông báo Bộ Công Thương"
+                  className="h-10 w-auto object-contain"
+                />
+              </a>
+              <div className="text-left">
+                <p className="text-[10px] uppercase tracking-wider font-bold text-slate-400 dark:text-brand-muted mb-0.5">
+                  Giấy phép kinh doanh
+                </p>
+                <div className="text-xs text-slate-500 dark:text-brand-muted font-medium">
+                  <EditableText settingKey="footer.bct" defaultValue={bct} />
+                </div>
+              </div>
+            </div>
           </div>
           {/* Copyright + Policy links */}
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500 dark:text-brand-muted transition-colors">
