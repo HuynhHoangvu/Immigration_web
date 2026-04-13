@@ -286,11 +286,11 @@ export default function Header() {
             {/* Số điện thoại */}
             <div className="ml-2 pl-3 border-l border-slate-200 dark:border-white/10">
               <a
-                href="tel:+84901234567"
+                href="tel:0866879755"
                 className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-400/10 rounded-xl transition-colors"
               >
                 <Phone size={14} className="fill-current" />
-                0333 318 882
+                0866-879-755
               </a>
             </div>
           </nav>
@@ -484,10 +484,10 @@ export default function Header() {
 
           {/* Số điện thoại Mobile */}
           <a
-            href="tel:+84901234567"
+            href="tel:0866879755"
             className="flex items-center gap-2 px-6 py-4 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-400/10 transition-colors border-b border-slate-100 dark:border-white/5 text-sm font-bold"
           >
-            <Phone size={16} className="fill-current" /> 0333 318 882
+            <Phone size={16} className="fill-current" /> 0866-879-755
           </a>
 
           {/* Toggle công cụ Mobile */}

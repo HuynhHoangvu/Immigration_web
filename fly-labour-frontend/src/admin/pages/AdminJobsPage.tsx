@@ -15,6 +15,8 @@ import {
   Search,
   Filter,
   DollarSign,
+  TrendingUp,
+  FileText,
 } from "lucide-react";
 import type { Category, Job } from "@/core/types";
 import {
@@ -80,6 +82,15 @@ type FormData = {
   requirements: string;
   benefits: string;
   imagePreview: string;
+  // Structured data fields
+  req_age?: string;
+  req_workTime?: string;
+  req_experience?: string;
+  req_language?: string;
+  req_other?: string;
+  req_checklist?: string[];
+  ben_departure?: string;
+  ben_checklist?: string[];
 };
 
 const EMPTY_FORM: FormData = {
@@ -102,6 +113,14 @@ const EMPTY_FORM: FormData = {
   requirements: "",
   benefits: "",
   imagePreview: "",
+  req_age: "",
+  req_workTime: "",
+  req_experience: "",
+  req_language: "",
+  req_other: "",
+  req_checklist: [],
+  ben_departure: "",
+  ben_checklist: [],
 };
 
 const SUGGESTED_IMAGES: Record<string, string> = {
@@ -192,6 +211,33 @@ export default function AdminJobsPage() {
       benefits: job.benefits || "",
       imagePreview: job.image || "",
     });
+
+    // Parse structured data if exists
+    try {
+      if (job.requirements?.startsWith('{"v2":')) {
+        const parsed = JSON.parse(job.requirements);
+        setForm(f => ({
+          ...f,
+          req_age: parsed.v2.age || "",
+          req_workTime: parsed.v2.workTime || "",
+          req_experience: parsed.v2.experience || "",
+          req_language: parsed.v2.language || "",
+          req_other: parsed.v2.other || "",
+          req_checklist: parsed.v2.checklist || [],
+          requirements: parsed.v2.raw || job.requirements
+        }));
+      }
+      if (job.benefits?.startsWith('{"v2":')) {
+        const parsed = JSON.parse(job.benefits);
+        setForm(f => ({
+          ...f,
+          ben_departure: parsed.v2.departure || "",
+          ben_checklist: parsed.v2.checklist || [],
+          benefits: parsed.v2.raw || job.benefits
+        }));
+      }
+    } catch { /* ignore if not JSON */ }
+
     setUrlInput(job.image || "");
     fileObjRef.current = null;
     setEditing(job);
@@ -250,6 +296,35 @@ export default function AdminJobsPage() {
         if (!form.countryCustom.trim()) { toast.error("Vui lòng nhập tên quốc gia"); setSaving(false); return; }
         fd.set("country", form.countryCustom.trim());
       }
+
+      // Serialize structured requirements
+      if (form.req_age || form.req_experience || form.req_checklist?.length) {
+        const structReq = {
+          v2: {
+            age: form.req_age,
+            workTime: form.req_workTime,
+            experience: form.req_experience,
+            language: form.req_language,
+            other: form.req_other,
+            checklist: form.req_checklist,
+            raw: form.requirements
+          }
+        };
+        fd.set("requirements", JSON.stringify(structReq));
+      }
+
+      // Serialize structured benefits
+      if (form.ben_departure || form.ben_checklist?.length) {
+        const structBen = {
+          v2: {
+            departure: form.ben_departure,
+            checklist: form.ben_checklist,
+            raw: form.benefits
+          }
+        };
+        fd.set("benefits", JSON.stringify(structBen));
+      }
+
       if (imgTab === "upload" && fileObjRef.current) fd.append("image", fileObjRef.current);
       else if (imgTab === "url" && urlInput.trim()) fd.set("image", urlInput.trim());
 
@@ -476,174 +551,230 @@ export default function AdminJobsPage() {
               <button onClick={() => setModal(null)} className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-white/10 text-slate-400 transition-colors"><X size={20} /></button>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
-              {/* Image Section */}
-              <div className="space-y-3">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Hình ảnh đại diện</p>
-                <div className="relative w-full h-48 rounded-2xl overflow-hidden border border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-black/40 group">
-                  {form.imagePreview ? (
-                    <img src={form.imagePreview} alt="preview" className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center text-slate-300 dark:text-brand-muted gap-2">
-                      <ImageIcon size={40} className="opacity-20" />
-                      <p className="text-xs font-medium">Chưa có hình ảnh</p>
-                    </div>
-                  )}
-                  {form.imagePreview && (
-                    <button onClick={() => { setForm((f) => ({ ...f, imagePreview: "" })); setUrlInput(""); fileObjRef.current = null; }}
-                            className="absolute top-3 right-3 bg-red-600 text-white p-2 rounded-xl shadow-lg hover:scale-110 transition-transform"><Trash2 size={16} /></button>
-                  )}
-                </div>
-
-                <div className="flex gap-2">
-                  <button onClick={() => setImgTab("upload")} className={`flex-1 py-2 text-xs font-bold rounded-xl border transition-all ${imgTab === "upload" ? "bg-slate-900 text-white border-slate-900 dark:bg-brand-gold dark:text-amber-900 dark:border-brand-gold" : "bg-white dark:bg-black/20 text-slate-500 border-slate-200 dark:border-white/5"}`}>UPLOAD FILE</button>
-                  <button onClick={() => setImgTab("url")} className={`flex-1 py-2 text-xs font-bold rounded-xl border transition-all ${imgTab === "url" ? "bg-slate-900 text-white border-slate-900 dark:bg-brand-gold dark:text-amber-900 dark:border-brand-gold" : "bg-white dark:bg-black/20 text-slate-500 border-slate-200 dark:border-white/5"}`}>DÙNG LINK ẢNH</button>
-                </div>
-
-                {imgTab === "upload" ? (
-                  <label className="w-full border-2 border-dashed border-slate-200 dark:border-white/10 hover:border-amber-400 dark:hover:border-brand-gold/40 rounded-2xl py-6 flex flex-col items-center gap-2 text-slate-400 hover:text-amber-600 transition-all cursor-pointer">
-                    <Upload size={24} /> <span className="text-sm font-bold">Chọn tệp hình ảnh</span>
-                    <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
+            <div className="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
+              {/* 1. Hình ảnh & Thông tin chính */}
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 pb-6 border-b border-slate-100 dark:border-white/5">
+                <div className="md:col-span-4 space-y-3">
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                    <ImageIcon size={14} /> Hình đại diện *
                   </label>
-                ) : (
-                  <div className="flex gap-2">
-                    <input value={urlInput} onChange={(e) => setUrlInput(e.target.value)} className={`${inputClasses} h-11`} placeholder="Dán link ảnh từ Unsplash, Google..." />
-                    <button onClick={applyUrlInput} className="bg-slate-900 dark:bg-brand-gold text-white dark:text-amber-900 px-4 rounded-xl font-bold text-sm">Lấy ảnh</button>
+                  <div className="relative w-full aspect-square rounded-2xl overflow-hidden border border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-black/40 group">
+                    {form.imagePreview ? (
+                      <img src={getImageUrl(form.imagePreview)} alt="preview" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex flex-col items-center justify-center text-slate-300 dark:text-brand-muted gap-2">
+                        <ImageIcon size={30} className="opacity-20" />
+                        <p className="text-[10px] font-medium">Chưa có ảnh</p>
+                      </div>
+                    )}
+                    {form.imagePreview && (
+                      <button onClick={() => { setForm((f) => ({ ...f, imagePreview: "" })); setUrlInput(""); fileObjRef.current = null; }}
+                              className="absolute top-2 right-2 bg-red-600/90 hover:bg-red-600 text-white p-1.5 rounded-xl shadow-lg transition-all"><Trash2 size={14} /></button>
+                    )}
+                  </div>
+                  <div className="flex gap-1.5">
+                    <button onClick={() => setImgTab("upload")} className={`flex-1 py-1.5 text-[9px] font-black rounded-lg border transition-all ${imgTab === "upload" ? "bg-slate-900 dark:bg-brand-gold text-white dark:text-amber-900 border-transparent shadow-sm" : "bg-white dark:bg-white/5 text-slate-500 border-slate-200 dark:border-white/5"}`}>TẢI LÊN</button>
+                    <button onClick={() => setImgTab("url")} className={`flex-1 py-1.5 text-[9px] font-black rounded-lg border transition-all ${imgTab === "url" ? "bg-slate-900 dark:bg-brand-gold text-white dark:text-amber-900 border-transparent shadow-sm" : "bg-white dark:bg-white/5 text-slate-500 border-slate-200 dark:border-white/5"}`}>LINK URL</button>
+                  </div>
+                  {imgTab === "upload" ? (
+                    <label className="w-full border-2 border-dashed border-slate-100 dark:border-white/5 hover:border-amber-400 rounded-xl py-2 flex flex-col items-center gap-1 text-slate-400 hover:text-amber-600 transition-all cursor-pointer">
+                      <Upload size={14} /> <span className="text-[9px] font-bold">CHỌN TỆP</span>
+                      <input type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
+                    </label>
+                  ) : (
+                    <input value={urlInput} onChange={(e) => { setUrlInput(e.target.value); if (e.target.value.includes(".")) setForm(f => ({ ...f, imagePreview: e.target.value })); }} className={`${inputClasses} h-8 text-[10px]`} placeholder="Paste URL..." />
+                  )}
+                </div>
+
+                <div className="md:col-span-8 space-y-4">
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Tiêu đề bài tuyển dụng *</label>
+                    <input value={form.title} onChange={setField("title")} className={`${inputClasses} h-11 text-base font-bold`} placeholder="VD: Nam nhân viên kho lạnh tại Úc" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Ngành nghề</label>
+                      <select value={form.categoryId} onChange={e => { setField("categoryId")(e); if (!form.imagePreview) useSuggestedImage(e.target.value); }} className={`${inputClasses} h-11 appearance-none`}>
+                        <option value="">-- Chọn ngành --</option>
+                        {cats.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+                      </select>
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Loại hình</label>
+                      <select value={form.jobType} onChange={setField("jobType")} className={`${inputClasses} h-11 appearance-none`}>
+                        {Object.entries(JOBTYPE_LABELS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+                      </select>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Tên doanh nghiệp</label>
+                      <input value={form.company} onChange={setField("company")} className={`${inputClasses} h-11`} placeholder="VD: Harvest Australia Ltd" />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Địa điểm cụ thể</label>
+                      <input value={form.location} onChange={setField("location")} className={`${inputClasses} h-11`} placeholder="VD: Brisbane, QLD" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 2. Chi tiết & Hậu cần */}
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Quốc gia *</label>
+                    <select value={form.country} onChange={setField("country")} className={`${inputClasses} h-11 appearance-none`}>
+                      {PRESET_COUNTRIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
+                    </select>
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Chỉ tiêu (Slot)</label>
+                    <input type="number" value={form.slots} onChange={setField("slots")} className={`${inputClasses} h-11`} placeholder="Số lượng" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Hạn nộp</label>
+                    <input type="date" value={form.deadline} onChange={setField("deadline")} className={`${inputClasses} h-11 appearance-none`} />
+                  </div>
+                </div>
+                {form.country === "__other__" && (
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Tên quốc gia khác</label>
+                    <input value={form.countryCustom} onChange={e => setForm(f => ({ ...f, countryCustom: e.target.value }))} className={`${inputClasses} h-11`} placeholder="Nhập tên quốc gia..." />
                   </div>
                 )}
               </div>
 
-              {/* Main Form Fields */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div className="md:col-span-2 space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Tiêu đề bài tuyển dụng *</label>
-                  <input value={form.title} onChange={setField("title")} className={`${inputClasses} h-12`} placeholder="VD: Nam nhân viên kho lạnh tại Úc" />
+              {/* 3. Lương & Trạng thái */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 text-slate-400 font-bold text-[10px] uppercase tracking-widest border-b border-slate-100 dark:border-white/5 pb-2">
+                  <DollarSign size={14} /> Tài chính & Trạng thái
                 </div>
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Tên doanh nghiệp</label>
-                  <input value={form.company} onChange={setField("company")} className={`${inputClasses} h-12`} placeholder="VD: Harvest Australia Ltd" />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Địa điểm cụ thể</label>
-                  <input value={form.location} onChange={setField("location")} className={`${inputClasses} h-12`} placeholder="VD: Brisbane, QLD" />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Quốc gia mục tiêu *</label>
-                  <select value={form.country} onChange={setField("country")} className={`${inputClasses} h-12 appearance-none`}>
-                    {PRESET_COUNTRIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
-                  </select>
-                  {form.country === "__other__" && <input value={form.countryCustom} onChange={e => setForm(f => ({ ...f, countryCustom: e.target.value }))} className={`${inputClasses} h-12 mt-2`} placeholder="Nhập tên quốc gia..." />}
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Loại hình làm việc</label>
-                  <select value={form.jobType} onChange={setField("jobType")} className={`${inputClasses} h-12 appearance-none`}>
-                    {Object.entries(JOBTYPE_LABELS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-                  </select>
-                </div>
-              </div>
-
-              {/* Salary Section */}
-              <div className="p-5 bg-slate-50 dark:bg-black/20 border border-slate-100 dark:border-white/5 rounded-2xl space-y-4">
-                <div className="flex items-center gap-2 mb-2 text-amber-700 dark:text-brand-gold font-bold text-xs uppercase tracking-widest">
-                  <DollarSign size={14} /> Cấu hình mức lương
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-slate-400">Min</label>
-                    <input type="number" value={form.salaryMin} onChange={setField("salaryMin")} className={`${inputClasses} h-11`} placeholder="3000" />
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-end">
+                  <div className="md:col-span-8 p-4 bg-slate-50 dark:bg-black/20 border border-slate-100 dark:border-white/5 rounded-2xl">
+                    <div className="grid grid-cols-3 gap-3">
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-bold text-slate-400">MIN</label>
+                        <input type="number" value={form.salaryMin} onChange={setField("salaryMin")} className={`${inputClasses} h-10`} placeholder="3000" />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-bold text-slate-400">MAX</label>
+                        <input type="number" value={form.salaryMax} onChange={setField("salaryMax")} className={`${inputClasses} h-10`} placeholder="4500" />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-bold text-slate-400">TIỀN TỆ</label>
+                        <select value={form.salaryCurrency} onChange={handleCurrencyChange} className={`${inputClasses} h-10 appearance-none`}>
+                          <option value="AUD">🇦🇺 AUD</option>
+                          <option value="CAD">🇨🇦 CAD</option>
+                          <option value="VND">🇻🇳 VND</option>
+                          <option value="USD">🇺🇸 USD</option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-slate-400">Max</label>
-                    <input type="number" value={form.salaryMax} onChange={setField("salaryMax")} className={`${inputClasses} h-11`} placeholder="4500" />
-                  </div>
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-slate-400">Tiền tệ</label>
-                    <select value={form.salaryCurrency} onChange={handleCurrencyChange} className={`${inputClasses} h-11 appearance-none`}>
-                      <option value="AUD">🇦🇺 AUD (Úc)</option>
-                      <option value="CAD">🇨🇦 CAD (Canada)</option>
-                      <option value="VND">🇻🇳 VND (Việt Nam)</option>
-                      <option value="USD">🇺🇸 USD (Mỹ)</option>
+                  <div className="md:col-span-4 space-y-1.5">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Trạng thái tin</label>
+                    <select value={form.status} onChange={setField("status")} className={`${inputClasses} h-11 appearance-none font-bold`}>
+                      {Object.entries(STATUS_LABELS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
                     </select>
                   </div>
                 </div>
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Đơn vị lương khi nhập liệu:</label>
-                  <div className="flex gap-2">
-                    {(["hourly", "weekly", "monthly", "yearly"] as const).map(p => (
-                      <button key={p} onClick={() => setSalaryPeriod(p)} className={`flex-1 py-2 rounded-xl text-[10px] font-bold border transition-all ${salaryPeriod === p ? "bg-amber-600 border-amber-600 text-white" : "bg-white dark:bg-black/20 border-slate-200 dark:border-white/5 text-slate-500"}`}>
-                        {{ hourly: "GIỜ", weekly: "TUẦN", monthly: "THÁNG", yearly: "NĂM" }[p]}
-                      </button>
-                    ))}
+                <div className="flex gap-6 items-center bg-slate-50 dark:bg-black/20 px-4 py-3 rounded-2xl border border-slate-100 dark:border-white/5">
+                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Phân loại:</span>
+                   <label className="flex items-center gap-2 cursor-pointer group">
+                      <input type="checkbox" checked={form.isHot} onChange={e => setForm(f => ({ ...f, isHot: e.target.checked }))} className="w-5 h-5 accent-red-500 rounded-lg shadow-sm" />
+                      <span className="text-xs font-bold text-slate-600 dark:text-gray-300 group-hover:text-red-500 transition-colors">🔥 TIN HOT</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer group">
+                      <input type="checkbox" checked={form.isFeatured} onChange={e => setForm(f => ({ ...f, isFeatured: e.target.checked }))} className="w-5 h-5 accent-amber-500 rounded-lg shadow-sm" />
+                      <span className="text-xs font-bold text-slate-600 dark:text-gray-300 group-hover:text-amber-500 transition-colors">⭐ NỔI BẬT</span>
+                    </label>
+                </div>
+              </div>
+
+              {/* 4. Yêu cầu & Quyền lợi (Dạng bảng) */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 text-slate-400 font-bold text-[10px] uppercase tracking-widest border-b border-slate-100 dark:border-white/5 pb-2">
+                  <TrendingUp size={14} /> Cấu hình hiển thị dạng bảng
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Yêu cầu */}
+                  <div className="p-5 bg-blue-50/50 dark:bg-blue-500/5 border border-blue-100 dark:border-blue-500/10 rounded-2xl space-y-4">
+                    <h3 className="text-blue-700 dark:text-blue-400 font-black text-[10px] uppercase tracking-widest">1. YÊU CẦU CÔNG VIỆC</h3>
+                    <div className="space-y-3">
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-1">
+                          <label className="text-[9px] font-bold text-slate-400 uppercase">Độ tuổi</label>
+                          <input value={form.req_age} onChange={e => setForm({...form, req_age: e.target.value})} className={`${inputClasses} h-9`} placeholder="18 - 40" />
+                        </div>
+                        <div className="space-y-1">
+                          <label className="text-[9px] font-bold text-slate-400 uppercase">Làm việc</label>
+                          <input value={form.req_workTime} onChange={e => setForm({...form, req_workTime: e.target.value})} className={`${inputClasses} h-9`} placeholder="40h/tuần" />
+                        </div>
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-bold text-slate-400 uppercase">Kinh nghiệm</label>
+                        <input value={form.req_experience} onChange={e => setForm({...form, req_experience: e.target.value})} className={`${inputClasses} h-9`} placeholder="VD: 2 năm" />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-bold text-slate-400 uppercase">Ngoại ngữ</label>
+                        <input value={form.req_language} onChange={e => setForm({...form, req_language: e.target.value})} className={`${inputClasses} h-9`} placeholder="PTE/IELTS" />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-bold text-slate-400 uppercase">Yêu cầu khác</label>
+                        <textarea value={form.req_other} onChange={e => setForm({...form, req_other: e.target.value})} className={`${inputClasses} h-16 py-2 resize-none text-[11px]`} placeholder="VD: Sức khỏe tốt, không tiền án..." />
+                      </div>
+                      <div className="pt-2 border-t border-blue-200/30">
+                        <p className="text-[9px] font-bold text-slate-400 uppercase mb-2">Checklist Hồ sơ</p>
+                        <div className="grid grid-cols-2 gap-2 text-[10px]">
+                          {["Hồ sơ cá nhân", "Lý lịch tư pháp", "Hình ảnh/Video", "Bằng cấp/Chứng chỉ"].map(item => (
+                            <label key={item} className="flex items-center gap-1.5 cursor-pointer">
+                              <input type="checkbox" checked={form.req_checklist?.includes(item)} onChange={e => {
+                                const list = form.req_checklist || [];
+                                setForm({...form, req_checklist: e.target.checked ? [...list, item] : list.filter(i => i !== item)})
+                              }} className="w-3.5 h-3.5 accent-blue-500 rounded" />
+                              <span className="text-slate-600 dark:text-gray-300">{item}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Quyền lợi */}
+                  <div className="p-5 bg-green-50/50 dark:bg-green-500/5 border border-green-100 dark:border-green-500/10 rounded-2xl space-y-4">
+                    <h3 className="text-green-700 dark:text-green-400 font-black text-[10px] uppercase tracking-widest">2. QUYỀN LỢI ĐÃI NGỘ</h3>
+                    <div className="space-y-3">
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-bold text-slate-400 uppercase">Thời gian xuất cảnh</label>
+                        <input value={form.ben_departure} onChange={e => setForm({...form, ben_departure: e.target.value})} className={`${inputClasses} h-9`} placeholder="4-6 tháng" />
+                      </div>
+                      <div className="pt-2 border-t border-green-200/30">
+                        <p className="text-[9px] font-bold text-slate-400 uppercase mb-2">Checklist Quyền lợi</p>
+                        <div className="space-y-1.5 text-[10px]">
+                          {["Bảo lãnh gia đình", "Nghỉ phép có lương", "Phụ cấp ăn uống", "Hỗ trợ nơi ở"].map(item => (
+                            <label key={item} className="flex items-center gap-1.5 cursor-pointer">
+                              <input type="checkbox" checked={form.ben_checklist?.includes(item)} onChange={e => {
+                                const list = form.ben_checklist || [];
+                                setForm({...form, ben_checklist: e.target.checked ? [...list, item] : list.filter(i => i !== item)})
+                              }} className="w-3.5 h-3.5 accent-green-500 rounded" />
+                              <span className="text-slate-600 dark:text-gray-300">{item}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                {(form.salaryMin || form.salaryMax) && (
-                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-slate-200/50 dark:border-white/5">
-                      {["hourly", "weekly", "monthly", "yearly"].map(p => {
-                         const estsMin = form.salaryMin ? getSalaryEstimates(Number(form.salaryMin), salaryPeriod) : null;
-                         const estsMax = form.salaryMax ? getSalaryEstimates(Number(form.salaryMax), salaryPeriod) : null;
-                         return (
-                           <div key={p} className="p-2 text-center rounded-lg bg-white/50 dark:bg-black/20 border border-slate-100 dark:border-white/5">
-                              <p className="text-[8px] font-bold text-slate-400 uppercase">{p}</p>
-                              <p className="text-[10px] font-black text-slate-900 dark:text-white truncate">
-                                {estsMin?.[p as keyof typeof estsMin] || "0"} - {estsMax?.[p as keyof typeof estsMax] || "0"}
-                              </p>
-                           </div>
-                         )
-                      })}
-                   </div>
-                )}
               </div>
 
-              {/* Status & Categorization */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Chỉ tiêu (Slot)</label>
-                  <input type="number" value={form.slots} onChange={setField("slots")} className={`${inputClasses} h-12`} placeholder="Số lượng" />
+              {/* 4. Nội dung chi tiết */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 text-slate-400 font-bold text-[10px] uppercase tracking-widest border-b border-slate-100 dark:border-white/5 pb-2">
+                  <FileText size={14} /> Mô tả công việc
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Hạn nộp</label>
-                  <input type="date" value={form.deadline} onChange={setField("deadline")} className={`${inputClasses} h-12 appearance-none`} />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Ngành nghề</label>
-                  <select value={form.categoryId} onChange={e => { setField("categoryId")(e); if (!form.imagePreview) useSuggestedImage(e.target.value); }} className={`${inputClasses} h-12 appearance-none`}>
-                    <option value="">-- Chọn ngành --</option>
-                    {cats.map((c) => <option key={c.id} value={c.id}>{c.icon} {c.name}</option>)}
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 py-2">
-                 <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Trạng thái tin đăng</label>
-                    <select value={form.status} onChange={setField("status")} className={`${inputClasses} h-12 appearance-none font-bold`}>
-                       {Object.entries(STATUS_LABELS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-                    </select>
-                 </div>
-                 <div className="flex gap-4 items-end pb-3">
-                    <label className="flex items-center gap-2.5 cursor-pointer group">
-                      <input type="checkbox" checked={form.isHot} onChange={e => setForm(f => ({ ...f, isHot: e.target.checked }))} className="w-5 h-5 accent-red-500 rounded-lg" />
-                      <span className="text-sm font-bold text-slate-700 dark:text-white group-hover:text-red-500 transition-colors">🔥 HOT</span>
-                    </label>
-                    <label className="flex items-center gap-2.5 cursor-pointer group">
-                      <input type="checkbox" checked={form.isFeatured} onChange={e => setForm(f => ({ ...f, isFeatured: e.target.checked }))} className="w-5 h-5 accent-amber-500 rounded-lg" />
-                      <span className="text-sm font-bold text-slate-700 dark:text-white group-hover:text-amber-500 transition-colors">⭐ NỔI BẬT</span>
-                    </label>
-                 </div>
-              </div>
-
-              <div className="space-y-5 pt-2 border-t border-slate-100 dark:border-white/5">
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Mô tả công việc *</label>
-                  <textarea value={form.description} onChange={setField("description")} className={`${inputClasses} h-32 py-3 resize-none`} placeholder="Nội dung công việc chính..." />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Yêu cầu ứng tuyển</label>
-                  <textarea value={form.requirements} onChange={setField("requirements")} className={`${inputClasses} h-24 py-3 resize-none`} placeholder="Kỹ năng, kinh nghiệm cần có..." />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Quyền lợi đãi ngộ</label>
-                  <textarea value={form.benefits} onChange={setField("benefits")} className={`${inputClasses} h-24 py-3 resize-none`} placeholder="Lương thưởng, bảo hiểm, hỗ trợ ăn ở..." />
+                  <textarea value={form.description} onChange={setField("description")} className={`${inputClasses} h-40 py-3 resize-none`} placeholder="Mô tả các nhiệm vụ chính, môi trường làm việc..." />
                 </div>
               </div>
             </div>

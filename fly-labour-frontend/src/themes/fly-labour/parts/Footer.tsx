@@ -21,10 +21,10 @@ export default function Footer() {
 
   const address = usePageContent(
     "footer.address",
-    "219A, No Trang Long, Binh Thanh, Ho Chi Minh City",
+    "219A Nơ Trang Long, Phường 12, Quận Bình Thạnh, TP. Hồ Chí Minh",
   );
-  const phone = usePageContent("footer.phone", "0333 318 882");
-  const email = usePageContent("footer.email", "flyvisa@gmail.com");
+  const phone = usePageContent("footer.phone", "Hotline: 0866-879-755\nTư vấn: 028 3899 4679\nHồ sơ: 028 3899 4879");
+  const email = usePageContent("footer.email", "visa.service@flyimmigration.vn");
   const officeHours = usePageContent("footer.officeHours", f.officeHours);
   const hoursText = usePageContent("footer.hoursText", f.hoursText);
   const copyright = usePageContent("footer.copyright", f.copyright);
@@ -206,12 +206,12 @@ export default function Footer() {
                 defaultValue={address}
               />
             </li>
-            <li className="flex items-center gap-2 text-sm text-slate-500 dark:text-brand-muted transition-colors">
+            <li className="flex items-start gap-2 text-sm text-slate-500 dark:text-brand-muted transition-colors">
               <Phone
                 size={15}
-                className="text-amber-500 dark:text-brand-gold"
+                className="mt-0.5 shrink-0 text-amber-500 dark:text-brand-gold"
               />
-              <EditableText settingKey="footer.phone" defaultValue={phone} />
+              <EditableText settingKey="footer.phone" defaultValue={phone} multiline />
             </li>
             <li className="flex items-center gap-2 text-sm text-slate-500 dark:text-brand-muted transition-colors">
               <Mail size={15} className="text-amber-500 dark:text-brand-gold" />

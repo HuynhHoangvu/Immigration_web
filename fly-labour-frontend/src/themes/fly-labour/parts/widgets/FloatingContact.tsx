@@ -1,4 +1,4 @@
-﻿import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, Phone, Facebook, Link2, Check } from "lucide-react";
 import { useContentStore } from "@/core/hooks/usePageContent";
 import { useEditModeStore } from "@/core/store/editModeStore";
@@ -14,8 +14,8 @@ export default function FloatingContact() {
   const storedContent = useContentStore((s) => s.content);
   const setStored = useContentStore((s) => s.set);
 
-  const hotline = storedContent["contact.hotline"] ?? "0333 318 882";
-  const zaloNumber = storedContent["contact.zaloNumber"] ?? "0333318882";
+  const hotline = storedContent["contact.hotline"] ?? "0866-879-755";
+  const zaloNumber = storedContent["contact.zaloNumber"] ?? "0866879755";
   const messengerUrl =
     storedContent["contact.messengerUrl"] ?? "https://m.me/flylabour";
 

@@ -10,7 +10,6 @@ import {
   Eye,
   CheckCircle,
   Building2,
-  Globe,
   FileText,
   Upload,
 } from "lucide-react";
@@ -63,40 +62,6 @@ const FALLBACK_IMAGES: Record<string, string> = {
   south_korea:
     "https://images.unsplash.com/photo-1549692520-acc6669e2f0c?w=1200&q=80&fit=crop",
 };
-
-// Gallery ảnh theo quốc gia (3 ảnh cảnh quan + cuộc sống)
-const COUNTRY_GALLERY: Record<string, string[]> = {
-  australia: [
-    "https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=800&q=75",
-    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=75",
-    "https://images.unsplash.com/photo-1529108190281-9a4f620bc2d8?w=800&q=75",
-  ],
-  canada: [
-    "https://images.unsplash.com/photo-1517935706615-2717063c2225?w=800&q=75",
-    "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=75",
-    "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=75",
-  ],
-  new_zealand: [
-    "https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=800&q=75",
-    "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=75",
-    "https://images.unsplash.com/photo-1566552881560-0be862a7c445?w=800&q=75",
-  ],
-  germany: [
-    "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=800&q=75",
-    "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&q=75",
-    "https://images.unsplash.com/photo-1564415314949-f8a4c1f4f7a0?w=800&q=75",
-  ],
-  uk: [
-    "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&q=75",
-    "https://images.unsplash.com/photo-1534430480872-3498386e7856?w=800&q=75",
-    "https://images.unsplash.com/photo-1486299267070-83823f5448dd?w=800&q=75",
-  ],
-};
-const DEFAULT_GALLERY = [
-  "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=75",
-  "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=75",
-  "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=75",
-];
 
 export default function JobDetailPage() {
   const { id } = useParams();
@@ -347,62 +312,34 @@ export default function JobDetailPage() {
                   </div>
                 )}
 
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  <div className="bg-amber-50 dark:bg-brand-gold/5 border border-amber-200 dark:border-brand-gold/20 rounded-xl p-3 text-center">
-                    <TrendingUp
-                      size={16}
-                      className="text-amber-600 dark:text-brand-gold mx-auto mb-1"
-                    />
-                    <p className="text-amber-700 dark:text-brand-gold font-semibold text-sm">
-                      {formatSalary(
-                        job.salaryMin,
-                        job.salaryMax,
-                        job.salaryCurrency,
-                      )}
-                    </p>
-                    <p className="text-amber-600/70 dark:text-brand-muted text-xs">
-                      {d.salary}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-y-6 gap-x-4 border-t border-slate-100 dark:border-white/5 pt-6">
+                  <div>
+                    <p className="text-[10px] font-bold text-slate-400 dark:text-brand-muted uppercase tracking-widest mb-1.5">{d.salary}</p>
+                    <p className="text-amber-700 dark:text-brand-gold font-bold text-base">
+                      {formatSalary(job.salaryMin, job.salaryMax, job.salaryCurrency)}
                     </p>
                   </div>
                   {job.location && (
-                    <div className="bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-3 text-center">
-                      <MapPin
-                        size={16}
-                        className="text-slate-400 dark:text-brand-muted mx-auto mb-1"
-                      />
-                      <p className="text-slate-900 dark:text-white text-sm font-medium">
+                    <div>
+                      <p className="text-[10px] font-bold text-slate-400 dark:text-brand-muted uppercase tracking-widest mb-1.5">{d.location}</p>
+                      <p className="text-slate-900 dark:text-white font-bold text-sm">
                         {job.location}
-                      </p>
-                      <p className="text-slate-500 dark:text-brand-muted text-xs">
-                        {d.location}
                       </p>
                     </div>
                   )}
                   {job.slots && (
-                    <div className="bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-3 text-center">
-                      <Users
-                        size={16}
-                        className="text-slate-400 dark:text-brand-muted mx-auto mb-1"
-                      />
-                      <p className="text-slate-900 dark:text-white text-sm font-medium">
+                    <div>
+                      <p className="text-[10px] font-bold text-slate-400 dark:text-brand-muted uppercase tracking-widest mb-1.5">{d.slots}</p>
+                      <p className="text-slate-900 dark:text-white font-bold text-sm">
                         {job.slots} {d.slots_label}
-                      </p>
-                      <p className="text-slate-500 dark:text-brand-muted text-xs">
-                        {d.slots}
                       </p>
                     </div>
                   )}
                   {job.deadline && (
-                    <div className="bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-3 text-center">
-                      <Calendar
-                        size={16}
-                        className="text-slate-400 dark:text-brand-muted mx-auto mb-1"
-                      />
-                      <p className="text-slate-900 dark:text-white text-sm font-medium">
+                    <div>
+                      <p className="text-[10px] font-bold text-slate-400 dark:text-brand-muted uppercase tracking-widest mb-1.5">{d.deadline}</p>
+                      <p className="text-slate-900 dark:text-white font-bold text-sm">
                         {formatDate(job.deadline)}
-                      </p>
-                      <p className="text-slate-500 dark:text-brand-muted text-xs">
-                        {d.deadline}
                       </p>
                     </div>
                   )}
@@ -412,11 +349,7 @@ export default function JobDetailPage() {
 
             {/* Description */}
             <div className={`${cardClasses} p-6`}>
-              <h2 className="font-semibold text-slate-900 dark:text-white text-lg mb-4 flex items-center gap-2">
-                <Globe
-                  size={18}
-                  className="text-amber-500 dark:text-brand-gold"
-                />{" "}
+              <h2 className="font-semibold text-slate-900 dark:text-white text-lg mb-4">
                 {d.jobDescription}
               </h2>
               <p className="text-slate-700 dark:text-gray-300 leading-relaxed text-sm whitespace-pre-line">
@@ -424,41 +357,99 @@ export default function JobDetailPage() {
               </p>
             </div>
 
-            {job.requirements && (
-              <div className={`${cardClasses} p-6`}>
-                <h2 className="font-semibold text-slate-900 dark:text-white text-lg mb-4">
-                  {d.requirements}
-                </h2>
-                <p className="text-slate-700 dark:text-gray-300 leading-relaxed text-sm whitespace-pre-line">
-                  {job.requirements}
-                </p>
-              </div>
-            )}
+            {/* Requirements & Benefits Structured */}
+            {(() => {
+              let structReq: any = null;
+              let structBen: any = null;
+              try {
+                if (job.requirements?.startsWith('{"v2":')) structReq = JSON.parse(job.requirements).v2;
+                if (job.benefits?.startsWith('{"v2":')) structBen = JSON.parse(job.benefits).v2;
+              } catch {}
 
-            {job.benefits && (
-              <div className={`${cardClasses} p-6`}>
-                <h2 className="font-semibold text-slate-900 dark:text-white text-lg mb-4">
-                  {d.benefits}
-                </h2>
-                <div className="space-y-2">
-                  {job.benefits
-                    .split(".")
-                    .filter(Boolean)
-                    .map((b, i) => (
-                      <div
-                        key={i}
-                        className="flex items-start gap-2 text-sm text-slate-700 dark:text-gray-300"
-                      >
-                        <CheckCircle
-                          size={15}
-                          className="text-green-500 dark:text-green-400 mt-0.5 shrink-0"
-                        />
-                        {b.trim()}
-                      </div>
-                    ))}
+              return (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Yêu cầu công việc block */}
+                  <div className={`${cardClasses} flex flex-col`}>
+                    <div className="p-4 bg-slate-50 dark:bg-white/5 border-b border-slate-100 dark:border-white/5">
+                      <h3 className="font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wider">YÊU CẦU CÔNG VIỆC</h3>
+                    </div>
+                    <div className="p-0 flex-1">
+                      <table className="w-full text-xs">
+                        <tbody className="divide-y divide-slate-100 dark:divide-white/5">
+                          {[
+                            { label: "ĐỘ TUỔI", value: structReq?.age },
+                            { label: "THỜI GIAN LÀM VIỆC", value: structReq?.workTime },
+                            { label: "KINH NGHIỆM", value: structReq?.experience },
+                            { label: "NGOẠI NGỮ", value: structReq?.language },
+                          ].map((row, idx) => (
+                            <tr key={idx} className="group">
+                              <td className="w-1/3 p-4 font-bold text-slate-400 dark:text-brand-muted bg-slate-50/50 dark:bg-black/10 group-hover:bg-slate-100 dark:group-hover:bg-white/5 transition-colors">{row.label}</td>
+                              <td className="p-4 text-slate-700 dark:text-white font-medium group-hover:bg-slate-50 dark:group-hover:bg-white/5 transition-colors">{row.value || "—"}</td>
+                            </tr>
+                          ))}
+                          <tr>
+                            <td className="p-4 font-bold text-slate-400 dark:text-brand-muted bg-slate-50/50 dark:bg-black/10">YÊU CẦU KHÁC</td>
+                            <td className="p-4">
+                              <div className="space-y-2">
+                                {structReq?.other && (
+                                  <p className="text-slate-700 dark:text-gray-300 mb-3 whitespace-pre-line">{structReq.other}</p>
+                                )}
+                                {structReq?.checklist?.map((item: string) => (
+                                  <div key={item} className="flex items-center gap-2 text-slate-600 dark:text-gray-400">
+                                    <div className="w-4 h-4 rounded-md border border-amber-400 dark:border-brand-gold flex items-center justify-center bg-amber-50 dark:bg-brand-gold/10">
+                                      <CheckCircle size={10} className="text-amber-600 dark:text-brand-gold" />
+                                    </div>
+                                    <span>{item}</span>
+                                  </div>
+                                ))}
+                                {!structReq && job.requirements && (
+                                  <p className="text-slate-700 dark:text-gray-300 whitespace-pre-line">{job.requirements}</p>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  {/* Quyền lợi block */}
+                  <div className={`${cardClasses} flex flex-col`}>
+                    <div className="p-4 bg-slate-50 dark:bg-white/5 border-b border-slate-100 dark:border-white/5">
+                      <h3 className="font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wider">QUYỀN LỢI ĐÃI NGỘ</h3>
+                    </div>
+                    <div className="p-0 flex-1">
+                      <table className="w-full text-xs">
+                        <tbody className="divide-y divide-slate-100 dark:divide-white/5">
+                          <tr>
+                            <td className="w-1/3 p-4 font-bold text-slate-400 dark:text-brand-muted bg-slate-50/50 dark:bg-black/10">THỜI GIAN XUẤT CẢNH</td>
+                            <td className="p-4 text-slate-900 dark:text-white font-bold">{structBen?.departure || "—"}</td>
+                          </tr>
+                          <tr>
+                            <td className="p-4 font-bold text-slate-400 dark:text-brand-muted bg-slate-50/50 dark:bg-black/10 align-top">QUYỀN LỢI</td>
+                            <td className="p-4">
+                              <div className="space-y-3">
+                                {structBen?.checklist?.map((item: string) => (
+                                  <div key={item} className="flex items-center gap-2 text-slate-600 dark:text-gray-400">
+                                    <div className="w-4 h-4 rounded-md border border-green-400 flex items-center justify-center bg-green-50 dark:bg-green-500/10">
+                                      <CheckCircle size={10} className="text-green-600" />
+                                    </div>
+                                    <span>{item}</span>
+                                  </div>
+                                ))}
+                                {(!structBen || !structBen.checklist?.length) && job.benefits && (
+                                  <p className="text-slate-700 dark:text-gray-300 whitespace-pre-line">{structBen?.raw || job.benefits}</p>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            )}
+              );
+            })()}
 
             {/* Apply form */}
             {showForm && !submitted && (
