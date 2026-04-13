@@ -70,8 +70,8 @@ export declare class JobsController {
     getStats(): Promise<{
         totalJobs: number;
         activeJobs: number;
-        totalUsers: number;
         totalViews: number;
+        totalUsers: number;
         byCountry: any[];
     }>;
     getPendingCount(): Promise<{

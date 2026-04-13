@@ -8,10 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdminGuard = void 0;
 const common_1 = require("@nestjs/common");
+const user_entity_1 = require("../../modules/users/user.entity");
 let AdminGuard = class AdminGuard {
     canActivate(context) {
         const { user } = context.switchToHttp().getRequest();
-        if (user?.role !== 'admin') {
+        if (user?.role !== user_entity_1.UserRole.ADMIN) {
             throw new common_1.ForbiddenException('Chỉ admin mới có quyền thực hiện thao tác này');
         }
         return true;

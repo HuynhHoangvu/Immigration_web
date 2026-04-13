@@ -86,7 +86,7 @@ __decorate([
     __metadata("design:type", String)
 ], Application.prototype, "userId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => job_entity_1.Job, { eager: true }),
+    (0, typeorm_1.ManyToOne)(() => job_entity_1.Job, { eager: false }),
     (0, typeorm_1.JoinColumn)({ name: 'jobId' }),
     __metadata("design:type", job_entity_1.Job)
 ], Application.prototype, "job", void 0);

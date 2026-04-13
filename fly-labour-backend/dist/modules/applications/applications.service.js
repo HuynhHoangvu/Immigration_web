@@ -19,6 +19,7 @@ const typeorm_2 = require("typeorm");
 const application_entity_1 = require("./application.entity");
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
+const constants_1 = require("../../common/constants");
 class CreateApplicationDto {
 }
 exports.CreateApplicationDto = CreateApplicationDto;
@@ -98,7 +99,8 @@ let ApplicationsService = class ApplicationsService {
         return this.appsRepo.save(app);
     }
     async findAll(query) {
-        const { page = 1, limit = 20, status, jobId } = query;
+        const { page = 1, status, jobId } = query;
+        const limit = Math.min(query.limit ?? constants_1.PAGINATION.DEFAULT_LIMIT, constants_1.PAGINATION.MAX_LIMIT);
         const qb = this.appsRepo.createQueryBuilder('app')
             .leftJoinAndSelect('app.job', 'job')
             .leftJoinAndSelect('app.user', 'user')

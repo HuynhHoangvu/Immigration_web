@@ -213,8 +213,22 @@ export default function JobCard({ job, compact }: Props) {
 
         <div className="flex items-center justify-between mt-auto pt-3 border-t border-slate-100 dark:border-brand-gray-700 transition-colors">
           {job.category ? (
-            <span className="text-[11px] px-2 py-0.5 bg-slate-100 dark:bg-brand-gray-800 rounded-lg text-slate-600 dark:text-brand-gray-300 font-medium transition-colors">
-              {job.category.icon}{" "}
+            <span className="text-[11px] px-2 py-0.5 bg-slate-100 dark:bg-brand-gray-800 rounded-lg text-slate-600 dark:text-brand-gray-300 font-medium transition-colors flex items-center gap-1.5 min-h-[1.5rem]">
+              {job.category.icon?.startsWith("http") ||
+              job.category.icon?.startsWith("/") ||
+              job.category.icon?.match(/^\d+$/) ? (
+                <img
+                  src={
+                    job.category.icon?.match(/^\d+$/)
+                      ? `/${job.category.icon}.png`
+                      : getImageUrl(job.category.icon)
+                  }
+                  alt=""
+                  className="w-3.5 h-3.5 object-contain"
+                />
+              ) : (
+                job.category.icon
+              )}
               {lang === "en"
                 ? job.category.nameEn || job.category.name
                 : job.category.name}

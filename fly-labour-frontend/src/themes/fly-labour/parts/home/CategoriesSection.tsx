@@ -43,8 +43,22 @@ export default function CategoriesSection() {
               to={`/jobs?categoryId=${cat.id}`}
               className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl p-5 text-center group hover:-translate-y-1 hover:border-amber-400 dark:hover:border-brand-gold/50 shadow-sm hover:shadow-xl hover:shadow-amber-500/10 dark:hover:shadow-brand-gold/10 transition-all duration-300"
             >
-              <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-amber-50 dark:bg-brand-gold/5 border border-amber-100 dark:border-brand-gold/10 group-hover:bg-amber-100 dark:group-hover:bg-brand-gold/15 group-hover:border-amber-200 dark:group-hover:border-brand-gold/30 flex items-center justify-center text-3xl transition-all duration-300 shadow-sm dark:shadow-none">
-                {cat.icon}
+              <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-amber-50 dark:bg-brand-gold/5 border border-amber-100 dark:border-brand-gold/10 group-hover:bg-amber-100 dark:group-hover:bg-brand-gold/15 group-hover:border-amber-200 dark:group-hover:border-brand-gold/30 flex items-center justify-center text-3xl transition-all duration-300 shadow-sm dark:shadow-none overflow-hidden">
+                {cat.icon?.startsWith("http") ||
+                cat.icon?.startsWith("/") ||
+                cat.icon?.match(/^\d+$/) ? (
+                  <img
+                    src={
+                      cat.icon?.match(/^\d+$/)
+                        ? `/${cat.icon}.png`
+                        : getImageUrl(cat.icon)
+                    }
+                    alt=""
+                    className="w-10 h-10 object-contain"
+                  />
+                ) : (
+                  cat.icon
+                )}
               </div>
               <h3 className="font-semibold text-slate-900 dark:text-white text-sm group-hover:text-amber-600 dark:group-hover:text-brand-gold transition-colors">
                 {lang === "en" ? cat.nameEn || cat.name : cat.name}

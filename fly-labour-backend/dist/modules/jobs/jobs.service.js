@@ -18,13 +18,15 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const job_entity_1 = require("./job.entity");
 const gcs_service_1 = require("../../common/services/gcs.service");
+const constants_1 = require("../../common/constants");
 let JobsService = class JobsService {
     constructor(jobsRepo, gcsService) {
         this.jobsRepo = jobsRepo;
         this.gcsService = gcsService;
     }
     async findAll(query) {
-        const { page = 1, limit = 12, search, country, categoryId, jobType, isHot, isFeatured, sort } = query;
+        const { page = 1, search, country, categoryId, jobType, isHot, isFeatured, sort } = query;
+        const limit = Math.min(query.limit ?? 12, constants_1.PAGINATION.MAX_LIMIT);
         const qb = this.jobsRepo.createQueryBuilder('job')
             .leftJoinAndSelect('job.category', 'category')
             .where('job.status = :status', { status: job_entity_1.JobStatus.ACTIVE });
@@ -73,7 +75,8 @@ let JobsService = class JobsService {
         });
     }
     async findAllAdmin(query) {
-        const { page = 1, limit = 20, search } = query;
+        const { page = 1, search } = query;
+        const limit = Math.min(query.limit ?? constants_1.PAGINATION.DEFAULT_LIMIT, constants_1.PAGINATION.MAX_LIMIT);
         const qb = this.jobsRepo.createQueryBuilder('job')
             .leftJoinAndSelect('job.category', 'category')
             .leftJoinAndSelect('job.createdBy', 'createdBy');
@@ -95,7 +98,12 @@ let JobsService = class JobsService {
         const job = await this.jobsRepo.findOne({ where: { id }, relations: ['category'] });
         if (!job)
             throw new common_1.NotFoundException('Job not found');
-        await this.jobsRepo.increment({ id }, 'viewCount', 1);
+        this.jobsRepo.createQueryBuilder()
+            .update(job_entity_1.Job)
+            .set({ viewCount: () => '"viewCount" + 1' })
+            .where('id = :id', { id })
+            .execute()
+            .catch(() => { });
         return job;
     }
     async create(dto, file) {
@@ -117,7 +125,8 @@ let JobsService = class JobsService {
         return { message: 'Job deleted successfully' };
     }
     async findByEmployer(employerId, query) {
-        const { page = 1, limit = 20 } = query;
+        const { page = 1 } = query;
+        const limit = Math.min(query.limit ?? constants_1.PAGINATION.DEFAULT_LIMIT, constants_1.PAGINATION.MAX_LIMIT);
         const qb = this.jobsRepo.createQueryBuilder('job')
             .leftJoinAndSelect('job.category', 'category')
             .where('job.createdById = :employerId', { employerId })
@@ -166,21 +175,26 @@ let JobsService = class JobsService {
         return { message: 'Job deleted successfully' };
     }
     async getStats() {
-        const [totalJobs, activeJobs, totalUsers] = await Promise.all([
-            this.jobsRepo.count(),
-            this.jobsRepo.count({ where: { status: job_entity_1.JobStatus.ACTIVE } }),
-            this.jobsRepo.query('SELECT COUNT(*) FROM users'),
+        const [jobStats, byCountry] = await Promise.all([
+            this.jobsRepo
+                .createQueryBuilder('job')
+                .select('COUNT(*)', 'totalJobs')
+                .addSelect(`COUNT(*) FILTER (WHERE job.status = '${job_entity_1.JobStatus.ACTIVE}')`, 'activeJobs')
+                .addSelect('COALESCE(SUM(job.viewCount), 0)', 'totalViews')
+                .addSelect('(SELECT COUNT(*) FROM users)', 'totalUsers')
+                .getRawOne(),
+            this.jobsRepo
+                .createQueryBuilder('job')
+                .select('job.country', 'country')
+                .addSelect('COUNT(*)', 'count')
+                .groupBy('job.country')
+                .getRawMany(),
         ]);
-        const totalViews = await this.jobsRepo
-            .createQueryBuilder('job').select('SUM(job.viewCount)', 'total').getRawOne();
-        const byCountry = await this.jobsRepo
-            .createQueryBuilder('job').select('job.country', 'country').addSelect('COUNT(*)', 'count')
-            .groupBy('job.country').getRawMany();
         return {
-            totalJobs,
-            activeJobs,
-            totalUsers: parseInt(totalUsers[0]?.count || '0'),
-            totalViews: parseInt(totalViews?.total || '0'),
+            totalJobs: parseInt(jobStats?.totalJobs || '0'),
+            activeJobs: parseInt(jobStats?.activeJobs || '0'),
+            totalViews: parseInt(jobStats?.totalViews || '0'),
+            totalUsers: parseInt(jobStats?.totalUsers || '0'),
             byCountry,
         };
     }

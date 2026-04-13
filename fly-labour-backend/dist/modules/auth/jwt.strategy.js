@@ -21,10 +21,13 @@ const typeorm_2 = require("typeorm");
 const user_entity_1 = require("../users/user.entity");
 let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy) {
     constructor(usersRepo) {
+        const secret = process.env.JWT_SECRET;
+        if (!secret)
+            throw new Error('JWT_SECRET environment variable is required');
         super({
             jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
-            secretOrKey: process.env.JWT_SECRET || 'fly-labour-secret',
+            secretOrKey: secret,
         });
         this.usersRepo = usersRepo;
     }

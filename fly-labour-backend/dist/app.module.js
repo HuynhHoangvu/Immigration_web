@@ -57,12 +57,16 @@ exports.AppModule = AppModule = __decorate([
                             },
                         };
                     }
+                    const host = cfg.get('DB_HOST', 'localhost');
+                    const password = cfg.get('DB_PASSWORD');
+                    if (!password)
+                        logger.warn('DB_PASSWORD not set — using default "123456" (development only)');
                     return {
                         type: 'postgres',
-                        host: cfg.get('DB_HOST', 'localhost'),
+                        host,
                         port: cfg.get('DB_PORT', 5432),
                         username: cfg.get('DB_USERNAME', 'postgres'),
-                        password: cfg.get('DB_PASSWORD', '123456'),
+                        password: password ?? '123456',
                         database: cfg.get('DB_NAME', 'fly_labour'),
                         entities: [(0, path_1.join)(__dirname, '**', '*.entity{.ts,.js}')],
                         synchronize: true,

@@ -1,5 +1,6 @@
 import { Repository } from 'typeorm';
 import { Category } from './category.entity';
+import { GcsService } from '../../common/services/gcs.service';
 export declare class CreateCategoryDto {
     name: string;
     nameEn?: string;
@@ -10,12 +11,13 @@ export declare class CreateCategoryDto {
 }
 export declare class CategoriesService {
     private catsRepo;
-    constructor(catsRepo: Repository<Category>);
+    private gcsService;
+    constructor(catsRepo: Repository<Category>, gcsService: GcsService);
     findAll(): Promise<Category[]>;
     findAllAdmin(): Promise<Category[]>;
     findOne(id: string): Promise<Category>;
-    create(dto: CreateCategoryDto): Promise<Category>;
-    update(id: string, dto: Partial<CreateCategoryDto>): Promise<Category>;
+    create(dto: CreateCategoryDto, file?: Express.Multer.File): Promise<Category>;
+    update(id: string, dto: Partial<CreateCategoryDto>, file?: Express.Multer.File): Promise<Category>;
     remove(id: string): Promise<{
         message: string;
     }>;

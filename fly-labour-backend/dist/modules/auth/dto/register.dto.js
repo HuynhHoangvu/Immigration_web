@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RegisterDto = void 0;
 const class_validator_1 = require("class-validator");
+const user_entity_1 = require("../../users/user.entity");
 const swagger_1 = require("@nestjs/swagger");
 class RegisterDto {
 }
@@ -43,10 +44,9 @@ __decorate([
     __metadata("design:type", String)
 ], RegisterDto.prototype, "address", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ required: false, enum: ['user', 'employer'], description: 'Account type: job seeker or employer' }),
-    (0, class_validator_1.IsString)(),
+    (0, swagger_1.ApiProperty)({ required: false, enum: [user_entity_1.UserRole.USER, user_entity_1.UserRole.EMPLOYER], description: 'Account type: job seeker or employer' }),
+    (0, class_validator_1.IsEnum)([user_entity_1.UserRole.USER, user_entity_1.UserRole.EMPLOYER], { message: 'role must be user or employer' }),
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsIn)(['user', 'employer']),
     __metadata("design:type", String)
 ], RegisterDto.prototype, "role", void 0);
 __decorate([

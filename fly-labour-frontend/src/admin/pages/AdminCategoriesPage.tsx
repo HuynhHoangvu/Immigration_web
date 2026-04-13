@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import ConfirmDeleteModal from "@/admin/components/ConfirmDeleteModal";
-import { Plus, Pencil, Trash2, X, CheckCircle, Loader2 } from "lucide-react";
+import { Plus, Pencil, Trash2, X, CheckCircle, Loader2, Upload, Image as ImageIcon } from "lucide-react";
 import type { Category } from "@/core/types";
-import { categoriesApi } from "@/core/services/api";
+import { categoriesApi, getImageUrl } from "@/core/services/api";
 import toast from "react-hot-toast";
 
 type FormData = {
@@ -24,26 +24,18 @@ const EMPTY: FormData = {
 };
 
 const ICON_OPTIONS = [
-  "🌾",
-  "💅",
-  "⚙️",
-  "🏗️",
-  "🍽️",
-  "🏥",
-  "🚛",
-  "💻",
-  "💼",
-  "🧹",
-  "🐄",
-  "🐟",
-  "🌿",
-  "🔧",
-  "🎨",
-  "📦",
-  "🏭",
-  "🛒",
-  "✈️",
-  "🏨",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10",
+  "11",
+ 
 ];
 
 export default function AdminCategoriesPage() {
@@ -54,6 +46,8 @@ export default function AdminCategoriesPage() {
   const [editing, setEditing] = useState<Category | null>(null);
   const [form, setForm] = useState<FormData>(EMPTY);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
 
   const loadCats = () => {
     setLoading(true);
@@ -71,6 +65,8 @@ export default function AdminCategoriesPage() {
   const openAdd = () => {
     setForm(EMPTY);
     setEditing(null);
+    setFile(null);
+    setPreview(null);
     setModal("add");
   };
 
@@ -84,6 +80,8 @@ export default function AdminCategoriesPage() {
       sortOrder: String(c.sortOrder),
     });
     setEditing(c);
+    setFile(null);
+    setPreview(c.icon?.startsWith("http") || c.icon?.startsWith("/") ? getImageUrl(c.icon) : null);
     setModal("edit");
   };
 
@@ -99,19 +97,20 @@ export default function AdminCategoriesPage() {
     }
     setSaving(true);
     try {
-      const payload = {
-        name: form.name,
-        nameEn: form.nameEn || undefined,
-        icon: form.icon,
-        description: form.description || undefined,
-        isActive: form.isActive,
-        sortOrder: Number(form.sortOrder),
-      };
+      const fd = new FormData();
+      fd.append("name", form.name);
+      if (form.nameEn) fd.append("nameEn", form.nameEn);
+      fd.append("icon", form.icon);
+      if (form.description) fd.append("description", form.description);
+      fd.append("isActive", String(form.isActive));
+      fd.append("sortOrder", form.sortOrder);
+      if (file) fd.append("image", file);
+
       if (modal === "edit" && editing) {
-        await categoriesApi.update(editing.id, payload);
+        await categoriesApi.update(editing.id, fd);
         toast.success("Đã cập nhật danh mục");
       } else {
-        await categoriesApi.create(payload);
+        await categoriesApi.create(fd);
         toast.success("Đã thêm danh mục");
       }
       setModal(null);
@@ -181,8 +180,22 @@ export default function AdminCategoriesPage() {
               className={`${cardClasses} p-5 relative group ${!cat.isActive ? "opacity-60 grayscale-[0.5]" : "hover:border-amber-400/50 hover:shadow-xl hover:shadow-amber-500/5"}`}
             >
               <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-brand-gold/5 border border-amber-100 dark:border-brand-gold/10 flex items-center justify-center text-2xl shadow-sm transition-colors">
-                  {cat.icon}
+                <div className="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-brand-gold/5 border border-amber-100 dark:border-brand-gold/10 flex items-center justify-center text-2xl shadow-sm transition-colors overflow-hidden">
+                  {cat.icon?.startsWith("http") ||
+                  cat.icon?.startsWith("/") ||
+                  cat.icon?.match(/^\d+$/) ? (
+                    <img
+                      src={
+                        cat.icon?.match(/^\d+$/)
+                          ? `/${cat.icon}.png`
+                          : getImageUrl(cat.icon)
+                      }
+                      alt=""
+                      className="w-10 h-10 object-contain"
+                    />
+                  ) : (
+                    cat.icon
+                  )}
                 </div>
                 <div className="flex gap-1.5 opacity-0 group-hover:opacity-100 transition-all duration-200">
                   <button
@@ -269,27 +282,89 @@ export default function AdminCategoriesPage() {
                 <label className="text-[10px] font-bold text-slate-400 dark:text-brand-muted uppercase tracking-widest mb-3 block">
                   Biểu tượng (Icon)
                 </label>
-                <div className="grid grid-cols-10 gap-2 mb-3">
+                <div className="flex items-center gap-2 mb-3">
                   {ICON_OPTIONS.map((ic) => (
                     <button
                       key={ic}
-                      onClick={() => setForm((f) => ({ ...f, icon: ic }))}
-                      className={`w-8 h-8 rounded-lg text-lg flex items-center justify-center border transition-all ${form.icon === ic ? "bg-amber-100 border-amber-400 scale-110 shadow-sm" : "bg-slate-50 dark:bg-white/5 border-slate-100 dark:border-white/5 hover:border-amber-200"}`}
+                      onClick={() => {
+                        setForm((f) => ({ ...f, icon: ic }));
+                        setFile(null);
+                        setPreview(null);
+                      }}
+                      className={`w-8 h-8 rounded-lg text-lg flex items-center justify-center border transition-all overflow-hidden ${form.icon === ic && !file ? "bg-amber-100 border-amber-400 scale-110 shadow-sm" : "bg-slate-50 dark:bg-white/5 border-slate-100 dark:border-white/5 hover:border-amber-200"}`}
                     >
-                      {ic}
+                      <img
+                        src={`/${ic}.png`}
+                        alt=""
+                        className="w-6 h-6 object-contain"
+                      />
                     </button>
                   ))}
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-slate-400 text-[11px] font-bold uppercase">
-                    Nhập tay:
-                  </span>
+
+                <div className="relative group">
                   <input
-                    value={form.icon}
-                    onChange={setField("icon")}
-                    className={`${inputClasses} h-9 w-20 text-center text-lg`}
-                    maxLength={2}
+                    type="file"
+                    id="cat-image"
+                    className="hidden"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      if (f) {
+                        setFile(f);
+                        setPreview(URL.createObjectURL(f));
+                        setForm((prev) => ({ ...prev, icon: "" }));
+                      }
+                    }}
                   />
+                  <label
+                    htmlFor="cat-image"
+                    className={`flex items-center gap-3 p-3 rounded-2xl border-2 border-dashed cursor-pointer transition-all ${
+                      file || (editing && (form.icon.startsWith("http") || form.icon.startsWith("/")))
+                        ? "border-amber-400 bg-amber-50/30 dark:bg-amber-500/5"
+                        : "border-slate-200 dark:border-white/10 hover:border-amber-400 dark:hover:border-brand-gold"
+                    }`}
+                  >
+                    <div className="w-12 h-12 rounded-xl bg-white dark:bg-brand-dark border border-slate-100 dark:border-white/5 flex items-center justify-center overflow-hidden shadow-sm">
+                      {preview ? (
+                        <img
+                          src={preview}
+                          alt="preview"
+                          className="w-full h-full object-contain"
+                        />
+                      ) : (
+                        <ImageIcon
+                          size={24}
+                          className="text-slate-300 dark:text-brand-muted"
+                        />
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-xs font-bold text-slate-700 dark:text-white mb-0.5">
+                        {file ? "Đã chọn ảnh mới" : (preview ? "Ảnh hiện tại" : "Tải ảnh icon mới")}
+                      </p>
+                      <p className="text-[10px] text-slate-400 dark:text-brand-muted font-medium">
+                        Dung lượng tối đa 50MB
+                      </p>
+                    </div>
+                    <Upload
+                      size={18}
+                      className="text-slate-400 group-hover:text-amber-500 transition-colors"
+                    />
+                  </label>
+                  {(file || preview) && (
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setFile(null);
+                        setPreview(null);
+                        setForm((f) => ({ ...f, icon: "🏷️" }));
+                      }}
+                      className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg hover:bg-red-600 transition-colors"
+                    >
+                      <X size={12} />
+                    </button>
+                  )}
                 </div>
               </div>
 

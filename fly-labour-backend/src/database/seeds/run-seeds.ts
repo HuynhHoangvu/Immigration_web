@@ -69,15 +69,15 @@ async function seed() {
   const catCount = await catRepo.count()
   if (catCount === 0) {
     const categories = [
-      { name: 'Nông nghiệp', nameEn: 'Farm', icon: '🌾', description: 'Hái quả, trồng trọt, chăn nuôi', sortOrder: 1 },
-      { name: 'Nail & Spa', nameEn: 'Nail', icon: '💅', description: 'Kỹ thuật viên nail, thẩm mỹ', sortOrder: 2 },
-      { name: 'Kỹ thuật', nameEn: 'Engineering', icon: '⚙️', description: 'Kỹ sư, vận hành máy móc', sortOrder: 3 },
-      { name: 'Xây dựng', nameEn: 'Construction', icon: '🏗️', description: 'Thợ hồ, xây dựng công trình', sortOrder: 4 },
-      { name: 'Nhà hàng', nameEn: 'Hospitality', icon: '🍽️', description: 'Đầu bếp, phục vụ nhà hàng', sortOrder: 5 },
-      { name: 'Y tế', nameEn: 'Healthcare', icon: '🏥', description: 'Y tá, chăm sóc người cao tuổi', sortOrder: 6 },
-      { name: 'Logistics', nameEn: 'Logistics', icon: '🚛', description: 'Lái xe, kho vận, giao hàng', sortOrder: 7 },
-      { name: 'Công nghệ', nameEn: 'IT', icon: '💻', description: 'Lập trình viên, IT support', sortOrder: 8 },
-      { name: 'Dịch vụ', nameEn: 'Services', icon: '💼', description: 'Bán lẻ, dịch vụ khách hàng, văn phòng', sortOrder: 9 },
+      { name: 'Nông nghiệp', nameEn: 'Farm', icon: '1', description: 'Hái quả, trồng trọt, chăn nuôi', sortOrder: 1 },
+      { name: 'Nail & Spa', nameEn: 'Nail', icon: '2', description: 'Kỹ thuật viên nail, thẩm mỹ', sortOrder: 2 },
+      { name: 'Kỹ thuật', nameEn: 'Engineering', icon: '3', description: 'Kỹ sư, vận hành máy móc', sortOrder: 3 },
+      { name: 'Xây dựng', nameEn: 'Construction', icon: '4', description: 'Thợ hồ, xây dựng công trình', sortOrder: 4 },
+      { name: 'Nhà hàng', nameEn: 'Hospitality', icon: '5', description: 'Đầu bếp, phục vụ nhà hàng', sortOrder: 5 },
+      { name: 'Y tế', nameEn: 'Healthcare', icon: '6', description: 'Y tá, chăm sóc người cao tuổi', sortOrder: 6 },
+      { name: 'Logistics', nameEn: 'Logistics', icon: '7', description: 'Lái xe, kho vận, giao hàng', sortOrder: 7 },
+      { name: 'Công nghệ', nameEn: 'IT', icon: '8', description: 'Lập trình viên, IT support', sortOrder: 8 },
+      { name: 'Dịch vụ', nameEn: 'Services', icon: '9', description: 'Bán lẻ, dịch vụ khách hàng, văn phòng', sortOrder: 9 },
     ]
     const savedCats = await catRepo.save(categories.map(c => catRepo.create(c)))
     console.log(`✅ Tạo ${savedCats.length} danh mục`)

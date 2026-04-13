@@ -84,8 +84,8 @@ export declare class JobsService {
     getStats(): Promise<{
         totalJobs: number;
         activeJobs: number;
-        totalUsers: number;
         totalViews: number;
+        totalUsers: number;
         byCountry: any[];
     }>;
     private findOneRaw;

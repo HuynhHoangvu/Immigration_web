@@ -32,7 +32,7 @@ let AuthService = class AuthService {
         const user = this.usersRepo.create({
             ...dto,
             password: hashed,
-            role: dto.role
+            role: dto.role ?? user_entity_1.UserRole.USER,
         });
         await this.usersRepo.save(user);
         const { password, ...result } = user;

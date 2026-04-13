@@ -5,6 +5,7 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const app_module_1 = require("./app.module");
 const path_1 = require("path");
+const logger = new common_1.Logger('Bootstrap');
 async function bootstrap() {
     let app;
     try {
@@ -14,24 +15,22 @@ async function bootstrap() {
         console.error('❌ Failed to initialize application (database connection error):', err);
         process.exit(1);
     }
+    const frontendUrl = process.env.FRONTEND_URL;
+    if (!frontendUrl)
+        logger.warn('FRONTEND_URL not set — production CORS may be too permissive');
     const allowedOrigins = [
-        'http://localhost',
-        'https://flylabour.up.railway.app',
-        'http://localhost:80',
         'http://localhost:5173',
         'http://localhost:5174',
+        'http://127.0.0.1:5173',
         'http://127.0.0.1:5174',
-        'http://localhost:3001',
-        'http://localhost:3002',
-        'http://localhost:3005',
         'http://localhost:8081',
         'http://localhost:8082',
-        'http://127.0.0.1:8082',
-        'http://127.0.0.1:5173',
         'http://127.0.0.1:8081',
+        'http://127.0.0.1:8082',
+        'https://flylabour.up.railway.app',
         'https://flyimmigration.vn',
         'https://www.flyimmigration.vn',
-        process.env.FRONTEND_URL,
+        frontendUrl,
     ].filter(Boolean);
     app.enableCors({
         origin: (origin, callback) => {

@@ -18,12 +18,14 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const bcrypt = require("bcryptjs");
 const user_entity_1 = require("./user.entity");
+const constants_1 = require("../../common/constants");
 let UsersService = class UsersService {
     constructor(usersRepo) {
         this.usersRepo = usersRepo;
     }
     async findAll(query) {
-        const { page = 1, limit = 20, search } = query;
+        const { page = 1, search } = query;
+        const limit = Math.min(query.limit ?? constants_1.PAGINATION.DEFAULT_LIMIT, constants_1.PAGINATION.MAX_LIMIT);
         const qb = this.usersRepo.createQueryBuilder('user').orderBy('user.createdAt', 'DESC');
         if (search) {
             qb.where('(user.fullName ILIKE :s OR user.email ILIKE :s)', { s: `%${search}%` });

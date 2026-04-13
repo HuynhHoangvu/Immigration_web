@@ -20,6 +20,7 @@ const category_entity_1 = require("./category.entity");
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
 const class_transformer_1 = require("class-transformer");
+const gcs_service_1 = require("../../common/services/gcs.service");
 class CreateCategoryDto {
 }
 exports.CreateCategoryDto = CreateCategoryDto;
@@ -56,8 +57,9 @@ __decorate([
     __metadata("design:type", Number)
 ], CreateCategoryDto.prototype, "sortOrder", void 0);
 let CategoriesService = class CategoriesService {
-    constructor(catsRepo) {
+    constructor(catsRepo, gcsService) {
         this.catsRepo = catsRepo;
+        this.gcsService = gcsService;
     }
     findAll() {
         return this.catsRepo.find({ where: { isActive: true }, order: { sortOrder: 'ASC', name: 'ASC' } });
@@ -71,15 +73,24 @@ let CategoriesService = class CategoriesService {
             throw new common_1.NotFoundException('Không tìm thấy danh mục');
         return cat;
     }
-    async create(dto) {
+    async create(dto, file) {
         const exists = await this.catsRepo.findOne({ where: { name: dto.name } });
         if (exists)
             throw new common_1.ConflictException('Tên danh mục đã tồn tại');
-        return this.catsRepo.save(this.catsRepo.create(dto));
+        const cat = this.catsRepo.create(dto);
+        if (file) {
+            const url = await this.gcsService.uploadFile(file, 'categories');
+            cat.icon = url;
+        }
+        return this.catsRepo.save(cat);
     }
-    async update(id, dto) {
+    async update(id, dto, file) {
         const cat = await this.findOne(id);
         Object.assign(cat, dto);
+        if (file) {
+            const url = await this.gcsService.uploadFile(file, 'categories');
+            cat.icon = url;
+        }
         return this.catsRepo.save(cat);
     }
     async remove(id) {
@@ -92,6 +103,7 @@ exports.CategoriesService = CategoriesService;
 exports.CategoriesService = CategoriesService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(category_entity_1.Category)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        gcs_service_1.GcsService])
 ], CategoriesService);
 //# sourceMappingURL=categories.service.js.map

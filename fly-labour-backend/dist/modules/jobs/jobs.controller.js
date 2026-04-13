@@ -22,6 +22,17 @@ const job_dto_1 = require("./dto/job.dto");
 const jwt_auth_guard_1 = require("../../common/guards/jwt-auth.guard");
 const admin_guard_1 = require("../../common/guards/admin.guard");
 const employer_guard_1 = require("../../common/guards/employer.guard");
+const constants_1 = require("../../common/constants");
+const imageUploadInterceptor = (0, platform_express_1.FileInterceptor)('image', {
+    storage: (0, multer_1.memoryStorage)(),
+    limits: { fileSize: constants_1.FILE_UPLOAD.MAX_SIZE_BYTES },
+    fileFilter: (_req, file, cb) => {
+        if (!constants_1.FILE_UPLOAD.ALLOWED_MIME_TYPES.includes(file.mimetype)) {
+            return cb(new common_1.BadRequestException(`Chỉ chấp nhận file ảnh (${constants_1.FILE_UPLOAD.ALLOWED_MIME_TYPES.join(', ')})`), false);
+        }
+        cb(null, true);
+    },
+});
 let JobsController = class JobsController {
     constructor(jobsService) {
         this.jobsService = jobsService;
@@ -113,9 +124,10 @@ __decorate([
     (0, common_1.Post)('employer'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, employer_guard_1.EmployerGuard),
     (0, swagger_1.ApiBearerAuth)('JWT'),
+    (0, common_1.HttpCode)(201),
     (0, swagger_1.ApiOperation)({ summary: '[Employer] Create job listing' }),
     (0, swagger_1.ApiConsumes)('multipart/form-data'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('image', { storage: (0, multer_1.memoryStorage)() })),
+    (0, common_1.UseInterceptors)(imageUploadInterceptor),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Request)()),
     __param(2, (0, common_1.UploadedFile)()),
@@ -129,7 +141,7 @@ __decorate([
     (0, swagger_1.ApiBearerAuth)('JWT'),
     (0, swagger_1.ApiOperation)({ summary: '[Employer] Update own job listing' }),
     (0, swagger_1.ApiConsumes)('multipart/form-data'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('image', { storage: (0, multer_1.memoryStorage)() })),
+    (0, common_1.UseInterceptors)(imageUploadInterceptor),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.Request)()),
@@ -142,6 +154,7 @@ __decorate([
     (0, common_1.Delete)('employer/:id'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, employer_guard_1.EmployerGuard),
     (0, swagger_1.ApiBearerAuth)('JWT'),
+    (0, common_1.HttpCode)(200),
     (0, swagger_1.ApiOperation)({ summary: '[Employer] Delete own job listing' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Request)()),
@@ -201,9 +214,10 @@ __decorate([
     (0, common_1.Post)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, admin_guard_1.AdminGuard),
     (0, swagger_1.ApiBearerAuth)('JWT'),
+    (0, common_1.HttpCode)(201),
     (0, swagger_1.ApiOperation)({ summary: '[Admin] Create job listing' }),
     (0, swagger_1.ApiConsumes)('multipart/form-data'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('image', { storage: (0, multer_1.memoryStorage)() })),
+    (0, common_1.UseInterceptors)(imageUploadInterceptor),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
@@ -216,7 +230,7 @@ __decorate([
     (0, swagger_1.ApiBearerAuth)('JWT'),
     (0, swagger_1.ApiOperation)({ summary: '[Admin] Update job listing' }),
     (0, swagger_1.ApiConsumes)('multipart/form-data'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('image', { storage: (0, multer_1.memoryStorage)() })),
+    (0, common_1.UseInterceptors)(imageUploadInterceptor),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.UploadedFile)()),

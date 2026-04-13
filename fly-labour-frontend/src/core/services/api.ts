@@ -81,12 +81,24 @@ export const applicationsApi = {
 
 // ── Categories ────────────────────────────────
 export const categoriesApi = {
-  getAll:     () => api.get('/categories'),
+  getAll: () => api.get('/categories'),
   getAllAdmin: () => api.get('/categories/admin/all'),
-  create:     (data: Record<string, any>) => api.post('/categories', data),
-  update:     (id: string, data: Record<string, any>) => api.patch(`/categories/${id}`, data),
-  remove:     (id: string) => api.delete(`/categories/${id}`),
-}
+  create: (data: FormData | Record<string, any>) =>
+    api.post('/categories', data, {
+      headers:
+        data instanceof FormData
+          ? { 'Content-Type': 'multipart/form-data' }
+          : undefined,
+    }),
+  update: (id: string, data: FormData | Record<string, any>) =>
+    api.patch(`/categories/${id}`, data, {
+      headers:
+        data instanceof FormData
+          ? { 'Content-Type': 'multipart/form-data' }
+          : undefined,
+    }),
+  remove: (id: string) => api.delete(`/categories/${id}`),
+};
 
 // ── Users ─────────────────────────────────────
 export const usersApi = {

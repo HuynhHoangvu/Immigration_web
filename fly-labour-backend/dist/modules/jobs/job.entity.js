@@ -60,6 +60,7 @@ __decorate([
     __metadata("design:type", String)
 ], Job.prototype, "location", void 0);
 __decorate([
+    (0, typeorm_1.Index)(),
     (0, typeorm_1.Column)({ type: 'varchar', length: 100, nullable: true, default: 'australia' }),
     __metadata("design:type", String)
 ], Job.prototype, "country", void 0);
@@ -68,6 +69,7 @@ __decorate([
     __metadata("design:type", String)
 ], Job.prototype, "jobType", void 0);
 __decorate([
+    (0, typeorm_1.Index)(),
     (0, typeorm_1.Column)({ type: 'enum', enum: JobStatus, default: JobStatus.ACTIVE }),
     __metadata("design:type", String)
 ], Job.prototype, "status", void 0);
@@ -100,10 +102,12 @@ __decorate([
     __metadata("design:type", Array)
 ], Job.prototype, "images", void 0);
 __decorate([
+    (0, typeorm_1.Index)(),
     (0, typeorm_1.Column)({ default: false }),
     __metadata("design:type", Boolean)
 ], Job.prototype, "isHot", void 0);
 __decorate([
+    (0, typeorm_1.Index)(),
     (0, typeorm_1.Column)({ default: false }),
     __metadata("design:type", Boolean)
 ], Job.prototype, "isFeatured", void 0);
@@ -112,20 +116,22 @@ __decorate([
     __metadata("design:type", Number)
 ], Job.prototype, "viewCount", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => category_entity_1.Category, { nullable: true, eager: true }),
+    (0, typeorm_1.ManyToOne)(() => category_entity_1.Category, { nullable: true, eager: false }),
     (0, typeorm_1.JoinColumn)({ name: 'categoryId' }),
     __metadata("design:type", category_entity_1.Category)
 ], Job.prototype, "category", void 0);
 __decorate([
+    (0, typeorm_1.Index)(),
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Job.prototype, "categoryId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, { nullable: true, eager: false }),
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, { nullable: true, eager: false, onDelete: 'SET NULL' }),
     (0, typeorm_1.JoinColumn)({ name: 'createdById' }),
     __metadata("design:type", user_entity_1.User)
 ], Job.prototype, "createdBy", void 0);
 __decorate([
+    (0, typeorm_1.Index)(),
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Job.prototype, "createdById", void 0);

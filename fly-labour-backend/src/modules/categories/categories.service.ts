@@ -5,6 +5,7 @@ import { Category } from './category.entity'
 import { IsString, IsOptional, IsBoolean, IsNumber } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 import { Type, Transform } from 'class-transformer'
+import { GcsService } from '../../common/services/gcs.service'
 
 export class CreateCategoryDto {
   @ApiProperty() @IsString() name: string
@@ -19,6 +20,7 @@ export class CreateCategoryDto {
 export class CategoriesService {
   constructor(
     @InjectRepository(Category) private catsRepo: Repository<Category>,
+    private gcsService: GcsService,
   ) {}
 
   findAll() {
@@ -35,15 +37,24 @@ export class CategoriesService {
     return cat
   }
 
-  async create(dto: CreateCategoryDto) {
+  async create(dto: CreateCategoryDto, file?: Express.Multer.File) {
     const exists = await this.catsRepo.findOne({ where: { name: dto.name } })
     if (exists) throw new ConflictException('Tên danh mục đã tồn tại')
-    return this.catsRepo.save(this.catsRepo.create(dto))
+    const cat = this.catsRepo.create(dto)
+    if (file) {
+      const url = await this.gcsService.uploadFile(file, 'categories')
+      cat.icon = url
+    }
+    return this.catsRepo.save(cat)
   }
 
-  async update(id: string, dto: Partial<CreateCategoryDto>) {
+  async update(id: string, dto: Partial<CreateCategoryDto>, file?: Express.Multer.File) {
     const cat = await this.findOne(id)
     Object.assign(cat, dto)
+    if (file) {
+      const url = await this.gcsService.uploadFile(file, 'categories')
+      cat.icon = url
+    }
     return this.catsRepo.save(cat)
   }
 
