@@ -89,7 +89,6 @@ type FormData = {
   req_language?: string;
   req_other?: string;
   req_checklist?: string[];
-  req_transport?: string;
   ben_departure?: string;
   ben_checklist?: string[];
 };
@@ -120,7 +119,6 @@ const EMPTY_FORM: FormData = {
   req_language: "",
   req_other: "",
   req_checklist: [],
-  req_transport: "",
   ben_departure: "",
   ben_checklist: [],
 };
@@ -154,6 +152,19 @@ export default function AdminJobsPage() {
   const [tableSalaryPeriod, setTableSalaryPeriod] = useState<"hourly" | "weekly" | "monthly" | "yearly">("monthly");
   const fileRef = useRef<HTMLInputElement>(null);
   const fileObjRef = useRef<File | null>(null);
+  
+  const [reqPresets, setReqPresets] = useState<string[]>([]);
+  const [benPresets, setBenPresets] = useState<string[]>([]);
+
+  useEffect(() => {
+    const savedReq = localStorage.getItem("job_req_presets");
+    setReqPresets(savedReq ? JSON.parse(savedReq) : ["Hồ sơ cá nhân", "Lý lịch tư pháp", "Hình ảnh/Video", "Bằng cấp/Chứng chỉ"]);
+    const savedBen = localStorage.getItem("job_ben_presets");
+    setBenPresets(savedBen ? JSON.parse(savedBen) : ["Bảo lãnh gia đình", "Nghỉ phép có lương", "Phụ cấp ăn uống", "Hỗ trợ nơi ở"]);
+  }, []);
+
+  const updateReqPresets = (list: string[]) => { setReqPresets(list); localStorage.setItem("job_req_presets", JSON.stringify(list)); };
+  const updateBenPresets = (list: string[]) => { setBenPresets(list); localStorage.setItem("job_ben_presets", JSON.stringify(list)); };
 
   const pendingJobs = jobs.filter((j) => j.status === "pending_review");
   const filtered = jobs.filter((j) => {
@@ -322,7 +333,6 @@ export default function AdminJobsPage() {
             language: form.req_language,
             other: form.req_other,
             checklist: form.req_checklist,
-            transport: form.req_transport,
             raw: form.requirements
           }
         };
@@ -737,25 +747,47 @@ export default function AdminJobsPage() {
                         <input value={form.req_language} onChange={e => setForm({...form, req_language: e.target.value})} className={`${inputClasses} h-9`} placeholder="PTE/IELTS" />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[9px] font-bold text-slate-400 uppercase">Phương tiện đi lại</label>
-                        <input value={form.req_transport} onChange={e => setForm({...form, req_transport: e.target.value})} className={`${inputClasses} h-9`} placeholder="Xe đưa đón / Tự túc" />
-                      </div>
-                      <div className="space-y-1">
                         <label className="text-[9px] font-bold text-slate-400 uppercase">Yêu cầu khác</label>
                         <textarea value={form.req_other} onChange={e => setForm({...form, req_other: e.target.value})} className={`${inputClasses} h-16 py-2 resize-none text-[11px]`} placeholder="VD: Sức khỏe tốt, không tiền án..." />
                       </div>
                       <div className="pt-2 border-t border-blue-200/30">
                         <p className="text-[9px] font-bold text-slate-400 uppercase mb-2">Checklist Hồ sơ</p>
-                        <div className="grid grid-cols-2 gap-2 text-[10px]">
-                          {["Hồ sơ cá nhân", "Lý lịch tư pháp", "Hình ảnh/Video", "Bằng cấp/Chứng chỉ"].map(item => (
-                            <label key={item} className="flex items-center gap-1.5 cursor-pointer">
-                              <input type="checkbox" checked={form.req_checklist?.includes(item)} onChange={e => {
-                                const list = form.req_checklist || [];
-                                setForm({...form, req_checklist: e.target.checked ? [...list, item] : list.filter(i => i !== item)})
-                              }} className="w-3.5 h-3.5 accent-blue-500 rounded" />
-                              <span className="text-slate-600 dark:text-gray-300">{item}</span>
-                            </label>
+                        <div className="flex flex-wrap gap-2 mb-3">
+                          {form.req_checklist?.map(item => (
+                             <div key={item} className="flex items-center gap-1 px-2 py-1 bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-lg text-[10px] font-bold border border-blue-200 dark:border-blue-500/30 hover:border-red-400 group transition-all">
+                                <span>{item}</span>
+                                <button type="button" onClick={() => setForm({...form, req_checklist: form.req_checklist?.filter(i => i !== item)})} className="opacity-40 group-hover:opacity-100 hover:text-red-500">
+                                   <X size={12} />
+                                </button>
+                             </div>
                           ))}
+                        </div>
+                        <div className="relative">
+                          <input 
+                            type="text" 
+                            placeholder="Nhập yêu cầu khác & Enter..." 
+                            className={`${inputClasses} h-9 pl-3 pr-10 text-[11px]`}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                const val = e.currentTarget.value.trim();
+                                if (val && !form.req_checklist?.includes(val)) {
+                                  setForm({...form, req_checklist: [...(form.req_checklist || []), val]});
+                                  if (!reqPresets.includes(val)) updateReqPresets([...reqPresets, val]);
+                                  e.currentTarget.value = '';
+                                }
+                              }
+                            }}
+                          />
+                          <Plus size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-500 opacity-50" />
+                        </div>
+                        <div className="mt-3 flex flex-wrap gap-2 text-slate-400">
+                           {reqPresets.map(p => (
+                             <div key={p} className="flex items-center gap-1 text-[9px] bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-lg border border-transparent hover:border-blue-400 group transition-all">
+                               <button type="button" onClick={() => setForm({...form, req_checklist: [...(form.req_checklist || []), p].filter((v, i, a) => a.indexOf(v) === i)})} className="hover:text-blue-600 dark:hover:text-blue-400">+ {p}</button>
+                               <button type="button" onClick={() => updateReqPresets(reqPresets.filter(i => i !== p))} className="hidden group-hover:flex ml-1 text-red-500 font-bold px-1 hover:bg-red-50 rounded">×</button>
+                             </div>
+                           ))}
                         </div>
                       </div>
                     </div>
@@ -771,16 +803,42 @@ export default function AdminJobsPage() {
                       </div>
                       <div className="pt-2 border-t border-green-200/30">
                         <p className="text-[9px] font-bold text-slate-400 uppercase mb-2">Checklist Quyền lợi</p>
-                        <div className="space-y-1.5 text-[10px]">
-                          {["Bảo lãnh gia đình", "Nghỉ phép có lương", "Phụ cấp ăn uống", "Hỗ trợ nơi ở"].map(item => (
-                            <label key={item} className="flex items-center gap-1.5 cursor-pointer">
-                              <input type="checkbox" checked={form.ben_checklist?.includes(item)} onChange={e => {
-                                const list = form.ben_checklist || [];
-                                setForm({...form, ben_checklist: e.target.checked ? [...list, item] : list.filter(i => i !== item)})
-                              }} className="w-3.5 h-3.5 accent-green-500 rounded" />
-                              <span className="text-slate-600 dark:text-gray-300">{item}</span>
-                            </label>
+                        <div className="flex flex-wrap gap-2 mb-3">
+                          {form.ben_checklist?.map(item => (
+                             <div key={item} className="flex items-center gap-1 px-2 py-1 bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-300 rounded-lg text-[10px] font-bold border border-green-200 dark:border-green-500/30 hover:border-red-400 group transition-all">
+                                <span>{item}</span>
+                                <button type="button" onClick={() => setForm({...form, ben_checklist: form.ben_checklist?.filter(i => i !== item)})} className="opacity-40 group-hover:opacity-100 hover:text-red-500">
+                                   <X size={12} />
+                                </button>
+                             </div>
                           ))}
+                        </div>
+                        <div className="relative">
+                          <input 
+                            type="text" 
+                            placeholder="Nhập quyền lợi khác & Enter..." 
+                            className={`${inputClasses} h-9 pl-3 pr-10 text-[11px]`}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                const val = e.currentTarget.value.trim();
+                                if (val && !form.ben_checklist?.includes(val)) {
+                                  setForm({...form, ben_checklist: [...(form.ben_checklist || []), val]});
+                                  if (!benPresets.includes(val)) updateBenPresets([...benPresets, val]);
+                                  e.currentTarget.value = '';
+                                }
+                              }
+                            }}
+                          />
+                          <Plus size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500 opacity-50" />
+                        </div>
+                        <div className="mt-3 flex flex-wrap gap-2 text-slate-400">
+                           {benPresets.map(p => (
+                             <div key={p} className="flex items-center gap-1 text-[9px] bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-lg border border-transparent hover:border-green-400 group transition-all">
+                               <button type="button" onClick={() => setForm({...form, ben_checklist: [...(form.ben_checklist || []), p].filter((v, i, a) => a.indexOf(v) === i)})} className="hover:text-green-600 dark:hover:text-green-400">+ {p}</button>
+                               <button type="button" onClick={() => updateBenPresets(benPresets.filter(i => i !== p))} className="hidden group-hover:flex ml-1 text-red-500 font-bold px-1 hover:bg-red-50 rounded">×</button>
+                             </div>
+                           ))}
                         </div>
                       </div>
                     </div>

@@ -170,7 +170,7 @@ export default function JobCard({ job, compact }: Props) {
           </div>
         )}
 
-        <h3 className="font-semibold text-slate-900 dark:text-brand-yellow group-hover:text-amber-600 dark:group-hover:text-brand-gold transition-colors leading-snug mb-1 line-clamp-2 text-sm">
+        <h3 className="font-semibold text-slate-900 dark:text-brand-yellow group-hover:text-amber-600 dark:group-hover:text-brand-gold transition-colors leading-snug mb-1 line-clamp-2 text-sm text-justify">
           {job.title}
         </h3>
         {job.company && (

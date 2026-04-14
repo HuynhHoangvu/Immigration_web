@@ -175,31 +175,4 @@ export function TemplateComponent({
   );
 }
 
-/**
- * PATTERN SUMMARY:
- *
- * 1. ✅ Dùng `dark:` Tailwind modifier cho tất cả màu
- *    - bg-white dark:bg-slate-900
- *    - text-gray-900 dark:text-white
- *
- * 2. ✅ Theme toggle button từ useTheme hook
- *    - onClick={toggle} để switch theme
- *    - isDark để hiển thị trạng thái
- *
- * 3. ✅ Transitions cho smooth color change
- *    - transition-colors duration-300
- *
- * 4. ✅ Consistent color scheme
- *    - Light: gray-50, gray-100, gray-900
- *    - Dark: slate-800, slate-900, white text
- *
- * 5. ✅ Hover & Focus states
- *    - hover:bg-gray-200 dark:hover:bg-slate-700
- *    - focus:ring-2 focus:ring-blue-500
- *
- * 6. ❌ Tránh:
- *    - Hardcode background color (#fff, #000)
- *    - Kiểm tra isDark trong conditional rendering
- *    - useTheme() nếu CSS đủ làm việc
- *    - Lồng !important trong CSS
- */
+

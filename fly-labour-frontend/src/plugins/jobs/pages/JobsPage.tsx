@@ -104,7 +104,7 @@ export default function JobsPage() {
               className="gradient-text"
             />
           </h1>
-          <p className="text-slate-600 dark:text-brand-muted mb-8 max-w-xl">
+          <p className="text-slate-600 dark:text-brand-muted mb-8 max-w-xl text-justify">
             <EditableText
               settingKey="jobs.subtitle"
               defaultValue={j.subtitle}

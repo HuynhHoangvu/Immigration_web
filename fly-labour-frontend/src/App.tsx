@@ -1,27 +1,22 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import toast from "react-hot-toast";
-import BackgroundMusic from "@/themes/fly-labour/parts/widgets/BackgroundMusic";
-import { useT } from "@/core/hooks/useT";
-import { contactApi } from "@/core/services/api";
+
 import { useThemeStore } from "@/core/store/themeStore";
-
-// Layouts
-import Header from "@/themes/fly-labour/parts/Header";
-import ScrollToTop from "@/themes/fly-labour/parts/widgets/ScrollToTop";
-import Footer from "@/themes/fly-labour/parts/Footer";
-import FloatingContact from "@/themes/fly-labour/parts/widgets/FloatingContact";
-import AdminLayout from "@/admin/layout/AdminLayout";
-import { AdminEditBar } from "@/admin/components/AdminEditBar";
 import { useContentStore } from "@/core/hooks/usePageContent";
+import { AdminEditBar } from "@/admin/components/AdminEditBar";
+import ScrollToTop from "@/themes/fly-labour/parts/widgets/ScrollToTop";
+import UserLayout from "@/themes/fly-labour/layout/UserLayout";
+import AdminLayout from "@/admin/layout/AdminLayout";
 
-// User pages
+// ── User pages ────────────────────────────────────────────────────────────────
 import HomePage from "@/plugins/home/pages/HomePage";
 import JobsPage from "@/plugins/jobs/pages/JobsPage";
 import JobDetailPage from "@/plugins/jobs/pages/JobDetailPage";
 import NewsPage from "@/plugins/news/pages/NewsPage";
 import NewsDetailPage from "@/plugins/news/pages/NewsDetailPage";
+import HandbookPage from "@/plugins/news/pages/HandbookPage";
+import ContactPage from "@/plugins/contact/pages/ContactPage";
 import LoginPage from "@/plugins/auth/pages/LoginPage";
 import RegisterPage from "@/plugins/auth/pages/RegisterPage";
 import ProfilePage from "@/plugins/profile/pages/ProfilePage";
@@ -30,8 +25,16 @@ import ProcessPage from "@/plugins/static-pages/pages/ProcessPage";
 import FaqPage from "@/plugins/static-pages/pages/FaqPage";
 import PrivacyPage from "@/plugins/static-pages/pages/PrivacyPage";
 import PolicyPage from "@/plugins/static-pages/pages/PolicyPage";
+import NotFoundPage from "@/plugins/static-pages/pages/NotFoundPage";
 
-// Admin pages
+// ── Employer pages ────────────────────────────────────────────────────────────
+import EmployerLayout from "@/plugins/employer/pages/EmployerLayout";
+import EmployerDashboard from "@/plugins/employer/pages/EmployerDashboard";
+import EmployerJobsPage from "@/plugins/employer/pages/EmployerJobsPage";
+import EmployerApplicationsPage from "@/plugins/employer/pages/EmployerApplicationsPage";
+import EmployerProfilePage from "@/plugins/employer/pages/EmployerProfilePage";
+
+// ── Admin pages ───────────────────────────────────────────────────────────────
 import AdminDashboard from "@/admin/pages/AdminDashboard";
 import AdminJobsPage from "@/admin/pages/AdminJobsPage";
 import AdminApplicationsPage from "@/admin/pages/AdminApplicationsPage";
@@ -43,181 +46,20 @@ import AdminChoresPage from "@/admin/pages/AdminChoresPage";
 import AdminContactsPage from "@/admin/pages/AdminContactsPage";
 import AdminPoliciesPage from "@/admin/pages/AdminPoliciesPage";
 
-// Employer pages
-import EmployerLayout from "@/plugins/employer/pages/EmployerLayout";
-import EmployerDashboard from "@/plugins/employer/pages/EmployerDashboard";
-import EmployerJobsPage from "@/plugins/employer/pages/EmployerJobsPage";
-import EmployerApplicationsPage from "@/plugins/employer/pages/EmployerApplicationsPage";
-import EmployerProfilePage from "@/plugins/employer/pages/EmployerProfilePage";
-
-function UserLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0d1117] transition-colors duration-300">
-      <Header />
-      {children}
-      <Footer />
-      <FloatingContact />
-      <BackgroundMusic autoPlay={true} />
-    </div>
-  );
-}
-
-function ContactPage() {
-  const { t } = useT();
-  const c = t("contact");
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
-  const [sending, setSending] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.name || !form.email || !form.message) return;
-    setSending(true);
-    try {
-      await contactApi.send(form);
-      toast.success("Đã gửi liên hệ thành công! Chúng tôi sẽ phản hồi sớm.");
-      setForm({ name: "", email: "", phone: "", message: "" });
-    } catch {
-      toast.error("Gửi thất bại, vui lòng thử lại");
-    } finally {
-      setSending(false);
-    }
-  };
-
-  const inputClasses =
-    "w-full text-sm rounded-xl px-4 bg-slate-100 dark:bg-[#1e1e1e] border border-transparent dark:border-white/5 text-slate-900 dark:text-white placeholder:text-slate-400 focus:bg-white dark:focus:bg-black focus:border-amber-400 dark:focus:border-brand-gold focus:ring-1 focus:ring-amber-400 dark:focus:ring-brand-gold outline-none transition-all";
-
-  return (
-    <UserLayout>
-      <div className="min-h-screen pt-28 px-6">
-        <div className="max-w-3xl mx-auto">
-          <h1 className="section-title text-slate-900 dark:text-white transition-colors mb-4">
-            {c.title} <span className="gradient-text">{c.titleGradient}</span>
-          </h1>
-          <p className="text-slate-600 dark:text-brand-muted transition-colors mb-8">
-            {c.subtitle}
-          </p>
-          <div className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl shadow-sm dark:shadow-none p-8 transition-colors">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {[
-                {
-                  label: c.name,
-                  key: "name",
-                  type: "text",
-                  placeholder: c.namePlaceholder,
-                },
-                {
-                  label: c.email,
-                  key: "email",
-                  type: "email",
-                  placeholder: "email@example.com",
-                },
-                {
-                  label: c.phone,
-                  key: "phone",
-                  type: "tel",
-                  placeholder: c.phonePlaceholder,
-                },
-              ].map((f) => (
-                <div key={f.key}>
-                  <label className="text-xs font-medium text-slate-500 dark:text-brand-muted mb-1.5 block transition-colors">
-                    {f.label}
-                  </label>
-                  <input
-                    type={f.type}
-                    value={form[f.key as keyof typeof form]}
-                    onChange={(e) =>
-                      setForm((fm) => ({ ...fm, [f.key]: e.target.value }))
-                    }
-                    className={`${inputClasses} h-12`}
-                    placeholder={f.placeholder}
-                    required={f.key !== "phone"}
-                  />
-                </div>
-              ))}
-              <div>
-                <label className="text-xs font-medium text-slate-500 dark:text-brand-muted mb-1.5 block transition-colors">
-                  {c.message}
-                </label>
-                <textarea
-                  value={form.message}
-                  onChange={(e) =>
-                    setForm((fm) => ({ ...fm, message: e.target.value }))
-                  }
-                  className={`${inputClasses} h-28 py-3 resize-none`}
-                  placeholder={c.messagePlaceholder}
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                disabled={sending}
-                className="btn-primary w-full py-3 flex items-center justify-center gap-2 font-medium mt-2"
-              >
-                {sending ? (
-                  <>
-                    <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />{" "}
-                    Đang gửi...
-                  </>
-                ) : (
-                  c.send
-                )}
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </UserLayout>
-  );
-}
-
-function NotFound() {
-  const { t } = useT();
-  const nf = t("notFound");
-  return (
-    <UserLayout>
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <p className="font-display text-9xl gradient-text drop-shadow-md">
-            404
-          </p>
-          <p className="text-slate-900 dark:text-white font-semibold text-xl mt-2 transition-colors">
-            {nf.title}
-          </p>
-          <a
-            href="/"
-            className="btn-primary inline-block mt-6 px-6 py-3 font-medium"
-          >
-            {nf.back}
-          </a>
-        </div>
-      </div>
-    </UserLayout>
-  );
-}
-
+// ── Bootstrap components ──────────────────────────────────────────────────────
 function ContentLoader() {
   const load = useContentStore((s) => s.load);
-  useEffect(() => {
-    load();
-  }, [load]);
+  useEffect(() => { load(); }, [load]);
   return null;
 }
 
 function ThemeInitializer() {
-  useEffect(() => {
-    const { hydrate } = useThemeStore.getState();
-    hydrate();
-  }, []);
+  useEffect(() => { useThemeStore.getState().hydrate(); }, []);
   return null;
 }
 
+// ── App ───────────────────────────────────────────────────────────────────────
 export default function App() {
-  // Lấy theme hiện tại để đồng bộ hóa cho Toaster (Thông báo)
   const theme = useThemeStore((s) => s.theme);
 
   return (
@@ -226,14 +68,14 @@ export default function App() {
       <ContentLoader />
       <AdminEditBar />
       <ScrollToTop />
+
       <Toaster
         position="top-right"
         toastOptions={{
           style: {
             background: theme === "dark" ? "#141414" : "#ffffff",
             color: theme === "dark" ? "#fff" : "#0f172a",
-            border:
-              theme === "dark" ? "1px solid #2A2A2A" : "1px solid #e2e8f0",
+            border: theme === "dark" ? "1px solid #2A2A2A" : "1px solid #e2e8f0",
             borderRadius: "12px",
             fontSize: "14px",
             boxShadow:
@@ -250,101 +92,31 @@ export default function App() {
           error: { iconTheme: { primary: "#EF4444", secondary: "#fff" } },
         }}
       />
+
       <Routes>
-        {/* User routes */}
-        <Route
-          path="/"
-          element={
-            <UserLayout>
-              <HomePage />
-            </UserLayout>
-          }
-        />
-        <Route
-          path="/jobs"
-          element={
-            <UserLayout>
-              <JobsPage />
-            </UserLayout>
-          }
-        />
-        <Route
-          path="/jobs/:id"
-          element={
-            <UserLayout>
-              <JobDetailPage />
-            </UserLayout>
-          }
-        />
-        <Route
-          path="/news"
-          element={
-            <UserLayout>
-              <NewsPage />
-            </UserLayout>
-          }
-        />
-        <Route
-          path="/news/:slug"
-          element={
-            <UserLayout>
-              <NewsDetailPage />
-            </UserLayout>
-          }
-        />
-        <Route
-          path="/about"
-          element={
-            <UserLayout>
-              <AboutPage />
-            </UserLayout>
-          }
-        />
-        <Route
-          path="/process"
-          element={
-            <UserLayout>
-              <ProcessPage />
-            </UserLayout>
-          }
-        />
-        <Route
-          path="/faq"
-          element={
-            <UserLayout>
-              <FaqPage />
-            </UserLayout>
-          }
-        />
-        <Route
-          path="/privacy"
-          element={
-            <UserLayout>
-              <PrivacyPage />
-            </UserLayout>
-          }
-        />
-        <Route
-          path="/policy/:slug"
-          element={
-            <UserLayout>
-              <PolicyPage />
-            </UserLayout>
-          }
-        />
-        <Route path="/contact" element={<ContactPage />} />
+        {/* ── User routes (wrapped by UserLayout via Outlet) ── */}
+        <Route element={<UserLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/jobs" element={<JobsPage />} />
+          <Route path="/jobs/:id" element={<JobDetailPage />} />
+          <Route path="/news" element={<NewsPage />} />
+          <Route path="/news/:slug" element={<NewsDetailPage />} />
+          <Route path="/handbook" element={<HandbookPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/process" element={<ProcessPage />} />
+          <Route path="/faq" element={<FaqPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/policy/:slug" element={<PolicyPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+
+        {/* ── Standalone routes (no UserLayout) ── */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route
-          path="/profile"
-          element={
-            <UserLayout>
-              <ProfilePage />
-            </UserLayout>
-          }
-        />
 
-        {/* Employer routes */}
+        {/* ── Employer routes ── */}
         <Route path="/employer" element={<EmployerLayout />}>
           <Route index element={<EmployerDashboard />} />
           <Route path="jobs" element={<EmployerJobsPage />} />
@@ -352,7 +124,7 @@ export default function App() {
           <Route path="profile" element={<EmployerProfilePage />} />
         </Route>
 
-        {/* Admin routes */}
+        {/* ── Admin routes ── */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
           <Route path="jobs" element={<AdminJobsPage />} />
@@ -365,8 +137,6 @@ export default function App() {
           <Route path="chores" element={<AdminChoresPage />} />
           <Route path="contacts" element={<AdminContactsPage />} />
         </Route>
-
-        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

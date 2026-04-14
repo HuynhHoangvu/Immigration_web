@@ -31,6 +31,26 @@ export class UploadController {
     const url = await this.gcsService.uploadFile(file, 'cv')
     return { url, filename: file.originalname }
   }
+
+  @Post('image')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT')
+  @ApiOperation({ summary: 'Upload ảnh (JPG/PNG/WebP/GIF)' })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('file', {
+    storage: memoryStorage(),
+    limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+    fileFilter: (_req, file, cb) => {
+      const allowed = ['.jpg', '.jpeg', '.png', '.webp', '.gif']
+      const ext = extname(file.originalname).toLowerCase()
+      if (allowed.includes(ext)) cb(null, true)
+      else cb(new Error('Chỉ chấp nhận file JPG, PNG, WebP, GIF'), false)
+    },
+  }))
+  async uploadImage(@UploadedFile() file: Express.Multer.File) {
+    const url = await this.gcsService.uploadFile(file, 'images')
+    return { url, filename: file.originalname }
+  }
 }
 
 @Module({

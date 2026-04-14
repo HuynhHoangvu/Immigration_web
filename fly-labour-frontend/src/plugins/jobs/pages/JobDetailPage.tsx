@@ -142,7 +142,7 @@ export default function JobDetailPage() {
           </p>
           <Link
             to="/jobs"
-            className="btn-primary inline-block text-sm px-5 py-2"
+            className="btn-primary inline-block text-sm px-5 py-2 font-medium"
           >
             {d.back}
           </Link>
@@ -210,18 +210,31 @@ export default function JobDetailPage() {
   const eduOptions: string[] = d.eduOptions;
   const engOptions: string[] = d.engOptions;
 
-  // Lớp CSS tái sử dụng chung cho các thẻ Card
+  // CSS đồng bộ UI
   const cardClasses =
     "bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl shadow-sm dark:shadow-none overflow-hidden transition-colors";
-  // Lớp CSS tái sử dụng chung cho Input/Select/Textarea
+
+  // Input: Chữ thường (font-normal), màu xám nhẹ hơn để phân biệt với Label
   const inputClasses =
-    "w-full text-sm rounded-xl px-4 bg-slate-100 dark:bg-[#1e1e1e] border border-transparent dark:border-white/5 text-slate-900 dark:text-white placeholder:text-slate-400 focus:bg-white dark:focus:bg-black focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none transition-all";
+    "w-full text-sm font-normal rounded-xl px-4 bg-slate-50 dark:bg-[#1e1e1e] border border-slate-200 dark:border-white/5 text-slate-900 dark:text-white placeholder:text-slate-400 focus:bg-white dark:focus:bg-black focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none transition-all";
+
+  // PHÂN CẤP CHỮ CHUẨN XÁC
+  // 1. Tiêu đề chính: Đậm, rõ ràng
+  const sectionTitleClasses =
+    "font-bold text-lg md:text-xl text-slate-900 dark:text-white";
+  // 2. Nội dung đoạn văn: Chữ thường (font-normal), màu xám dịu mắt, khoảng cách dòng thoáng
+  const bodyTextClasses =
+    "text-sm md:text-base font-normal text-slate-600 dark:text-gray-300 leading-relaxed";
+  // 3. Nhãn (Label form): Hơi đậm nhẹ để phân tách với input
+  const labelClasses = "text-sm font-medium text-slate-700 dark:text-gray-300";
+  // 4. Giá trị động (Dữ liệu API): Đậm vừa (semibold) để nổi bật hơn Label
+  const valueClasses = "text-sm font-semibold text-slate-900 dark:text-white";
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#0d1117] transition-colors duration-300 pt-20">
       {/* Breadcrumb */}
       <div className="border-b border-slate-200 dark:border-brand-border bg-white/60 dark:bg-brand-card/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center gap-2 text-sm text-slate-500 dark:text-brand-muted">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center gap-2 text-sm font-normal text-slate-500 dark:text-gray-400">
           <Link
             to="/"
             className="hover:text-slate-900 dark:hover:text-white transition-colors"
@@ -247,12 +260,12 @@ export default function JobDetailPage() {
           <div className="lg:col-span-2 space-y-6">
             <Link
               to="/jobs"
-              className="inline-flex items-center gap-2 text-sm text-slate-500 dark:text-brand-muted hover:text-slate-900 dark:hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white transition-colors"
             >
-              <ArrowLeft size={15} /> {d.back}
+              <ArrowLeft size={16} /> {d.back}
             </Link>
 
-            {/* Job header card */}
+            {/* Job Header Card */}
             <div className={cardClasses}>
               <div className="relative h-52 md:h-64 bg-slate-200 dark:bg-brand-dark overflow-hidden">
                 <img
@@ -266,21 +279,21 @@ export default function JobDetailPage() {
                 />
 
                 <div className="absolute top-4 left-4 flex gap-2 flex-wrap">
-                  <span className="badge-country backdrop-blur-sm bg-black/50 text-white">
+                  <span className="badge-country font-medium backdrop-blur-sm bg-black/50 text-white">
                     {flag} {countryName}
                   </span>
-                  <span className="bg-black/50 backdrop-blur-sm text-white text-xs px-2.5 py-0.5 rounded-full border border-white/20">
+                  <span className="bg-black/50 backdrop-blur-sm font-medium text-white text-xs px-3 py-1 rounded-full border border-white/20">
                     {getJobTypeLabel(job.jobType)}
                   </span>
                 </div>
                 <div className="absolute top-4 right-4 flex gap-2">
                   {job.isHot && (
-                    <span className="badge-hot backdrop-blur-sm bg-red-500/90 text-white">
+                    <span className="badge-hot font-bold backdrop-blur-sm bg-red-500/90 text-white">
                       🔥 Hot
                     </span>
                   )}
                   {job.isFeatured && (
-                    <span className="bg-brand-gold/90 text-slate-900 text-xs font-bold px-2 py-0.5 rounded-full shadow-sm">
+                    <span className="bg-brand-gold/90 text-slate-900 text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
                       {d.featured}
                     </span>
                   )}
@@ -289,58 +302,68 @@ export default function JobDetailPage() {
 
               <div className="p-6 relative">
                 <div className="flex gap-2 flex-wrap mb-4">
-                  {job.isHot && <span className="badge-hot">🔥 Hot</span>}
+                  {job.isHot && (
+                    <span className="badge-hot font-bold">🔥 Hot</span>
+                  )}
                   {job.isFeatured && (
-                    <span className="bg-amber-100 text-amber-800 dark:bg-brand-gold/20 dark:text-brand-gold text-xs font-bold px-2 py-0.5 rounded-full uppercase">
+                    <span className="bg-amber-100 text-amber-800 dark:bg-brand-gold/20 dark:text-brand-gold text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide">
                       {d.featured}
                     </span>
                   )}
-                  <span className="badge-country border dark:border-transparent">
+                  <span className="badge-country font-medium border dark:border-transparent">
                     {flag} {countryName}
                   </span>
-                  <span className="text-xs px-2.5 py-0.5 rounded-full border text-slate-600 dark:text-gray-300 bg-slate-100 dark:bg-gray-700/40 border-slate-300 dark:border-gray-600">
+                  <span className="text-xs font-medium px-3 py-1 rounded-full border text-slate-600 dark:text-gray-300 bg-slate-100 dark:bg-gray-700/40 border-slate-200 dark:border-gray-600">
                     {getJobTypeLabel(job.jobType)}
                   </span>
                 </div>
 
-                <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-2">
+                <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-3">
                   {job.title}
                 </h1>
                 {job.company && (
-                  <div className="flex items-center gap-1.5 text-slate-500 dark:text-brand-muted text-sm mb-5">
-                    <Building2 size={14} /> {job.company}
+                  <div className="flex items-center gap-2 text-slate-500 dark:text-gray-400 text-base font-medium mb-6">
+                    <Building2 size={18} /> {job.company}
                   </div>
                 )}
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-y-6 gap-x-4 border-t border-slate-100 dark:border-white/5 pt-6">
                   <div>
-                    <p className="text-[10px] font-bold text-slate-400 dark:text-brand-muted uppercase tracking-widest mb-1.5">{d.salary}</p>
-                    <p className="text-amber-700 dark:text-brand-gold font-bold text-base">
-                      {formatSalary(job.salaryMin, job.salaryMax, job.salaryCurrency)}
+                    <p className="text-xs font-medium text-slate-500 dark:text-gray-400 uppercase tracking-wide mb-1.5">
+                      {d.salary}
+                    </p>
+                    <p className="text-amber-600 dark:text-brand-gold font-bold text-base">
+                      {formatSalary(
+                        job.salaryMin,
+                        job.salaryMax,
+                        job.salaryCurrency,
+                      )}
                     </p>
                   </div>
                   {job.location && (
                     <div>
-                      <p className="text-[10px] font-bold text-slate-400 dark:text-brand-muted uppercase tracking-widest mb-1.5">{d.location}</p>
-                      <p className="text-slate-900 dark:text-white font-bold text-sm">
-                        {job.location}
+                      <p className="text-xs font-medium text-slate-500 dark:text-gray-400 uppercase tracking-wide mb-1.5">
+                        {d.location}
                       </p>
+                      <p className={valueClasses}>{job.location}</p>
                     </div>
                   )}
                   {job.slots && (
                     <div>
-                      <p className="text-[10px] font-bold text-slate-400 dark:text-brand-muted uppercase tracking-widest mb-1.5">{d.slots}</p>
-                      <p className="text-slate-900 dark:text-white font-bold text-sm">
+                      <p className="text-xs font-medium text-slate-500 dark:text-gray-400 uppercase tracking-wide mb-1.5">
+                        {d.slots}
+                      </p>
+                      <p className={valueClasses}>
                         {job.slots} {d.slots_label}
                       </p>
                     </div>
                   )}
                   {job.deadline && (
                     <div>
-                      <p className="text-[10px] font-bold text-slate-400 dark:text-brand-muted uppercase tracking-widest mb-1.5">{d.deadline}</p>
-                      <p className="text-slate-900 dark:text-white font-bold text-sm">
-                        {formatDate(job.deadline)}
+                      <p className="text-xs font-medium text-slate-500 dark:text-gray-400 uppercase tracking-wide mb-1.5">
+                        {d.deadline}
                       </p>
+                      <p className={valueClasses}>{formatDate(job.deadline)}</p>
                     </div>
                   )}
                 </div>
@@ -348,11 +371,11 @@ export default function JobDetailPage() {
             </div>
 
             {/* Description */}
-            <div className={`${cardClasses} p-6`}>
-              <h2 className="font-semibold text-slate-900 dark:text-white text-lg mb-4">
+            <div className={`${cardClasses} p-6 md:p-8`}>
+              <h2 className={`${sectionTitleClasses} mb-4`}>
                 {d.jobDescription}
               </h2>
-              <p className="text-slate-700 dark:text-gray-300 leading-relaxed text-sm whitespace-pre-line">
+              <p className={`${bodyTextClasses} whitespace-pre-line`}>
                 {job.description}
               </p>
             </div>
@@ -362,57 +385,96 @@ export default function JobDetailPage() {
               let structReq: any = null;
               let structBen: any = null;
               try {
-                if (job.requirements?.startsWith('{"v2":')) structReq = JSON.parse(job.requirements).v2;
-                if (job.benefits?.startsWith('{"v2":')) structBen = JSON.parse(job.benefits).v2;
+                if (job.requirements?.startsWith('{"v2":'))
+                  structReq = JSON.parse(job.requirements).v2;
+                if (job.benefits?.startsWith('{"v2":'))
+                  structBen = JSON.parse(job.benefits).v2;
               } catch {}
 
               return (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6">
                   {/* Yêu cầu công việc block */}
-                  <div className="bg-white dark:bg-[#131926] rounded-3xl border border-slate-100 dark:border-white/5 overflow-hidden shadow-sm group">
-                    <div className="bg-slate-50 dark:bg-black/20 px-8 py-6 border-b border-slate-100 dark:border-white/5">
-                      <h3 className="font-black text-xl text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-3">
+                  <div className="bg-white dark:bg-[#131926] rounded-2xl border border-slate-200 dark:border-brand-border overflow-hidden shadow-sm">
+                    <div className="bg-slate-50 dark:bg-black/20 px-6 py-5 border-b border-slate-200 dark:border-white/5">
+                      <h3
+                        className={`${sectionTitleClasses} flex items-center gap-3`}
+                      >
                         <span className="w-1.5 h-6 bg-brand-gold rounded-full"></span>
                         Yêu cầu công việc
                       </h3>
                     </div>
-                    <div className="p-2">
+                    <div>
                       <table className="w-full border-collapse">
-                        <tbody className="divide-y divide-slate-50 dark:divide-white/5">
+                        <tbody className="divide-y divide-slate-100 dark:divide-white/5">
                           {[
                             { label: "Độ tuổi", value: structReq?.age },
-                            { label: "Thời gian làm việc", value: structReq?.workTime },
-                            { label: "Kinh nghiệm", value: structReq?.experience },
+                            {
+                              label: "Thời gian làm việc",
+                              value: structReq?.workTime,
+                            },
+                            {
+                              label: "Kinh nghiệm",
+                              value: structReq?.experience,
+                            },
                             { label: "Ngoại ngữ", value: structReq?.language },
                           ].map((row, idx) => (
-                            <tr key={idx} className="group/row transition-colors">
-                              <td className="w-1/3 p-5 font-bold text-xs uppercase tracking-widest text-slate-400 dark:text-brand-muted bg-slate-50/30 dark:bg-black/10 group-hover/row:bg-slate-50 dark:group-hover/row:bg-white/5 transition-colors">{row.label}</td>
-                              <td className="p-5 text-base text-slate-700 dark:text-white font-medium group-hover/row:bg-slate-50 dark:group-hover/row:bg-white/5 transition-colors">{row.value || "—"}</td>
+                            <tr
+                              key={idx}
+                              className="transition-colors hover:bg-slate-50 dark:hover:bg-white/5"
+                            >
+                              {/* Label nhạt màu, chữ thường */}
+                              <td className="w-1/3 p-4 text-sm font-normal text-slate-500 dark:text-gray-400 bg-slate-50/50 dark:bg-transparent">
+                                {row.label}
+                              </td>
+                              {/* Dữ liệu đậm hơn */}
+                              <td className="p-4 text-sm font-medium text-slate-900 dark:text-gray-100">
+                                {row.value || "—"}
+                              </td>
                             </tr>
                           ))}
                           {structReq?.transport && (
-                            <tr className="group/row">
-                              <td className="p-5 font-bold text-xs uppercase tracking-widest text-slate-400 dark:text-brand-muted bg-slate-50/30 dark:bg-black/10 group-hover/row:bg-slate-50 dark:group-hover/row:bg-white/5 transition-colors">Phương tiện</td>
-                              <td className="p-5 text-base text-slate-700 dark:text-gray-200 font-medium group-hover/row:bg-slate-50 dark:group-hover/row:bg-white/5 transition-colors">{structReq.transport}</td>
+                            <tr className="transition-colors hover:bg-slate-50 dark:hover:bg-white/5">
+                              <td className="p-4 text-sm font-normal text-slate-500 dark:text-gray-400 bg-slate-50/50 dark:bg-transparent">
+                                Phương tiện
+                              </td>
+                              <td className="p-4 text-sm font-medium text-slate-900 dark:text-gray-100">
+                                {structReq.transport}
+                              </td>
                             </tr>
                           )}
                           <tr>
-                            <td className="p-5 font-bold text-xs uppercase tracking-widest text-slate-400 dark:text-brand-muted bg-slate-50/30 dark:bg-black/10">Yêu cầu khác</td>
-                            <td className="p-5">
+                            <td className="p-4 text-sm font-normal text-slate-500 dark:text-gray-400 bg-slate-50/50 dark:bg-transparent align-top">
+                              Yêu cầu khác
+                            </td>
+                            <td className="p-4">
                               <div className="space-y-4">
                                 {structReq?.other && (
-                                  <p className="text-base text-slate-700 dark:text-gray-300 mb-4 whitespace-pre-line leading-relaxed">{structReq.other}</p>
+                                  <p className={bodyTextClasses}>
+                                    {structReq.other}
+                                  </p>
                                 )}
                                 {structReq?.checklist?.map((item: string) => (
-                                  <div key={item} className="flex items-center gap-2 text-slate-600 dark:text-gray-400">
-                                    <div className="w-4 h-4 rounded-md border border-amber-400 dark:border-brand-gold flex items-center justify-center bg-amber-50 dark:bg-brand-gold/10">
-                                      <CheckCircle size={10} className="text-amber-600 dark:text-brand-gold" />
+                                  <div
+                                    key={item}
+                                    className="flex items-start gap-3"
+                                  >
+                                    <div className="mt-1 flex-shrink-0 w-4 h-4 rounded-full bg-amber-50 dark:bg-brand-gold/10 flex items-center justify-center">
+                                      <CheckCircle
+                                        size={14}
+                                        className="text-amber-600 dark:text-brand-gold"
+                                      />
                                     </div>
-                                    <span>{item}</span>
+                                    <span className={bodyTextClasses}>
+                                      {item}
+                                    </span>
                                   </div>
                                 ))}
                                 {!structReq && job.requirements && (
-                                  <p className="text-slate-700 dark:text-gray-300 whitespace-pre-line">{job.requirements}</p>
+                                  <p
+                                    className={`${bodyTextClasses} whitespace-pre-line`}
+                                  >
+                                    {job.requirements}
+                                  </p>
                                 )}
                               </div>
                             </td>
@@ -423,40 +485,65 @@ export default function JobDetailPage() {
                   </div>
 
                   {/* Quyền lợi block */}
-                  <div className="bg-white dark:bg-[#131926] rounded-3xl border border-slate-100 dark:border-white/5 overflow-hidden shadow-sm group">
-                    <div className="bg-slate-50 dark:bg-black/20 px-8 py-6 border-b border-slate-100 dark:border-white/5">
-                      <h3 className="font-black text-xl text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-3">
+                  <div className="bg-white dark:bg-[#131926] rounded-2xl border border-slate-200 dark:border-brand-border overflow-hidden shadow-sm">
+                    <div className="bg-slate-50 dark:bg-black/20 px-6 py-5 border-b border-slate-200 dark:border-white/5">
+                      <h3
+                        className={`${sectionTitleClasses} flex items-center gap-3`}
+                      >
                         <span className="w-1.5 h-6 bg-brand-gold rounded-full"></span>
                         Quyền lợi đãi ngộ
                       </h3>
                     </div>
-                    <div className="p-2">
+                    <div>
                       <table className="w-full border-collapse">
-                        <tbody className="divide-y divide-slate-50 dark:divide-white/5">
+                        <tbody className="divide-y divide-slate-100 dark:divide-white/5">
                           {structBen?.departure && (
-                            <tr className="group/row">
-                              <td className="w-1/3 p-5 font-bold text-xs uppercase tracking-widest text-slate-400 dark:text-brand-muted bg-slate-50/30 dark:bg-black/10 group-hover/row:bg-slate-50 dark:group-hover/row:bg-white/5">Thời gian xuất cảnh</td>
-                              <td className="p-5 text-base text-slate-700 dark:text-white font-medium group-hover/row:bg-slate-50 dark:group-hover/row:bg-white/5">{structBen.departure}</td>
+                            <tr className="transition-colors hover:bg-slate-50 dark:hover:bg-white/5">
+                              <td className="w-1/3 p-4 text-sm font-normal text-slate-500 dark:text-gray-400 bg-slate-50/50 dark:bg-transparent">
+                                Thời gian xuất cảnh
+                              </td>
+                              <td className="p-4 text-sm font-medium text-slate-900 dark:text-gray-100">
+                                {structBen.departure}
+                              </td>
                             </tr>
                           )}
                           <tr>
-                            <td className="w-1/3 p-5 font-bold text-xs uppercase tracking-widest text-slate-400 dark:text-brand-muted bg-slate-50/30 dark:bg-black/10">Quyền lợi</td>
-                            <td className="p-5">
+                            <td className="w-1/3 p-4 text-sm font-normal text-slate-500 dark:text-gray-400 bg-slate-50/50 dark:bg-transparent align-top">
+                              Quyền lợi
+                            </td>
+                            <td className="p-4">
                               {structBen?.raw && (
-                                <p className="text-base text-slate-700 dark:text-gray-300 mb-4 whitespace-pre-line leading-relaxed">{structBen.raw}</p>
+                                <p
+                                  className={`${bodyTextClasses} mb-4 whitespace-pre-line`}
+                                >
+                                  {structBen.raw}
+                                </p>
                               )}
-                              <div className="space-y-3">
+                              <div className="space-y-4">
                                 {structBen?.checklist?.map((item: string) => (
-                                  <div key={item} className="flex items-center gap-2 text-slate-600 dark:text-gray-400">
-                                    <div className="w-4 h-4 rounded-md border border-green-400 flex items-center justify-center bg-green-50 dark:bg-green-500/10">
-                                      <CheckCircle size={10} className="text-green-600" />
+                                  <div
+                                    key={item}
+                                    className="flex items-start gap-3"
+                                  >
+                                    <div className="mt-1 flex-shrink-0 w-4 h-4 rounded-full bg-green-50 dark:bg-green-500/10 flex items-center justify-center">
+                                      <CheckCircle
+                                        size={14}
+                                        className="text-green-600"
+                                      />
                                     </div>
-                                    <span>{item}</span>
+                                    <span className={bodyTextClasses}>
+                                      {item}
+                                    </span>
                                   </div>
                                 ))}
-                                {(!structBen || !structBen.checklist?.length) && job.benefits && (
-                                  <p className="text-slate-700 dark:text-gray-300 whitespace-pre-line">{structBen?.raw || job.benefits}</p>
-                                )}
+                                {(!structBen || !structBen.checklist?.length) &&
+                                  job.benefits && (
+                                    <p
+                                      className={`${bodyTextClasses} whitespace-pre-line`}
+                                    >
+                                      {structBen?.raw || job.benefits}
+                                    </p>
+                                  )}
                               </div>
                             </td>
                           </tr>
@@ -470,14 +557,14 @@ export default function JobDetailPage() {
 
             {/* Apply form */}
             {showForm && !submitted && (
-              <div className={`${cardClasses} p-6`} id="apply-form">
-                <h2 className="font-semibold text-slate-900 dark:text-white text-lg mb-6">
+              <div className={`${cardClasses} p-6 md:p-8`} id="apply-form">
+                <h2 className={`${sectionTitleClasses} mb-6`}>
                   {d.applyTitle}
                 </h2>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="text-xs text-slate-600 dark:text-brand-muted font-medium mb-1.5 block">
+                      <label className={`${labelClasses} mb-2 block`}>
                         {d.fullName}
                       </label>
                       <input
@@ -491,7 +578,7 @@ export default function JobDetailPage() {
                       />
                     </div>
                     <div>
-                      <label className="text-xs text-slate-600 dark:text-brand-muted font-medium mb-1.5 block">
+                      <label className={`${labelClasses} mb-2 block`}>
                         {d.phoneLabel}
                       </label>
                       <input
@@ -505,7 +592,7 @@ export default function JobDetailPage() {
                       />
                     </div>
                     <div>
-                      <label className="text-xs text-slate-600 dark:text-brand-muted font-medium mb-1.5 block">
+                      <label className={`${labelClasses} mb-2 block`}>
                         {d.emailLabel}
                       </label>
                       <input
@@ -520,7 +607,7 @@ export default function JobDetailPage() {
                       />
                     </div>
                     <div>
-                      <label className="text-xs text-slate-600 dark:text-brand-muted font-medium mb-1.5 block">
+                      <label className={`${labelClasses} mb-2 block`}>
                         {d.dob}
                       </label>
                       <input
@@ -533,7 +620,7 @@ export default function JobDetailPage() {
                       />
                     </div>
                     <div className="sm:col-span-2">
-                      <label className="text-xs text-slate-600 dark:text-brand-muted font-medium mb-1.5 block">
+                      <label className={`${labelClasses} mb-2 block`}>
                         {d.addressLabel}
                       </label>
                       <input
@@ -546,7 +633,7 @@ export default function JobDetailPage() {
                       />
                     </div>
                     <div>
-                      <label className="text-xs text-slate-600 dark:text-brand-muted font-medium mb-1.5 block">
+                      <label className={`${labelClasses} mb-2 block`}>
                         {d.education}
                       </label>
                       <select
@@ -567,7 +654,7 @@ export default function JobDetailPage() {
                       </select>
                     </div>
                     <div>
-                      <label className="text-xs text-slate-600 dark:text-brand-muted font-medium mb-1.5 block">
+                      <label className={`${labelClasses} mb-2 block`}>
                         {d.english}
                       </label>
                       <select
@@ -588,7 +675,7 @@ export default function JobDetailPage() {
                       </select>
                     </div>
                     <div className="sm:col-span-2">
-                      <label className="text-xs text-slate-600 dark:text-brand-muted font-medium mb-1.5 block">
+                      <label className={`${labelClasses} mb-2 block`}>
                         {d.experience}
                       </label>
                       <textarea
@@ -596,12 +683,12 @@ export default function JobDetailPage() {
                         onChange={(e) =>
                           setForm({ ...form, experience: e.target.value })
                         }
-                        className={`${inputClasses} h-24 p-4 resize-none`}
+                        className={`${inputClasses} h-28 py-3 resize-none`}
                         placeholder={d.expPlaceholder}
                       />
                     </div>
                     <div className="sm:col-span-2">
-                      <label className="text-xs text-slate-600 dark:text-brand-muted font-medium mb-1.5 block">
+                      <label className={`${labelClasses} mb-2 block`}>
                         {d.coverLetter}
                       </label>
                       <textarea
@@ -609,13 +696,13 @@ export default function JobDetailPage() {
                         onChange={(e) =>
                           setForm({ ...form, coverLetter: e.target.value })
                         }
-                        className={`${inputClasses} h-28 p-4 resize-none`}
+                        className={`${inputClasses} h-28 py-3 resize-none`}
                         placeholder={d.coverPlaceholder}
                       />
                     </div>
                     <div className="sm:col-span-2">
-                      <label className="text-xs text-slate-600 dark:text-brand-muted font-medium mb-1.5 block">
-                        CV / Hồ sơ (PDF, DOC)
+                      <label className={`${labelClasses} mb-2 block`}>
+                        CV / Hồ sơ đính kèm (PDF, DOC)
                       </label>
                       <label
                         className={`flex items-center gap-3 p-4 rounded-xl border-2 border-dashed cursor-pointer transition-colors ${
@@ -633,44 +720,45 @@ export default function JobDetailPage() {
                         />
                         {uploadingCv ? (
                           <>
-                            <span className="w-4 h-4 border-2 border-amber-500 dark:border-brand-gold border-t-transparent rounded-full animate-spin shrink-0" />
-                            <span className="text-sm text-slate-500 dark:text-brand-muted">
-                              Đang upload...
+                            <span className="w-5 h-5 border-2 border-amber-500 dark:border-brand-gold border-t-transparent rounded-full animate-spin shrink-0" />
+                            <span className="text-sm font-medium text-slate-600 dark:text-gray-300">
+                              Đang tải lên hệ thống...
                             </span>
                           </>
                         ) : form.cvUrl ? (
                           <>
                             <FileText
-                              size={16}
+                              size={20}
                               className="text-green-600 dark:text-green-400 shrink-0"
                             />
                             <span className="text-sm text-green-600 dark:text-green-400 font-medium truncate">
-                              {cvFile?.name || "CV đã upload"}
+                              {cvFile?.name || "CV đã được đính kèm"}
                             </span>
                           </>
                         ) : (
                           <>
                             <Upload
-                              size={16}
-                              className="text-slate-400 dark:text-brand-muted shrink-0"
+                              size={20}
+                              className="text-slate-400 dark:text-gray-500 shrink-0"
                             />
-                            <span className="text-sm text-slate-500 dark:text-brand-muted">
-                              Click để chọn file CV (tối đa 10MB)
+                            <span className="text-sm font-medium text-slate-600 dark:text-gray-400">
+                              Click để chọn file CV (Tối đa 10MB)
                             </span>
                           </>
                         )}
                       </label>
                     </div>
                   </div>
-                  <div className="flex gap-3 pt-2">
+                  <div className="flex gap-4 pt-4 border-t border-slate-100 dark:border-white/5">
+                    {/* Bỏ font-bold ở button, dùng font-semibold để gọn mắt hơn */}
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="btn-primary flex-1 py-3 flex items-center justify-center gap-2"
+                      className="btn-primary flex-1 py-3.5 text-base font-semibold flex items-center justify-center gap-2 rounded-xl"
                     >
                       {submitting ? (
                         <>
-                          <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />{" "}
+                          <span className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
                           {d.submitting}
                         </>
                       ) : (
@@ -680,7 +768,7 @@ export default function JobDetailPage() {
                     <button
                       type="button"
                       onClick={() => setShowForm(false)}
-                      className="px-6 py-3 rounded-xl font-medium border border-slate-300 dark:border-brand-border text-slate-700 dark:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
+                      className="px-6 py-3.5 rounded-xl font-medium border border-slate-300 dark:border-brand-border text-slate-700 dark:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
                     >
                       {d.cancel}
                     </button>
@@ -691,16 +779,16 @@ export default function JobDetailPage() {
 
             {submitted && (
               <div
-                className={`${cardClasses} p-8 text-center border-green-500/30 dark:border-green-500/30`}
+                className={`${cardClasses} p-10 text-center border-green-500/30 dark:border-green-500/30`}
               >
                 <CheckCircle
-                  size={48}
-                  className="text-green-500 dark:text-green-400 mx-auto mb-3"
+                  size={56}
+                  className="text-green-500 dark:text-green-400 mx-auto mb-4"
                 />
-                <h3 className="text-slate-900 dark:text-white font-semibold text-lg mb-2">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
                   {d.successTitle}
                 </h3>
-                <p className="text-slate-500 dark:text-brand-muted text-sm">
+                <p className="text-base font-normal text-slate-600 dark:text-gray-400">
                   {d.successSub}
                 </p>
               </div>
@@ -708,61 +796,70 @@ export default function JobDetailPage() {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-5">
-            <div className={`${cardClasses} p-5 sticky top-24`}>
-              <div className="text-center mb-5">
-                <p className="text-amber-600 dark:text-brand-gold font-bold text-2xl mb-0.5">
+          <div className="space-y-6">
+            <div className={`${cardClasses} p-6 sticky top-24`}>
+              <div className="text-center mb-6">
+                <p className="text-amber-600 dark:text-brand-gold font-bold text-2xl md:text-3xl mb-1">
                   {formatSalary(
                     job.salaryMin,
                     job.salaryMax,
                     job.salaryCurrency,
                   )}
                 </p>
-                <p className="text-slate-500 dark:text-brand-muted text-xs">
+                <p className="text-slate-500 dark:text-gray-400 font-normal text-sm">
                   {d.estSalary}
                 </p>
               </div>
+
               {!submitted ? (
                 job.deadline &&
                 new Date(job.deadline) < new Date(new Date().toDateString()) ? (
-                  <div className="w-full py-3.5 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 text-red-600 dark:text-red-400 text-center text-sm font-medium">
+                  <div className="w-full py-3.5 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 text-red-600 dark:text-red-400 text-center text-base font-semibold">
                     Đã hết hạn nộp đơn
                   </div>
                 ) : (
                   <button
                     onClick={handleApply}
-                    className="btn-primary w-full py-3.5 text-base flex items-center justify-center gap-2"
+                    className="btn-primary w-full py-4 text-base font-semibold flex items-center justify-center gap-2 rounded-xl"
                   >
                     {d.applyNow}
                   </button>
                 )
               ) : (
-                <div className="w-full py-3.5 rounded-xl bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/30 text-green-600 dark:text-green-400 text-center text-sm font-medium">
+                <div className="w-full py-3.5 rounded-xl bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/30 text-green-600 dark:text-green-400 text-center text-base font-semibold">
                   {d.applied}
                 </div>
               )}
-              <p className="text-center text-xs text-slate-500 dark:text-brand-muted mt-3">
+
+              <p className="text-center text-sm font-normal text-slate-500 dark:text-gray-400 mt-4">
                 {d.applyFree}
               </p>
-              <div className="mt-4 pt-4 border-t border-slate-200 dark:border-brand-border space-y-2 text-xs text-slate-500 dark:text-brand-muted">
-                <div className="flex justify-between">
-                  <span>{d.posted}</span>
-                  <span className="text-slate-900 font-medium dark:text-white dark:font-normal">
+
+              <div className="mt-6 pt-5 border-t border-slate-200 dark:border-brand-border space-y-3 text-sm">
+                <div className="flex justify-between items-center">
+                  <span className="font-normal text-slate-500 dark:text-gray-400">
+                    {d.posted}
+                  </span>
+                  <span className="font-medium text-slate-900 dark:text-white">
                     {formatDate(job.createdAt)}
                   </span>
                 </div>
                 {job.deadline && (
-                  <div className="flex justify-between">
-                    <span>{d.closingDate}</span>
-                    <span className="text-amber-600 font-medium dark:text-brand-orange dark:font-normal">
+                  <div className="flex justify-between items-center">
+                    <span className="font-normal text-slate-500 dark:text-gray-400">
+                      {d.closingDate}
+                    </span>
+                    <span className="font-medium text-amber-600 dark:text-brand-orange">
                       {formatDate(job.deadline)}
                     </span>
                   </div>
                 )}
-                <div className="flex justify-between">
-                  <span>{d.views}</span>
-                  <span className="text-slate-900 font-medium dark:text-white dark:font-normal flex items-center gap-1">
-                    <Eye size={11} />
+                <div className="flex justify-between items-center">
+                  <span className="font-normal text-slate-500 dark:text-gray-400">
+                    {d.views}
+                  </span>
+                  <span className="font-medium text-slate-900 dark:text-white flex items-center gap-1.5">
+                    <Eye size={16} />
                     {job.viewCount}
                   </span>
                 </div>
@@ -770,8 +867,8 @@ export default function JobDetailPage() {
             </div>
 
             {relatedJobs.length > 0 && (
-              <div className={`${cardClasses} p-5`}>
-                <h3 className="font-semibold text-slate-900 dark:text-white text-sm mb-4">
+              <div className={`${cardClasses} p-6`}>
+                <h3 className={`${sectionTitleClasses} text-lg mb-5`}>
                   {d.related}
                 </h3>
                 <div className="space-y-3">
@@ -779,15 +876,15 @@ export default function JobDetailPage() {
                     <Link
                       key={rj.id}
                       to={`/jobs/${rj.id}`}
-                      className="block p-3 bg-slate-50 border border-transparent dark:bg-white/5 rounded-xl hover:border-slate-300 dark:hover:border-white/20 transition-colors group"
+                      className="block p-4 bg-slate-50 border border-transparent dark:bg-white/5 rounded-xl hover:border-slate-300 dark:hover:border-white/20 transition-all group"
                     >
-                      <p className="text-sm font-medium text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-brand-gold transition-colors line-clamp-1">
+                      <p className="text-base font-semibold text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-brand-gold transition-colors line-clamp-1">
                         {rj.title}
                       </p>
-                      <p className="text-xs text-slate-500 dark:text-brand-muted mt-0.5">
+                      <p className="text-sm font-normal text-slate-500 dark:text-gray-400 mt-1">
                         {rj.company}
                       </p>
-                      <p className="text-xs font-semibold text-amber-600 dark:text-brand-gold mt-1">
+                      <p className="text-sm font-semibold text-amber-600 dark:text-brand-gold mt-2">
                         {formatSalary(
                           rj.salaryMin,
                           rj.salaryMax,

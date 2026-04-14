@@ -29,6 +29,10 @@ let UploadController = class UploadController {
         const url = await this.gcsService.uploadFile(file, 'cv');
         return { url, filename: file.originalname };
     }
+    async uploadImage(file) {
+        const url = await this.gcsService.uploadFile(file, 'images');
+        return { url, filename: file.originalname };
+    }
 };
 exports.UploadController = UploadController;
 __decorate([
@@ -54,6 +58,29 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UploadController.prototype, "uploadCv", null);
+__decorate([
+    (0, common_1.Post)('image'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)('JWT'),
+    (0, swagger_1.ApiOperation)({ summary: 'Upload ảnh (JPG/PNG/WebP/GIF)' }),
+    (0, swagger_1.ApiConsumes)('multipart/form-data'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
+        storage: (0, multer_1.memoryStorage)(),
+        limits: { fileSize: 10 * 1024 * 1024 },
+        fileFilter: (_req, file, cb) => {
+            const allowed = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+            const ext = (0, path_1.extname)(file.originalname).toLowerCase();
+            if (allowed.includes(ext))
+                cb(null, true);
+            else
+                cb(new Error('Chỉ chấp nhận file JPG, PNG, WebP, GIF'), false);
+        },
+    })),
+    __param(0, (0, common_1.UploadedFile)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UploadController.prototype, "uploadImage", null);
 exports.UploadController = UploadController = __decorate([
     (0, swagger_1.ApiTags)('📎 Upload'),
     (0, common_1.Controller)('upload'),

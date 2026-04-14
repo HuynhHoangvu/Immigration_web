@@ -101,47 +101,49 @@ export default function Header() {
               onMouseLeave={() => setStudyOpen(false)}
             >
               <button
-                className={`flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold rounded-xl transition-all ${
+                className={`flex items-center gap-1.5 px-3.5 py-2 text-sm font-bold rounded-xl transition-all ${
                   location.pathname === "/study"
-                    ? "text-amber-700 bg-amber-50 dark:text-brand-gold dark:bg-brand-gold/10"
-                    : "text-slate-600 dark:text-gray-300 hover:text-amber-600 hover:bg-amber-50 dark:hover:text-brand-gold dark:hover:bg-brand-gold/10"
+                    ? "text-brand-gold bg-brand-gold/10"
+                    : "text-slate-600 dark:text-gray-300 hover:text-brand-gold hover:bg-brand-gold/5"
                 }`}
               >
-                {lang === "vi" ? "Du học" : "Study Abroad"}
+                {lang === "vi" ? "Du học" : "Study"}
                 <ChevronDown
                   size={14}
-                  className={`transition-transform duration-200 ${studyOpen ? "rotate-180" : ""}`}
+                  className={`transition-transform duration-300 ${studyOpen ? "rotate-180" : ""}`}
                 />
               </button>
 
               {studyOpen && (
-                <div className="absolute top-full left-0 w-56 pt-2">
-                  <div className="bg-white dark:bg-brand-card border border-slate-100 dark:border-brand-border rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-2xl overflow-hidden py-1">
-                    <div className="px-4 py-2">
-                      <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-brand-muted">
-                        {lang === "vi" ? "Chọn quốc gia" : "Select country"}
+                <div className="absolute top-full left-0 w-64 pt-2 group-hover:block transition-all animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="bg-white/95 dark:bg-brand-card/95 backdrop-blur-xl border border-slate-100 dark:border-white/5 rounded-2xl shadow-2xl shadow-black/5 overflow-hidden py-2">
+                    <div className="px-4 py-2 border-b border-slate-50 dark:border-white/5 mb-1">
+                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-brand-muted">
+                        {lang === "vi" ? "Chương trình du học" : "Study Abroad"}
                       </p>
                     </div>
-                    {LABOUR_COUNTRIES.map((c) => (
-                      <Link
-                        key={c.value}
-                        to={`/study?country=${c.value}`}
-                        className="flex items-center gap-2.5 px-4 py-2 text-sm font-medium text-slate-700 dark:text-gray-200 hover:text-amber-600 hover:bg-amber-50/50 dark:hover:text-brand-gold dark:hover:bg-brand-gold/5 transition-colors"
-                        onClick={() => setStudyOpen(false)}
-                      >
-                        <span className="text-lg">{c.label.split(" ")[0]}</span>
-                        <span>{c.label.split(" ").slice(1).join(" ")}</span>
-                      </Link>
-                    ))}
-                    <div className="border-t border-slate-100 dark:border-white/5 mx-2 mt-2 pt-2">
+                    <div className="max-h-[300px] overflow-y-auto custom-scrollbar px-1">
+                      {LABOUR_COUNTRIES.map((c) => (
+                        <Link
+                          key={c.value}
+                          to={`/study?country=${c.value}`}
+                          className="flex items-center gap-3 px-3 py-2.5 text-sm font-bold text-slate-700 dark:text-gray-200 hover:text-brand-gold hover:bg-brand-gold/5 transition-all rounded-xl"
+                          onClick={() => setStudyOpen(false)}
+                        >
+                          <span className="text-xl filter grayscale group-hover:grayscale-0 transition-all">{c.label.split(" ")[0]}</span>
+                          <span className="truncate">{c.label.split(" ").slice(1).join(" ")}</span>
+                        </Link>
+                      ))}
+                    </div>
+                    <div className="border-t border-slate-100 dark:border-white/5 mx-2 mt-1 pt-2">
                       <Link
                         to="/study"
-                        className="flex items-center gap-2 px-3 py-2 text-sm font-semibold text-amber-600 dark:text-brand-gold hover:bg-amber-50 dark:hover:bg-brand-gold/5 transition-colors rounded-xl"
+                        className="flex items-center justify-center gap-2 px-3 py-2.5 text-xs font-black uppercase tracking-widest text-brand-gold hover:bg-brand-gold/10 transition-colors rounded-xl bg-brand-gold/5"
                         onClick={() => setStudyOpen(false)}
                       >
                         {lang === "vi"
-                          ? "Xem tất cả du học →"
-                          : "View all study programs →"}
+                          ? "Tất cả du học"
+                          : "View All"}
                       </Link>
                     </div>
                   </div>
@@ -156,47 +158,49 @@ export default function Header() {
               onMouseLeave={() => setTravelOpen(false)}
             >
               <button
-                className={`flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold rounded-xl transition-all ${
+                className={`flex items-center gap-1.5 px-3.5 py-2 text-sm font-bold rounded-xl transition-all ${
                   location.pathname === "/travel"
-                    ? "text-amber-700 bg-amber-50 dark:text-brand-gold dark:bg-brand-gold/10"
-                    : "text-slate-600 dark:text-gray-300 hover:text-amber-600 hover:bg-amber-50 dark:hover:text-brand-gold dark:hover:bg-brand-gold/10"
+                    ? "text-brand-gold bg-brand-gold/10"
+                    : "text-slate-600 dark:text-gray-300 hover:text-brand-gold hover:bg-brand-gold/5"
                 }`}
               >
                 {lang === "vi" ? "Du lịch" : "Travel"}
                 <ChevronDown
                   size={14}
-                  className={`transition-transform duration-200 ${travelOpen ? "rotate-180" : ""}`}
+                  className={`transition-transform duration-300 ${travelOpen ? "rotate-180" : ""}`}
                 />
               </button>
 
               {travelOpen && (
-                <div className="absolute top-full left-0 w-56 pt-2">
-                  <div className="bg-white dark:bg-brand-card border border-slate-100 dark:border-brand-border rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-2xl overflow-hidden py-1">
-                    <div className="px-4 py-2">
-                      <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-brand-muted">
-                        {lang === "vi" ? "Chọn quốc gia" : "Select country"}
+                <div className="absolute top-full left-0 w-64 pt-2 group-hover:block transition-all animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="bg-white/95 dark:bg-brand-card/95 backdrop-blur-xl border border-slate-100 dark:border-white/5 rounded-2xl shadow-2xl shadow-black/5 overflow-hidden py-2">
+                    <div className="px-4 py-2 border-b border-slate-50 dark:border-white/5 mb-1">
+                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-brand-muted">
+                        {lang === "vi" ? "Visa du lịch" : "Travel Visa"}
                       </p>
                     </div>
-                    {LABOUR_COUNTRIES.map((c) => (
-                      <Link
-                        key={c.value}
-                        to={`/travel?country=${c.value}`}
-                        className="flex items-center gap-2.5 px-4 py-2 text-sm font-medium text-slate-700 dark:text-gray-200 hover:text-amber-600 hover:bg-amber-50/50 dark:hover:text-brand-gold dark:hover:bg-brand-gold/5 transition-colors"
-                        onClick={() => setTravelOpen(false)}
-                      >
-                        <span className="text-lg">{c.label.split(" ")[0]}</span>
-                        <span>{c.label.split(" ").slice(1).join(" ")}</span>
-                      </Link>
-                    ))}
-                    <div className="border-t border-slate-100 dark:border-white/5 mx-2 mt-2 pt-2">
+                    <div className="max-h-[300px] overflow-y-auto custom-scrollbar px-1">
+                      {LABOUR_COUNTRIES.map((c) => (
+                        <Link
+                          key={c.value}
+                          to={`/travel?country=${c.value}`}
+                          className="flex items-center gap-3 px-3 py-2.5 text-sm font-bold text-slate-700 dark:text-gray-200 hover:text-brand-gold hover:bg-brand-gold/5 transition-all rounded-xl"
+                          onClick={() => setTravelOpen(false)}
+                        >
+                          <span className="text-xl filter grayscale group-hover:grayscale-0 transition-all">{c.label.split(" ")[0]}</span>
+                          <span className="truncate">{c.label.split(" ").slice(1).join(" ")}</span>
+                        </Link>
+                      ))}
+                    </div>
+                    <div className="border-t border-slate-100 dark:border-white/5 mx-2 mt-1 pt-2">
                       <Link
                         to="/travel"
-                        className="flex items-center gap-2 px-3 py-2 text-sm font-semibold text-amber-600 dark:text-brand-gold hover:bg-amber-50 dark:hover:bg-brand-gold/5 transition-colors rounded-xl"
+                        className="flex items-center justify-center gap-2 px-3 py-2.5 text-xs font-black uppercase tracking-widest text-brand-gold hover:bg-brand-gold/10 transition-colors rounded-xl bg-brand-gold/5"
                         onClick={() => setTravelOpen(false)}
                       >
                         {lang === "vi"
-                          ? "Xem tất cả du lịch →"
-                          : "View all travel →"}
+                          ? "Tất cả du lịch"
+                          : "View All"}
                       </Link>
                     </div>
                   </div>
@@ -225,33 +229,35 @@ export default function Header() {
               </button>
 
               {labourOpen && (
-                <div className="absolute top-full left-0 w-56 pt-2">
-                  <div className="bg-white dark:bg-brand-card border border-slate-100 dark:border-brand-border rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-2xl overflow-hidden py-1">
-                    <div className="px-4 py-2">
-                      <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-brand-muted">
-                        {lang === "vi" ? "Chọn quốc gia" : "Select country"}
+                <div className="absolute top-full left-0 w-64 pt-2 group-hover:block transition-all animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="bg-white/95 dark:bg-brand-card/95 backdrop-blur-xl border border-slate-100 dark:border-white/5 rounded-2xl shadow-2xl shadow-black/5 overflow-hidden py-2">
+                    <div className="px-4 py-2 border-b border-slate-50 dark:border-white/5 mb-1">
+                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-brand-muted">
+                        {lang === "vi" ? "Thị trường lao động" : "Labour Markets"}
                       </p>
                     </div>
-                    {LABOUR_COUNTRIES.map((c) => (
-                      <Link
-                        key={c.value}
-                        to={`/jobs?country=${c.value}`}
-                        className="flex items-center gap-2.5 px-4 py-2 text-sm font-medium text-slate-700 dark:text-gray-200 hover:text-amber-600 hover:bg-amber-50/50 dark:hover:text-brand-gold dark:hover:bg-brand-gold/5 transition-colors"
-                        onClick={() => setLabourOpen(false)}
-                      >
-                        <span className="text-lg">{c.label.split(" ")[0]}</span>
-                        <span>{c.label.split(" ").slice(1).join(" ")}</span>
-                      </Link>
-                    ))}
-                    <div className="border-t border-slate-100 dark:border-white/5 mx-2 mt-2 pt-2">
+                    <div className="max-h-[300px] overflow-y-auto custom-scrollbar px-1">
+                      {LABOUR_COUNTRIES.map((c) => (
+                        <Link
+                          key={c.value}
+                          to={`/jobs?country=${c.value}`}
+                          className="flex items-center gap-3 px-3 py-2.5 text-sm font-bold text-slate-700 dark:text-gray-200 hover:text-brand-gold hover:bg-brand-gold/5 transition-all rounded-xl"
+                          onClick={() => setLabourOpen(false)}
+                        >
+                          <span className="text-xl filter grayscale group-hover:grayscale-0 transition-all">{c.label.split(" ")[0]}</span>
+                          <span className="truncate">{c.label.split(" ").slice(1).join(" ")}</span>
+                        </Link>
+                      ))}
+                    </div>
+                    <div className="border-t border-slate-100 dark:border-white/5 mx-2 mt-1 pt-2">
                       <Link
                         to="/jobs"
-                        className="flex items-center gap-2 px-3 py-2 text-sm font-semibold text-amber-600 dark:text-brand-gold hover:bg-amber-50 dark:hover:bg-brand-gold/5 transition-colors rounded-xl"
+                        className="flex items-center justify-center gap-2 px-3 py-2.5 text-xs font-black uppercase tracking-widest text-brand-gold hover:bg-brand-gold/10 transition-colors rounded-xl bg-brand-gold/5"
                         onClick={() => setLabourOpen(false)}
                       >
                         {lang === "vi"
-                          ? "Xem tất cả việc làm →"
-                          : "View all jobs →"}
+                          ? "Tất cả việc làm"
+                          : "Explore All"}
                       </Link>
                     </div>
                   </div>
@@ -259,13 +265,25 @@ export default function Header() {
               )}
             </div>
 
+            {/* Thông tin */}
+            <Link
+              to="/handbook"
+              className={`px-3.5 py-2 text-sm font-semibold rounded-xl transition-all ${
+                isActive("/handbook")
+                  ? "text-amber-700 bg-amber-50 dark:text-brand-gold dark:bg-brand-gold/10"
+                  : "text-slate-600 dark:text-gray-300 hover:text-amber-600 hover:bg-amber-50 dark:hover:text-brand-gold dark:hover:bg-brand-gold/10"
+              }`}
+            >
+              {lang === "vi" ? "Thông tin" : "Information"}
+            </Link>
+
             {/* Tin tức */}
             <Link
               to="/news"
-              className={`px-3.5 py-2 text-sm font-semibold rounded-xl transition-all ${
+              className={`px-3.5 py-2 text-sm font-bold rounded-xl transition-all ${
                 isActive("/news")
-                  ? "text-amber-700 bg-amber-50 dark:text-brand-gold dark:bg-brand-gold/10"
-                  : "text-slate-600 dark:text-gray-300 hover:text-amber-600 hover:bg-amber-50 dark:hover:text-brand-gold dark:hover:bg-brand-gold/10"
+                  ? "text-brand-gold bg-brand-gold/10"
+                  : "text-slate-600 dark:text-gray-300 hover:text-brand-gold hover:bg-brand-gold/5"
               }`}
             >
               {lang === "vi" ? "Tin tức" : "News"}
@@ -274,10 +292,10 @@ export default function Header() {
             {/* Liên hệ */}
             <Link
               to="/contact"
-              className={`px-3.5 py-2 text-sm font-semibold rounded-xl transition-all ${
+              className={`px-3.5 py-2 text-sm font-bold rounded-xl transition-all ${
                 isActive("/contact")
-                  ? "text-amber-700 bg-amber-50 dark:text-brand-gold dark:bg-brand-gold/10"
-                  : "text-slate-600 dark:text-gray-300 hover:text-amber-600 hover:bg-amber-50 dark:hover:text-brand-gold dark:hover:bg-brand-gold/10"
+                  ? "text-brand-gold bg-brand-gold/10"
+                  : "text-slate-600 dark:text-gray-300 hover:text-brand-gold hover:bg-brand-gold/5"
               }`}
             >
               {lang === "vi" ? "Liên hệ" : "Contact"}

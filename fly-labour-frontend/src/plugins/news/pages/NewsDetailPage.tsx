@@ -145,9 +145,10 @@ export default function NewsDetailPage() {
 
         {/* Main Content Body */}
         <div className="prose prose-slate dark:prose-invert max-w-none">
-          <div className="text-slate-700 dark:text-gray-300 leading-[1.8] text-base md:text-lg font-medium whitespace-pre-line">
-            {article.content}
-          </div>
+          <div 
+            className="text-slate-700 dark:text-gray-300 leading-[1.8] text-base md:text-lg font-medium"
+            dangerouslySetInnerHTML={{ __html: article.content }}
+          />
         </div>
 
         {/* Footer Navigation */}

@@ -154,6 +154,13 @@ export const uploadApi = {
     fd.append('file', file)
     return api.post('/upload/cv', fd, { headers: { 'Content-Type': 'multipart/form-data' } })
   },
+  image: (file: File): Promise<{ url: string; filename: string }> => {
+    const fd = new FormData()
+    fd.append('file', file)
+    return api.post<{ url: string; filename: string }>('/upload/image', fd, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }).then(r => r.data)
+  },
 }
 
 // ── Chores ────────────────────────────────────
