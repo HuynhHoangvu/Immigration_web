@@ -39,6 +39,10 @@ __decorate([
     __metadata("design:type", String)
 ], News.prototype, "image", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ default: 'news' }),
+    __metadata("design:type", String)
+], News.prototype, "type", void 0);
+__decorate([
     (0, typeorm_1.Column)({ default: true }),
     __metadata("design:type", Boolean)
 ], News.prototype, "isPublished", void 0);

@@ -238,7 +238,7 @@ export default function AdminJobsPage() {
           req_other: parsed.v2.other || "",
           req_checklist: parsed.v2.checklist || [],
           req_transport: parsed.v2.transport || "",
-          requirements: parsed.v2.raw || job.requirements
+          requirements: parsed.v2.raw || ""
         }));
       }
       if (job.benefits?.startsWith('{"v2":')) {
@@ -247,7 +247,7 @@ export default function AdminJobsPage() {
           ...f,
           ben_departure: parsed.v2.departure || "",
           ben_checklist: parsed.v2.checklist || [],
-          benefits: parsed.v2.raw || job.benefits
+          benefits: parsed.v2.raw || ""
         }));
       }
     } catch { /* ignore if not JSON */ }

@@ -5,6 +5,7 @@ export declare class News {
     excerpt: string;
     content: string;
     image: string;
+    type: 'news' | 'handbook';
     isPublished: boolean;
     createdAt: Date;
     updatedAt: Date;

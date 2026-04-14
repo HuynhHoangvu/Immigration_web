@@ -53,16 +53,27 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Boolean)
 ], CreateNewsDto.prototype, "isPublished", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ required: false, enum: ['news', 'handbook'] }),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateNewsDto.prototype, "type", void 0);
 let NewsService = class NewsService {
     constructor(newsRepo, gcsService) {
         this.newsRepo = newsRepo;
         this.gcsService = gcsService;
     }
     findAll() {
-        return this.newsRepo.find({ where: { isPublished: true }, order: { createdAt: 'DESC' }, take: 10 });
+        return this.newsRepo.find({ where: { isPublished: true, type: 'news' }, order: { createdAt: 'DESC' }, take: 20 });
+    }
+    findAllHandbook() {
+        return this.newsRepo.find({ where: { isPublished: true, type: 'handbook' }, order: { createdAt: 'DESC' }, take: 50 });
     }
     findAllAdmin() {
-        return this.newsRepo.find({ order: { createdAt: 'DESC' } });
+        return this.newsRepo.find({ where: { type: 'news' }, order: { createdAt: 'DESC' } });
+    }
+    findAllHandbookAdmin() {
+        return this.newsRepo.find({ where: { type: 'handbook' }, order: { createdAt: 'DESC' } });
     }
     async findOne(slug) {
         const n = await this.newsRepo.findOne({ where: { slug } });
@@ -73,10 +84,11 @@ let NewsService = class NewsService {
     async create(dto, file) {
         const n = this.newsRepo.create({
             ...dto,
+            type: dto.type ?? 'news',
             isPublished: this.parseBoolean(dto.isPublished),
         });
         if (file)
-            n.image = await this.saveFile(file);
+            n.image = await this.saveFile(file, dto.type ?? 'news');
         return this.newsRepo.save(n);
     }
     async update(id, dto, file) {
@@ -88,7 +100,7 @@ let NewsService = class NewsService {
             isPublished: dto.isPublished !== undefined ? this.parseBoolean(dto.isPublished) : n.isPublished,
         });
         if (file)
-            n.image = await this.saveFile(file);
+            n.image = await this.saveFile(file, n.type);
         return this.newsRepo.save(n);
     }
     async remove(id) {
@@ -105,8 +117,9 @@ let NewsService = class NewsService {
             return value === 'true' || value === '1';
         return !!value;
     }
-    async saveFile(file) {
-        return this.gcsService.uploadFile(file, 'news');
+    async saveFile(file, type) {
+        const folder = type === 'handbook' ? 'handbook' : 'news';
+        return this.gcsService.uploadFile(file, folder);
     }
 };
 exports.NewsService = NewsService;

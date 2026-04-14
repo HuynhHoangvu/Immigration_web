@@ -13,6 +13,7 @@ export class CreateNewsDto {
   @ApiProperty({ required: false }) @IsOptional() content?: string
   @ApiProperty({ required: false }) @IsOptional() image?: string
   @ApiProperty({ required: false }) @IsOptional() isPublished?: boolean
+  @ApiProperty({ required: false, enum: ['news', 'handbook'] }) @IsOptional() type?: 'news' | 'handbook'
 }
 
 @Injectable()
@@ -22,12 +23,22 @@ export class NewsService {
     private gcsService: GcsService,
   ) {}
 
+  // ── Public ────────────────────────────────────────────────────────────────
   findAll() {
-    return this.newsRepo.find({ where: { isPublished: true }, order: { createdAt: 'DESC' }, take: 10 })
+    return this.newsRepo.find({ where: { isPublished: true, type: 'news' }, order: { createdAt: 'DESC' }, take: 20 })
   }
 
+  findAllHandbook() {
+    return this.newsRepo.find({ where: { isPublished: true, type: 'handbook' }, order: { createdAt: 'DESC' }, take: 50 })
+  }
+
+  // ── Admin ─────────────────────────────────────────────────────────────────
   findAllAdmin() {
-    return this.newsRepo.find({ order: { createdAt: 'DESC' } })
+    return this.newsRepo.find({ where: { type: 'news' }, order: { createdAt: 'DESC' } })
+  }
+
+  findAllHandbookAdmin() {
+    return this.newsRepo.find({ where: { type: 'handbook' }, order: { createdAt: 'DESC' } })
   }
 
   async findOne(slug: string) {
@@ -39,9 +50,10 @@ export class NewsService {
   async create(dto: CreateNewsDto, file?: Express.Multer.File) {
     const n = this.newsRepo.create({
       ...dto,
+      type: dto.type ?? 'news',
       isPublished: this.parseBoolean(dto.isPublished),
     })
-    if (file) n.image = await this.saveFile(file)
+    if (file) n.image = await this.saveFile(file, dto.type ?? 'news')
     return this.newsRepo.save(n)
   }
 
@@ -52,7 +64,7 @@ export class NewsService {
       ...dto,
       isPublished: dto.isPublished !== undefined ? this.parseBoolean(dto.isPublished) : n.isPublished,
     })
-    if (file) n.image = await this.saveFile(file)
+    if (file) n.image = await this.saveFile(file, n.type)
     return this.newsRepo.save(n)
   }
 
@@ -69,7 +81,8 @@ export class NewsService {
     return !!value
   }
 
-  private async saveFile(file: Express.Multer.File): Promise<string> {
-    return this.gcsService.uploadFile(file, 'news')
+  private async saveFile(file: Express.Multer.File, type: string): Promise<string> {
+    const folder = type === 'handbook' ? 'handbook' : 'news'
+    return this.gcsService.uploadFile(file, folder)
   }
 }

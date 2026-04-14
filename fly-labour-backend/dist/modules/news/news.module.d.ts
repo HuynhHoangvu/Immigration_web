@@ -4,7 +4,9 @@ export declare class NewsController {
     private newsService;
     constructor(newsService: NewsService);
     findAll(): Promise<News[]>;
+    findAllHandbook(): Promise<News[]>;
     findAllAdmin(): Promise<News[]>;
+    findAllHandbookAdmin(): Promise<News[]>;
     findOne(slug: string): Promise<News>;
     create(dto: CreateNewsDto, file?: Express.Multer.File): Promise<News>;
     update(id: string, dto: Partial<CreateNewsDto>, file?: Express.Multer.File): Promise<News>;

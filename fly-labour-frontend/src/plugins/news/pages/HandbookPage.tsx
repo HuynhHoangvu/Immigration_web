@@ -25,11 +25,9 @@ export default function HandbookPage() {
     // For now, we use the same news API but we could filter by category if the backend supported it.
     // Or we filter by keywords in title for "Handbook/Cẩm nang"
     newsApi
-      .getAll()
+      .getAllHandbook()
       .then((r) => {
-        const all = r.data || [];
-        // Optional: Filter for handbook items specifically if needed
-        setItems(all);
+        setItems(r.data || []);
       })
       .catch(() => {})
       .finally(() => setLoading(false));

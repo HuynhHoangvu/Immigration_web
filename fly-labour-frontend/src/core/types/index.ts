@@ -91,6 +91,7 @@ export interface News {
   content: string
   image?: string
   isPublished: boolean
+  type: 'news' | 'handbook'
   createdAt: string
 }
 

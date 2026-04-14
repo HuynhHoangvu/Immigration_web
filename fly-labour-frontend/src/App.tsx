@@ -45,6 +45,7 @@ import AdminSettingsPage from "@/admin/pages/AdminSettingsPage";
 import AdminChoresPage from "@/admin/pages/AdminChoresPage";
 import AdminContactsPage from "@/admin/pages/AdminContactsPage";
 import AdminPoliciesPage from "@/admin/pages/AdminPoliciesPage";
+import AdminHandbookPage from "@/admin/pages/AdminHandbookPage";
 
 // ── Bootstrap components ──────────────────────────────────────────────────────
 function ContentLoader() {
@@ -136,6 +137,7 @@ export default function App() {
           <Route path="settings" element={<AdminSettingsPage />} />
           <Route path="chores" element={<AdminChoresPage />} />
           <Route path="contacts" element={<AdminContactsPage />} />
+          <Route path="handbook" element={<AdminHandbookPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

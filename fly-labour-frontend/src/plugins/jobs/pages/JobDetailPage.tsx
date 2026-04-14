@@ -469,13 +469,14 @@ export default function JobDetailPage() {
                                     </span>
                                   </div>
                                 ))}
-                                {!structReq && job.requirements && (
-                                  <p
-                                    className={`${bodyTextClasses} whitespace-pre-line`}
-                                  >
-                                    {job.requirements}
-                                  </p>
-                                )}
+                                {!structReq && job.requirements &&
+                                  !job.requirements.startsWith('{"v2":') && (
+                                    <p
+                                      className={`${bodyTextClasses} whitespace-pre-line`}
+                                    >
+                                      {job.requirements}
+                                    </p>
+                                  )}
                               </div>
                             </td>
                           </tr>
@@ -512,7 +513,7 @@ export default function JobDetailPage() {
                               Quyền lợi
                             </td>
                             <td className="p-4">
-                              {structBen?.raw && (
+                              {structBen?.raw && !structBen.raw.startsWith('{"v2":') && (
                                 <p
                                   className={`${bodyTextClasses} mb-4 whitespace-pre-line`}
                                 >
@@ -537,11 +538,12 @@ export default function JobDetailPage() {
                                   </div>
                                 ))}
                                 {(!structBen || !structBen.checklist?.length) &&
-                                  job.benefits && (
+                                  job.benefits &&
+                                  !job.benefits.startsWith('{"v2":') && (
                                     <p
                                       className={`${bodyTextClasses} whitespace-pre-line`}
                                     >
-                                      {structBen?.raw || job.benefits}
+                                      {job.benefits}
                                     </p>
                                   )}
                               </div>

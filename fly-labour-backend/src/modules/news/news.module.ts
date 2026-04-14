@@ -18,13 +18,22 @@ export class NewsController {
   constructor(private newsService: NewsService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Tin tức đã publish' })
+  @ApiOperation({ summary: 'Tin tức đã publish (type=news)' })
   findAll() { return this.newsService.findAll() }
+
+  @Get('handbook')
+  @ApiOperation({ summary: 'Cẩm nang đã publish (type=handbook)' })
+  findAllHandbook() { return this.newsService.findAllHandbook() }
 
   @Get('admin/all')
   @UseGuards(JwtAuthGuard, AdminGuard)
   @ApiBearerAuth('JWT')
   findAllAdmin() { return this.newsService.findAllAdmin() }
+
+  @Get('admin/handbook')
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  @ApiBearerAuth('JWT')
+  findAllHandbookAdmin() { return this.newsService.findAllHandbookAdmin() }
 
   @Get(':slug')
   @ApiOperation({ summary: 'Chi tiết bài viết theo slug' })

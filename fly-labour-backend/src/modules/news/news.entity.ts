@@ -20,6 +20,9 @@ export class News {
   @Column({ nullable: true })
   image: string
 
+  @Column({ default: 'news' })
+  type: 'news' | 'handbook'
+
   @Column({ default: true })
   isPublished: boolean
 

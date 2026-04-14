@@ -124,12 +124,17 @@ export const employerApi = {
 
 // ── News ──────────────────────────────────────
 export const newsApi = {
-  getAll:     () => api.get('/news'),
-  getAllAdmin: () => api.get('/news/admin/all'),
-  getOne:     (slug: string) => api.get(`/news/${slug}`),
-  create:     (data: FormData) => api.post('/news', data),
-  update:     (id: string, data: FormData) => api.patch(`/news/${id}`, data),
-  remove:     (id: string) => api.delete(`/news/${id}`),
+  // News (type=news)
+  getAll:              () => api.get('/news'),
+  getAllAdmin:          () => api.get('/news/admin/all'),
+  // Handbook (type=handbook)
+  getAllHandbook:       () => api.get('/news/handbook'),
+  getAllHandbookAdmin:  () => api.get('/news/admin/handbook'),
+  // Shared
+  getOne:  (slug: string) => api.get(`/news/${slug}`),
+  create:  (data: FormData) => api.post('/news', data),
+  update:  (id: string, data: FormData) => api.patch(`/news/${id}`, data),
+  remove:  (id: string) => api.delete(`/news/${id}`),
 }
 
 // ── Contact ───────────────────────────────────

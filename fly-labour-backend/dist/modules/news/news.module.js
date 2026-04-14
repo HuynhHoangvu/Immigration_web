@@ -28,7 +28,9 @@ let NewsController = class NewsController {
         this.newsService = newsService;
     }
     findAll() { return this.newsService.findAll(); }
+    findAllHandbook() { return this.newsService.findAllHandbook(); }
     findAllAdmin() { return this.newsService.findAllAdmin(); }
+    findAllHandbookAdmin() { return this.newsService.findAllHandbookAdmin(); }
     findOne(slug) { return this.newsService.findOne(slug); }
     create(dto, file) {
         return this.newsService.create(dto, file);
@@ -41,11 +43,18 @@ let NewsController = class NewsController {
 exports.NewsController = NewsController;
 __decorate([
     (0, common_1.Get)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Tin tức đã publish' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Tin tức đã publish (type=news)' }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], NewsController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('handbook'),
+    (0, swagger_1.ApiOperation)({ summary: 'Cẩm nang đã publish (type=handbook)' }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], NewsController.prototype, "findAllHandbook", null);
 __decorate([
     (0, common_1.Get)('admin/all'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, admin_guard_1.AdminGuard),
@@ -54,6 +63,14 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], NewsController.prototype, "findAllAdmin", null);
+__decorate([
+    (0, common_1.Get)('admin/handbook'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, admin_guard_1.AdminGuard),
+    (0, swagger_1.ApiBearerAuth)('JWT'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], NewsController.prototype, "findAllHandbookAdmin", null);
 __decorate([
     (0, common_1.Get)(':slug'),
     (0, swagger_1.ApiOperation)({ summary: 'Chi tiết bài viết theo slug' }),

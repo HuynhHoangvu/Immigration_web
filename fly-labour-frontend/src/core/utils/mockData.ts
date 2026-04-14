@@ -95,9 +95,9 @@ export const MOCK_JOBS: Job[] = [
 ]
 
 export const MOCK_NEWS: News[] = [
-  { id: '1', title: 'Chính sách visa lao động Úc 2025 có gì mới?', slug: 'visa-uc-2025', excerpt: 'Chính phủ Úc vừa công bố một số thay đổi quan trọng trong chính sách visa lao động năm 2025...', content: '', isPublished: true, createdAt: '2025-01-10T00:00:00Z', image: '' },
-  { id: '2', title: 'Top 5 ngành nghề dễ xin việc tại Canada năm 2025', slug: 'nganh-nghe-canada-2025', excerpt: 'Canada đang thiếu hụt lao động trầm trọng trong nhiều ngành. Đây là cơ hội vàng cho lao động Việt Nam...', content: '', isPublished: true, createdAt: '2025-01-18T00:00:00Z', image: '' },
-  { id: '3', title: 'Kinh nghiệm chuẩn bị hồ sơ xin việc tại New Zealand', slug: 'ho-so-new-zealand', excerpt: 'Bộ hồ sơ hoàn chỉnh là chìa khóa để được nhà tuyển dụng New Zealand chú ý. Fly Labour chia sẻ kinh nghiệm...', content: '', isPublished: true, createdAt: '2025-02-01T00:00:00Z', image: '' },
+  { id: '1', title: 'Chính sách visa lao động Úc 2025 có gì mới?', slug: 'visa-uc-2025', excerpt: 'Chính phủ Úc vừa công bố một số thay đổi quan trọng trong chính sách visa lao động năm 2025...', content: '', isPublished: true, type: 'news', createdAt: '2025-01-10T00:00:00Z', image: '' },
+  { id: '2', title: 'Top 5 ngành nghề dễ xin việc tại Canada năm 2025', slug: 'nganh-nghe-canada-2025', excerpt: 'Canada đang thiếu hụt lao động trầm trọng trong nhiều ngành. Đây là cơ hội vàng cho lao động Việt Nam...', content: '', isPublished: true, type: 'news', createdAt: '2025-01-18T00:00:00Z', image: '' },
+  { id: '3', title: 'Kinh nghiệm chuẩn bị hồ sơ xin việc tại New Zealand', slug: 'ho-so-new-zealand', excerpt: 'Bộ hồ sơ hoàn chỉnh là chìa khóa để được nhà tuyển dụng New Zealand chú ý. Fly Labour chia sẻ kinh nghiệm...', content: '', isPublished: true, type: 'news', createdAt: '2025-02-01T00:00:00Z', image: '' },
 ]
 
 export const MOCK_APPLICATIONS: Application[] = [
