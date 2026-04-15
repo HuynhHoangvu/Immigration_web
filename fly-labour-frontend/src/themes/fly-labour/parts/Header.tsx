@@ -301,6 +301,16 @@ export default function Header() {
               {lang === "vi" ? "Liên hệ" : "Contact"}
             </Link>
 
+            {/* Test tiếng Anh */}
+            <a
+              href="https://flytest.up.railway.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3.5 py-2 text-sm font-bold rounded-xl transition-all text-blue-600 dark:text-blue-400 hover:text-blue-700 hover:bg-blue-50 dark:hover:text-blue-300 dark:hover:bg-blue-400/10"
+            >
+              {lang === "vi" ? "Test tiếng Anh" : "English Test"}
+            </a>
+
             {/* Số điện thoại */}
             <div className="ml-2 pl-3 border-l border-slate-200 dark:border-white/10">
               <a
@@ -499,6 +509,15 @@ export default function Header() {
           >
             {lang === "vi" ? "Liên hệ" : "Contact"}
           </Link>
+
+          <a
+            href="https://flytest.up.railway.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block px-6 py-4 text-blue-600 dark:text-blue-400 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-400/10 transition-colors border-b border-slate-100 dark:border-white/5 text-sm font-bold"
+          >
+            {lang === "vi" ? "Test tiếng Anh" : "English Test"}
+          </a>
 
           {/* Số điện thoại Mobile */}
           <a
