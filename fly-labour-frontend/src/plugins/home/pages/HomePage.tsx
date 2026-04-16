@@ -19,6 +19,7 @@ import WhyChooseUs from "@/themes/fly-labour/parts/home/WhyChooseUs";
 import NewsSection from "@/themes/fly-labour/parts/home/NewsSection";
 import EmployerCTASection from "@/themes/fly-labour/parts/home/EmployerCTASection";
 import CtaSection from "@/themes/fly-labour/parts/home/CtaSection";
+import EnglishTestSection from "@/themes/fly-labour/parts/home/EnglishTestSection";
 import { DraggableSection } from "@/admin/components/DraggableSection";
 import { useEditModeStore } from "@/core/store/editModeStore";
 import { useSectionManager } from "@/core/hooks/useSectionManager";
@@ -30,8 +31,9 @@ const SECTION_COMPONENTS: Record<string, React.ReactNode> = {
   latestjobs: <LatestJobsSection />,
   why:        <WhyChooseUs />,
   employer:   <EmployerCTASection />,
-  news:       <NewsSection />,
-  cta:        <CtaSection />,
+  news:        <NewsSection />,
+  englishtest: <EnglishTestSection />,
+  cta:         <CtaSection />,
 }
 
 export default function HomePage() {

@@ -222,19 +222,19 @@ export default function JobDetailPage() {
   // 1. Tiêu đề chính: Đậm, rõ ràng
   const sectionTitleClasses =
     "font-bold text-lg md:text-xl text-slate-900 dark:text-white";
-  // 2. Nội dung đoạn văn: Chữ thường (font-normal), màu xám dịu mắt, khoảng cách dòng thoáng
+  // 2. Nội dung đoạn văn
   const bodyTextClasses =
-    "text-sm md:text-base font-normal text-slate-600 dark:text-gray-300 leading-relaxed";
-  // 3. Nhãn (Label form): Hơi đậm nhẹ để phân tách với input
-  const labelClasses = "text-sm font-medium text-slate-700 dark:text-gray-300";
-  // 4. Giá trị động (Dữ liệu API): Đậm vừa (semibold) để nổi bật hơn Label
+    "text-sm font-normal text-slate-900 dark:text-gray-100 leading-relaxed";
+  // 3. Nhãn (Label form)
+  const labelClasses = "text-sm font-medium text-slate-900 dark:text-gray-100";
+  // 4. Giá trị động (Dữ liệu API)
   const valueClasses = "text-sm font-semibold text-slate-900 dark:text-white";
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#0d1117] transition-colors duration-300 pt-20">
       {/* Breadcrumb */}
       <div className="border-b border-slate-200 dark:border-brand-border bg-white/60 dark:bg-brand-card/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center gap-2 text-sm font-normal text-slate-500 dark:text-gray-400">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-gray-200">
           <Link
             to="/"
             className="hover:text-slate-900 dark:hover:text-white transition-colors"
@@ -258,13 +258,6 @@ export default function JobDetailPage() {
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
-            <Link
-              to="/jobs"
-              className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white transition-colors"
-            >
-              <ArrowLeft size={16} /> {d.back}
-            </Link>
-
             {/* Job Header Card */}
             <div className={cardClasses}>
               <div className="relative h-52 md:h-64 bg-slate-200 dark:bg-brand-dark overflow-hidden">
@@ -279,21 +272,21 @@ export default function JobDetailPage() {
                 />
 
                 <div className="absolute top-4 left-4 flex gap-2 flex-wrap">
-                  <span className="badge-country font-medium backdrop-blur-sm bg-black/50 text-white">
+                  <span className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-full bg-black/70 text-white backdrop-blur-sm border border-white/30 shadow-lg">
                     {flag} {countryName}
                   </span>
-                  <span className="bg-black/50 backdrop-blur-sm font-medium text-white text-xs px-3 py-1 rounded-full border border-white/20">
+                  <span className="inline-flex items-center text-xs font-bold px-3 py-1.5 rounded-full bg-black/70 text-white backdrop-blur-sm border border-white/30 shadow-lg">
                     {getJobTypeLabel(job.jobType)}
                   </span>
                 </div>
                 <div className="absolute top-4 right-4 flex gap-2">
                   {job.isHot && (
-                    <span className="badge-hot font-bold backdrop-blur-sm bg-red-500/90 text-white">
+                    <span className="inline-flex items-center text-xs font-bold px-3 py-1.5 rounded-full bg-red-600 text-white shadow-lg">
                       🔥 Hot
                     </span>
                   )}
                   {job.isFeatured && (
-                    <span className="bg-brand-gold/90 text-slate-900 text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
+                    <span className="inline-flex items-center text-xs font-bold px-3 py-1.5 rounded-full bg-amber-400 text-slate-900 shadow-lg">
                       {d.featured}
                     </span>
                   )}
@@ -313,7 +306,7 @@ export default function JobDetailPage() {
                   <span className="badge-country font-medium border dark:border-transparent">
                     {flag} {countryName}
                   </span>
-                  <span className="text-xs font-medium px-3 py-1 rounded-full border text-slate-600 dark:text-gray-300 bg-slate-100 dark:bg-gray-700/40 border-slate-200 dark:border-gray-600">
+                  <span className="text-xs font-medium px-3 py-1 rounded-full border text-slate-800 dark:text-gray-100 bg-slate-100 dark:bg-gray-700/40 border-slate-200 dark:border-gray-600">
                     {getJobTypeLabel(job.jobType)}
                   </span>
                 </div>
@@ -322,17 +315,18 @@ export default function JobDetailPage() {
                   {job.title}
                 </h1>
                 {job.company && (
-                  <div className="flex items-center gap-2 text-slate-500 dark:text-gray-400 text-base font-medium mb-6">
+                  <div className="flex items-center gap-2 text-slate-800 dark:text-gray-100 text-base font-semibold mb-6">
                     <Building2 size={18} /> {job.company}
                   </div>
                 )}
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-y-6 gap-x-4 border-t border-slate-100 dark:border-white/5 pt-6">
-                  <div>
-                    <p className="text-xs font-medium text-slate-500 dark:text-gray-400 uppercase tracking-wide mb-1.5">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 border-t border-slate-100 dark:border-white/5 pt-5">
+                  {/* Thu nhập — chiếm full width trên mobile nếu dài */}
+                  <div className="col-span-2 md:col-span-1">
+                    <p className="text-xs font-medium text-slate-500 dark:text-gray-400 mb-1">
                       {d.salary}
                     </p>
-                    <p className="text-amber-600 dark:text-brand-gold font-bold text-base">
+                    <p className="text-amber-600 dark:text-brand-gold font-bold text-sm leading-snug break-words">
                       {formatSalary(
                         job.salaryMin,
                         job.salaryMax,
@@ -342,28 +336,28 @@ export default function JobDetailPage() {
                   </div>
                   {job.location && (
                     <div>
-                      <p className="text-xs font-medium text-slate-500 dark:text-gray-400 uppercase tracking-wide mb-1.5">
+                      <p className="text-xs font-medium text-slate-500 dark:text-gray-400 mb-1">
                         {d.location}
                       </p>
-                      <p className={valueClasses}>{job.location}</p>
+                      <p className="text-sm font-semibold text-slate-900 dark:text-white">{job.location}</p>
                     </div>
                   )}
                   {job.slots && (
                     <div>
-                      <p className="text-xs font-medium text-slate-500 dark:text-gray-400 uppercase tracking-wide mb-1.5">
+                      <p className="text-xs font-medium text-slate-500 dark:text-gray-400 mb-1">
                         {d.slots}
                       </p>
-                      <p className={valueClasses}>
+                      <p className="text-sm font-semibold text-slate-900 dark:text-white">
                         {job.slots} {d.slots_label}
                       </p>
                     </div>
                   )}
                   {job.deadline && (
                     <div>
-                      <p className="text-xs font-medium text-slate-500 dark:text-gray-400 uppercase tracking-wide mb-1.5">
+                      <p className="text-xs font-medium text-slate-500 dark:text-gray-400 mb-1">
                         {d.deadline}
                       </p>
-                      <p className={valueClasses}>{formatDate(job.deadline)}</p>
+                      <p className="text-sm font-semibold text-slate-900 dark:text-white">{formatDate(job.deadline)}</p>
                     </div>
                   )}
                 </div>
@@ -422,28 +416,26 @@ export default function JobDetailPage() {
                               key={idx}
                               className="transition-colors hover:bg-slate-50 dark:hover:bg-white/5"
                             >
-                              {/* Label nhạt màu, chữ thường */}
-                              <td className="w-1/3 p-4 text-sm font-normal text-slate-500 dark:text-gray-400 bg-slate-50/50 dark:bg-transparent">
+                              <td className="w-1/3 p-4 text-sm font-medium text-slate-700 dark:text-gray-200">
                                 {row.label}
                               </td>
-                              {/* Dữ liệu đậm hơn */}
-                              <td className="p-4 text-sm font-medium text-slate-900 dark:text-gray-100">
+                              <td className="p-4 text-sm font-semibold text-slate-900 dark:text-white">
                                 {row.value || "—"}
                               </td>
                             </tr>
                           ))}
                           {structReq?.transport && (
                             <tr className="transition-colors hover:bg-slate-50 dark:hover:bg-white/5">
-                              <td className="p-4 text-sm font-normal text-slate-500 dark:text-gray-400 bg-slate-50/50 dark:bg-transparent">
+                              <td className="p-4 text-sm font-medium text-slate-700 dark:text-gray-200">
                                 Phương tiện
                               </td>
-                              <td className="p-4 text-sm font-medium text-slate-900 dark:text-gray-100">
+                              <td className="p-4 text-sm font-semibold text-slate-900 dark:text-white">
                                 {structReq.transport}
                               </td>
                             </tr>
                           )}
                           <tr>
-                            <td className="p-4 text-sm font-normal text-slate-500 dark:text-gray-400 bg-slate-50/50 dark:bg-transparent align-top">
+                            <td className="p-4 text-sm font-medium text-slate-700 dark:text-gray-200 align-top">
                               Yêu cầu khác
                             </td>
                             <td className="p-4">
@@ -466,7 +458,7 @@ export default function JobDetailPage() {
                           </tr>
                           {structReq?.checklist && structReq.checklist.length > 0 && (
                             <tr>
-                              <td className="p-4 text-sm font-normal text-slate-500 dark:text-gray-400 bg-slate-50/50 dark:bg-transparent align-top">
+                              <td className="p-4 text-sm font-medium text-slate-700 dark:text-gray-200 align-top">
                                 Các hồ sơ cần chuẩn bị
                               </td>
                               <td className="p-4">
@@ -482,7 +474,7 @@ export default function JobDetailPage() {
                                           className="text-amber-600 dark:text-brand-gold"
                                         />
                                       </div>
-                                      <span className={bodyTextClasses}>
+                                      <span className="text-sm font-medium text-slate-900 dark:text-gray-100 leading-relaxed">
                                         {item}
                                       </span>
                                     </div>
@@ -511,23 +503,21 @@ export default function JobDetailPage() {
                         <tbody className="divide-y divide-slate-100 dark:divide-white/5">
                           {structBen?.departure && (
                             <tr className="transition-colors hover:bg-slate-50 dark:hover:bg-white/5">
-                              <td className="w-1/3 p-4 text-sm font-normal text-slate-500 dark:text-gray-400 bg-slate-50/50 dark:bg-transparent">
+                              <td className="w-1/3 p-4 text-sm font-medium text-slate-700 dark:text-gray-200">
                                 Thời gian xuất cảnh
                               </td>
-                              <td className="p-4 text-sm font-medium text-slate-900 dark:text-gray-100">
+                              <td className="p-4 text-sm font-semibold text-slate-900 dark:text-white">
                                 {structBen.departure}
                               </td>
                             </tr>
                           )}
                           <tr>
-                            <td className="w-1/3 p-4 text-sm font-normal text-slate-500 dark:text-gray-400 bg-slate-50/50 dark:bg-transparent align-top">
+                            <td className="w-1/3 p-4 text-sm font-medium text-slate-700 dark:text-gray-200 align-top">
                               Quyền lợi
                             </td>
                             <td className="p-4">
                               {structBen?.raw && !structBen.raw.startsWith('{"v2":') && (
-                                <p
-                                  className={`${bodyTextClasses} mb-4 whitespace-pre-line`}
-                                >
+                                <p className="text-sm font-medium text-slate-900 dark:text-gray-100 leading-relaxed mb-4 whitespace-pre-line">
                                   {structBen.raw}
                                 </p>
                               )}
@@ -543,7 +533,7 @@ export default function JobDetailPage() {
                                         className="text-green-600"
                                       />
                                     </div>
-                                    <span className={bodyTextClasses}>
+                                    <span className="text-sm font-medium text-slate-900 dark:text-gray-100 leading-relaxed">
                                       {item}
                                     </span>
                                   </div>
@@ -551,9 +541,7 @@ export default function JobDetailPage() {
                                 {(!structBen || !structBen.checklist?.length) &&
                                   job.benefits &&
                                   !job.benefits.startsWith('{"v2":') && (
-                                    <p
-                                      className={`${bodyTextClasses} whitespace-pre-line`}
-                                    >
+                                    <p className="text-sm font-medium text-slate-900 dark:text-gray-100 leading-relaxed whitespace-pre-line">
                                       {job.benefits}
                                     </p>
                                   )}
@@ -734,7 +722,7 @@ export default function JobDetailPage() {
                         {uploadingCv ? (
                           <>
                             <span className="w-5 h-5 border-2 border-amber-500 dark:border-brand-gold border-t-transparent rounded-full animate-spin shrink-0" />
-                            <span className="text-sm font-medium text-slate-600 dark:text-gray-300">
+                            <span className="text-sm font-medium text-slate-800 dark:text-gray-100">
                               Đang tải lên hệ thống...
                             </span>
                           </>
@@ -801,7 +789,7 @@ export default function JobDetailPage() {
                 <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
                   {d.successTitle}
                 </h3>
-                <p className="text-base font-normal text-slate-600 dark:text-gray-400">
+                <p className="text-base font-normal text-slate-800 dark:text-gray-100">
                   {d.successSub}
                 </p>
               </div>
@@ -812,14 +800,14 @@ export default function JobDetailPage() {
           <div className="space-y-6">
             <div className={`${cardClasses} p-6 sticky top-24`}>
               <div className="text-center mb-6">
-                <p className="text-amber-600 dark:text-brand-gold font-bold text-2xl md:text-3xl mb-1">
+                <p className="text-amber-600 dark:text-brand-gold font-bold text-lg leading-snug mb-1 break-words">
                   {formatSalary(
                     job.salaryMin,
                     job.salaryMax,
                     job.salaryCurrency,
                   )}
                 </p>
-                <p className="text-slate-500 dark:text-gray-400 font-normal text-sm">
+                <p className="text-slate-700 dark:text-gray-200 font-medium text-sm">
                   {d.estSalary}
                 </p>
               </div>
@@ -844,34 +832,34 @@ export default function JobDetailPage() {
                 </div>
               )}
 
-              <p className="text-center text-sm font-normal text-slate-500 dark:text-gray-400 mt-4">
+              <p className="text-center text-sm font-medium text-slate-700 dark:text-gray-200 mt-4">
                 {d.applyFree}
               </p>
 
               <div className="mt-6 pt-5 border-t border-slate-200 dark:border-brand-border space-y-3 text-sm">
                 <div className="flex justify-between items-center">
-                  <span className="font-normal text-slate-500 dark:text-gray-400">
+                  <span className="font-medium text-slate-700 dark:text-gray-200">
                     {d.posted}
                   </span>
-                  <span className="font-medium text-slate-900 dark:text-white">
+                  <span className="font-semibold text-slate-900 dark:text-white">
                     {formatDate(job.createdAt)}
                   </span>
                 </div>
                 {job.deadline && (
                   <div className="flex justify-between items-center">
-                    <span className="font-normal text-slate-500 dark:text-gray-400">
+                    <span className="font-medium text-slate-700 dark:text-gray-200">
                       {d.closingDate}
                     </span>
-                    <span className="font-medium text-amber-600 dark:text-brand-orange">
+                    <span className="font-semibold text-amber-600 dark:text-brand-orange">
                       {formatDate(job.deadline)}
                     </span>
                   </div>
                 )}
                 <div className="flex justify-between items-center">
-                  <span className="font-normal text-slate-500 dark:text-gray-400">
+                  <span className="font-medium text-slate-700 dark:text-gray-200">
                     {d.views}
                   </span>
-                  <span className="font-medium text-slate-900 dark:text-white flex items-center gap-1.5">
+                  <span className="font-semibold text-slate-900 dark:text-white flex items-center gap-1.5">
                     <Eye size={16} />
                     {job.viewCount}
                   </span>
@@ -894,7 +882,7 @@ export default function JobDetailPage() {
                       <p className="text-base font-semibold text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-brand-gold transition-colors line-clamp-1">
                         {rj.title}
                       </p>
-                      <p className="text-sm font-normal text-slate-500 dark:text-gray-400 mt-1">
+                      <p className="text-sm font-medium text-slate-700 dark:text-gray-200 mt-1">
                         {rj.company}
                       </p>
                       <p className="text-sm font-semibold text-amber-600 dark:text-brand-gold mt-2">

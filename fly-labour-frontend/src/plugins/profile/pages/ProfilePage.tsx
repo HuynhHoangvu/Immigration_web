@@ -138,10 +138,10 @@ export default function ProfilePage() {
               >
                 {user.fullName.charAt(0)}
               </div>
-              <h2 className="font-semibold text-slate-900 dark:text-white text-lg">
+              <h2 className="font-bold text-slate-900 dark:text-white text-lg">
                 {user.fullName}
               </h2>
-              <p className="text-slate-500 dark:text-brand-muted text-sm">
+              <p className="text-slate-700 dark:text-gray-300 text-sm">
                 {user.email}
               </p>
               <span
@@ -153,7 +153,7 @@ export default function ProfilePage() {
               >
                 {user.role === "admin" ? "👑 Admin" : "👤 Thành viên"}
               </span>
-              <div className="mt-5 pt-4 border-t border-slate-200 dark:border-brand-border text-xs text-slate-500 dark:text-brand-muted">
+              <div className="mt-5 pt-4 border-t border-slate-200 dark:border-brand-border text-xs text-slate-700 dark:text-gray-300">
                 Thành viên từ {formatDate(user.createdAt)}
               </div>
             </div>
@@ -208,7 +208,7 @@ export default function ProfilePage() {
             {/* Edit profile */}
             <div className={`${cardClasses} p-6`}>
               <div className="flex items-center justify-between mb-5">
-                <h3 className="font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
                   <User
                     size={16}
                     className="text-amber-500 dark:text-brand-gold"
@@ -258,7 +258,7 @@ export default function ProfilePage() {
                   },
                 ].map((f) => (
                   <div key={f.key}>
-                    <label className="text-xs font-medium text-slate-500 dark:text-brand-muted mb-1.5 block">
+                    <label className="text-sm font-medium text-slate-900 dark:text-gray-100 mb-1.5 block">
                       {f.label}
                     </label>
                     {editing ? (
@@ -302,7 +302,7 @@ export default function ProfilePage() {
             {/* Change password */}
             <div className={`${cardClasses} p-6`}>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
                   <Lock
                     size={16}
                     className="text-amber-500 dark:text-brand-gold"
@@ -327,7 +327,7 @@ export default function ProfilePage() {
                     { label: "Xác nhận mật khẩu mới", key: "confirmPassword" },
                   ].map((f) => (
                     <div key={f.key}>
-                      <label className="text-xs font-medium text-slate-500 dark:text-brand-muted mb-1.5 block">
+                      <label className="text-sm font-medium text-slate-900 dark:text-gray-100 mb-1.5 block">
                         {f.label}
                       </label>
                       <div className="relative">
@@ -346,7 +346,7 @@ export default function ProfilePage() {
                         <button
                           type="button"
                           onClick={() => setShowPass(!showPass)}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-brand-muted hover:text-slate-700 dark:hover:text-white transition-colors"
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-300 hover:text-slate-700 dark:hover:text-white transition-colors"
                         >
                           {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
                         </button>
@@ -391,7 +391,7 @@ export default function ProfilePage() {
               ) : myApps.length === 0 ? (
                 <div className="text-center py-10 bg-slate-50 dark:bg-transparent rounded-2xl border border-dashed border-slate-200 dark:border-white/10">
                   <p className="text-4xl mb-3">📭</p>
-                  <p className="text-slate-600 dark:text-brand-muted text-sm mb-4">
+                  <p className="text-slate-600 dark:text-gray-300 text-sm mb-4">
                     Bạn chưa có đơn ứng tuyển nào
                   </p>
                   <Link
@@ -412,7 +412,7 @@ export default function ProfilePage() {
                         <p className="text-slate-900 dark:text-white text-sm font-semibold truncate mb-1">
                           {app.job?.title}
                         </p>
-                        <p className="text-slate-500 dark:text-brand-muted text-xs truncate">
+                        <p className="text-slate-700 dark:text-gray-300 text-xs truncate">
                           {app.job?.company} — {formatDate(app.createdAt)}
                         </p>
                       </div>

@@ -1,5 +1,12 @@
 import { Link } from "react-router-dom";
-import { MapPin, Clock, Users, TrendingUp, Flame, Star, TimerOff } from "lucide-react";
+import {
+  MapPin,
+  Clock,
+  Users,
+  TrendingUp,
+  Flame,
+  TimerOff,
+} from "lucide-react";
 import type { Job } from "@/core/types";
 import {
   getCountryLabels,
@@ -11,9 +18,12 @@ import { useT } from "@/core/hooks/useT";
 import { getImageUrl } from "@/core/services/api";
 
 const COUNTRY_IMAGES: Record<string, string> = {
-  australia: "https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=600&q=70&fit=crop",
-  canada: "https://images.unsplash.com/photo-1503614472-8c93d56e92ce?w=600&q=70&fit=crop",
-  new_zealand: "https://images.unsplash.com/photo-1469521669194-babb45599def?w=600&q=70&fit=crop",
+  australia:
+    "https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=600&q=70&fit=crop",
+  canada:
+    "https://images.unsplash.com/photo-1503614472-8c93d56e92ce?w=600&q=70&fit=crop",
+  new_zealand:
+    "https://images.unsplash.com/photo-1469521669194-babb45599def?w=600&q=70&fit=crop",
 };
 
 const CATEGORY_IMAGES: Record<string, string> = {
@@ -28,13 +38,26 @@ const CATEGORY_IMAGES: Record<string, string> = {
 };
 
 const FLAG_MAP: Record<string, string> = {
-  australia: "🇦🇺", canada: "🇨🇦", new_zealand: "🇳🇿",
-  norway: "🇳🇴", germany: "🇩🇪", portugal: "🇵🇹", czech: "🇨🇿",
-  us: "🇺🇸", uk: "🇬🇧", japan: "🇯🇵", singapore: "🇸🇬",
-  south_korea: "🇰🇷", taiwan: "🇹🇼", uae: "🇦🇪",
+  australia: "🇦🇺",
+  canada: "🇨🇦",
+  new_zealand: "🇳🇿",
+  norway: "🇳🇴",
+  germany: "🇩🇪",
+  portugal: "🇵🇹",
+  czech: "🇨🇿",
+  us: "🇺🇸",
+  uk: "🇬🇧",
+  japan: "🇯🇵",
+  singapore: "🇸🇬",
+  south_korea: "🇰🇷",
+  taiwan: "🇹🇼",
+  uae: "🇦🇪",
 };
 
-interface Props { job: Job; compact?: boolean; }
+interface Props {
+  job: Job;
+  compact?: boolean;
+}
 
 function isExpired(deadline?: string) {
   if (!deadline) return false;
@@ -46,10 +69,15 @@ export default function JobCard({ job, compact }: Props) {
   const jc = t("jobCard");
   const countryLabels = getCountryLabels();
   const countryLabel = countryLabels[job.country] ?? job.country;
-  const countryName = countryLabel.replace(/[\u{1F1E0}-\u{1F1FF}]{2}/gu, "").trim();
+  const countryName = countryLabel
+    .replace(/[\u{1F1E0}-\u{1F1FF}]{2}/gu, "")
+    .trim();
   const flag = FLAG_MAP[job.country] ?? "";
   const expired = isExpired(job.deadline);
-  const thumbUrl = job.image || CATEGORY_IMAGES[job.categoryId || ""] || COUNTRY_IMAGES[job.country];
+  const thumbUrl =
+    job.image ||
+    CATEGORY_IMAGES[job.categoryId || ""] ||
+    COUNTRY_IMAGES[job.country];
 
   return (
     <Link
@@ -84,12 +112,13 @@ export default function JobCard({ job, compact }: Props) {
             )}
             {!expired && job.isHot && (
               <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-sm">
-                <Flame size={9} className="fill-yellow-300 text-yellow-300" /> HOT
+                <Flame size={9} className="fill-yellow-300 text-yellow-300" />{" "}
+                HOT
               </span>
             )}
             {!expired && job.isFeatured && (
-              <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400 text-amber-900 shadow-sm">
-                <Star size={9} className="fill-amber-900" /> {jc.featured}
+              <span className="inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400 text-amber-900 shadow-sm">
+                {jc.featured}
               </span>
             )}
           </div>
@@ -105,7 +134,10 @@ export default function JobCard({ job, compact }: Props) {
           {job.deadline && !expired && (
             <div className="absolute bottom-3 left-3 text-[10px] font-medium text-white/80">
               {jc.deadline}{" "}
-              {new Date(job.deadline).toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit" })}
+              {new Date(job.deadline).toLocaleDateString("vi-VN", {
+                day: "2-digit",
+                month: "2-digit",
+              })}
             </div>
           )}
         </div>
@@ -113,7 +145,6 @@ export default function JobCard({ job, compact }: Props) {
 
       {/* ── Card Body ── */}
       <div className="flex flex-col flex-1 p-4 gap-3">
-
         {/* Compact mode: badges on top */}
         {compact && (
           <div className="flex gap-1.5 flex-wrap">
@@ -124,7 +155,8 @@ export default function JobCard({ job, compact }: Props) {
             )}
             {!expired && job.isHot && (
               <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white">
-                <Flame size={9} className="fill-yellow-300 text-yellow-300" /> HOT
+                <Flame size={9} className="fill-yellow-300 text-yellow-300" />{" "}
+                HOT
               </span>
             )}
             <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-white/10">
@@ -147,7 +179,10 @@ export default function JobCard({ job, compact }: Props) {
 
         {/* Salary highlight — nổi bật bằng màu, không cần to */}
         <div className="flex items-center gap-1.5 bg-amber-50 dark:bg-brand-gold/5 border border-amber-200 dark:border-brand-gold/20 rounded-xl px-3 py-2">
-          <TrendingUp size={13} className="text-amber-600 dark:text-brand-gold flex-shrink-0" />
+          <TrendingUp
+            size={13}
+            className="text-amber-600 dark:text-brand-gold flex-shrink-0"
+          />
           <span className="text-amber-700 dark:text-brand-gold font-bold text-sm">
             {formatSalary(job.salaryMin, job.salaryMax, job.salaryCurrency)}
           </span>
@@ -161,11 +196,13 @@ export default function JobCard({ job, compact }: Props) {
             </span>
           )}
           <span className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 dark:text-slate-400">
-            <Clock size={11} className="flex-shrink-0" /> {getJobTypeLabel(job.jobType)}
+            <Clock size={11} className="flex-shrink-0" />{" "}
+            {getJobTypeLabel(job.jobType)}
           </span>
           {job.slots && (
             <span className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 dark:text-slate-400">
-              <Users size={11} className="flex-shrink-0" /> {job.slots} {jc.slots}
+              <Users size={11} className="flex-shrink-0" /> {job.slots}{" "}
+              {jc.slots}
             </span>
           )}
         </div>
@@ -174,16 +211,24 @@ export default function JobCard({ job, compact }: Props) {
         <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-white/5 mt-auto">
           {job.category ? (
             <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-white/5">
-              {job.category.icon?.startsWith("http") || job.category.icon?.startsWith("/") || job.category.icon?.match(/^\d+$/) ? (
+              {job.category.icon?.startsWith("http") ||
+              job.category.icon?.startsWith("/") ||
+              job.category.icon?.match(/^\d+$/) ? (
                 <img
-                  src={job.category.icon?.match(/^\d+$/) ? `/${job.category.icon}.png` : getImageUrl(job.category.icon)}
+                  src={
+                    job.category.icon?.match(/^\d+$/)
+                      ? `/${job.category.icon}.png`
+                      : getImageUrl(job.category.icon)
+                  }
                   alt=""
                   className="w-3 h-3 object-contain"
                 />
               ) : (
                 job.category.icon
               )}
-              {lang === "en" ? job.category.nameEn || job.category.name : job.category.name}
+              {lang === "en"
+                ? job.category.nameEn || job.category.name
+                : job.category.name}
             </span>
           ) : (
             <span />

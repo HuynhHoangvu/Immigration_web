@@ -8,8 +8,6 @@ import {
   Briefcase,
   HeadphonesIcon,
 } from "lucide-react";
-import { EditableSection } from "@/admin/components/EditableSection";
-import { EditableText } from "@/admin/components/EditableText";
 
 const STEPS = [
   {
@@ -71,10 +69,7 @@ export default function ProcessPage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#0d1117] transition-colors duration-300">
       {/* Hero */}
-      <EditableSection
-        sectionKey="page.process.hero"
-        className="relative pt-32 pb-20 px-6 overflow-hidden"
-      >
+      <div className="relative pt-32 pb-20 px-6 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-white to-amber-100/30 dark:from-[#1a0f00] dark:via-brand-dark dark:to-brand-dark transition-colors duration-500" />
         <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-3xl opacity-30 dark:opacity-10 pointer-events-none"
@@ -82,18 +77,10 @@ export default function ProcessPage() {
         />
         <div className="relative max-w-3xl mx-auto text-center">
           <p className="text-amber-600 dark:text-brand-gold text-xs font-bold tracking-widest uppercase mb-4">
-            <EditableText
-              settingKey="process.hero.label"
-              defaultValue="Quy trình"
-              colorEditable={false}
-              sizeEditable={false}
-            />
+            Quy trình
           </p>
           <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-5">
-            <EditableText
-              settingKey="process.hero.title1"
-              defaultValue="Quy trình đăng ký"
-            />
+            Quy trình đăng ký
             <br />
             <span
               style={{
@@ -102,26 +89,17 @@ export default function ProcessPage() {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              <EditableText
-                settingKey="process.hero.title2"
-                defaultValue="đơn giản & minh bạch"
-                colorEditable={false}
-              />
+              đơn giản & minh bạch
             </span>
           </h1>
-          <p className="text-slate-600 dark:text-brand-muted text-lg leading-relaxed">
-            <EditableText
-              settingKey="process.hero.desc"
-              defaultValue="Từ khi nộp hồ sơ đến khi xuất cảnh, chúng tôi đồng hành cùng bạn ở mọi bước."
-              colorEditable={false}
-              sizeEditable={false}
-            />
+          <p className="text-slate-600 dark:text-gray-300 text-lg leading-relaxed">
+            Từ khi nộp hồ sơ đến khi xuất cảnh, chúng tôi đồng hành cùng bạn ở mọi bước.
           </p>
         </div>
-      </EditableSection>
+      </div>
 
       {/* Steps */}
-      <EditableSection sectionKey="page.process.steps" className="py-20 px-6">
+      <div className="py-20 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="space-y-6">
             {STEPS.map((step, i) => (
@@ -129,13 +107,10 @@ export default function ProcessPage() {
                 key={step.num}
                 className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border shadow-sm dark:shadow-none rounded-2xl p-6 flex gap-5 hover:border-amber-400 dark:hover:border-brand-gold/30 transition-colors"
               >
-                {/* Number + line */}
                 <div className="flex flex-col items-center gap-2 shrink-0">
                   <div
                     className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-amber-900 text-sm shadow-md"
-                    style={{
-                      background: "linear-gradient(135deg,#e4a808,#fdd52f)",
-                    }}
+                    style={{ background: "linear-gradient(135deg,#e4a808,#fdd52f)" }}
                   >
                     {step.num}
                   </div>
@@ -143,18 +118,17 @@ export default function ProcessPage() {
                     <div className="w-0.5 h-8 bg-slate-200 dark:bg-brand-border" />
                   )}
                 </div>
-                {/* Content */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-4 flex-wrap">
                     <div>
                       <h3 className="text-slate-900 dark:text-white font-semibold text-base mb-2">
                         {step.title}
                       </h3>
-                      <p className="text-slate-600 dark:text-brand-muted text-sm leading-relaxed">
+                      <p className="text-slate-600 dark:text-gray-300 text-sm leading-relaxed">
                         {step.desc}
                       </p>
                     </div>
-                    <span className="shrink-0 text-[11px] px-3 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-amber-800 dark:bg-brand-gold/10 dark:border-brand-gold/20 dark:text-brand-gold font-medium whitespace-nowrap">
+                    <span className="shrink-0 text-xs px-3 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-amber-800 dark:bg-brand-gold/10 dark:border-brand-gold/20 dark:text-brand-gold font-medium whitespace-nowrap">
                       {step.note}
                     </span>
                   </div>
@@ -163,13 +137,10 @@ export default function ProcessPage() {
             ))}
           </div>
         </div>
-      </EditableSection>
+      </div>
 
       {/* Documents */}
-      <EditableSection
-        sectionKey="page.process.docs"
-        className="py-20 px-6 bg-slate-100/50 dark:bg-brand-card/20 border-y border-slate-200 dark:border-brand-border transition-colors"
-      >
+      <div className="py-20 px-6 bg-slate-100/50 dark:bg-brand-card/20 border-y border-slate-200 dark:border-brand-border transition-colors">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-amber-600 dark:text-brand-gold text-xs font-bold tracking-widest uppercase mb-3">
@@ -185,53 +156,40 @@ export default function ProcessPage() {
                 key={doc}
                 className="flex items-center gap-3 bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border shadow-sm dark:shadow-none rounded-xl p-4 transition-colors"
               >
-                <CheckCircle
-                  size={16}
-                  className="text-amber-500 dark:text-brand-gold shrink-0"
-                />
-                <span className="text-slate-700 dark:text-brand-muted text-sm font-medium">
-                  {doc}
-                </span>
+                <CheckCircle size={16} className="text-amber-500 dark:text-brand-gold shrink-0" />
+                <span className="text-slate-700 dark:text-gray-300 text-sm font-medium">{doc}</span>
               </div>
             ))}
           </div>
-          <p className="text-slate-500 dark:text-brand-muted text-xs text-center mt-6 font-medium">
-            * Danh sách có thể thay đổi tùy theo yêu cầu của từng quốc gia và
-            nhà tuyển dụng.
+          <p className="text-slate-500 dark:text-gray-300 text-xs text-center mt-6 font-medium">
+            * Danh sách có thể thay đổi tùy theo yêu cầu của từng quốc gia và nhà tuyển dụng.
           </p>
         </div>
-      </EditableSection>
+      </div>
 
       {/* Support CTA */}
-      <EditableSection sectionKey="page.process.cta" className="py-16 px-6">
+      <div className="py-16 px-6">
         <div className="max-w-2xl mx-auto text-center">
-          <HeadphonesIcon
-            size={36}
-            className="text-amber-500 dark:text-brand-gold mx-auto mb-4"
-          />
+          <HeadphonesIcon size={36} className="text-amber-500 dark:text-brand-gold mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">
             Cần hỗ trợ thêm?
           </h2>
-          <p className="text-slate-600 dark:text-brand-muted mb-8">
-            Đội ngũ tư vấn của chúng tôi sẵn sàng giải đáp mọi thắc mắc từ Thứ 2
-            đến Thứ 7, 8:00 – 18:00.
+          <p className="text-slate-600 dark:text-gray-300 mb-8">
+            Đội ngũ tư vấn của chúng tôi sẵn sàng giải đáp mọi thắc mắc từ Thứ 2 đến Thứ 7, 8:00 – 18:00.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link
-              to="/contact"
-              className="btn-primary flex items-center gap-2 px-6 py-3 font-medium"
-            >
+            <Link to="/contact" className="btn-primary flex items-center gap-2 px-6 py-3 font-medium">
               Liên hệ tư vấn <ArrowRight size={16} />
             </Link>
             <Link
               to="/jobs"
-              className="px-6 py-3 rounded-xl border border-slate-300 dark:border-brand-border text-slate-700 dark:text-brand-muted hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-sm font-medium"
+              className="px-6 py-3 rounded-xl border border-slate-300 dark:border-brand-border text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-sm font-medium"
             >
               Xem việc làm
             </Link>
           </div>
         </div>
-      </EditableSection>
+      </div>
     </div>
   );
 }

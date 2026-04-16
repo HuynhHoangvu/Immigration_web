@@ -10,8 +10,6 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
-import { EditableSection } from "@/admin/components/EditableSection";
-import { EditableText } from "@/admin/components/EditableText";
 
 const STATS = [
   { value: "5,000+", label: "Lao động đã xuất cảnh" },
@@ -63,31 +61,18 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#0d1117] transition-colors duration-300">
       {/* Hero */}
-      <EditableSection
-        sectionKey="page.about.hero"
-        className="relative pt-32 pb-20 px-6 overflow-hidden"
-      >
-        {/* Nền Hero hỗ trợ cả Light/Dark */}
+      <div className="relative pt-32 pb-20 px-6 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-white to-amber-100/30 dark:from-[#1a0f00] dark:via-brand-dark dark:to-brand-dark transition-colors duration-500" />
         <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-3xl opacity-30 dark:opacity-10 pointer-events-none"
           style={{ background: "linear-gradient(135deg,#e4a808,#fdd52f)" }}
         />
-
         <div className="relative max-w-4xl mx-auto text-center">
           <p className="text-amber-600 dark:text-brand-gold text-sm font-bold tracking-widest uppercase mb-4">
-            <EditableText
-              settingKey="about.hero.label"
-              defaultValue="Về chúng tôi"
-              colorEditable={false}
-              sizeEditable={false}
-            />
+            Về chúng tôi
           </p>
           <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white leading-tight mb-6">
-            <EditableText
-              settingKey="about.hero.title1"
-              defaultValue="Cầu nối lao động Việt Nam"
-            />
+            Cầu nối lao động Việt Nam
             <br />
             <span
               style={{
@@ -96,44 +81,28 @@ export default function AboutPage() {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              <EditableText
-                settingKey="about.hero.title2"
-                defaultValue="với thế giới"
-                colorEditable={false}
-              />
+              với thế giới
             </span>
           </h1>
-          <p className="text-slate-600 dark:text-brand-muted text-lg max-w-2xl mx-auto leading-relaxed">
-            <EditableText
-              settingKey="about.hero.desc"
-              defaultValue="Fly Labour là đơn vị tiên phong trong lĩnh vực xuất khẩu lao động tại Việt Nam, kết nối hàng nghìn người lao động với cơ hội việc làm chất lượng cao ở nước ngoài."
-              multiline
-              colorEditable={false}
-              sizeEditable={false}
-            />
+          <p className="text-slate-600 dark:text-gray-300 text-lg max-w-2xl mx-auto leading-relaxed">
+            Fly Labour là đơn vị tiên phong trong lĩnh vực xuất khẩu lao động tại Việt Nam, kết nối hàng nghìn người lao động với cơ hội việc làm chất lượng cao ở nước ngoài.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
-            <Link
-              to="/jobs"
-              className="btn-primary flex items-center gap-2 px-6 py-3"
-            >
+            <Link to="/jobs" className="btn-primary flex items-center gap-2 px-6 py-3">
               Xem việc làm <ArrowRight size={16} />
             </Link>
             <Link
               to="/contact"
-              className="px-6 py-3 rounded-xl border border-slate-300 dark:border-brand-border text-slate-700 dark:text-brand-muted hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-sm font-medium"
+              className="px-6 py-3 rounded-xl border border-slate-300 dark:border-brand-border text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-sm font-medium"
             >
               Liên hệ tư vấn
             </Link>
           </div>
         </div>
-      </EditableSection>
+      </div>
 
       {/* Stats */}
-      <EditableSection
-        sectionKey="page.about.stats"
-        className="py-14 px-6 border-y border-slate-200 dark:border-brand-border bg-white/60 dark:bg-brand-card/30 backdrop-blur-sm"
-      >
+      <div className="py-14 px-6 border-y border-slate-200 dark:border-brand-border bg-white/60 dark:bg-brand-card/30 backdrop-blur-sm">
         <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
           {STATS.map((s) => (
             <div key={s.label} className="text-center">
@@ -147,50 +116,27 @@ export default function AboutPage() {
               >
                 {s.value}
               </p>
-              <p className="text-slate-600 dark:text-brand-muted text-sm font-medium">
-                {s.label}
-              </p>
+              <p className="text-slate-600 dark:text-gray-300 text-sm font-medium">{s.label}</p>
             </div>
           ))}
         </div>
-      </EditableSection>
+      </div>
 
       {/* Mission */}
-      <EditableSection sectionKey="page.about.mission" className="py-20 px-6">
+      <div className="py-20 px-6">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <div>
             <p className="text-amber-600 dark:text-brand-gold text-xs font-bold tracking-widest uppercase mb-3">
-              <EditableText
-                settingKey="about.mission.label"
-                defaultValue="Sứ mệnh"
-                colorEditable={false}
-                sizeEditable={false}
-              />
+              Sứ mệnh
             </p>
             <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-5">
-              <EditableText
-                settingKey="about.mission.title"
-                defaultValue="Mang lại cơ hội việc làm tốt nhất cho người Việt"
-                multiline
-              />
+              Mang lại cơ hội việc làm tốt nhất cho người Việt
             </h2>
-            <p className="text-slate-600 dark:text-brand-muted leading-relaxed mb-4">
-              <EditableText
-                settingKey="about.mission.desc1"
-                defaultValue="Chúng tôi tin rằng mọi người lao động Việt Nam đều xứng đáng có cơ hội làm việc trong môi trường chuyên nghiệp, được trả lương xứng đáng và đảm bảo quyền lợi đầy đủ."
-                multiline
-                colorEditable={false}
-                sizeEditable={false}
-              />
+            <p className="text-slate-600 dark:text-gray-300 leading-relaxed mb-4">
+              Chúng tôi tin rằng mọi người lao động Việt Nam đều xứng đáng có cơ hội làm việc trong môi trường chuyên nghiệp, được trả lương xứng đáng và đảm bảo quyền lợi đầy đủ.
             </p>
-            <p className="text-slate-600 dark:text-brand-muted leading-relaxed">
-              <EditableText
-                settingKey="about.mission.desc2"
-                defaultValue="Fly Labour cam kết hoạt động minh bạch, hợp pháp và luôn đặt lợi ích của người lao động lên hàng đầu trong mọi quyết định."
-                multiline
-                colorEditable={false}
-                sizeEditable={false}
-              />
+            <p className="text-slate-600 dark:text-gray-300 leading-relaxed">
+              Fly Labour cam kết hoạt động minh bạch, hợp pháp và luôn đặt lợi ích của người lao động lên hàng đầu trong mọi quyết định.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -205,38 +151,23 @@ export default function AboutPage() {
                 className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl p-4 text-center shadow-sm dark:shadow-none transition-colors"
               >
                 <p className="text-3xl mb-2">{c.flag}</p>
-                <p className="text-slate-900 dark:text-white text-sm font-semibold">
-                  {c.label}
-                </p>
-                <p className="text-amber-600 dark:text-brand-gold text-xs font-medium mt-1">
-                  {c.jobs}
-                </p>
+                <p className="text-slate-900 dark:text-white text-sm font-semibold">{c.label}</p>
+                <p className="text-amber-600 dark:text-brand-gold text-xs font-medium mt-1">{c.jobs}</p>
               </div>
             ))}
           </div>
         </div>
-      </EditableSection>
+      </div>
 
       {/* Services */}
-      <EditableSection
-        sectionKey="page.about.services"
-        className="py-20 px-6 bg-slate-100/50 dark:bg-brand-card/20 transition-colors"
-      >
+      <div className="py-20 px-6 bg-slate-100/50 dark:bg-brand-card/20 transition-colors">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <p className="text-amber-600 dark:text-brand-gold text-xs font-bold tracking-widest uppercase mb-3">
-              <EditableText
-                settingKey="about.services.label"
-                defaultValue="Dịch vụ"
-                colorEditable={false}
-                sizeEditable={false}
-              />
+              Dịch vụ
             </p>
             <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
-              <EditableText
-                settingKey="about.services.title"
-                defaultValue="Chúng tôi cung cấp gì?"
-              />
+              Chúng tôi cung cấp gì?
             </h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -247,141 +178,87 @@ export default function AboutPage() {
               >
                 <div
                   className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 shadow-md"
-                  style={{
-                    background: "linear-gradient(135deg,#e4a808,#fdd52f)",
-                  }}
+                  style={{ background: "linear-gradient(135deg,#e4a808,#fdd52f)" }}
                 >
                   <s.icon size={18} className="text-slate-900" />
                 </div>
-                <h3 className="text-slate-900 dark:text-white font-semibold mb-2 text-sm">
-                  {s.title}
-                </h3>
-                <p className="text-slate-600 dark:text-brand-muted text-xs leading-relaxed">
-                  {s.desc}
-                </p>
+                <h3 className="text-slate-900 dark:text-white font-semibold mb-2 text-sm">{s.title}</h3>
+                <p className="text-slate-600 dark:text-gray-300 text-xs leading-relaxed">{s.desc}</p>
               </div>
             ))}
           </div>
         </div>
-      </EditableSection>
+      </div>
 
       {/* Why us */}
-      <EditableSection sectionKey="page.about.whyus" className="py-20 px-6">
+      <div className="py-20 px-6">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <div>
             <p className="text-amber-600 dark:text-brand-gold text-xs font-bold tracking-widest uppercase mb-3">
-              <EditableText
-                settingKey="about.whyus.label"
-                defaultValue="Lý do chọn chúng tôi"
-                colorEditable={false}
-                sizeEditable={false}
-              />
+              Lý do chọn chúng tôi
             </p>
             <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-8">
-              <EditableText
-                settingKey="about.whyus.title"
-                defaultValue="Tại sao nên chọn Fly Labour?"
-              />
+              Tại sao nên chọn Fly Labour?
             </h2>
             <ul className="space-y-3">
               {WHYS.map((w) => (
                 <li key={w} className="flex items-start gap-3">
-                  <CheckCircle
-                    size={16}
-                    className="text-amber-500 dark:text-brand-gold shrink-0 mt-0.5"
-                  />
-                  <span className="text-slate-600 dark:text-brand-muted text-sm font-medium">
-                    {w}
-                  </span>
+                  <CheckCircle size={16} className="text-amber-500 dark:text-brand-gold shrink-0 mt-0.5" />
+                  <span className="text-slate-600 dark:text-gray-300 text-sm font-medium">{w}</span>
                 </li>
               ))}
             </ul>
           </div>
           <div className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border shadow-sm dark:shadow-none rounded-2xl p-8 transition-colors">
-            <h3 className="text-slate-900 dark:text-white font-semibold text-lg mb-6">
-              Đội ngũ lãnh đạo
-            </h3>
+            <h3 className="text-slate-900 dark:text-white font-semibold text-lg mb-6">Đội ngũ lãnh đạo</h3>
             <div className="grid grid-cols-2 gap-4">
               {TEAM.map((m) => (
                 <div key={m.name} className="flex items-center gap-3">
                   <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center text-amber-900 font-bold shrink-0 shadow-sm"
-                    style={{
-                      background: "linear-gradient(135deg,#e4a808,#fdd52f)",
-                    }}
+                    style={{ background: "linear-gradient(135deg,#e4a808,#fdd52f)" }}
                   >
                     {m.initial}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-slate-900 dark:text-white text-sm font-semibold truncate">
-                      {m.name}
-                    </p>
-                    <p className="text-slate-500 dark:text-brand-muted text-xs font-medium truncate">
-                      {m.role}
-                    </p>
+                    <p className="text-slate-900 dark:text-white text-sm font-semibold truncate">{m.name}</p>
+                    <p className="text-slate-500 dark:text-gray-300 text-xs font-medium truncate">{m.role}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
-      </EditableSection>
+      </div>
 
       {/* Contact info */}
-      <EditableSection
-        sectionKey="page.about.contact"
-        className="py-16 px-6 bg-slate-100/50 dark:bg-brand-card/20 border-t border-slate-200 dark:border-brand-border transition-colors"
-      >
+      <div className="py-16 px-6 bg-slate-100/50 dark:bg-brand-card/20 border-t border-slate-200 dark:border-brand-border transition-colors">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">
-            <EditableText
-              settingKey="about.contact.title"
-              defaultValue="Liên hệ với chúng tôi"
-            />
+            Liên hệ với chúng tôi
           </h2>
-          <p className="text-slate-600 dark:text-brand-muted mb-8">
-            <EditableText
-              settingKey="about.contact.desc"
-              defaultValue="Chúng tôi luôn sẵn sàng hỗ trợ bạn"
-              colorEditable={false}
-              sizeEditable={false}
-            />
-          </p>
+          <p className="text-slate-600 dark:text-gray-300 mb-8">Chúng tôi luôn sẵn sàng hỗ trợ bạn</p>
           <div className="grid sm:grid-cols-3 gap-6 mb-8">
             {[
               { icon: Phone, label: "Hotline", value: "0901 234 567" },
               { icon: Mail, label: "Email", value: "info@flylabour.com" },
-              {
-                icon: MapPin,
-                label: "Địa chỉ",
-                value: "123 Nguyễn Văn Linh, Q.7, TP.HCM",
-              },
+              { icon: MapPin, label: "Địa chỉ", value: "123 Nguyễn Văn Linh, Q.7, TP.HCM" },
             ].map((c) => (
               <div
                 key={c.label}
                 className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border shadow-sm dark:shadow-none rounded-2xl p-5 transition-colors"
               >
-                <c.icon
-                  size={20}
-                  className="text-amber-500 dark:text-brand-gold mx-auto mb-3"
-                />
-                <p className="text-slate-500 dark:text-brand-muted text-xs font-medium mb-1">
-                  {c.label}
-                </p>
-                <p className="text-slate-900 dark:text-white text-sm font-semibold">
-                  {c.value}
-                </p>
+                <c.icon size={20} className="text-amber-500 dark:text-brand-gold mx-auto mb-3" />
+                <p className="text-slate-500 dark:text-gray-300 text-xs font-medium mb-1">{c.label}</p>
+                <p className="text-slate-900 dark:text-white text-sm font-semibold">{c.value}</p>
               </div>
             ))}
           </div>
-          <Link
-            to="/contact"
-            className="btn-primary inline-flex items-center gap-2 px-8 py-3"
-          >
+          <Link to="/contact" className="btn-primary inline-flex items-center gap-2 px-8 py-3">
             Gửi liên hệ ngay <ArrowRight size={16} />
           </Link>
         </div>
-      </EditableSection>
+      </div>
     </div>
   );
 }

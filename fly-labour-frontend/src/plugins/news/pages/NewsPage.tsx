@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import { Search, Calendar, ArrowRight, Newspaper, Loader2 } from "lucide-react";
 import { newsApi, getImageUrl } from "@/core/services/api";
 import { formatDate } from "@/core/utils/helpers";
-import { EditableSection } from "@/admin/components/EditableSection";
-import { EditableText } from "@/admin/components/EditableText";
 
 interface NewsItem {
   id: string;
@@ -46,37 +44,22 @@ export default function NewsPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-[#0d1117] transition-colors duration-300 pt-20 pb-20">
       {/* Page Header - Kính mờ trên nền trắng */}
-      <EditableSection
-        sectionKey="page.news.header"
-        className="bg-slate-50/50 dark:bg-brand-card/30 backdrop-blur-xl border-b border-slate-100 dark:border-white/5"
-      >
+      <div className="bg-slate-50/50 dark:bg-brand-card/30 backdrop-blur-xl border-b border-slate-100 dark:border-white/5">
         <div className="max-w-7xl mx-auto px-6 py-20 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-50 dark:bg-brand-gold/10 border border-amber-100 dark:border-brand-gold/20 mb-8 shadow-sm">
-            <Newspaper
-              size={14}
-              className="text-amber-600 dark:text-brand-gold"
-            />
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-700 dark:text-brand-gold">
+            <Newspaper size={14} className="text-amber-600 dark:text-brand-gold" />
+            <span className="text-xs font-black uppercase tracking-[0.2em] text-amber-700 dark:text-brand-gold">
               Tạp chí FLY LABOUR
             </span>
           </div>
           <h1 className="text-4xl md:text-7xl font-black text-slate-900 dark:text-white mb-8 leading-tight tracking-tight">
-            <EditableText
-              settingKey="news.title"
-              defaultValue="Tin tức & Cập nhật"
-              className="gradient-text"
-            />
+            <span className="gradient-text">Tin tức & Cập nhật</span>
           </h1>
-          <p className="text-slate-500 dark:text-brand-muted max-w-2xl mx-auto text-base md:text-xl font-medium leading-relaxed">
-            <EditableText
-              settingKey="news.subtitle"
-              defaultValue="Nơi cập nhật những thay đổi mới nhất về chính sách di trú và thị trường nhân lực toàn cầu."
-              colorEditable={false}
-              sizeEditable={false}
-            />
+          <p className="text-slate-800 dark:text-gray-200 max-w-2xl mx-auto text-base md:text-xl font-medium leading-relaxed">
+            Nơi cập nhật những thay đổi mới nhất về chính sách di trú và thị trường nhân lực toàn cầu.
           </p>
         </div>
-      </EditableSection>
+      </div>
 
       <div className="max-w-7xl mx-auto px-6 py-16 space-y-20">
         {/* Search Bar - Tối giản & Hiện đại */}
@@ -106,7 +89,7 @@ export default function NewsPage() {
             <p className="text-slate-900 dark:text-white font-black text-2xl mb-2">
               Không tìm thấy bài viết
             </p>
-            <p className="text-slate-500 dark:text-brand-muted font-medium">
+            <p className="text-slate-800 dark:text-gray-200 font-medium">
               Thử tìm kiếm với một từ khóa khác nhé!
             </p>
           </div>
@@ -117,7 +100,7 @@ export default function NewsPage() {
               <div className="space-y-10">
                 <div className="flex items-center gap-4">
                   <div className="h-px flex-1 bg-slate-100 dark:bg-white/5" />
-                  <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">
+                  <h2 className="text-xs font-black uppercase tracking-[0.3em] text-slate-400">
                     Tiêu điểm hôm nay
                   </h2>
                   <div className="h-px flex-1 bg-slate-100 dark:bg-white/5" />
@@ -144,7 +127,7 @@ export default function NewsPage() {
                       </div>
                     </div>
                     <div className="p-10 md:p-16 flex flex-col justify-center bg-white dark:bg-brand-card">
-                      <div className="flex items-center gap-3 text-slate-400 dark:text-brand-muted text-[10px] font-bold uppercase tracking-wider mb-8">
+                      <div className="flex items-center gap-3 text-slate-400 dark:text-gray-300 text-xs font-bold uppercase tracking-wider mb-8">
                         <Calendar size={14} className="text-amber-500" />
                         {formatDate(featured.createdAt)}
                       </div>
@@ -152,7 +135,7 @@ export default function NewsPage() {
                         {featured.title}
                       </h2>
                       {featured.excerpt && (
-                        <p className="text-slate-500 dark:text-brand-muted text-sm md:text-lg leading-relaxed line-clamp-4 mb-10 font-medium">
+                        <p className="text-slate-800 dark:text-gray-200 text-sm md:text-lg leading-relaxed line-clamp-4 mb-10 font-medium">
                           {featured.excerpt}
                         </p>
                       )}
@@ -187,7 +170,7 @@ export default function NewsPage() {
                     )}
                   </div>
                   <div className="p-8 flex flex-col flex-1 bg-white dark:bg-brand-card">
-                    <div className="flex items-center gap-2 text-slate-400 dark:text-brand-muted text-[10px] font-bold uppercase tracking-widest mb-4">
+                    <div className="flex items-center gap-2 text-slate-400 dark:text-gray-300 text-xs font-bold uppercase tracking-widest mb-4">
                       <Calendar size={12} className="text-amber-500" />
                       {formatDate(article.createdAt)}
                     </div>
@@ -195,12 +178,12 @@ export default function NewsPage() {
                       {article.title}
                     </h3>
                     {article.excerpt && (
-                      <p className="text-slate-500 dark:text-brand-muted text-xs leading-relaxed line-clamp-3 flex-1 font-medium italic">
+                      <p className="text-slate-800 dark:text-gray-200 text-xs leading-relaxed line-clamp-3 flex-1 font-medium italic">
                         "{article.excerpt}"
                       </p>
                     )}
                     <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-50 dark:border-white/5">
-                      <span className="text-[10px] font-black uppercase tracking-widest text-amber-600 dark:text-brand-gold group-hover:translate-x-2 transition-transform">
+                      <span className="text-xs font-black uppercase tracking-widest text-amber-600 dark:text-brand-gold group-hover:translate-x-2 transition-transform">
                         Đọc tiếp
                       </span>
                       <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-white/5 text-slate-400 group-hover:text-amber-500 group-hover:bg-amber-50 transition-all shadow-sm">

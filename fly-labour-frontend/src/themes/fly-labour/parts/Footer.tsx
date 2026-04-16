@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail } from "lucide-react";
 import { useT } from "@/core/hooks/useT";
-import { EditableText } from "@/admin/components/EditableText";
-import { EditableLink } from "@/admin/components/EditableLink";
 import { usePageContent } from "@/core/hooks/usePageContent";
 import { useState, useEffect } from "react";
 import { settingsApi } from "@/core/services/api";
@@ -23,8 +21,14 @@ export default function Footer() {
     "footer.address",
     "219A Nơ Trang Long, Phường 12, Quận Bình Thạnh, TP. Hồ Chí Minh",
   );
-  const phone = usePageContent("footer.phone", "Hotline: 0866-879-755\nTư vấn: 028 3899 4679\nHồ sơ: 028 3899 4879");
-  const email = usePageContent("footer.email", "visa.service@flyimmigration.vn");
+  const phone = usePageContent(
+    "footer.phone",
+    "Hotline: 0866-879-755\nTư vấn: 028 3899 4679\nHồ sơ: 028 3899 4879",
+  );
+  const email = usePageContent(
+    "footer.email",
+    "visa.service@flyimmigration.vn",
+  );
   const officeHours = usePageContent("footer.officeHours", f.officeHours);
   const hoursText = usePageContent("footer.hoursText", f.hoursText);
   const copyright = usePageContent("footer.copyright", f.copyright);
@@ -75,14 +79,13 @@ export default function Footer() {
             {f.tagline}
           </p>
           <div className="flex gap-3 mt-5">
-            <EditableLink
-              settingKey="social.facebook"
-              defaultValue="https://www.facebook.com/flyimmigration.vn"
+            <a
+              href="https://www.facebook.com/flyimmigration.vn"
               className="w-9 h-9 rounded-lg flex items-center justify-center text-white transition-colors hover:opacity-90 shadow-sm"
               style={{ backgroundColor: "#1877F2" }}
               target="_blank"
               rel="noreferrer"
-              label="Facebook URL"
+              aria-label="Facebook URL"
             >
               {/* Facebook */}
               <svg
@@ -93,15 +96,14 @@ export default function Footer() {
               >
                 <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
               </svg>
-            </EditableLink>
-            <EditableLink
-              settingKey="social.youtube"
-              defaultValue="#"
+            </a>
+            <a
+              href="#"
               className="w-9 h-9 rounded-lg flex items-center justify-center text-white transition-colors hover:opacity-90 shadow-sm"
               style={{ backgroundColor: "#FF0000" }}
               target="_blank"
               rel="noreferrer"
-              label="YouTube URL"
+              aria-label="YouTube URL"
             >
               {/* YouTube */}
               <svg
@@ -112,15 +114,14 @@ export default function Footer() {
               >
                 <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58zM9.75 15.02V8.98L15.5 12l-5.75 3.02z" />
               </svg>
-            </EditableLink>
-            <EditableLink
-              settingKey="social.tiktok"
-              defaultValue="https://www.tiktok.com/@flyvisa.immigration?_r=1&_t=ZS-952PBR111k5"
+            </a>
+            <a
+              href="https://www.tiktok.com/@flyvisa.immigration?_r=1&_t=ZS-952PBR111k5"
               className="w-9 h-9 rounded-lg flex items-center justify-center text-white transition-colors hover:opacity-90 shadow-sm"
               style={{ backgroundColor: "#000000" }}
               target="_blank"
               rel="noreferrer"
-              label="TikTok URL"
+              aria-label="TikTok URL"
             >
               <svg
                 width="16"
@@ -130,7 +131,7 @@ export default function Footer() {
               >
                 <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z" />
               </svg>
-            </EditableLink>
+            </a>
           </div>
         </div>
 
@@ -175,7 +176,7 @@ export default function Footer() {
                 </Link>
               </li>
             ))}
-            {/* Dynamic Policy Links — quản lý qua Admin > Chính sách */}
+            {/* Dynamic Policy Links */}
             {!loadingPolicies &&
               policies.map((p) => (
                 <li key={p.slug}>
@@ -201,36 +202,31 @@ export default function Footer() {
                 size={15}
                 className="mt-0.5 shrink-0 text-amber-500 dark:text-brand-gold"
               />
-              <EditableText
-                settingKey="footer.address"
-                defaultValue={address}
-              />
+              <span>{address}</span>
             </li>
             <li className="flex items-start gap-2 text-sm text-slate-500 dark:text-brand-muted transition-colors">
               <Phone
                 size={15}
                 className="mt-0.5 shrink-0 text-amber-500 dark:text-brand-gold"
               />
-              <EditableText settingKey="footer.phone" defaultValue={phone} multiline />
+              <span className="whitespace-pre-line">{phone}</span>
             </li>
             <li className="flex items-center gap-2 text-sm text-slate-500 dark:text-brand-muted transition-colors">
               <Mail size={15} className="text-amber-500 dark:text-brand-gold" />
-              <EditableText settingKey="footer.email" defaultValue={email} />
+              <a
+                href={`mailto:${email}`}
+                className="hover:text-amber-600 transition-colors"
+              >
+                {email}
+              </a>
             </li>
           </ul>
           <div className="mt-5 p-4 bg-amber-50 dark:bg-brand-gold/5 border border-amber-200 dark:border-brand-gold/10 rounded-xl transition-colors">
             <p className="text-xs text-amber-700 dark:text-brand-gold font-semibold transition-colors">
-              <EditableText
-                settingKey="footer.officeHours"
-                defaultValue={officeHours}
-              />
+              {officeHours}
             </p>
             <p className="text-xs text-slate-600 dark:text-brand-muted mt-1.5 whitespace-pre-line transition-colors">
-              <EditableText
-                settingKey="footer.hoursText"
-                defaultValue={hoursText}
-                multiline
-              />
+              {hoursText}
             </p>
           </div>
         </div>
@@ -250,9 +246,9 @@ export default function Footer() {
             </Link>
             <div className="h-8 w-px bg-slate-200 dark:bg-white/10 hidden md:block" />
             <div className="flex items-center gap-4">
-              <a 
-                href="http://online.gov.vn/Home/WebDetails/140726" 
-                target="_blank" 
+              <a
+                href="http://online.gov.vn/Home/WebDetails/140726"
+                target="_blank"
                 rel="noreferrer"
                 className="transition-transform hover:scale-105"
               >
@@ -267,19 +263,14 @@ export default function Footer() {
                   Giấy phép kinh doanh
                 </p>
                 <div className="text-xs text-slate-500 dark:text-brand-muted font-medium">
-                  <EditableText settingKey="footer.bct" defaultValue={bct} />
+                  {bct}
                 </div>
               </div>
             </div>
           </div>
           {/* Copyright + Policy links */}
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500 dark:text-brand-muted transition-colors">
-            <p>
-              <EditableText
-                settingKey="footer.copyright"
-                defaultValue={copyright}
-              />
-            </p>
+            <p>{copyright}</p>
             {/* Dynamic bottom policy links */}
             {!loadingPolicies && policies.length > 0 && (
               <div className="flex gap-4 flex-wrap justify-center sm:justify-end">

@@ -54,7 +54,7 @@ export default function EmployerDashboard() {
         <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
           Xin chào, {user?.companyName || user?.fullName} 👋
         </h1>
-        <p className="text-slate-500 dark:text-brand-muted text-sm mt-1">
+        <p className="text-slate-500 dark:text-gray-300 text-sm mt-1">
           Tổng quan hoạt động tuyển dụng của doanh nghiệp bạn.
         </p>
       </div>
@@ -116,7 +116,7 @@ export default function EmployerDashboard() {
               <p className="text-2xl font-bold text-slate-900 dark:text-white leading-none mb-1">
                 {s.value}
               </p>
-              <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-brand-muted">
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-gray-300">
                 {s.label}
               </p>
             </div>
@@ -150,7 +150,7 @@ export default function EmployerDashboard() {
             </div>
           ) : jobs.length === 0 ? (
             <div className="text-center py-10 bg-slate-50 dark:bg-transparent rounded-2xl border border-dashed border-slate-200 dark:border-white/10">
-              <p className="text-slate-500 dark:text-brand-muted text-sm mb-4">
+              <p className="text-slate-500 dark:text-gray-300 text-sm mb-4">
                 Chưa có tin tuyển dụng nào
               </p>
               <Link
@@ -176,7 +176,7 @@ export default function EmployerDashboard() {
                       <p className="text-slate-900 dark:text-white text-sm font-semibold truncate mb-1">
                         {job.title}
                       </p>
-                      <div className="flex items-center gap-2 text-[11px] text-slate-500 dark:text-brand-muted">
+                      <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-gray-300">
                         <span>{getCountryLabels()[job.country]}</span>
                         <span>•</span>
                         <span>{job.slots || 0} chỉ tiêu</span>
@@ -187,7 +187,7 @@ export default function EmployerDashboard() {
                       </div>
                     </div>
                     <span
-                      className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md bg-white dark:bg-black/20 border border-slate-200 dark:border-transparent shadow-sm ${st.color}`}
+                      className={`text-xs font-bold uppercase tracking-wider px-2 py-1 rounded-md bg-white dark:bg-black/20 border border-slate-200 dark:border-transparent shadow-sm ${st.color}`}
                     >
                       {st.label}
                     </span>
@@ -223,7 +223,7 @@ export default function EmployerDashboard() {
             </div>
           ) : recentApps.length === 0 ? (
             <div className="text-center py-10 bg-slate-50 dark:bg-transparent rounded-2xl border border-dashed border-slate-200 dark:border-white/10">
-              <p className="text-slate-500 dark:text-brand-muted text-sm">
+              <p className="text-slate-500 dark:text-gray-300 text-sm">
                 Chưa có hồ sơ nào
               </p>
             </div>
@@ -246,12 +246,12 @@ export default function EmployerDashboard() {
                     <p className="text-slate-900 dark:text-white text-sm font-semibold truncate">
                       {app.fullName}
                     </p>
-                    <p className="text-slate-500 dark:text-brand-muted text-[11px] truncate mt-0.5">
+                    <p className="text-slate-500 dark:text-gray-300 text-xs truncate mt-0.5">
                       Ứng tuyển: {app.job?.title}
                     </p>
                   </div>
                   <div className="text-right shrink-0">
-                    <p className="text-slate-400 dark:text-brand-muted text-[10px] font-medium">
+                    <p className="text-slate-400 dark:text-gray-300 text-xs font-medium">
                       {formatDate(app.createdAt)}
                     </p>
                   </div>
@@ -276,7 +276,7 @@ export default function EmployerDashboard() {
               <p className="text-slate-900 dark:text-white font-bold text-sm">
                 Hoàn thiện hồ sơ công ty ngay
               </p>
-              <p className="text-slate-600 dark:text-brand-muted text-xs mt-1 leading-relaxed">
+              <p className="text-slate-600 dark:text-gray-300 text-xs mt-1 leading-relaxed">
                 Thêm mô tả chi tiết và hình ảnh doanh nghiệp để tăng 40% tỷ lệ
                 ứng tuyển từ các ứng viên chất lượng cao.
               </p>

@@ -39,13 +39,13 @@ export default function ContactPage() {
         <h1 className="section-title text-slate-900 dark:text-white transition-colors mb-4">
           {c.title} <span className="gradient-text">{c.titleGradient}</span>
         </h1>
-        <p className="text-slate-600 dark:text-brand-muted transition-colors mb-8">{c.subtitle}</p>
+        <p className="text-slate-800 dark:text-gray-200 transition-colors mb-8">{c.subtitle}</p>
 
         <div className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl shadow-sm dark:shadow-none p-8 transition-colors">
           <form onSubmit={handleSubmit} className="space-y-4">
             {fields.map((f) => (
               <div key={f.key}>
-                <label className="text-xs font-medium text-slate-500 dark:text-brand-muted mb-1.5 block transition-colors">
+                <label className="text-sm font-medium text-slate-900 dark:text-gray-100 mb-1.5 block">
                   {f.label}
                 </label>
                 <input
@@ -60,7 +60,7 @@ export default function ContactPage() {
             ))}
 
             <div>
-              <label className="text-xs font-medium text-slate-500 dark:text-brand-muted mb-1.5 block transition-colors">
+              <label className="text-sm font-medium text-slate-900 dark:text-gray-100 mb-1.5 block">
                 {c.message}
               </label>
               <textarea

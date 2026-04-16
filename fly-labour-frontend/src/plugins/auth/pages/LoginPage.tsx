@@ -76,7 +76,7 @@ export default function LoginPage() {
           <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">
             {a.signInTitle}
           </h1>
-          <p className="text-slate-500 dark:text-brand-muted text-sm mt-1.5">
+          <p className="text-slate-700 dark:text-gray-300 text-sm mt-1.5">
             {a.signInSub}
           </p>
         </div>
@@ -84,7 +84,7 @@ export default function LoginPage() {
         <div className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none p-8 transition-colors">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-brand-muted mb-1.5 block">
+              <label className="text-sm font-medium text-slate-900 dark:text-gray-100 mb-1.5 block">
                 {a.email}
               </label>
               <input
@@ -97,7 +97,7 @@ export default function LoginPage() {
               />
             </div>
             <div>
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-brand-muted mb-1.5 block">
+              <label className="text-sm font-medium text-slate-900 dark:text-gray-100 mb-1.5 block">
                 {a.password}
               </label>
               <div className="relative">
@@ -137,7 +137,7 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <p className="text-center text-sm text-slate-500 dark:text-brand-muted mt-8 transition-colors">
+          <p className="text-center text-sm text-slate-700 dark:text-gray-300 mt-8 transition-colors">
             {a.noAccount}{" "}
             <Link
               to="/register"

@@ -202,7 +202,7 @@ export default function EmployerJobsPage() {
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
             Tin tuyển dụng của tôi
           </h1>
-          <p className="text-slate-500 dark:text-brand-muted text-sm">
+          <p className="text-slate-500 dark:text-gray-300 text-sm">
             {jobs.length} tin đăng đang được quản lý
           </p>
         </div>
@@ -228,13 +228,13 @@ export default function EmployerJobsPage() {
           <div className="w-20 h-20 bg-slate-50 dark:bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
             <Briefcase
               size={32}
-              className="text-slate-300 dark:text-brand-muted"
+              className="text-slate-300 dark:text-gray-300"
             />
           </div>
           <p className="text-slate-900 dark:text-white font-bold text-lg mb-1">
             Chưa có tin tuyển dụng nào
           </p>
-          <p className="text-slate-500 dark:text-brand-muted text-sm mb-6 max-w-xs mx-auto">
+          <p className="text-slate-500 dark:text-gray-300 text-sm mb-6 max-w-xs mx-auto">
             Bắt đầu tìm kiếm ứng viên tiềm năng bằng cách tạo tin tuyển dụng đầu
             tiên của bạn.
           </p>
@@ -260,7 +260,7 @@ export default function EmployerJobsPage() {
                     className="w-full h-full object-cover transition-transform group-hover:scale-110"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-slate-400 dark:text-brand-muted">
+                  <div className="w-full h-full flex items-center justify-center text-slate-400 dark:text-gray-300">
                     <ImageIcon size={20} />
                   </div>
                 )}
@@ -271,19 +271,19 @@ export default function EmployerJobsPage() {
                     {job.title}
                   </h3>
                   <span
-                    className={`text-[10px] px-2 py-0.5 rounded-full border font-bold uppercase tracking-wider ${STATUS_BADGE[job.status] || ""}`}
+                    className={`text-xs px-2 py-0.5 rounded-full border font-bold uppercase tracking-wider ${STATUS_BADGE[job.status] || ""}`}
                   >
                     {job.status === "active" ? "Đang tuyển" : job.status}
                   </span>
                 </div>
-                <div className="flex items-center gap-2 text-slate-500 dark:text-brand-muted text-xs font-medium">
+                <div className="flex items-center gap-2 text-slate-500 dark:text-gray-300 text-xs font-medium">
                   <span>{getCountryLabels()[job.country]}</span>
                   <span>•</span>
                   <span>{job.slots || 0} chỉ tiêu</span>
                   <span>•</span>
                   <span>{getJobTypeLabel(job.jobType)}</span>
                 </div>
-                <p className="text-slate-400 dark:text-brand-muted text-[10px] mt-1">
+                <p className="text-slate-400 dark:text-gray-300 text-xs mt-1">
                   Lượt xem:{" "}
                   <span className="text-slate-600 dark:text-white font-bold">
                     {job.viewCount || 0}
@@ -333,7 +333,7 @@ export default function EmployerJobsPage() {
               {/* Vị trí & Công ty */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-2">
-                  <label className="text-xs font-bold text-slate-500 dark:text-brand-muted mb-2 block uppercase tracking-wider">
+                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
                     Tiêu đề tuyển dụng *
                   </label>
                   <input
@@ -344,7 +344,7 @@ export default function EmployerJobsPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-brand-muted mb-2 block uppercase tracking-wider">
+                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
                     Tên doanh nghiệp
                   </label>
                   <input
@@ -355,7 +355,7 @@ export default function EmployerJobsPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-brand-muted mb-2 block uppercase tracking-wider">
+                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
                     Địa điểm cụ thể
                   </label>
                   <input
@@ -370,7 +370,7 @@ export default function EmployerJobsPage() {
               {/* Quốc gia & Loại hình */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-brand-muted mb-2 block uppercase tracking-wider">
+                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
                     Quốc gia *
                   </label>
                   <select
@@ -395,7 +395,7 @@ export default function EmployerJobsPage() {
                   )}
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-brand-muted mb-2 block uppercase tracking-wider">
+                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
                     Loại hình
                   </label>
                   <select
@@ -415,7 +415,7 @@ export default function EmployerJobsPage() {
               {/* Lương & Tiền tệ */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-brand-muted mb-2 block uppercase tracking-wider">
+                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
                     Lương tối thiểu
                   </label>
                   <input
@@ -427,7 +427,7 @@ export default function EmployerJobsPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-brand-muted mb-2 block uppercase tracking-wider">
+                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
                     Lương tối đa
                   </label>
                   <input
@@ -439,7 +439,7 @@ export default function EmployerJobsPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-brand-muted mb-2 block uppercase tracking-wider">
+                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
                     Tiền tệ
                   </label>
                   <select
@@ -462,7 +462,7 @@ export default function EmployerJobsPage() {
               {/* Chỉ tiêu & Hạn nộp */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-brand-muted mb-2 block uppercase tracking-wider">
+                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
                     Chỉ tiêu
                   </label>
                   <input
@@ -474,7 +474,7 @@ export default function EmployerJobsPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-brand-muted mb-2 block uppercase tracking-wider">
+                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
                     Hạn nộp
                   </label>
                   <input
@@ -485,7 +485,7 @@ export default function EmployerJobsPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-brand-muted mb-2 block uppercase tracking-wider">
+                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
                     Trạng thái
                   </label>
                   <select
@@ -512,7 +512,7 @@ export default function EmployerJobsPage() {
               {/* Ngành nghề & Ảnh */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-brand-muted mb-2 block uppercase tracking-wider">
+                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
                     Ngành nghề
                   </label>
                   <select
@@ -529,11 +529,11 @@ export default function EmployerJobsPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-brand-muted mb-2 block uppercase tracking-wider">
+                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
                     Ảnh bìa
                   </label>
                   <div className="flex gap-3">
-                    <label className="flex-1 flex items-center justify-center gap-2 h-12 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-xl text-sm font-medium text-slate-600 dark:text-brand-muted hover:text-amber-600 hover:border-amber-400 cursor-pointer transition-all">
+                    <label className="flex-1 flex items-center justify-center gap-2 h-12 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-xl text-sm font-medium text-slate-600 dark:text-gray-300 hover:text-amber-600 hover:border-amber-400 cursor-pointer transition-all">
                       <ImageIcon size={16} /> {preview ? "Thay đổi" : "Tải lên"}
                       <input
                         type="file"
@@ -566,7 +566,7 @@ export default function EmployerJobsPage() {
               {/* Văn bản dài */}
               <div className="space-y-4 pt-2">
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-brand-muted mb-2 block uppercase tracking-wider">
+                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
                     Mô tả công việc *
                   </label>
                   <textarea
@@ -577,7 +577,7 @@ export default function EmployerJobsPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-brand-muted mb-2 block uppercase tracking-wider">
+                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
                     Yêu cầu ứng viên
                   </label>
                   <textarea
@@ -588,7 +588,7 @@ export default function EmployerJobsPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-brand-muted mb-2 block uppercase tracking-wider">
+                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
                     Quyền lợi
                   </label>
                   <textarea
@@ -634,7 +634,7 @@ export default function EmployerJobsPage() {
             <h3 className="font-bold text-slate-900 dark:text-white text-xl mb-2">
               Xóa tin tuyển dụng?
             </h3>
-            <p className="text-slate-500 dark:text-brand-muted text-sm mb-6 leading-relaxed">
+            <p className="text-slate-500 dark:text-gray-300 text-sm mb-6 leading-relaxed">
               Dữ liệu tin tuyển dụng và hồ sơ ứng viên liên quan sẽ bị xóa vĩnh
               viễn khỏi hệ thống.
             </p>

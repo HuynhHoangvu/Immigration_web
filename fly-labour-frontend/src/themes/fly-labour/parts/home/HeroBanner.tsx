@@ -10,8 +10,6 @@ import {
   Pause,
 } from "lucide-react";
 import { useT } from "@/core/hooks/useT";
-import { EditableText } from "@/admin/components/EditableText";
-import { usePageContent } from "@/core/hooks/usePageContent";
 
 const SLIDE_CONFIG = [
   {
@@ -131,18 +129,11 @@ export default function HeroBanner() {
   const config = SLIDE_CONFIG[current];
   const slide = h.slides[current];
 
-  // Dùng usePageContent để lấy override từ DB (nếu có)
-  const slideTitle = usePageContent(`hero.slide.${current}.title`, slide.title);
-  const slideTitleAccent = usePageContent(
-    `hero.slide.${current}.titleAccent`,
-    slide.titleAccent,
-  );
-  const slideSubtitle = usePageContent(
-    `hero.slide.${current}.subtitle`,
-    slide.subtitle,
-  );
-  const slideBadge = usePageContent(`hero.slide.${current}.badge`, slide.badge);
-  const hiringText = usePageContent("hero.hiring", h.hiring);
+  const slideTitle = slide.title;
+  const slideTitleAccent = slide.titleAccent;
+  const slideSubtitle = slide.subtitle;
+  const slideBadge = slide.badge;
+  const hiringText = h.hiring;
 
   return (
     <section className="hero-banner relative min-h-screen flex flex-col overflow-hidden bg-slate-900 dark:bg-brand-dark">
@@ -213,19 +204,9 @@ export default function HeroBanner() {
                 borderColor: `${config.accent}50`,
               }}
             >
-              <span className="text-sm font-medium text-white">
-                <EditableText
-                  settingKey={`hero.slide.${current}.badge`}
-                  defaultValue={slideBadge}
-                />
-              </span>
+              <span className="text-sm font-medium text-white">{slideBadge}</span>
               <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shadow-[0_0_8px_rgba(74,222,128,0.8)]" />
-              <span className="text-xs text-green-300 font-bold tracking-wide">
-                <EditableText
-                  settingKey="hero.hiring"
-                  defaultValue={hiringText}
-                />
-              </span>
+              <span className="text-xs text-green-300 font-bold tracking-wide">{hiringText}</span>
             </div>
 
             {/* Headline */}
@@ -233,12 +214,7 @@ export default function HeroBanner() {
               className="font-display tracking-wide leading-tight mb-4 animate-slide-in drop-shadow-lg"
               style={{ fontSize: "clamp(2rem, 4.5vw, 3.75rem)" }}
             >
-              <span style={{ color: "#ffffff", display: "block" }}>
-                <EditableText
-                  settingKey={`hero.slide.${current}.title`}
-                  defaultValue={slideTitle}
-                />
-              </span>
+              <span style={{ color: "#ffffff", display: "block" }}>{slideTitle}</span>
               <span
                 style={{
                   color: config.accent,
@@ -246,10 +222,7 @@ export default function HeroBanner() {
                   textShadow: `0 0 30px ${config.accent}40`,
                 }}
               >
-                <EditableText
-                  settingKey={`hero.slide.${current}.titleAccent`}
-                  defaultValue={slideTitleAccent}
-                />
+                {slideTitleAccent}
               </span>
             </h1>
 
@@ -262,11 +235,7 @@ export default function HeroBanner() {
                   "bounceInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards",
               }}
             >
-              <EditableText
-                settingKey={`hero.slide.${current}.subtitle`}
-                defaultValue={slideSubtitle}
-                multiline
-              />
+              {slideSubtitle}
             </p>
 
             {/* Search bar */}
@@ -341,16 +310,10 @@ export default function HeroBanner() {
                     className="font-display text-4xl md:text-5xl font-bold drop-shadow-sm"
                     style={{ color: config.accent }}
                   >
-                    <EditableText
-                      settingKey={`hero.slide.${current}.stat.${i}.value`}
-                      defaultValue={val}
-                    />
+                    {val}
                   </p>
                   <p className="text-white/80 text-sm mt-1 font-medium tracking-wide">
-                    <EditableText
-                      settingKey={`hero.slide.${current}.stat.${i}.label`}
-                      defaultValue={slide.statsLabels[i]}
-                    />
+                    {slide.statsLabels[i]}
                   </p>
                 </div>
               ))}

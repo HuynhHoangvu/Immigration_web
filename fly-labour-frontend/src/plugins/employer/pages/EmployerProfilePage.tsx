@@ -108,7 +108,7 @@ export default function EmployerProfilePage() {
         <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
           Hồ sơ Doanh nghiệp
         </h1>
-        <p className="text-slate-500 dark:text-brand-muted text-sm mt-1">
+        <p className="text-slate-500 dark:text-gray-300 text-sm mt-1">
           Cập nhật thông tin công ty để thu hút ứng viên chất lượng hơn.
         </p>
       </div>
@@ -137,7 +137,7 @@ export default function EmployerProfilePage() {
             <p className="text-slate-900 dark:text-white font-bold text-lg truncate">
               {info.companyName || "Tên doanh nghiệp"}
             </p>
-            <p className="text-slate-500 dark:text-brand-muted text-sm flex items-center gap-1.5 mt-1">
+            <p className="text-slate-500 dark:text-gray-300 text-sm flex items-center gap-1.5 mt-1">
               <Mail size={14} className="text-amber-500 dark:text-brand-gold" />{" "}
               {user?.email}
             </p>
@@ -146,7 +146,7 @@ export default function EmployerProfilePage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-slate-500 dark:text-brand-muted uppercase tracking-wider flex items-center gap-2">
+            <label className="text-xs font-bold text-slate-500 dark:text-gray-300 uppercase tracking-wider flex items-center gap-2">
               <User size={13} /> Người đại diện *
             </label>
             <input
@@ -157,7 +157,7 @@ export default function EmployerProfilePage() {
             />
           </div>
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-slate-500 dark:text-brand-muted uppercase tracking-wider flex items-center gap-2">
+            <label className="text-xs font-bold text-slate-500 dark:text-gray-300 uppercase tracking-wider flex items-center gap-2">
               <Phone size={13} /> Số điện thoại
             </label>
             <input
@@ -168,7 +168,7 @@ export default function EmployerProfilePage() {
             />
           </div>
           <div className="sm:col-span-2 space-y-1.5">
-            <label className="text-xs font-bold text-slate-500 dark:text-brand-muted uppercase tracking-wider flex items-center gap-2">
+            <label className="text-xs font-bold text-slate-500 dark:text-gray-300 uppercase tracking-wider flex items-center gap-2">
               <Building2 size={13} /> Tên chính thức công ty *
             </label>
             <input
@@ -179,7 +179,7 @@ export default function EmployerProfilePage() {
             />
           </div>
           <div className="sm:col-span-2 space-y-1.5">
-            <label className="text-xs font-bold text-slate-500 dark:text-brand-muted uppercase tracking-wider flex items-center gap-2">
+            <label className="text-xs font-bold text-slate-500 dark:text-gray-300 uppercase tracking-wider flex items-center gap-2">
               <Globe size={13} /> Địa chỉ Website
             </label>
             <input
@@ -190,7 +190,7 @@ export default function EmployerProfilePage() {
             />
           </div>
           <div className="sm:col-span-2 space-y-1.5">
-            <label className="text-xs font-bold text-slate-500 dark:text-brand-muted uppercase tracking-wider block">
+            <label className="text-xs font-bold text-slate-500 dark:text-gray-300 uppercase tracking-wider block">
               Giới thiệu về doanh nghiệp
             </label>
             <textarea
@@ -233,7 +233,7 @@ export default function EmployerProfilePage() {
         </div>
         <div className="space-y-4 text-sm font-medium">
           <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5">
-            <span className="text-slate-500 dark:text-brand-muted uppercase text-[10px] tracking-widest font-bold">
+            <span className="text-slate-500 dark:text-gray-300 uppercase text-xs tracking-widest font-bold">
               Email đăng nhập
             </span>
             <span className="text-slate-900 dark:text-white">
@@ -241,7 +241,7 @@ export default function EmployerProfilePage() {
             </span>
           </div>
           <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5">
-            <span className="text-slate-500 dark:text-brand-muted uppercase text-[10px] tracking-widest font-bold">
+            <span className="text-slate-500 dark:text-gray-300 uppercase text-xs tracking-widest font-bold">
               Loại tài khoản
             </span>
             <span className="text-amber-600 dark:text-brand-gold font-bold">
@@ -249,7 +249,7 @@ export default function EmployerProfilePage() {
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-slate-500 dark:text-brand-muted uppercase text-[10px] tracking-widest font-bold">
+            <span className="text-slate-500 dark:text-gray-300 uppercase text-xs tracking-widest font-bold">
               Trạng thái hệ thống
             </span>
             <span className="text-green-600 dark:text-green-400 flex items-center gap-2">
@@ -276,7 +276,7 @@ export default function EmployerProfilePage() {
             { key: "confirmPassword", label: "Xác nhận lại mật khẩu mới" },
           ].map((f) => (
             <div key={f.key} className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-500 dark:text-brand-muted uppercase tracking-wider block">
+              <label className="text-xs font-bold text-slate-500 dark:text-gray-300 uppercase tracking-wider block">
                 {f.label}
               </label>
               <div className="relative">
@@ -291,7 +291,7 @@ export default function EmployerProfilePage() {
                   <button
                     type="button"
                     onClick={() => setShowPw((s) => !s)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-brand-muted hover:text-slate-900 dark:hover:text-white transition-colors"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white transition-colors"
                   >
                     {showPw ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>

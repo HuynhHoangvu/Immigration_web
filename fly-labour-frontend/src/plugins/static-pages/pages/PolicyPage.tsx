@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronDown, ArrowRight } from "lucide-react";
-import { EditableSection } from "@/admin/components/EditableSection";
-import { EditableText } from "@/admin/components/EditableText";
 
 const FAQS = [
   {
@@ -83,19 +81,15 @@ function FaqItem({ q, a }: { q: string; a: string }) {
         onClick={() => setOpen((o) => !o)}
         className="w-full flex items-center justify-between gap-4 p-4 text-left hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
       >
-        <span className="text-slate-900 dark:text-white text-sm font-medium">
-          {q}
-        </span>
+        <span className="text-slate-900 dark:text-white text-sm font-medium">{q}</span>
         <ChevronDown
           size={16}
-          className={`text-slate-400 dark:text-brand-muted shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          className={`text-slate-400 dark:text-gray-300 shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
         />
       </button>
       {open && (
         <div className="px-4 pb-4 border-t border-slate-100 dark:border-brand-border/60 bg-slate-50/50 dark:bg-transparent">
-          <p className="text-slate-600 dark:text-brand-muted text-sm leading-relaxed pt-3">
-            {a}
-          </p>
+          <p className="text-slate-600 dark:text-gray-300 text-sm leading-relaxed pt-3">{a}</p>
         </div>
       )}
     </div>
@@ -106,10 +100,7 @@ export default function FaqPage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#0d1117] transition-colors duration-300">
       {/* Hero */}
-      <EditableSection
-        sectionKey="page.faq.hero"
-        className="relative pt-32 pb-20 px-6 overflow-hidden"
-      >
+      <div className="relative pt-32 pb-20 px-6 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-white to-amber-100/30 dark:from-[#1a0f00] dark:via-brand-dark dark:to-brand-dark transition-colors duration-500" />
         <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-3xl opacity-30 dark:opacity-10 pointer-events-none"
@@ -117,43 +108,23 @@ export default function FaqPage() {
         />
         <div className="relative max-w-3xl mx-auto text-center">
           <p className="text-amber-600 dark:text-brand-gold text-xs font-bold tracking-widest uppercase mb-4">
-            <EditableText
-              settingKey="faq.hero.label"
-              defaultValue="FAQ"
-              colorEditable={false}
-              sizeEditable={false}
-            />
+            FAQ
           </p>
           <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-5">
-            <EditableText settingKey="faq.hero.title1" defaultValue="Câu hỏi" />
+            Câu hỏi
             <br />
-            <span
-              style={{
-                background: "linear-gradient(135deg,#e4a808,#fdd52f)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              <EditableText
-                settingKey="faq.hero.title2"
-                defaultValue="thường gặp"
-                colorEditable={false}
-              />
+            <span style={{ background: "linear-gradient(135deg,#e4a808,#fdd52f)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              thường gặp
             </span>
           </h1>
-          <p className="text-slate-600 dark:text-brand-muted text-lg">
-            <EditableText
-              settingKey="faq.hero.desc"
-              defaultValue="Giải đáp mọi thắc mắc về quy trình đi lao động nước ngoài cùng Fly Labour."
-              colorEditable={false}
-              sizeEditable={false}
-            />
+          <p className="text-slate-600 dark:text-gray-300 text-lg">
+            Giải đáp mọi thắc mắc về quy trình đi lao động nước ngoài cùng Fly Labour.
           </p>
         </div>
-      </EditableSection>
+      </div>
 
       {/* FAQ list */}
-      <EditableSection sectionKey="page.faq.list" className="py-16 px-6">
+      <div className="py-16 px-6">
         <div className="max-w-3xl mx-auto space-y-10">
           {FAQS.map((group) => (
             <div key={group.category}>
@@ -168,29 +139,22 @@ export default function FaqPage() {
             </div>
           ))}
         </div>
-      </EditableSection>
+      </div>
 
       {/* CTA */}
-      <EditableSection
-        sectionKey="page.faq.cta"
-        className="py-16 px-6 border-t border-slate-200 dark:border-brand-border bg-slate-100/50 dark:bg-brand-card/20 transition-colors"
-      >
+      <div className="py-16 px-6 border-t border-slate-200 dark:border-brand-border bg-slate-100/50 dark:bg-brand-card/20 transition-colors">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">
             Chưa tìm được câu trả lời?
           </h2>
-          <p className="text-slate-600 dark:text-brand-muted mb-8">
-            Liên hệ trực tiếp với đội ngũ tư vấn — chúng tôi luôn sẵn sàng hỗ
-            trợ bạn.
+          <p className="text-slate-600 dark:text-gray-300 mb-8">
+            Liên hệ trực tiếp với đội ngũ tư vấn — chúng tôi luôn sẵn sàng hỗ trợ bạn.
           </p>
-          <Link
-            to="/contact"
-            className="btn-primary inline-flex items-center gap-2 px-8 py-3"
-          >
+          <Link to="/contact" className="btn-primary inline-flex items-center gap-2 px-8 py-3">
             Liên hệ ngay <ArrowRight size={16} />
           </Link>
         </div>
-      </EditableSection>
+      </div>
     </div>
   );
 }

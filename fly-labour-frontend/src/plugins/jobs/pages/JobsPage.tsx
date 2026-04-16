@@ -6,8 +6,6 @@ import { jobsApi, categoriesApi } from "@/core/services/api";
 import { useT } from "@/core/hooks/useT";
 import { getCountriesList } from "@/core/utils/helpers";
 import type { Job, Category, Country, JobType } from "@/core/types";
-import { EditableSection } from "@/admin/components/EditableSection";
-import { EditableText } from "@/admin/components/EditableText";
 
 export default function JobsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -79,10 +77,7 @@ export default function JobsPage() {
   return (
     <div className="min-h-screen pt-20 bg-slate-50 dark:bg-[#0d1117] transition-colors duration-300">
       {/* Header + Search + Filters */}
-      <EditableSection
-        sectionKey="page.jobs.header"
-        className="relative overflow-hidden border-b border-slate-200 dark:border-brand-border py-14 px-6"
-      >
+      <div className="relative overflow-hidden border-b border-slate-200 dark:border-brand-border py-14 px-6">
         {/* Gradient nền linh hoạt Light/Dark */}
         <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-white to-amber-100/50 dark:from-[#1a0f00] dark:via-brand-dark dark:to-[#0d1117] transition-colors duration-500" />
         <div
@@ -98,19 +93,10 @@ export default function JobsPage() {
             Việc làm quốc tế
           </p>
           <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-3 leading-tight">
-            <EditableText
-              settingKey="jobs.title"
-              defaultValue={j.title}
-              className="gradient-text"
-            />
+            <span className="gradient-text">{j.title}</span>
           </h1>
           <p className="text-slate-600 dark:text-brand-muted mb-8 max-w-xl text-justify">
-            <EditableText
-              settingKey="jobs.subtitle"
-              defaultValue={j.subtitle}
-              colorEditable={false}
-              sizeEditable={false}
-            />
+            {j.subtitle}
           </p>
 
           {/* Search + Filter bar */}
@@ -261,7 +247,7 @@ export default function JobsPage() {
             </div>
           </div>
         </div>
-      </EditableSection>
+      </div>
 
       {/* Results */}
       <div className="max-w-7xl mx-auto px-6 py-8">

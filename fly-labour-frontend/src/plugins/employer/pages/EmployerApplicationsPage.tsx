@@ -86,7 +86,7 @@ export default function EmployerApplicationsPage() {
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
             Hồ sơ ứng viên
           </h1>
-          <p className="text-slate-500 dark:text-brand-muted text-sm">
+          <p className="text-slate-500 dark:text-gray-300 text-sm">
             {apps.length} hồ sơ đã nhận
           </p>
         </div>
@@ -96,7 +96,7 @@ export default function EmployerApplicationsPage() {
       <div className="relative">
         <Search
           size={16}
-          className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-brand-muted"
+          className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-300"
         />
         <input
           value={search}
@@ -121,7 +121,7 @@ export default function EmployerApplicationsPage() {
           <p className="text-slate-900 dark:text-white font-semibold text-lg mb-1">
             {search ? "Không tìm thấy kết quả" : "Chưa có hồ sơ nào"}
           </p>
-          <p className="text-slate-500 dark:text-brand-muted text-sm max-w-xs mx-auto">
+          <p className="text-slate-500 dark:text-gray-300 text-sm max-w-xs mx-auto">
             Hồ sơ sẽ xuất hiện tại đây khi ứng viên nộp vào các tin tuyển dụng
             của bạn.
           </p>
@@ -155,18 +155,18 @@ export default function EmployerApplicationsPage() {
                         {app.fullName}
                       </p>
                       <span
-                        className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold uppercase tracking-wider ${status?.color}`}
+                        className={`text-xs px-2 py-0.5 rounded-full border font-semibold uppercase tracking-wider ${status?.color}`}
                       >
                         {status?.label}
                       </span>
                     </div>
-                    <p className="text-slate-500 dark:text-brand-muted text-xs truncate font-medium">
+                    <p className="text-slate-500 dark:text-gray-300 text-xs truncate font-medium">
                       {app.email} <span className="mx-1 opacity-50">•</span>{" "}
                       {app.job?.title}
                     </p>
                   </div>
                   <div className="flex items-center gap-4 shrink-0">
-                    <p className="text-slate-400 dark:text-brand-muted text-xs hidden md:block">
+                    <p className="text-slate-400 dark:text-gray-300 text-xs hidden md:block">
                       {formatDate(app.createdAt)}
                     </p>
                     <div
@@ -198,7 +198,7 @@ export default function EmployerApplicationsPage() {
                           key={f.label}
                           className="p-4 bg-white dark:bg-brand-card border border-slate-100 dark:border-white/5 rounded-2xl shadow-sm dark:shadow-none"
                         >
-                          <p className="text-slate-400 dark:text-brand-muted text-[10px] font-bold uppercase tracking-widest mb-1">
+                          <p className="text-slate-400 dark:text-gray-300 text-xs font-bold uppercase tracking-widest mb-1">
                             {f.label}
                           </p>
                           <p className="text-slate-900 dark:text-white text-sm font-semibold">
@@ -210,7 +210,7 @@ export default function EmployerApplicationsPage() {
 
                     {app.coverLetter && (
                       <div className="p-4 bg-white dark:bg-brand-card border border-slate-100 dark:border-white/5 rounded-2xl shadow-sm dark:shadow-none">
-                        <p className="text-slate-400 dark:text-brand-muted text-[10px] font-bold uppercase tracking-widest mb-2">
+                        <p className="text-slate-400 dark:text-gray-300 text-xs font-bold uppercase tracking-widest mb-2">
                           Thư xin việc
                         </p>
                         <p className="text-slate-700 dark:text-gray-300 text-sm leading-relaxed whitespace-pre-wrap">
@@ -222,7 +222,7 @@ export default function EmployerApplicationsPage() {
                     <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
                       {app.cvUrl ? (
                         <div className="flex-1">
-                          <p className="text-slate-400 dark:text-brand-muted text-[10px] font-bold uppercase tracking-widest mb-2">
+                          <p className="text-slate-400 dark:text-gray-300 text-xs font-bold uppercase tracking-widest mb-2">
                             Hồ sơ đính kèm
                           </p>
                           <a
@@ -242,7 +242,7 @@ export default function EmployerApplicationsPage() {
                       {/* Status actions */}
                       {app.status !== "withdrawn" && (
                         <div className="shrink-0">
-                          <p className="text-slate-400 dark:text-brand-muted text-[10px] font-bold uppercase tracking-widest mb-3 sm:text-right">
+                          <p className="text-slate-400 dark:text-gray-300 text-xs font-bold uppercase tracking-widest mb-3 sm:text-right">
                             Cập nhật trạng thái hồ sơ
                           </p>
                           <div className="flex flex-wrap gap-2">
@@ -259,7 +259,7 @@ export default function EmployerApplicationsPage() {
                                 className={`flex items-center gap-2 px-4 py-2 rounded-xl border text-xs font-bold transition-all disabled:opacity-50 shadow-sm ${
                                   app.status === opt.value
                                     ? opt.color
-                                    : "bg-white dark:bg-brand-card border-slate-200 dark:border-white/10 text-slate-600 dark:text-brand-muted hover:border-amber-400 dark:hover:border-brand-gold hover:text-slate-900 dark:hover:text-white"
+                                    : "bg-white dark:bg-brand-card border-slate-200 dark:border-white/10 text-slate-600 dark:text-gray-300 hover:border-amber-400 dark:hover:border-brand-gold hover:text-slate-900 dark:hover:text-white"
                                 }`}
                               >
                                 {updatingId === app.id &&

@@ -102,7 +102,7 @@ export default function RegisterPage() {
           <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">
             {a.registerTitle}
           </h1>
-          <p className="text-slate-500 dark:text-brand-muted text-sm mt-1.5">
+          <p className="text-slate-700 dark:text-gray-300 text-sm mt-1.5">
             {a.registerSub}
           </p>
         </div>
@@ -125,7 +125,7 @@ export default function RegisterPage() {
               />
               <div className="text-center">
                 <p className="text-sm font-bold">{a.jobSeeker}</p>
-                <p className="text-[10px] uppercase font-bold tracking-tighter opacity-70">
+                <p className="text-xs font-medium opacity-70">
                   {a.jobSeekerSub}
                 </p>
               </div>
@@ -145,7 +145,7 @@ export default function RegisterPage() {
               />
               <div className="text-center">
                 <p className="text-sm font-bold">{a.employer}</p>
-                <p className="text-[10px] uppercase font-bold tracking-tighter opacity-70">
+                <p className="text-xs font-medium opacity-70">
                   {a.employerSub}
                 </p>
               </div>
@@ -155,7 +155,7 @@ export default function RegisterPage() {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="sm:col-span-2">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-brand-muted mb-1.5 block">
+                <label className="text-sm font-medium text-slate-900 dark:text-gray-100 mb-1.5 block">
                   {a.fullName} *
                 </label>
                 <input
@@ -166,7 +166,7 @@ export default function RegisterPage() {
                 />
               </div>
               <div>
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-brand-muted mb-1.5 block">
+                <label className="text-sm font-medium text-slate-900 dark:text-gray-100 mb-1.5 block">
                   {a.email} *
                 </label>
                 <input
@@ -178,7 +178,7 @@ export default function RegisterPage() {
                 />
               </div>
               <div>
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-brand-muted mb-1.5 block">
+                <label className="text-sm font-medium text-slate-900 dark:text-gray-100 mb-1.5 block">
                   {a.phone} *
                 </label>
                 <input
@@ -193,7 +193,7 @@ export default function RegisterPage() {
               {accountType === "employer" ? (
                 <>
                   <div>
-                    <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-brand-muted mb-1.5 block">
+                    <label className="text-sm font-medium text-slate-900 dark:text-gray-100 mb-1.5 block">
                       {a.companyName} *
                     </label>
                     <input
@@ -204,7 +204,7 @@ export default function RegisterPage() {
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-brand-muted mb-1.5 block">
+                    <label className="text-sm font-medium text-slate-900 dark:text-gray-100 mb-1.5 block">
                       {a.website}
                     </label>
                     <input
@@ -217,7 +217,7 @@ export default function RegisterPage() {
                 </>
               ) : (
                 <div className="sm:col-span-2">
-                  <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-brand-muted mb-1.5 block">
+                  <label className="text-sm font-medium text-slate-900 dark:text-gray-100 mb-1.5 block">
                     {a.address}
                   </label>
                   <input
@@ -230,7 +230,7 @@ export default function RegisterPage() {
               )}
 
               <div>
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-brand-muted mb-1.5 block">
+                <label className="text-sm font-medium text-slate-900 dark:text-gray-100 mb-1.5 block">
                   {a.password} *
                 </label>
                 <div className="relative">
@@ -251,7 +251,7 @@ export default function RegisterPage() {
                 </div>
               </div>
               <div>
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-brand-muted mb-1.5 block">
+                <label className="text-sm font-medium text-slate-900 dark:text-gray-100 mb-1.5 block">
                   {a.confirmPass} *
                 </label>
                 <input
@@ -264,7 +264,7 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            <p className="text-[11px] text-slate-500 dark:text-brand-muted leading-relaxed">
+            <p className="text-xs text-slate-700 dark:text-gray-300 leading-relaxed">
               {a.termsText}{" "}
               <Link
                 to="/"
@@ -300,7 +300,7 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          <p className="text-center text-sm text-slate-500 dark:text-brand-muted mt-8">
+          <p className="text-center text-sm text-slate-700 dark:text-gray-300 mt-8">
             {a.hasAccount}{" "}
             <Link
               to="/login"

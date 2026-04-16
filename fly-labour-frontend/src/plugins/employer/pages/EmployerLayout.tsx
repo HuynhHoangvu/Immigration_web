@@ -63,7 +63,7 @@ function Sidebar({
                 LABOUR
               </span>
             </p>
-            <p className="text-[10px] font-bold uppercase tracking-tighter text-slate-400 dark:text-brand-muted">
+            <p className="text-xs font-bold uppercase tracking-tighter text-slate-400 dark:text-gray-300">
               Cổng Nhà tuyển dụng
             </p>
           </div>
@@ -71,7 +71,7 @@ function Sidebar({
         {mobile && (
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-brand-muted hover:text-red-500"
+            className="p-1.5 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-gray-300 hover:text-red-500"
           >
             <X size={18} />
           </button>
@@ -91,7 +91,7 @@ function Sidebar({
             <p className="text-slate-900 dark:text-white text-sm font-bold truncate">
               {user?.companyName || user?.fullName}
             </p>
-            <p className="text-amber-600 dark:text-brand-gold text-[10px] font-bold uppercase tracking-wider">
+            <p className="text-amber-600 dark:text-brand-gold text-xs font-bold uppercase tracking-wider">
               Nhà tuyển dụng
             </p>
           </div>
@@ -112,7 +112,7 @@ function Sidebar({
               className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 group ${
                 isActive
                   ? "bg-amber-50 dark:bg-brand-gold/15 text-amber-700 dark:text-brand-gold border border-amber-100 dark:border-brand-gold/20 shadow-sm"
-                  : "text-slate-500 dark:text-brand-muted hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5"
+                  : "text-slate-500 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5"
               }`}
             >
               <item.icon
@@ -120,7 +120,7 @@ function Sidebar({
                 className={
                   isActive
                     ? "text-amber-600 dark:text-brand-gold"
-                    : "text-slate-400 dark:text-brand-muted group-hover:text-slate-900 dark:group-hover:text-white"
+                    : "text-slate-400 dark:text-gray-300 group-hover:text-slate-900 dark:group-hover:text-white"
                 }
               />
               <span className="flex-1">{item.label}</span>
@@ -145,7 +145,7 @@ function Sidebar({
         </button>
         <Link
           to="/"
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-500 dark:text-brand-muted hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-500 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
         >
           <Home size={18} /> Về trang chủ
         </Link>
@@ -196,7 +196,7 @@ export default function EmployerLayout() {
             >
               <Menu size={22} />
             </button>
-            <p className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-brand-muted hidden sm:block">
+            <p className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-gray-300 hidden sm:block">
               Fly Labour — Hệ quản trị Nhà tuyển dụng
             </p>
           </div>
@@ -206,7 +206,7 @@ export default function EmployerLayout() {
               <p className="text-xs font-bold text-slate-900 dark:text-white truncate">
                 {user?.fullName}
               </p>
-              <p className="text-[10px] text-slate-500 dark:text-brand-muted uppercase font-bold tracking-tighter">
+              <p className="text-xs text-slate-500 dark:text-gray-300 uppercase font-bold tracking-tighter">
                 ID: #{user?.id?.slice(-5)}
               </p>
             </div>

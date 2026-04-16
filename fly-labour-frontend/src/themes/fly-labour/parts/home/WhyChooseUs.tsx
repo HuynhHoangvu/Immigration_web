@@ -1,7 +1,5 @@
 import { Shield, Globe, Clock, HeartHandshake } from "lucide-react";
 import { useT } from "@/core/hooks/useT";
-import { EditableText } from "@/admin/components/EditableText";
-import { usePageContent } from "@/core/hooks/usePageContent";
 
 const FEATURE_ICONS = [
   <Shield size={24} />,
@@ -14,15 +12,8 @@ export default function WhyChooseUs() {
   const { t } = useT();
   const h = t("home");
 
-  const whyBadge = usePageContent("why.badge", h.whyBadge);
-  const whyTitle = usePageContent("why.title", h.whyTitle);
-  const whyTitleAccent = usePageContent("why.titleAccent", h.whyTitleAccent);
-  const whySubtitle = usePageContent("why.subtitle", h.whySubtitle);
-  const whyDesc = usePageContent("why.desc", h.whyDesc);
-
   return (
     <section className="py-20 relative overflow-hidden transition-colors duration-300">
-      {/* Background gradient linh hoạt */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-500/5 dark:via-brand-gold/[0.02] to-transparent transition-colors duration-500" />
 
       <div className="max-w-7xl mx-auto px-6 relative">
@@ -52,34 +43,19 @@ export default function WhyChooseUs() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <p className="text-amber-600 dark:text-brand-gold text-sm font-bold uppercase tracking-widest mb-3 transition-colors">
-              <EditableText settingKey="why.badge" defaultValue={whyBadge} />
+              {h.whyBadge}
             </p>
             <h2 className="section-title text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-5 transition-colors">
-              <EditableText settingKey="why.title" defaultValue={whyTitle} />
+              {h.whyTitle}
               <br />
-              <span className="gradient-text">
-                <EditableText
-                  settingKey="why.titleAccent"
-                  defaultValue={whyTitleAccent}
-                />
-              </span>{" "}
-              <EditableText
-                settingKey="why.subtitle"
-                defaultValue={whySubtitle}
-              />
+              <span className="gradient-text">{h.whyTitleAccent}</span>{" "}
+              {h.whySubtitle}
             </h2>
             <p className="text-slate-700 dark:text-gray-300 leading-relaxed mb-8 transition-colors">
-              <EditableText
-                settingKey="why.desc"
-                defaultValue={whyDesc}
-                multiline
-              />
+              {h.whyDesc}
             </p>
             <div className="flex flex-wrap gap-3">
-              <a
-                href="/jobs"
-                className="btn-primary text-sm px-6 py-2.5 font-medium shadow-md"
-              >
+              <a href="/jobs" className="btn-primary text-sm px-6 py-2.5 font-medium shadow-md">
                 {h.findJob}
               </a>
               <a
@@ -103,7 +79,7 @@ export default function WhyChooseUs() {
                 <h4 className="font-semibold text-slate-900 dark:text-white text-sm mb-2 transition-colors">
                   {title}
                 </h4>
-                <p className="text-slate-600 dark:text-brand-muted text-xs leading-relaxed transition-colors">
+                <p className="text-slate-600 dark:text-gray-300 text-xs leading-relaxed transition-colors">
                   {h.featureDescs[i]}
                 </p>
               </div>

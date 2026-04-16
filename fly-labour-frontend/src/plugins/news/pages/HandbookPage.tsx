@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import { Search, Calendar, ArrowRight, BookOpen, Loader2 } from "lucide-react";
 import { newsApi, getImageUrl } from "@/core/services/api";
 import { formatDate } from "@/core/utils/helpers";
-import { EditableSection } from "@/admin/components/EditableSection";
-import { EditableText } from "@/admin/components/EditableText";
 
 interface NewsItem {
   id: string;
@@ -46,37 +44,22 @@ export default function HandbookPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-[#0d1117] transition-colors duration-300 pt-20 pb-20">
       {/* Page Header */}
-      <EditableSection
-        sectionKey="page.handbook.header"
-        className="bg-slate-50/50 dark:bg-brand-card/30 backdrop-blur-xl border-b border-slate-100 dark:border-white/5"
-      >
+      <div className="bg-slate-50/50 dark:bg-brand-card/30 backdrop-blur-xl border-b border-slate-100 dark:border-white/5">
         <div className="max-w-7xl mx-auto px-6 py-20 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-gold/10 border border-brand-gold/20 mb-8 shadow-sm">
-            <BookOpen
-              size={14}
-              className="text-brand-gold"
-            />
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-gold">
+            <BookOpen size={14} className="text-brand-gold" />
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-brand-gold">
               Cẩm nang định cư & Visa
             </span>
           </div>
-          <h1 className="text-4xl md:text-7xl font-black text-slate-900 dark:text-white mb-8 leading-tight tracking-tight">
-            <EditableText
-              settingKey="handbook.title"
-              defaultValue="Cẩm nang FLY LABOUR"
-              className="gradient-text"
-            />
+          <h1 className="text-4xl md:text-7xl font-bold text-slate-900 dark:text-white mb-8 leading-tight tracking-tight">
+            <span className="gradient-text">Cẩm nang FLY LABOUR</span>
           </h1>
-          <p className="text-slate-500 dark:text-brand-muted max-w-2xl mx-auto text-base md:text-xl font-medium leading-relaxed">
-            <EditableText
-              settingKey="handbook.subtitle"
-              defaultValue="Toàn bộ kinh nghiệm, quy trình và những lưu ý quan trọng khi bắt đầu hành trình vươn tầm thế giới."
-              colorEditable={false}
-              sizeEditable={false}
-            />
+          <p className="text-slate-500 dark:text-gray-300 max-w-2xl mx-auto text-base md:text-xl font-medium leading-relaxed">
+            Toàn bộ kinh nghiệm, quy trình và những lưu ý quan trọng khi bắt đầu hành trình vươn tầm thế giới.
           </p>
         </div>
-      </EditableSection>
+      </div>
 
       <div className="max-w-7xl mx-auto px-6 py-16 space-y-20">
         {/* Search Bar */}
@@ -103,10 +86,10 @@ export default function HandbookPage() {
         ) : filtered.length === 0 ? (
           <div className="text-center py-32 bg-slate-50 dark:bg-white/5 rounded-[3rem] border border-dashed border-slate-200 dark:border-white/10 max-w-3xl mx-auto">
             <div className="text-6xl mb-6">📚</div>
-            <p className="text-slate-900 dark:text-white font-black text-2xl mb-2">
+            <p className="text-slate-900 dark:text-white font-bold text-2xl mb-2">
               Không tìm thấy nội dung
             </p>
-            <p className="text-slate-500 dark:text-brand-muted font-medium">
+            <p className="text-slate-500 dark:text-gray-300 font-medium">
               Bạn có thể thử tìm kiếm theo tên quốc gia hoặc loại visa.
             </p>
           </div>
@@ -131,27 +114,27 @@ export default function HandbookPage() {
                     </div>
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-8">
-                     <span className="text-white text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2">
+                     <span className="text-white text-xs font-bold uppercase tracking-[0.2em] flex items-center gap-2">
                         Đọc tài liệu <ArrowRight size={14} />
                      </span>
                   </div>
                 </div>
                 <div className="p-8 flex flex-col flex-1 bg-white dark:bg-brand-card">
-                  <div className="flex items-center gap-2 text-slate-400 dark:text-brand-muted text-[10px] font-bold uppercase tracking-widest mb-4">
+                  <div className="flex items-center gap-2 text-slate-400 dark:text-gray-300 text-xs font-bold uppercase tracking-widest mb-4">
                     <Calendar size={12} className="text-brand-gold" />
                     {formatDate(item.createdAt)}
                   </div>
-                  <h3 className="text-slate-900 dark:text-white font-black text-xl mb-4 group-hover:text-brand-gold transition-colors line-clamp-2 leading-tight tracking-tight">
+                  <h3 className="text-slate-900 dark:text-white font-bold text-xl mb-4 group-hover:text-brand-gold transition-colors line-clamp-2 leading-tight tracking-tight">
                     {item.title}
                   </h3>
                   {item.excerpt && (
-                    <p className="text-slate-500 dark:text-brand-muted text-sm leading-relaxed line-clamp-3 flex-1 font-medium">
+                    <p className="text-slate-500 dark:text-gray-300 text-sm leading-relaxed line-clamp-3 flex-1 font-medium">
                       {item.excerpt}
                     </p>
                   )}
                   <div className="mt-8 pt-6 border-t border-slate-50 dark:border-white/5 flex items-center justify-between">
                      <BookOpen size={16} className="text-brand-gold opacity-50" />
-                     <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-brand-gold transition-colors">
+                     <span className="text-xs font-bold uppercase tracking-widest text-slate-400 group-hover:text-brand-gold transition-colors">
                         Xem chi tiết
                      </span>
                   </div>
