@@ -14,7 +14,7 @@ import {
   Loader2,
   Link as LinkIcon,
 } from "lucide-react";
-import RichTextEditor from "@/admin/components/RichTextEditor";
+
 import type { News } from "@/core/types";
 import { formatDate } from "@/core/utils/helpers";
 import toast from "react-hot-toast";
@@ -363,7 +363,9 @@ export default function AdminNewsPage() {
 
             <div className="flex items-center gap-3">
               <div className="hidden md:flex items-center gap-2 mr-4 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-[10px] font-bold text-slate-500 uppercase tracking-tighter">
-                <div className={`w-2 h-2 rounded-full ${form.isPublished ? "bg-green-500" : "bg-slate-400"}`} />
+                <div
+                  className={`w-2 h-2 rounded-full ${form.isPublished ? "bg-green-500" : "bg-slate-400"}`}
+                />
                 {form.isPublished ? "Sẵn sàng công khai" : "Bản nháp"}
               </div>
               <button
@@ -409,9 +411,8 @@ export default function AdminNewsPage() {
                 </div>
 
                 {/* Main Content Editor */}
-                <RichTextEditor
+                <textarea
                   value={form.content}
-                  onChange={(val) => setForm((f) => ({ ...f, content: val }))}
                   placeholder="Bắt đầu câu chuyện của bạn..."
                   className="!border-none !rounded-none min-h-[1000px]"
                 />
@@ -422,12 +423,18 @@ export default function AdminNewsPage() {
             <div className="w-80 h-full bg-white dark:bg-brand-card border-l border-slate-200 dark:border-white/5 overflow-y-auto p-6 space-y-8 custom-scrollbar shrink-0 hidden xl:block">
               {/* Publication Status */}
               <div className="space-y-4">
-                <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 border-b border-slate-100 dark:border-white/5 pb-2">Cấu hình bài viết</h3>
-                
+                <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 border-b border-slate-100 dark:border-white/5 pb-2">
+                  Cấu hình bài viết
+                </h3>
+
                 <label className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5 cursor-pointer group transition-all hover:border-brand-gold">
                   <div className="flex flex-col">
-                    <span className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-tighter">Công khai bài viết</span>
-                    <span className="text-[10px] text-slate-500 font-medium">Hiện thị trên trang chủ</span>
+                    <span className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-tighter">
+                      Công khai bài viết
+                    </span>
+                    <span className="text-[10px] text-slate-500 font-medium">
+                      Hiện thị trên trang chủ
+                    </span>
                   </div>
                   <div
                     className={`w-10 h-5 rounded-full relative transition-colors ${form.isPublished ? "bg-green-500" : "bg-slate-300"}`}
@@ -439,7 +446,10 @@ export default function AdminNewsPage() {
                       type="checkbox"
                       checked={form.isPublished}
                       onChange={(e) =>
-                        setForm((f) => ({ ...f, isPublished: e.target.checked }))
+                        setForm((f) => ({
+                          ...f,
+                          isPublished: e.target.checked,
+                        }))
                       }
                       className="hidden"
                     />
@@ -450,8 +460,12 @@ export default function AdminNewsPage() {
               {/* URL Slug */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-black uppercase tracking-widest text-slate-400">Đường dẫn (Slug)</h3>
-                  <code className="text-[9px] text-brand-gold font-bold">flylabour.vn/news/...</code>
+                  <h3 className="text-xs font-black uppercase tracking-widest text-slate-400">
+                    Đường dẫn (Slug)
+                  </h3>
+                  <code className="text-[9px] text-brand-gold font-bold">
+                    flylabour.vn/news/...
+                  </code>
                 </div>
                 <input
                   value={form.slug}
@@ -463,7 +477,9 @@ export default function AdminNewsPage() {
 
               {/* Image Preview */}
               <div className="space-y-4">
-                <h3 className="text-xs font-black uppercase tracking-widest text-slate-400">Hình ảnh đại diện</h3>
+                <h3 className="text-xs font-black uppercase tracking-widest text-slate-400">
+                  Hình ảnh đại diện
+                </h3>
                 <div className="relative aspect-video rounded-2xl overflow-hidden bg-slate-100 dark:bg-black/40 border border-slate-200 dark:border-white/5 group shadow-inner">
                   {form.imagePreview ? (
                     <img
@@ -474,7 +490,9 @@ export default function AdminNewsPage() {
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center text-slate-300 dark:text-brand-muted gap-2">
                       <ImageIcon size={32} className="opacity-20" />
-                      <p className="text-[10px] font-bold uppercase tracking-widest">Chưa có ảnh</p>
+                      <p className="text-[10px] font-bold uppercase tracking-widest">
+                        Chưa có ảnh
+                      </p>
                     </div>
                   )}
                   {form.imagePreview && (
@@ -493,19 +511,38 @@ export default function AdminNewsPage() {
 
                 <div className="grid grid-cols-2 gap-2">
                   <button
-                    onClick={() => { setImgTab("upload"); fileRef.current?.click(); }}
+                    onClick={() => {
+                      setImgTab("upload");
+                      fileRef.current?.click();
+                    }}
                     className="flex flex-col items-center justify-center py-4 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-2xl hover:border-brand-gold hover:bg-brand-gold/5 transition-all group"
                   >
-                    <Upload size={18} className="text-slate-400 group-hover:text-brand-gold mb-2" />
-                    <span className="text-[9px] font-black uppercase tracking-widest">Tải lên</span>
-                    <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
+                    <Upload
+                      size={18}
+                      className="text-slate-400 group-hover:text-brand-gold mb-2"
+                    />
+                    <span className="text-[9px] font-black uppercase tracking-widest">
+                      Tải lên
+                    </span>
+                    <input
+                      ref={fileRef}
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleFileChange}
+                    />
                   </button>
                   <button
                     onClick={() => setImgTab("url")}
-                    className={`flex flex-col items-center justify-center py-4 rounded-2xl border transition-all ${imgTab === "url" ? 'bg-brand-gold/10 border-brand-gold/50' : 'bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/5 hover:border-brand-gold'}`}
+                    className={`flex flex-col items-center justify-center py-4 rounded-2xl border transition-all ${imgTab === "url" ? "bg-brand-gold/10 border-brand-gold/50" : "bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/5 hover:border-brand-gold"}`}
                   >
-                    <LinkIcon size={18} className={`mb-2 ${imgTab === "url" ? 'text-brand-gold' : 'text-slate-400'}`} />
-                    <span className="text-[9px] font-black uppercase tracking-widest">Dùng Link</span>
+                    <LinkIcon
+                      size={18}
+                      className={`mb-2 ${imgTab === "url" ? "text-brand-gold" : "text-slate-400"}`}
+                    />
+                    <span className="text-[9px] font-black uppercase tracking-widest">
+                      Dùng Link
+                    </span>
                   </button>
                 </div>
 
@@ -514,7 +551,10 @@ export default function AdminNewsPage() {
                     <input
                       value={urlInput}
                       onChange={(e) => setUrlInput(e.target.value)}
-                      className={inputClasses + " h-9 text-xs !rounded-l-xl !rounded-r-none border-r-0"}
+                      className={
+                        inputClasses +
+                        " h-9 text-xs !rounded-l-xl !rounded-r-none border-r-0"
+                      }
                       placeholder="https://..."
                     />
                     <button
@@ -529,17 +569,25 @@ export default function AdminNewsPage() {
 
               {/* Excerpt */}
               <div className="space-y-2">
-                <h3 className="text-xs font-black uppercase tracking-widest text-slate-400">Tóm tắt (Trích dẫn)</h3>
+                <h3 className="text-xs font-black uppercase tracking-widest text-slate-400">
+                  Tóm tắt (Trích dẫn)
+                </h3>
                 <textarea
                   value={form.excerpt}
                   onChange={setField("excerpt")}
-                  className={inputClasses + " py-3 h-32 resize-none text-xs leading-relaxed"}
+                  className={
+                    inputClasses +
+                    " py-3 h-32 resize-none text-xs leading-relaxed"
+                  }
                   placeholder="Mô tả súc tích cho bài viết này..."
                 />
               </div>
 
               <div className="pt-8 text-center">
-                <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Mẹo: Tiêu đề nên chứa từ khóa chính <br/> để tối ưu SEO tốt hơn.</p>
+                <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">
+                  Mẹo: Tiêu đề nên chứa từ khóa chính <br /> để tối ưu SEO tốt
+                  hơn.
+                </p>
               </div>
             </div>
           </div>

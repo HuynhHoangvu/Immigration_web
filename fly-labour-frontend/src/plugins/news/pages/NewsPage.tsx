@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { Search, Calendar, ArrowRight, Newspaper, Loader2 } from "lucide-react";
 import { newsApi, getImageUrl } from "@/core/services/api";
 import { formatDate } from "@/core/utils/helpers";
@@ -15,18 +16,19 @@ interface NewsItem {
 }
 
 export default function NewsPage() {
-  const [news, setNews] = useState<NewsItem[]>([]);
-  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    newsApi
-      .getAll()
-      .then((r) => setNews(r.data || []))
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, []);
+  const newsQuery = useQuery<NewsItem[]>({
+    queryKey: ["news"],
+    queryFn: async () => {
+      const response = await newsApi.getAll();
+      return response.data || [];
+    },
+    staleTime: 1000 * 60 * 5,
+  });
 
+  const news = newsQuery.data ?? [];
+  const isLoading = newsQuery.isLoading;
   const filtered = news.filter(
     (n) =>
       !search ||
@@ -47,7 +49,10 @@ export default function NewsPage() {
       <div className="bg-slate-50/50 dark:bg-brand-card/30 backdrop-blur-xl border-b border-slate-100 dark:border-white/5">
         <div className="max-w-7xl mx-auto px-6 py-20 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-50 dark:bg-brand-gold/10 border border-amber-100 dark:border-brand-gold/20 mb-8 shadow-sm">
-            <Newspaper size={14} className="text-amber-600 dark:text-brand-gold" />
+            <Newspaper
+              size={14}
+              className="text-amber-600 dark:text-brand-gold"
+            />
             <span className="text-xs font-black uppercase tracking-[0.2em] text-amber-700 dark:text-brand-gold">
               Tạp chí FLY LABOUR
             </span>
@@ -56,7 +61,8 @@ export default function NewsPage() {
             <span className="gradient-text">Tin tức & Cập nhật</span>
           </h1>
           <p className="text-slate-800 dark:text-gray-200 max-w-2xl mx-auto text-base md:text-xl font-medium leading-relaxed">
-            Nơi cập nhật những thay đổi mới nhất về chính sách di trú và thị trường nhân lực toàn cầu.
+            Nơi cập nhật những thay đổi mới nhất về chính sách di trú và thị
+            trường nhân lực toàn cầu.
           </p>
         </div>
       </div>
@@ -76,7 +82,7 @@ export default function NewsPage() {
           />
         </div>
 
-        {loading ? (
+        {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20">
             <Loader2 size={40} className="animate-spin text-amber-500 mb-4" />
             <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">

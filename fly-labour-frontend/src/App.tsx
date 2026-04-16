@@ -4,7 +4,6 @@ import { Toaster } from "react-hot-toast";
 
 import { useThemeStore } from "@/core/store/themeStore";
 import { useContentStore } from "@/core/hooks/usePageContent";
-import { AdminEditBar } from "@/admin/components/AdminEditBar";
 import ScrollToTop from "@/themes/fly-labour/parts/widgets/ScrollToTop";
 import UserLayout from "@/themes/fly-labour/layout/UserLayout";
 import AdminLayout from "@/admin/layout/AdminLayout";
@@ -47,6 +46,7 @@ import AdminContactsPage from "@/admin/pages/AdminContactsPage";
 import AdminPoliciesPage from "@/admin/pages/AdminPoliciesPage";
 import AdminHandbookPage from "@/admin/pages/AdminHandbookPage";
 
+import { lazy, Suspense } from "react";
 // ── Bootstrap components ──────────────────────────────────────────────────────
 function ContentLoader() {
   const load = useContentStore((s) => s.load);
@@ -67,7 +67,6 @@ export default function App() {
     <BrowserRouter>
       <ThemeInitializer />
       <ContentLoader />
-      <AdminEditBar />
       <ScrollToTop />
 
       <Toaster

@@ -19,7 +19,7 @@ export default function CategoriesSection() {
 
   return (
     <section className="py-16 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="w-full px-4 md:px-8 xl:px-12 overflow-hidden">
         <div className="flex items-end justify-between mb-10">
           <div>
             <p className="text-amber-600 dark:text-brand-gold text-sm font-bold uppercase tracking-widest mb-2">
@@ -44,7 +44,11 @@ export default function CategoriesSection() {
               className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl p-5 text-center group hover:-translate-y-1 hover:border-amber-400 dark:hover:border-brand-gold/50 shadow-sm hover:shadow-xl hover:shadow-amber-500/10 dark:hover:shadow-brand-gold/10 transition-all duration-300"
             >
               <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-amber-50 dark:bg-brand-gold/5 border border-amber-100 dark:border-brand-gold/10 group-hover:bg-amber-100 dark:group-hover:bg-brand-gold/15 group-hover:border-amber-200 dark:group-hover:border-brand-gold/30 flex items-center justify-center text-3xl transition-all duration-300 shadow-sm dark:shadow-none overflow-hidden">
-                {cat.icon && (cat.icon.startsWith("http") || cat.icon.startsWith("/") || cat.icon.match(/^\d+$/) || cat.icon.includes(".")) ? (
+                {cat.icon &&
+                (cat.icon.startsWith("http") ||
+                  cat.icon.startsWith("/") ||
+                  cat.icon.match(/^\d+$/) ||
+                  cat.icon.includes(".")) ? (
                   <img
                     src={
                       cat.icon.match(/^\d+$/)

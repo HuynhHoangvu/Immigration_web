@@ -82,7 +82,7 @@ export default function JobCard({ job, compact }: Props) {
   return (
     <Link
       to={`/jobs/${job.id}`}
-      className={`group flex flex-col h-full bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl overflow-hidden transition-all duration-300
+      className={`group flex flex-col h-full min-h-[28rem] bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-3xl overflow-hidden transition-all duration-300
         hover:-translate-y-0.5 hover:shadow-lg hover:shadow-amber-500/8 hover:border-amber-300 dark:hover:border-brand-gold/40
         ${expired ? "opacity-70" : ""}`}
     >
@@ -144,7 +144,7 @@ export default function JobCard({ job, compact }: Props) {
       )}
 
       {/* ── Card Body ── */}
-      <div className="flex flex-col flex-1 p-4 gap-3">
+      <div className="flex flex-col flex-1 min-h-0 p-5 gap-4">
         {/* Compact mode: badges on top */}
         {compact && (
           <div className="flex gap-1.5 flex-wrap">

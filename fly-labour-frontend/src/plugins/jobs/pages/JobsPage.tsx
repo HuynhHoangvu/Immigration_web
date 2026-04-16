@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { Search, X, ChevronDown } from "lucide-react";
 import JobCard from "@/plugins/jobs/components/JobCard";
 import { jobsApi, categoriesApi } from "@/core/services/api";
@@ -9,10 +10,6 @@ import type { Job, Category, Country, JobType } from "@/core/types";
 
 export default function JobsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [jobs, setJobs] = useState<Job[]>([]);
-  const [cats, setCats] = useState<Category[]>([]);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
   const { t } = useT();
   const j = t("jobs");
 
@@ -22,24 +19,35 @@ export default function JobsPage() {
   const categoryId = searchParams.get("categoryId") || "";
   const sort = searchParams.get("sort") || "newest";
 
-  useEffect(() => {
-    categoriesApi
-      .getAll()
-      .then((r) => setCats(r.data))
-      .catch(() => {});
-  }, []);
+  const categoriesQuery = useQuery<Category[]>({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      const response = await categoriesApi.getAll();
+      return response.data;
+    },
+    staleTime: 1000 * 60 * 5,
+  });
 
-  useEffect(() => {
-    setLoading(true);
-    jobsApi
-      .getAll({ search, country, jobType, categoryId, sort, limit: 20 })
-      .then((r) => {
-        setJobs(r.data.data);
-        setTotal(r.data.meta.total);
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, [search, country, jobType, categoryId, sort]);
+  const jobsQuery = useQuery<{ data: Job[]; meta: { total: number } }, Error>({
+    queryKey: ["jobs", search, country, jobType, categoryId, sort],
+    queryFn: async () => {
+      const response = await jobsApi.getAll({
+        search,
+        country,
+        jobType,
+        categoryId,
+        sort,
+        limit: 20,
+      });
+      return response.data;
+    },
+    staleTime: 1000 * 60 * 2,
+  });
+
+  const jobs = jobsQuery.data?.data ?? [];
+  const total = jobsQuery.data?.meta?.total ?? 0;
+  const cats = categoriesQuery.data ?? [];
+  const isLoading = jobsQuery.isLoading || categoriesQuery.isLoading;
 
   const COUNTRIES: { value: Country | ""; label: string }[] = [
     { value: "", label: j.allCountries },
@@ -285,7 +293,7 @@ export default function JobsPage() {
           </div>
         </div>
 
-        {loading ? (
+        {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 items-stretch">
             {[...Array(8)].map((_, i) => (
               <div

@@ -22,7 +22,7 @@ export default function LatestJobsSection() {
 
   return (
     <section className="py-16 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="w-full px-4 md:px-8 xl:px-12 overflow-hidden">
         <div className="flex items-end justify-between mb-10">
           <div>
             <p className="text-amber-600 dark:text-brand-gold text-sm font-bold uppercase tracking-widest mb-2 transition-colors">

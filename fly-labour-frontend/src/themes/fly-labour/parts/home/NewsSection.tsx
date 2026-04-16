@@ -25,7 +25,7 @@ export default function NewsSection() {
   return (
     // Sửa nền thành bg-transparent để ăn theo nền xám của Layout tổng
     <section className="py-20 bg-transparent transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="w-full px-4 md:px-8 xl:px-12 overflow-hidden">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 dark:bg-brand-gold/10 border border-amber-200 dark:border-brand-gold/20 mb-4 transition-colors">
