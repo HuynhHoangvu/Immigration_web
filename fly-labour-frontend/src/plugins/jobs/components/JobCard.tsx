@@ -1,14 +1,5 @@
 import { Link } from "react-router-dom";
-import {
-  MapPin,
-  Clock,
-  Users,
-  TrendingUp,
-  Eye,
-  Star,
-  Flame,
-  TimerOff,
-} from "lucide-react";
+import { MapPin, Clock, Users, TrendingUp, Flame, Star, TimerOff } from "lucide-react";
 import type { Job } from "@/core/types";
 import {
   getCountryLabels,
@@ -19,17 +10,12 @@ import {
 import { useT } from "@/core/hooks/useT";
 import { getImageUrl } from "@/core/services/api";
 
-// Default images per country if no custom image
 const COUNTRY_IMAGES: Record<string, string> = {
-  australia:
-    "https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=600&q=70&fit=crop",
-  canada:
-    "https://images.unsplash.com/photo-1503614472-8c93d56e92ce?w=600&q=70&fit=crop",
-  new_zealand:
-    "https://images.unsplash.com/photo-1469521669194-babb45599def?w=600&q=70&fit=crop",
+  australia: "https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=600&q=70&fit=crop",
+  canada: "https://images.unsplash.com/photo-1503614472-8c93d56e92ce?w=600&q=70&fit=crop",
+  new_zealand: "https://images.unsplash.com/photo-1469521669194-babb45599def?w=600&q=70&fit=crop",
 };
 
-// Category placeholder images
 const CATEGORY_IMAGES: Record<string, string> = {
   "1": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=70&fit=crop",
   "2": "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&q=70&fit=crop",
@@ -41,10 +27,14 @@ const CATEGORY_IMAGES: Record<string, string> = {
   "8": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&q=70&fit=crop",
 };
 
-interface Props {
-  job: Job;
-  compact?: boolean;
-}
+const FLAG_MAP: Record<string, string> = {
+  australia: "🇦🇺", canada: "🇨🇦", new_zealand: "🇳🇿",
+  norway: "🇳🇴", germany: "🇩🇪", portugal: "🇵🇹", czech: "🇨🇿",
+  us: "🇺🇸", uk: "🇬🇧", japan: "🇯🇵", singapore: "🇸🇬",
+  south_korea: "🇰🇷", taiwan: "🇹🇼", uae: "🇦🇪",
+};
+
+interface Props { job: Job; compact?: boolean; }
 
 function isExpired(deadline?: string) {
   if (!deadline) return false;
@@ -56,44 +46,21 @@ export default function JobCard({ job, compact }: Props) {
   const jc = t("jobCard");
   const countryLabels = getCountryLabels();
   const countryLabel = countryLabels[job.country] ?? job.country;
-  // Strip flag emoji for display next to flag
-  const countryName = countryLabel
-    .replace(/[\u{1F1E0}-\u{1F1FF}]{2}/gu, "")
-    .trim();
-
-  const countryFlagMap: Record<string, string> = {
-    australia: "🇦🇺",
-    canada: "🇨🇦",
-    new_zealand: "🇳🇿",
-    norway: "🇳🇴",
-    germany: "🇩🇪",
-    portugal: "🇵🇹",
-    czech: "🇨🇿",
-    us: "🇺🇸",
-    uk: "🇬🇧",
-    japan: "🇯🇵",
-    singapore: "🇸🇬",
-    south_korea: "🇰🇷",
-    taiwan: "🇹🇼",
-    uae: "🇦🇪",
-  };
-  const flag = countryFlagMap[job.country] ?? "";
-
+  const countryName = countryLabel.replace(/[\u{1F1E0}-\u{1F1FF}]{2}/gu, "").trim();
+  const flag = FLAG_MAP[job.country] ?? "";
   const expired = isExpired(job.deadline);
-
-  const thumbUrl =
-    job.image ||
-    CATEGORY_IMAGES[job.categoryId || ""] ||
-    COUNTRY_IMAGES[job.country];
+  const thumbUrl = job.image || CATEGORY_IMAGES[job.categoryId || ""] || COUNTRY_IMAGES[job.country];
 
   return (
     <Link
       to={`/jobs/${job.id}`}
-      className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl flex flex-col h-full group overflow-hidden transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-xl hover:shadow-amber-500/10 hover:border-amber-400 dark:hover:shadow-brand-gold/10 dark:hover:border-brand-gold/50"
+      className={`group flex flex-col h-full bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl overflow-hidden transition-all duration-300
+        hover:-translate-y-0.5 hover:shadow-lg hover:shadow-amber-500/8 hover:border-amber-300 dark:hover:border-brand-gold/40
+        ${expired ? "opacity-70" : ""}`}
     >
-      {/* Thumbnail image */}
+      {/* ── Thumbnail ── */}
       {!compact && (
-        <div className="relative h-40 overflow-hidden bg-slate-200 dark:bg-brand-dark transition-colors">
+        <div className="relative h-44 overflow-hidden bg-slate-100 dark:bg-brand-dark flex-shrink-0">
           <img
             src={thumbUrl}
             alt={job.title}
@@ -101,143 +68,127 @@ export default function JobCard({ job, compact }: Props) {
             loading="lazy"
             onError={(e) => {
               const img = e.currentTarget;
-              const fallback = COUNTRY_IMAGES[job.country];
-              if (img.src !== fallback) img.src = fallback;
+              const fb = COUNTRY_IMAGES[job.country];
+              if (img.src !== fb && fb) img.src = fb;
             }}
           />
-          {/* Gradient phủ lên ảnh linh hoạt theo Mode */}
-          <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/20 dark:from-brand-card/90 dark:via-brand-card/20 to-transparent transition-colors" />
+          {/* overlay gradient */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
+          {/* Badge top-left */}
           <div className="absolute top-3 left-3 flex gap-1.5 flex-wrap">
             {expired && (
-              <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full bg-slate-200 dark:bg-slate-700/80 text-slate-600 dark:text-slate-200 backdrop-blur-sm border border-slate-300 dark:border-slate-500/40 shadow-sm transition-colors">
+              <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-700/80 text-slate-200 backdrop-blur-sm">
                 <TimerOff size={9} /> Hết hạn
               </span>
             )}
             {!expired && job.isHot && (
-              <span className="inline-flex items-center gap-1 text-[10px] font-black px-2.5 py-1 rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-[0_2px_8px_rgba(239,68,68,0.45)] border border-red-400/30">
-                <Flame size={9} className="fill-yellow-300 text-yellow-300" />{" "}
-                HOT
+              <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-sm">
+                <Flame size={9} className="fill-yellow-300 text-yellow-300" /> HOT
               </span>
             )}
             {!expired && job.isFeatured && (
-              <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 dark:from-amber-400 dark:to-yellow-300 text-white dark:text-amber-900 shadow-[0_2px_8px_rgba(245,158,11,0.4)] dark:shadow-[0_2px_8px_rgba(251,191,36,0.4)] border border-amber-300 dark:border-yellow-300/50">
-                <Star
-                  size={9}
-                  className="fill-white dark:fill-amber-800 text-white dark:text-amber-800"
-                />{" "}
-                {jc.featured}
+              <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400 text-amber-900 shadow-sm">
+                <Star size={9} className="fill-amber-900" /> {jc.featured}
               </span>
             )}
           </div>
 
-          <div className="absolute top-3 right-3">
-            <span className="badge-country border-transparent dark:border-white/10 text-[10px]">
+          {/* Country badge bottom-right */}
+          <div className="absolute bottom-3 right-3">
+            <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-black/50 text-white backdrop-blur-sm border border-white/20">
               {flag} {countryName}
             </span>
           </div>
 
-          {job.deadline && (
-            <div className="absolute bottom-2 right-3 text-[10px] font-medium text-slate-700 dark:text-white/70 transition-colors">
+          {/* Deadline bottom-left */}
+          {job.deadline && !expired && (
+            <div className="absolute bottom-3 left-3 text-[10px] font-medium text-white/80">
               {jc.deadline}{" "}
-              {new Date(job.deadline).toLocaleDateString("en-AU", {
-                day: "2-digit",
-                month: "2-digit",
-              })}
+              {new Date(job.deadline).toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit" })}
             </div>
           )}
         </div>
       )}
 
-      {/* Card body */}
-      <div className="p-4 flex flex-col flex-1 bg-white dark:bg-transparent transition-colors">
+      {/* ── Card Body ── */}
+      <div className="flex flex-col flex-1 p-4 gap-3">
+
+        {/* Compact mode: badges on top */}
         {compact && (
-          <div className="flex gap-1.5 flex-wrap mb-2">
+          <div className="flex gap-1.5 flex-wrap">
             {expired && (
-              <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full bg-slate-200 dark:bg-slate-700/80 text-slate-600 dark:text-slate-200 border border-slate-300 dark:border-slate-500/40 transition-colors">
+              <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700/80 text-slate-500 dark:text-slate-300 border border-slate-200 dark:border-slate-500/40">
                 <TimerOff size={9} /> Hết hạn
               </span>
             )}
             {!expired && job.isHot && (
-              <span className="inline-flex items-center gap-1 text-[10px] font-black px-2.5 py-1 rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-[0_2px_8px_rgba(239,68,68,0.4)] border border-red-400/30">
-                <Flame size={9} className="fill-yellow-300 text-yellow-300" />{" "}
-                HOT
+              <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white">
+                <Flame size={9} className="fill-yellow-300 text-yellow-300" /> HOT
               </span>
             )}
-            <span className="badge-country border-slate-200 dark:border-transparent text-[10px] transition-colors">
+            <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-white/10">
               {flag} {countryName}
             </span>
           </div>
         )}
 
-        <h3 className="font-semibold text-slate-900 dark:text-brand-yellow group-hover:text-amber-600 dark:group-hover:text-brand-gold transition-colors leading-snug mb-1 line-clamp-2 text-sm text-justify">
+        {/* Job title — Level 1: to, đậm, tối */}
+        <h3 className="font-bold text-slate-900 dark:text-white text-base leading-snug line-clamp-2 group-hover:text-amber-600 dark:group-hover:text-brand-gold transition-colors">
           {job.title}
         </h3>
+
+        {/* Company — Level 2: vừa, nhạt hơn */}
         {job.company && (
-          <p className="text-slate-500 dark:text-brand-muted text-xs mb-3 font-medium transition-colors">
+          <p className="text-sm font-medium text-slate-500 dark:text-slate-400 -mt-1">
             {job.company}
           </p>
         )}
 
-        <div className="bg-amber-50 dark:bg-brand-gold/5 border border-amber-200 dark:border-brand-gold/20 rounded-xl px-3 py-2 mb-3 transition-colors">
-          <div className="flex items-center gap-1.5">
-            <TrendingUp
-              size={12}
-              className="text-amber-600 dark:text-brand-gold transition-colors"
-            />
-            <span className="text-amber-700 dark:text-brand-gold font-semibold text-xs transition-colors">
-              {formatSalary(job.salaryMin, job.salaryMax, job.salaryCurrency)}
-            </span>
-          </div>
+        {/* Salary highlight — nổi bật bằng màu, không cần to */}
+        <div className="flex items-center gap-1.5 bg-amber-50 dark:bg-brand-gold/5 border border-amber-200 dark:border-brand-gold/20 rounded-xl px-3 py-2">
+          <TrendingUp size={13} className="text-amber-600 dark:text-brand-gold flex-shrink-0" />
+          <span className="text-amber-700 dark:text-brand-gold font-bold text-sm">
+            {formatSalary(job.salaryMin, job.salaryMax, job.salaryCurrency)}
+          </span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 text-[11px] font-medium text-slate-500 dark:text-brand-muted flex-1 transition-colors">
+        {/* Meta row: location / type / slots — Level 3: nhỏ, nhạt, đồng đều */}
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
           {job.location && (
-            <span className="flex items-center gap-1">
-              <MapPin size={10} /> {job.location}
+            <span className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 dark:text-slate-400">
+              <MapPin size={11} className="flex-shrink-0" /> {job.location}
             </span>
           )}
-          <span className="flex items-center gap-1">
-            <Clock size={10} /> {getJobTypeLabel(job.jobType)}
+          <span className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 dark:text-slate-400">
+            <Clock size={11} className="flex-shrink-0" /> {getJobTypeLabel(job.jobType)}
           </span>
           {job.slots && (
-            <span className="flex items-center gap-1">
-              <Users size={10} /> {job.slots} {jc.slots}
-            </span>
-          )}
-          {job.viewCount > 0 && (
-            <span className="flex items-center gap-1 ml-auto">
-              <Eye size={10} /> {job.viewCount}
+            <span className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 dark:text-slate-400">
+              <Users size={11} className="flex-shrink-0" /> {job.slots} {jc.slots}
             </span>
           )}
         </div>
 
-        <div className="flex items-center justify-between mt-auto pt-3 border-t border-slate-100 dark:border-brand-gray-700 transition-colors">
+        {/* Footer: category + time — nhỏ nhất, vai trò phụ */}
+        <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-white/5 mt-auto">
           {job.category ? (
-            <span className="text-[11px] px-2 py-0.5 bg-slate-100 dark:bg-brand-gray-800 rounded-lg text-slate-600 dark:text-brand-gray-300 font-medium transition-colors flex items-center gap-1.5 min-h-[1.5rem]">
-              {job.category.icon?.startsWith("http") ||
-              job.category.icon?.startsWith("/") ||
-              job.category.icon?.match(/^\d+$/) ? (
+            <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-white/5">
+              {job.category.icon?.startsWith("http") || job.category.icon?.startsWith("/") || job.category.icon?.match(/^\d+$/) ? (
                 <img
-                  src={
-                    job.category.icon?.match(/^\d+$/)
-                      ? `/${job.category.icon}.png`
-                      : getImageUrl(job.category.icon)
-                  }
+                  src={job.category.icon?.match(/^\d+$/) ? `/${job.category.icon}.png` : getImageUrl(job.category.icon)}
                   alt=""
-                  className="w-3.5 h-3.5 object-contain"
+                  className="w-3 h-3 object-contain"
                 />
               ) : (
                 job.category.icon
               )}
-              {lang === "en"
-                ? job.category.nameEn || job.category.name
-                : job.category.name}
+              {lang === "en" ? job.category.nameEn || job.category.name : job.category.name}
             </span>
           ) : (
             <span />
           )}
-          <span className="text-[11px] font-medium text-slate-400 dark:text-brand-muted transition-colors">
+          <span className="text-xs font-medium text-slate-400 dark:text-slate-500">
             {timeAgo(job.createdAt)}
           </span>
         </div>

@@ -447,39 +447,50 @@ export default function JobDetailPage() {
                               Yêu cầu khác
                             </td>
                             <td className="p-4">
-                              <div className="space-y-4">
-                                {structReq?.other && (
-                                  <p className={bodyTextClasses}>
-                                    {structReq.other}
+                              {structReq?.other ? (
+                                <p className={`${bodyTextClasses} whitespace-pre-line`}>
+                                  {structReq.other}
+                                </p>
+                              ) : (
+                                <span className="text-sm text-slate-400 dark:text-gray-500">—</span>
+                              )}
+                              {!structReq && job.requirements &&
+                                !job.requirements.startsWith('{"v2":') && (
+                                  <p
+                                    className={`${bodyTextClasses} whitespace-pre-line`}
+                                  >
+                                    {job.requirements}
                                   </p>
                                 )}
-                                {structReq?.checklist?.map((item: string) => (
-                                  <div
-                                    key={item}
-                                    className="flex items-start gap-3"
-                                  >
-                                    <div className="mt-1 flex-shrink-0 w-4 h-4 rounded-full bg-amber-50 dark:bg-brand-gold/10 flex items-center justify-center">
-                                      <CheckCircle
-                                        size={14}
-                                        className="text-amber-600 dark:text-brand-gold"
-                                      />
-                                    </div>
-                                    <span className={bodyTextClasses}>
-                                      {item}
-                                    </span>
-                                  </div>
-                                ))}
-                                {!structReq && job.requirements &&
-                                  !job.requirements.startsWith('{"v2":') && (
-                                    <p
-                                      className={`${bodyTextClasses} whitespace-pre-line`}
-                                    >
-                                      {job.requirements}
-                                    </p>
-                                  )}
-                              </div>
                             </td>
                           </tr>
+                          {structReq?.checklist && structReq.checklist.length > 0 && (
+                            <tr>
+                              <td className="p-4 text-sm font-normal text-slate-500 dark:text-gray-400 bg-slate-50/50 dark:bg-transparent align-top">
+                                Các hồ sơ cần chuẩn bị
+                              </td>
+                              <td className="p-4">
+                                <div className="space-y-3">
+                                  {structReq.checklist.map((item: string) => (
+                                    <div
+                                      key={item}
+                                      className="flex items-start gap-3"
+                                    >
+                                      <div className="mt-1 flex-shrink-0 w-4 h-4 rounded-full bg-amber-50 dark:bg-brand-gold/10 flex items-center justify-center">
+                                        <CheckCircle
+                                          size={14}
+                                          className="text-amber-600 dark:text-brand-gold"
+                                        />
+                                      </div>
+                                      <span className={bodyTextClasses}>
+                                        {item}
+                                      </span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </td>
+                            </tr>
+                          )}
                         </tbody>
                       </table>
                     </div>
