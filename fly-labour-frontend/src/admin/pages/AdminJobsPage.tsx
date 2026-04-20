@@ -150,6 +150,7 @@ export default function AdminJobsPage() {
   const [urlInput, setUrlInput] = useState("");
   const [salaryPeriod, setSalaryPeriod] = useState<"hourly" | "weekly" | "monthly" | "yearly">("monthly");
   const [tableSalaryPeriod, setTableSalaryPeriod] = useState<"hourly" | "weekly" | "monthly" | "yearly">("monthly");
+  const [salaryInputMode, setSalaryInputMode] = useState<"hourly" | "monthly">("monthly");
   const fileRef = useRef<HTMLInputElement>(null);
   const fileObjRef = useRef<File | null>(null);
   
@@ -197,6 +198,7 @@ export default function AdminJobsPage() {
     setUrlInput("");
     fileObjRef.current = null;
     setSalaryPeriod("monthly");
+    setSalaryInputMode("monthly");
     setModal("add");
   };
 
@@ -254,6 +256,7 @@ export default function AdminJobsPage() {
 
     setUrlInput(job.image || "");
     fileObjRef.current = null;
+    setSalaryInputMode("monthly");
     setEditing(job);
     setModal("edit");
   };
@@ -318,6 +321,13 @@ export default function AdminJobsPage() {
         if (v === "" || v === undefined || v === null) return;
         fd.append(k, String(v));
       });
+      // Convert hourly → monthly before saving
+      if (salaryInputMode === "hourly") {
+        const toMonthly = (v: string) => v ? String(Math.round((parseFloat(v) * 40 * 52) / 12)) : "";
+        fd.set("salaryMin", toMonthly(form.salaryMin));
+        fd.set("salaryMax", toMonthly(form.salaryMax));
+      }
+
       if (form.country === "__other__") {
         if (!form.countryCustom.trim()) { toast.error("Vui lòng nhập tên quốc gia"); setSaving(false); return; }
         fd.set("country", form.countryCustom.trim());
@@ -345,7 +355,7 @@ export default function AdminJobsPage() {
           v2: {
             departure: form.ben_departure,
             checklist: form.ben_checklist,
-            raw: form.benefits
+            raw: form.ben_checklist?.length ? "" : form.benefits
           }
         };
         fd.set("benefits", JSON.stringify(structBen));
@@ -568,7 +578,7 @@ export default function AdminJobsPage() {
       {/* ══ Add/Edit Modal ══ */}
       {modal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-hidden flex flex-col shadow-2xl">
+          <div className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-3xl w-full max-w-3xl max-h-[92vh] overflow-hidden flex flex-col shadow-2xl">
             <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-white/5 shrink-0">
               <h2 className="font-bold text-slate-900 dark:text-white text-lg flex items-center gap-2">
                 <Briefcase className="text-amber-600" />
@@ -672,49 +682,108 @@ export default function AdminJobsPage() {
               </div>
 
               {/* 3. Lương & Trạng thái */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-2 text-slate-400 font-bold text-[10px] uppercase tracking-widest border-b border-slate-100 dark:border-white/5 pb-2">
+              <div className="space-y-4 pb-6 border-b border-slate-100 dark:border-white/5">
+                <div className="flex items-center gap-2 text-slate-400 font-bold text-[10px] uppercase tracking-widest">
                   <DollarSign size={14} /> Tài chính & Trạng thái
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-end">
-                  <div className="md:col-span-8 p-4 bg-slate-50 dark:bg-black/20 border border-slate-100 dark:border-white/5 rounded-2xl">
-                    <div className="grid grid-cols-3 gap-3">
-                      <div className="space-y-1">
-                        <label className="text-[9px] font-bold text-slate-400">MIN</label>
-                        <input type="number" value={form.salaryMin} onChange={setField("salaryMin")} className={`${inputClasses} h-10`} placeholder="3000" />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-[9px] font-bold text-slate-400">MAX</label>
-                        <input type="number" value={form.salaryMax} onChange={setField("salaryMax")} className={`${inputClasses} h-10`} placeholder="4500" />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-[9px] font-bold text-slate-400">TIỀN TỆ</label>
-                        <select value={form.salaryCurrency} onChange={handleCurrencyChange} className={`${inputClasses} h-10 appearance-none`}>
-                          <option value="AUD">🇦🇺 AUD</option>
-                          <option value="CAD">🇨🇦 CAD</option>
-                          <option value="VND">🇻🇳 VND</option>
-                          <option value="USD">🇺🇸 USD</option>
-                        </select>
+
+                {/* Row: Lương + Trạng thái */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* Khối lương */}
+                  <div className="md:col-span-2 p-4 bg-slate-50 dark:bg-black/20 border border-slate-100 dark:border-white/5 rounded-2xl space-y-3">
+                    {/* Toggle nhập theo giờ / tháng */}
+                    <div className="flex items-center justify-between">
+                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Đơn vị lương nhập</span>
+                      <div className="flex rounded-lg border border-slate-200 dark:border-white/10 overflow-hidden text-[10px] font-black">
+                        <button type="button"
+                          onClick={() => setSalaryInputMode("hourly")}
+                          className={`px-3 py-1 transition-colors ${salaryInputMode === "hourly" ? "bg-amber-500 text-white" : "bg-white dark:bg-white/5 text-slate-500 hover:text-amber-500"}`}>
+                          /GIỜ
+                        </button>
+                        <button type="button"
+                          onClick={() => setSalaryInputMode("monthly")}
+                          className={`px-3 py-1 transition-colors ${salaryInputMode === "monthly" ? "bg-amber-500 text-white" : "bg-white dark:bg-white/5 text-slate-500 hover:text-amber-500"}`}>
+                          /THÁNG
+                        </button>
                       </div>
                     </div>
+
+                    {/* Min / Max */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-bold text-slate-400">TỐI THIỂU ({salaryInputMode === "hourly" ? "giờ" : "tháng"})</label>
+                        <input type="number" value={form.salaryMin} onChange={setField("salaryMin")} className={`${inputClasses} h-10`} placeholder={salaryInputMode === "hourly" ? "25" : "3000"} />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-bold text-slate-400">TỐI ĐA ({salaryInputMode === "hourly" ? "giờ" : "tháng"})</label>
+                        <input type="number" value={form.salaryMax} onChange={setField("salaryMax")} className={`${inputClasses} h-10`} placeholder={salaryInputMode === "hourly" ? "35" : "4500"} />
+                      </div>
+                    </div>
+
+                    {/* Preview quy đổi */}
+                    {(form.salaryMin || form.salaryMax) && (() => {
+                      const val = parseFloat(form.salaryMax || form.salaryMin);
+                      if (!val) return null;
+                      const est = getSalaryEstimates(val, salaryInputMode);
+                      const cur = form.salaryCurrency;
+                      return (
+                        <div className="flex flex-wrap gap-2 pt-1 border-t border-slate-200 dark:border-white/5">
+                          {salaryInputMode === "monthly" && (
+                            <span className="text-[10px] px-2 py-0.5 rounded-md bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 font-bold">≈ {est.hourly} {cur}/giờ</span>
+                          )}
+                          {salaryInputMode === "hourly" && (
+                            <span className="text-[10px] px-2 py-0.5 rounded-md bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 font-bold">≈ {est.monthly} {cur}/tháng</span>
+                          )}
+                          <span className="text-[10px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-gray-400 font-medium">≈ {est.weekly} {cur}/tuần</span>
+                          <span className="text-[10px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-gray-400 font-medium">≈ {est.yearly} {cur}/năm</span>
+                        </div>
+                      );
+                    })()}
                   </div>
-                  <div className="md:col-span-4 space-y-1.5">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Trạng thái tin</label>
-                    <select value={form.status} onChange={setField("status")} className={`${inputClasses} h-11 appearance-none font-bold`}>
-                      {Object.entries(STATUS_LABELS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-                    </select>
+
+                  {/* Tiền tệ + Trạng thái */}
+                  <div className="space-y-3">
+                    <div className="space-y-1">
+                      <label className="text-[9px] font-bold text-slate-400 uppercase">Tiền tệ</label>
+                      <select value={form.salaryCurrency} onChange={handleCurrencyChange} className={`${inputClasses} h-10 appearance-none`}>
+                        <option value="AUD">🇦🇺 AUD – Úc</option>
+                        <option value="CAD">🇨🇦 CAD – Canada</option>
+                        <option value="NZD">🇳🇿 NZD – New Zealand</option>
+                        <option value="USD">🇺🇸 USD – Mỹ</option>
+                        <option value="EUR">🇪🇺 EUR – Châu Âu</option>
+                        <option value="GBP">🇬🇧 GBP – Anh</option>
+                        <option value="NOK">🇳🇴 NOK – Na Uy</option>
+                        <option value="SEK">🇸🇪 SEK – Thụy Điển</option>
+                        <option value="DKK">🇩🇰 DKK – Đan Mạch</option>
+                        <option value="CHF">🇨🇭 CHF – Thụy Sĩ</option>
+                        <option value="CZK">🇨🇿 CZK – Séc</option>
+                        <option value="AED">🇦🇪 AED – UAE</option>
+                        <option value="JPY">🇯🇵 JPY – Nhật</option>
+                        <option value="KRW">🇰🇷 KRW – Hàn Quốc</option>
+                        <option value="SGD">🇸🇬 SGD – Singapore</option>
+                        <option value="VND">🇻🇳 VND – Việt Nam</option>
+                      </select>
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[9px] font-bold text-slate-400 uppercase">Trạng thái tin</label>
+                      <select value={form.status} onChange={setField("status")} className={`${inputClasses} h-10 appearance-none font-bold`}>
+                        {Object.entries(STATUS_LABELS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+                      </select>
+                    </div>
                   </div>
                 </div>
+
+                {/* Hot / Featured */}
                 <div className="flex gap-6 items-center bg-slate-50 dark:bg-black/20 px-4 py-3 rounded-2xl border border-slate-100 dark:border-white/5">
-                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Phân loại:</span>
-                   <label className="flex items-center gap-2 cursor-pointer group">
-                      <input type="checkbox" checked={form.isHot} onChange={e => setForm(f => ({ ...f, isHot: e.target.checked }))} className="w-5 h-5 accent-red-500 rounded-lg shadow-sm" />
-                      <span className="text-xs font-bold text-slate-600 dark:text-gray-300 group-hover:text-red-500 transition-colors">🔥 TIN HOT</span>
-                    </label>
-                    <label className="flex items-center gap-2 cursor-pointer group">
-                      <input type="checkbox" checked={form.isFeatured} onChange={e => setForm(f => ({ ...f, isFeatured: e.target.checked }))} className="w-5 h-5 accent-amber-500 rounded-lg shadow-sm" />
-                      <span className="text-xs font-bold text-slate-600 dark:text-gray-300 group-hover:text-amber-500 transition-colors">⭐ NỔI BẬT</span>
-                    </label>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Phân loại:</span>
+                  <label className="flex items-center gap-2 cursor-pointer group">
+                    <input type="checkbox" checked={form.isHot} onChange={e => setForm(f => ({ ...f, isHot: e.target.checked }))} className="w-5 h-5 accent-red-500 rounded-lg shadow-sm" />
+                    <span className="text-xs font-bold text-slate-600 dark:text-gray-300 group-hover:text-red-500 transition-colors">🔥 TIN HOT</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer group">
+                    <input type="checkbox" checked={form.isFeatured} onChange={e => setForm(f => ({ ...f, isFeatured: e.target.checked }))} className="w-5 h-5 accent-amber-500 rounded-lg shadow-sm" />
+                    <span className="text-xs font-bold text-slate-600 dark:text-gray-300 group-hover:text-amber-500 transition-colors">⭐ NỔI BẬT</span>
+                  </label>
                 </div>
               </div>
 
@@ -723,32 +792,32 @@ export default function AdminJobsPage() {
                 <div className="flex items-center gap-2 text-slate-400 font-bold text-[10px] uppercase tracking-widest border-b border-slate-100 dark:border-white/5 pb-2">
                   <TrendingUp size={14} /> Cấu hình hiển thị dạng bảng
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6">
                   {/* Yêu cầu */}
                   <div className="p-5 bg-blue-50/50 dark:bg-blue-500/5 border border-blue-100 dark:border-blue-500/10 rounded-2xl space-y-4">
                     <h3 className="text-blue-700 dark:text-blue-400 font-black text-[10px] uppercase tracking-widest">1. YÊU CẦU CÔNG VIỆC</h3>
                     <div className="space-y-3">
-                      <div className="grid grid-cols-2 gap-3">
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                         <div className="space-y-1">
                           <label className="text-[9px] font-bold text-slate-400 uppercase">Độ tuổi</label>
                           <input value={form.req_age} onChange={e => setForm({...form, req_age: e.target.value})} className={`${inputClasses} h-9`} placeholder="18 - 40" />
                         </div>
                         <div className="space-y-1">
-                          <label className="text-[9px] font-bold text-slate-400 uppercase">Làm việc</label>
+                          <label className="text-[9px] font-bold text-slate-400 uppercase">Giờ làm</label>
                           <input value={form.req_workTime} onChange={e => setForm({...form, req_workTime: e.target.value})} className={`${inputClasses} h-9`} placeholder="40h/tuần" />
+                        </div>
+                        <div className="space-y-1">
+                          <label className="text-[9px] font-bold text-slate-400 uppercase">Kinh nghiệm</label>
+                          <input value={form.req_experience} onChange={e => setForm({...form, req_experience: e.target.value})} className={`${inputClasses} h-9`} placeholder="2 năm" />
+                        </div>
+                        <div className="space-y-1">
+                          <label className="text-[9px] font-bold text-slate-400 uppercase">Ngoại ngữ</label>
+                          <input value={form.req_language} onChange={e => setForm({...form, req_language: e.target.value})} className={`${inputClasses} h-9`} placeholder="PTE/IELTS" />
                         </div>
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[9px] font-bold text-slate-400 uppercase">Kinh nghiệm</label>
-                        <input value={form.req_experience} onChange={e => setForm({...form, req_experience: e.target.value})} className={`${inputClasses} h-9`} placeholder="VD: 2 năm" />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-[9px] font-bold text-slate-400 uppercase">Ngoại ngữ</label>
-                        <input value={form.req_language} onChange={e => setForm({...form, req_language: e.target.value})} className={`${inputClasses} h-9`} placeholder="PTE/IELTS" />
-                      </div>
-                      <div className="space-y-1">
                         <label className="text-[9px] font-bold text-slate-400 uppercase">Yêu cầu khác</label>
-                        <textarea value={form.req_other} onChange={e => setForm({...form, req_other: e.target.value})} className={`${inputClasses} h-16 py-2 resize-none text-[11px]`} placeholder="VD: Sức khỏe tốt, không tiền án..." />
+                        <textarea value={form.req_other} onChange={e => setForm({...form, req_other: e.target.value})} className={`${inputClasses} h-14 py-2 resize-none text-[11px]`} placeholder="VD: Sức khỏe tốt, không tiền án..." />
                       </div>
                       <div className="pt-2 border-t border-blue-200/30">
                         <p className="text-[9px] font-bold text-slate-400 uppercase mb-2">Checklist Hồ sơ</p>

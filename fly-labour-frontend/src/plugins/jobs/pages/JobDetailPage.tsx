@@ -516,7 +516,7 @@ export default function JobDetailPage() {
                               Quyền lợi
                             </td>
                             <td className="p-4">
-                              {structBen?.raw && !structBen.raw.startsWith('{"v2":') && (
+                              {structBen?.raw && !structBen.raw.startsWith('{"v2":') && !structBen.checklist?.length && (
                                 <p className="text-sm font-medium text-slate-900 dark:text-gray-100 leading-relaxed mb-4 whitespace-pre-line">
                                   {structBen.raw}
                                 </p>
