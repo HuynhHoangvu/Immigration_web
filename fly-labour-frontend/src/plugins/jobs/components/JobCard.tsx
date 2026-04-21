@@ -82,13 +82,13 @@ export default function JobCard({ job, compact }: Props) {
   return (
     <Link
       to={`/jobs/${job.id}`}
-      className={`group flex flex-col h-full min-h-[28rem] bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-3xl overflow-hidden transition-all duration-300
+      className={`group flex flex-col h-full min-h-[20rem] sm:min-h-[24rem] lg:min-h-[28rem] bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-3xl overflow-hidden transition-all duration-300
         hover:-translate-y-0.5 hover:shadow-lg hover:shadow-amber-500/8 hover:border-amber-300 dark:hover:border-brand-gold/40
         ${expired ? "opacity-70" : ""}`}
     >
       {/* ── Thumbnail ── */}
       {!compact && (
-        <div className="relative h-44 overflow-hidden bg-slate-100 dark:bg-brand-dark flex-shrink-0">
+        <div className="relative h-36 sm:h-40 lg:h-44 overflow-hidden bg-slate-100 dark:bg-brand-dark flex-shrink-0">
           <img
             src={thumbUrl}
             alt={job.title}
@@ -144,7 +144,7 @@ export default function JobCard({ job, compact }: Props) {
       )}
 
       {/* ── Card Body ── */}
-      <div className="flex flex-col flex-1 min-h-0 p-5 gap-4">
+      <div className="flex flex-col flex-1 min-h-0 p-3 sm:p-4 lg:p-5 gap-2 sm:gap-3">
         {/* Compact mode: badges on top */}
         {compact && (
           <div className="flex gap-1.5 flex-wrap">
@@ -166,7 +166,7 @@ export default function JobCard({ job, compact }: Props) {
         )}
 
         {/* Job title — Level 1: to, đậm, tối */}
-        <h3 className="font-bold text-slate-900 dark:text-white text-base leading-snug line-clamp-2 group-hover:text-amber-600 dark:group-hover:text-brand-gold transition-colors">
+        <h3 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base leading-snug line-clamp-2 group-hover:text-amber-600 dark:group-hover:text-brand-gold transition-colors">
           {job.title}
         </h3>
 
@@ -178,7 +178,7 @@ export default function JobCard({ job, compact }: Props) {
         )}
 
         {/* Salary highlight — nổi bật bằng màu, không cần to */}
-        <div className="flex items-center gap-1.5 bg-amber-50 dark:bg-brand-gold/5 border border-amber-200 dark:border-brand-gold/20 rounded-xl px-3 py-2">
+        <div className="flex items-center gap-1.5 bg-amber-50 dark:bg-brand-gold/5 border border-amber-200 dark:border-brand-gold/20 rounded-xl px-2 py-1.5 sm:px-3 sm:py-2">
           <TrendingUp
             size={13}
             className="text-amber-600 dark:text-brand-gold flex-shrink-0"

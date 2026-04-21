@@ -194,7 +194,7 @@ export default function HeroBanner() {
 
       {/* Main content */}
       <div className="relative z-20 flex-1 flex items-center">
-        <div className="max-w-7xl w-full mx-auto px-6 pt-24 pb-20">
+        <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 pt-16 sm:pt-20 lg:pt-24 pb-12 sm:pb-16 lg:pb-20">
           <div className="max-w-6xl">
             {/* Badge */}
             <div
@@ -212,7 +212,7 @@ export default function HeroBanner() {
             {/* Headline */}
             <h1
               className="font-display tracking-wide leading-tight mb-4 animate-slide-in drop-shadow-lg"
-              style={{ fontSize: "clamp(2rem, 4.5vw, 3.75rem)" }}
+              style={{ fontSize: "clamp(1.6rem, 5.5vw, 3.75rem)" }}
             >
               <span style={{ color: "#ffffff", display: "block" }}>{slideTitle}</span>
               <span
@@ -228,7 +228,7 @@ export default function HeroBanner() {
 
             {/* Subtitle */}
             <p
-              className="text-white/90 text-lg md:text-xl mb-8 max-w-2xl leading-relaxed drop-shadow-md"
+              className="text-white/90 text-sm sm:text-lg md:text-xl mb-5 sm:mb-8 max-w-2xl leading-relaxed drop-shadow-md"
               style={{
                 animationDelay: "0.1s",
                 animation:
@@ -241,7 +241,7 @@ export default function HeroBanner() {
             {/* Search bar */}
             <form
               onSubmit={handleSearch}
-              className="flex gap-3 mb-8 animate-fade-up"
+              className="flex flex-wrap gap-2 sm:gap-3 mb-5 sm:mb-8 animate-fade-up"
               style={{ animationDelay: "0.2s" }}
             >
               <div className="flex-1 relative max-w-md">
@@ -253,7 +253,7 @@ export default function HeroBanner() {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder={h.heroSearch}
-                  className="pl-12 pr-4 h-14 text-sm w-full rounded-xl outline-none transition-all duration-300 focus:bg-white/25"
+                  className="pl-12 pr-4 h-11 sm:h-14 text-sm w-full rounded-xl outline-none transition-all duration-300 focus:bg-white/25"
                   style={{
                     background: "rgba(255,255,255,0.15)",
                     backdropFilter: "blur(12px)",
@@ -265,13 +265,13 @@ export default function HeroBanner() {
               </div>
               <button
                 type="submit"
-                className="btn-primary text-sm px-7 h-14 whitespace-nowrap font-semibold shadow-lg"
+                className="btn-primary text-sm px-5 sm:px-7 h-11 sm:h-14 whitespace-nowrap font-semibold shadow-lg"
               >
                 {h.heroSearchBtn}
               </button>
               <Link
                 to="/jobs"
-                className="text-sm px-5 h-14 flex items-center gap-2 whitespace-nowrap rounded-xl font-semibold transition-all duration-300 hover:bg-white/25"
+                className="hidden sm:flex text-sm px-5 h-11 sm:h-14 items-center gap-2 whitespace-nowrap rounded-xl font-semibold transition-all duration-300 hover:bg-white/25"
                 style={{
                   background: "rgba(255,255,255,0.15)",
                   backdropFilter: "blur(12px)",
@@ -301,13 +301,13 @@ export default function HeroBanner() {
 
             {/* Stats */}
             <div
-              className="flex flex-wrap gap-10 animate-fade-up"
+              className="flex flex-wrap gap-5 sm:gap-8 lg:gap-10 animate-fade-up"
               style={{ animationDelay: "0.3s" }}
             >
               {slide.statsValues.map((val: string, i: number) => (
                 <div key={i}>
                   <p
-                    className="font-display text-4xl md:text-5xl font-bold drop-shadow-sm"
+                    className="font-display text-3xl sm:text-4xl md:text-5xl font-bold drop-shadow-sm"
                     style={{ color: config.accent }}
                   >
                     {val}

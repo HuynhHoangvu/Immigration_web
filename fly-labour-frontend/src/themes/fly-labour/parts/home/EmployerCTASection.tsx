@@ -19,12 +19,12 @@ export default function EmployerCTASection() {
 
             <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-0">
               {/* Left: content */}
-              <div className="p-10 lg:p-14">
+              <div className="p-6 sm:p-8 lg:p-10 xl:p-14">
                 <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-600 bg-amber-100 border border-amber-200 dark:text-brand-gold dark:bg-brand-gold/10 dark:border-brand-gold/30 rounded-full px-4 py-1.5 mb-6 transition-colors">
                   <Briefcase size={12} /> {h.empBadge}
                 </span>
 
-                <h2 className="font-display text-4xl md:text-5xl text-slate-900 dark:text-white tracking-wide leading-tight mb-4 transition-colors">
+                <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl xl:text-5xl text-slate-900 dark:text-white tracking-wide leading-tight mb-4 transition-colors">
                   {h.empTitle}
                   <br />
                   <span className="text-amber-600 dark:text-brand-gold">
@@ -69,11 +69,11 @@ export default function EmployerCTASection() {
               </div>
 
               {/* Right: stats */}
-              <div className="flex items-center justify-center p-10 lg:p-14 bg-slate-50 dark:bg-[#1a1a1a]/50 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-brand-border transition-colors">
+              <div className="flex items-center justify-center p-6 sm:p-8 lg:p-10 xl:p-14 bg-slate-50 dark:bg-[#1a1a1a]/50 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-brand-border transition-colors">
                 <div className="grid grid-cols-1 gap-8 w-full max-w-xs">
                   {h.empStats.map((val: string, i: number) => (
                     <div key={i} className="text-center">
-                      <p className="font-display text-5xl gradient-text mb-1">
+                      <p className="font-display text-3xl sm:text-4xl lg:text-5xl gradient-text mb-1">
                         {val}
                       </p>
                       <p className="text-slate-500 dark:text-brand-muted text-sm transition-colors">

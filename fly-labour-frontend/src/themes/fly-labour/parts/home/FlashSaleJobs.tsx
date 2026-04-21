@@ -129,8 +129,8 @@ export default function FlashSaleJobs() {
   return (
     <section className="py-16 transition-colors duration-300">
       <div className="w-full px-4 md:px-8 xl:px-12 overflow-hidden">
-        <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
-          <div className="flex items-center gap-4 flex-wrap">
+        <div className="flex items-center justify-between mb-6 sm:mb-8 flex-wrap gap-3 sm:gap-4">
+          <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
             <div className="flex items-center gap-2 rounded-2xl bg-gradient-to-r from-red-600 to-orange-500 px-4 py-2.5 shadow-lg shadow-red-200/30 text-white">
               <Flame
                 size={20}
@@ -205,11 +205,11 @@ export default function FlashSaleJobs() {
                 ref={sliderRef}
                 {...sliderSettings}
                 /* Thêm -mx-3 để kéo bù phần padding bên trong, tạo grid thẳng hàng với container */
-                className="slick-spaced-slider -mx-3 pb-4"
+                className="slick-spaced-slider -mx-2 sm:-mx-3 pb-4"
               >
                 {jobs.map((job, index) => (
                   /* Đảm bảo px-3 tạo khoảng cách 24px giữa các cột */
-                  <div key={job.id} className="h-full px-3 py-4">
+                  <div key={job.id} className="h-full px-2 sm:px-3 py-3 sm:py-4">
                     <motion.div
                       initial={{ opacity: 0, y: 24 }}
                       animate={{ opacity: 1, y: 0 }}

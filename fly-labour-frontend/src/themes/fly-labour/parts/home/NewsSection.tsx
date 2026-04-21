@@ -56,7 +56,7 @@ export default function NewsSection() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
           {news.slice(0, 3).map((item, i) => (
             <Link
               key={item.id}
@@ -80,7 +80,7 @@ export default function NewsSection() {
               </div>
 
               {/* Content Container */}
-              <div className="p-6 flex flex-col flex-1">
+              <div className="p-4 sm:p-5 lg:p-6 flex flex-col flex-1">
                 <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-brand-muted mb-4 transition-colors">
                   <Calendar size={13} className="text-amber-500" />
                   {formatDate(item.createdAt)}

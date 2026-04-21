@@ -19,20 +19,20 @@ export default function WhyChooseUs() {
       <div className="w-full px-4 md:px-8 xl:px-12 overflow-hidden relative">
         <div className="relative">
           {/* Stats row */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-20">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-10 sm:mb-14 lg:mb-20">
             {h.statsValues.map((val: string, i: number) => (
               <div
                 key={i}
-                className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl shadow-sm dark:shadow-none p-6 text-center group hover:border-amber-400 dark:hover:border-brand-gold/50 hover:shadow-xl hover:shadow-amber-500/10 transition-all duration-300"
+                className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl shadow-sm dark:shadow-none p-3 sm:p-4 lg:p-6 text-center group hover:border-amber-400 dark:hover:border-brand-gold/50 hover:shadow-xl hover:shadow-amber-500/10 transition-all duration-300"
               >
-                <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 mx-auto mb-2 sm:mb-3 lg:mb-4 flex items-center justify-center">
                   <img
                     src={`/dashboar_img/${i + 1}.png`}
                     alt=""
                     className="w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-500"
                   />
                 </div>
-                <p className="font-display text-4xl gradient-text mb-1">
+                <p className="font-display text-2xl sm:text-3xl lg:text-4xl gradient-text mb-1">
                   {val}
                 </p>
                 <p className="text-slate-600 dark:text-brand-muted text-sm font-medium transition-colors">
@@ -43,7 +43,7 @@ export default function WhyChooseUs() {
           </div>
 
           {/* Why choose us */}
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div>
               <p className="text-amber-600 dark:text-brand-gold text-sm font-bold uppercase tracking-widest mb-3 transition-colors">
                 {h.whyBadge}

@@ -19,7 +19,7 @@ export default function EnglishTestCtaRow() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
 
           {/* English Test Card */}
-          <div className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none p-10 relative overflow-hidden transition-colors">
+          <div className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none p-5 sm:p-7 lg:p-10 relative overflow-hidden transition-colors">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-transparent to-amber-100/40 dark:from-brand-gold/5 dark:via-transparent dark:to-brand-orange/5 transition-colors duration-500 pointer-events-none" />
             <div className="relative flex flex-col h-full">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 dark:bg-brand-gold/10 border border-amber-200 dark:border-brand-gold/20 mb-4 w-fit">
@@ -70,13 +70,13 @@ export default function EnglishTestCtaRow() {
           </div>
 
           {/* CTA Card */}
-          <div className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none p-12 relative overflow-hidden transition-colors">
+          <div className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none p-6 sm:p-8 lg:p-12 relative overflow-hidden transition-colors">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-transparent to-amber-100/40 dark:from-brand-gold/5 dark:via-transparent dark:to-brand-orange/5 transition-colors duration-500" />
             <div className="relative flex flex-col items-center justify-center text-center h-full gap-4">
               <p className="text-amber-600 dark:text-brand-gold font-bold text-sm uppercase tracking-widest">
                 {h.ctaBadge}
               </p>
-              <h2 className="font-display text-4xl md:text-5xl font-bold text-slate-900 dark:text-white tracking-wide transition-colors">
+              <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-slate-900 dark:text-white tracking-wide transition-colors">
                 {h.ctaTitle}
                 <br />
                 <span className="gradient-text">{h.ctaTitleAccent}</span>
