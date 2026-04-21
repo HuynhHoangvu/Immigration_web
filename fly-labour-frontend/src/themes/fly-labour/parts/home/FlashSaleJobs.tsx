@@ -132,7 +132,7 @@ export default function FlashSaleJobs() {
 
   return (
     <section className="py-16 transition-colors duration-300">
-      <div className="w-full px-4 md:px-8 xl:px-12 overflow-hidden">
+      <div className="w-full px-4 md:px-8 xl:px-12">
         <div className="flex items-center justify-between mb-6 sm:mb-8 flex-wrap gap-3 sm:gap-4">
           <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
             <div className="flex items-center gap-2 rounded-2xl bg-gradient-to-r from-red-600 to-orange-500 px-4 py-2.5 shadow-lg shadow-red-200/30 text-white">
@@ -205,10 +205,10 @@ export default function FlashSaleJobs() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -16 }}
             >
+              <div className="overflow-hidden">
               <Slider
                 ref={sliderRef}
                 {...sliderSettings}
-                /* Thêm -mx-3 để kéo bù phần padding bên trong, tạo grid thẳng hàng với container */
                 className="slick-spaced-slider -mx-2 sm:-mx-3 pb-4"
               >
                 {jobs.map((job, index) => (
@@ -233,6 +233,7 @@ export default function FlashSaleJobs() {
                   </div>
                 ))}
               </Slider>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
