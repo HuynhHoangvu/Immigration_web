@@ -68,7 +68,7 @@ export default function PrivacyPage() {
             >
               <h2 className="text-slate-900 dark:text-white font-semibold text-base mb-4">{s.title}</h2>
               <div className="text-slate-700 dark:text-gray-300 text-sm leading-relaxed whitespace-pre-line">
-                {s.content.split("\n").map((line, i) => {
+                {s.content.split("\n").map((line: string, i: number) => {
                   if (line.startsWith("• **")) {
                     const parts = line.replace("• **", "").split(":**");
                     return (
