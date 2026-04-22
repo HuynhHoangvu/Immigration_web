@@ -1,117 +1,99 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronDown, ArrowRight } from "lucide-react";
-
-const FAQS = [
-  {
-    category: "Về chương trình",
-    items: [
-      {
-        q: "Fly Labour là gì?",
-        a: "Fly Labour là nền tảng kết nối lao động Việt Nam với nhà tuyển dụng ở nước ngoài, chủ yếu tại Úc, Canada và New Zealand. Chúng tôi hỗ trợ toàn bộ quy trình từ tìm việc, chuẩn bị hồ sơ, xin visa cho đến khi bạn xuất cảnh và bắt đầu làm việc.",
-      },
-      {
-        q: "Fly Labour có được cấp phép hoạt động không?",
-        a: "Có. Fly Labour được Bộ Lao động – Thương binh và Xã hội (LĐTBXH) cấp phép hoạt động đưa người lao động đi làm việc ở nước ngoài theo hợp đồng. Chúng tôi hoạt động hoàn toàn hợp pháp và minh bạch.",
-      },
-      {
-        q: "Chi phí sử dụng dịch vụ là bao nhiêu?",
-        a: "Việc tìm kiếm và ứng tuyển công việc hoàn toàn miễn phí. Các chi phí liên quan đến visa, giấy tờ pháp lý sẽ được thông báo rõ ràng và minh bạch trước khi bạn đồng ý. Chúng tôi không thu phí môi giới trái phép.",
-      },
-    ],
-  },
-  {
-    category: "Điều kiện & Yêu cầu",
-    items: [
-      {
-        q: "Tôi cần đáp ứng những điều kiện gì để đi lao động nước ngoài?",
-        a: "Điều kiện cơ bản: Công dân Việt Nam, tuổi từ 18–45 (tùy vị trí), sức khỏe tốt, không có tiền án tiền sự, hộ chiếu còn hạn ít nhất 2 năm. Yêu cầu cụ thể về kinh nghiệm, ngôn ngữ tùy thuộc từng vị trí và quốc gia.",
-      },
-      {
-        q: "Không biết tiếng Anh có được không?",
-        a: "Nhiều vị trí không yêu cầu tiếng Anh cao, đặc biệt trong lĩnh vực nông nghiệp, chế biến thực phẩm, xây dựng. Fly Labour có chương trình đào tạo tiếng Anh giao tiếp cơ bản dành riêng cho người lao động trước khi xuất cảnh.",
-      },
-      {
-        q: "Tôi có thể mang gia đình đi cùng không?",
-        a: "Tùy thuộc vào loại visa và chương trình. Một số chương trình tại Canada và Úc có pathway cho phép bảo lãnh người thân sau một thời gian làm việc. Tư vấn viên sẽ hỗ trợ bạn tìm hiểu từng trường hợp cụ thể.",
-      },
-    ],
-  },
-  {
-    category: "Quy trình & Thời gian",
-    items: [
-      {
-        q: "Từ khi nộp hồ sơ đến khi xuất cảnh mất bao lâu?",
-        a: "Thông thường từ 2–6 tháng tùy vị trí và quốc gia. Cụ thể: xét duyệt hồ sơ 1–2 tuần, phỏng vấn 1–2 tuần, làm visa 1–3 tháng, chuẩn bị xuất cảnh 2–4 tuần.",
-      },
-      {
-        q: "Hợp đồng lao động thường có thời hạn bao lâu?",
-        a: "Đa số hợp đồng có thời hạn từ 1–3 năm, có thể gia hạn tùy nhu cầu của nhà tuyển dụng và nguyện vọng của người lao động. Một số chương trình có lộ trình định cư lâu dài.",
-      },
-      {
-        q: "Tôi có thể về nước trước khi hết hợp đồng không?",
-        a: "Có thể, nhưng cần thông báo trước và có thể phát sinh chi phí phá vỡ hợp đồng. Trong trường hợp khẩn cấp (gia đình, sức khỏe), Fly Labour sẽ hỗ trợ giải quyết trực tiếp với nhà tuyển dụng.",
-      },
-    ],
-  },
-  {
-    category: "Quyền lợi & Bảo hiểm",
-    items: [
-      {
-        q: "Người lao động được hưởng những quyền lợi gì?",
-        a: "Người lao động được hưởng đầy đủ quyền lợi theo luật lao động của nước sở tại: lương tối thiểu theo quy định, bảo hiểm y tế, bảo hiểm tai nạn lao động, ngày nghỉ phép, nghỉ lễ có lương.",
-      },
-      {
-        q: "Lương có được trả đúng không?",
-        a: "Hợp đồng lao động được ký kết rõ ràng về mức lương, thời gian làm việc và các khoản phụ cấp. Fly Labour giám sát việc thực thi hợp đồng và có cơ chế khiếu nại nếu nhà tuyển dụng vi phạm.",
-      },
-      {
-        q: "Nếu gặp vấn đề ở nước ngoài, tôi liên hệ với ai?",
-        a: "Fly Labour có đường dây hỗ trợ 24/7 cho người lao động đang ở nước ngoài. Ngoài ra, Đại sứ quán/Lãnh sự quán Việt Nam tại từng quốc gia cũng hỗ trợ trong các trường hợp khẩn cấp.",
-      },
-    ],
-  },
-];
-
-function FaqItem({ q, a }: { q: string; a: string }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="border border-slate-200 dark:border-brand-border bg-white dark:bg-brand-card shadow-sm dark:shadow-none rounded-2xl overflow-hidden transition-colors">
-      <button
-        onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center justify-between gap-4 p-4 text-left hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
-      >
-        <span className="text-slate-900 dark:text-white text-sm font-medium">{q}</span>
-        <ChevronDown
-          size={16}
-          className={`text-slate-400 dark:text-gray-300 shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-        />
-      </button>
-      {open && (
-        <div className="px-4 pb-4 border-t border-slate-100 dark:border-brand-border/60 bg-slate-50/50 dark:bg-transparent">
-          <p className="text-slate-600 dark:text-gray-300 text-sm leading-relaxed pt-3">{a}</p>
-        </div>
-      )}
-    </div>
-  );
-}
+import { HelpCircle, ChevronDown, MessageCircle } from "lucide-react";
+import { useT } from "../../../core/hooks/useT";
 
 export default function FaqPage() {
+  const { t } = useT();
+  const d = t("faq");
+
+  const CATEGORIES = [
+    d.c_program,
+    d.c_req,
+    d.c_process,
+    d.c_ben,
+  ];
+
+  const FAQS = [
+    {
+      category: d.c_program,
+      q: d.q1,
+      a: d.a1,
+    },
+    {
+      category: d.c_program,
+      q: d.q2,
+      a: d.a2,
+    },
+    {
+      category: d.c_program,
+      q: d.q3,
+      a: d.a3,
+    },
+    {
+      category: d.c_req,
+      q: d.q4,
+      a: d.a4,
+    },
+    {
+      category: d.c_req,
+      q: d.q5,
+      a: d.a5,
+    },
+    {
+      category: d.c_req,
+      q: d.q6,
+      a: d.a6,
+    },
+    {
+      category: d.c_process,
+      q: d.q7,
+      a: d.a7,
+    },
+    {
+      category: d.c_process,
+      q: d.q8,
+      a: d.a8,
+    },
+    {
+      category: d.c_process,
+      q: d.q9,
+      a: d.a9,
+    },
+    {
+      category: d.c_ben,
+      q: d.q10,
+      a: d.a10,
+    },
+    {
+      category: d.c_ben,
+      q: d.q11,
+      a: d.a11,
+    },
+    {
+      category: d.c_ben,
+      q: d.q12,
+      a: d.a12,
+    },
+  ];
+
+  const [activeCategory, setActiveCategory] = useState(CATEGORIES[0]);
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  const filteredFaqs = FAQS.filter((f) => f.category === activeCategory);
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#0d1117] transition-colors duration-300">
       {/* Hero */}
-      <div className="relative pt-32 pb-20 px-6 overflow-hidden">
+      <div className="relative pt-32 pb-16 px-6 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-white to-amber-100/30 dark:from-[#1a0f00] dark:via-brand-dark dark:to-brand-dark transition-colors duration-500" />
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-3xl opacity-30 dark:opacity-10 pointer-events-none"
-          style={{ background: "linear-gradient(135deg,#e4a808,#fdd52f)" }}
-        />
         <div className="relative max-w-3xl mx-auto text-center">
-          <p className="text-amber-600 dark:text-brand-gold text-xs font-bold tracking-widest uppercase mb-4">
-            FAQ
+          <HelpCircle size={48} className="text-amber-500 dark:text-brand-gold mx-auto mb-6 opacity-80" />
+          <p className="text-amber-600 dark:text-brand-gold text-sm font-bold tracking-widest uppercase mb-4">
+            {d.badge}
           </p>
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-5">
-            Câu hỏi
+          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white leading-tight mb-6">
+            {d.title}
             <br />
             <span
               style={{
@@ -120,44 +102,108 @@ export default function FaqPage() {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              thường gặp
+              {d.titleAccent}
             </span>
           </h1>
-          <p className="text-slate-600 dark:text-gray-300 text-lg">
-            Giải đáp mọi thắc mắc về quy trình đi lao động nước ngoài cùng Fly Labour.
+          <p className="text-slate-600 dark:text-gray-300 text-lg max-w-2xl mx-auto leading-relaxed">
+            {d.desc}
           </p>
         </div>
       </div>
 
-      {/* FAQ list */}
-      <div className="py-16 px-6">
-        <div className="max-w-3xl mx-auto space-y-10">
-          {FAQS.map((group) => (
-            <div key={group.category}>
-              <h2 className="text-amber-600 dark:text-brand-gold text-xs font-bold tracking-widest uppercase mb-4">
-                {group.category}
-              </h2>
-              <div className="space-y-3">
-                {group.items.map((item) => (
-                  <FaqItem key={item.q} q={item.q} a={item.a} />
-                ))}
-              </div>
-            </div>
+      {/* Categories */}
+      <div className="sticky top-16 z-20 bg-slate-50/80 dark:bg-[#0d1117]/80 backdrop-blur-md border-y border-slate-200 dark:border-brand-border py-4 px-6 transition-colors">
+        <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-center gap-2">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => {
+                setActiveCategory(cat);
+                setOpenIndex(0);
+              }}
+              className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                activeCategory === cat
+                  ? "bg-amber-500 dark:bg-brand-gold text-white dark:text-brand-dark shadow-md"
+                  : "bg-white dark:bg-brand-card text-slate-600 dark:text-gray-300 border border-slate-200 dark:border-brand-border hover:border-amber-400 dark:hover:border-brand-gold/30 hover:bg-amber-50 dark:hover:bg-brand-gold/5"
+              }`}
+            >
+              {cat}
+            </button>
           ))}
         </div>
       </div>
 
-      {/* CTA */}
-      <div className="py-16 px-6 border-t border-slate-200 dark:border-brand-border bg-slate-100/50 dark:bg-brand-card/20 transition-colors">
-        <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">
-            Chưa tìm được câu trả lời?
+      {/* FAQ Accordion */}
+      <div className="py-16 px-6 relative">
+        <div className="max-w-3xl mx-auto space-y-4">
+          {filteredFaqs.map((faq, index) => {
+            const isOpen = openIndex === index;
+            return (
+              <div
+                key={index}
+                className={`group bg-white dark:bg-brand-card border rounded-2xl transition-all duration-300 overflow-hidden ${
+                  isOpen
+                    ? "border-amber-400 dark:border-brand-gold/50 shadow-md shadow-amber-900/5 dark:shadow-none"
+                    : "border-slate-200 dark:border-brand-border shadow-sm dark:shadow-none hover:border-amber-200 dark:hover:border-brand-gold/20"
+                }`}
+              >
+                <button
+                  onClick={() => setOpenIndex(isOpen ? null : index)}
+                  className="w-full flex items-center justify-between p-5 md:p-6 text-left focus:outline-none"
+                >
+                  <span
+                    className={`font-semibold pr-6 transition-colors ${
+                      isOpen ? "text-amber-600 dark:text-brand-gold" : "text-slate-900 dark:text-white"
+                    }`}
+                  >
+                    {faq.q}
+                  </span>
+                  <div
+                    className={`shrink-0 w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300 ${
+                      isOpen
+                        ? "bg-amber-100 dark:bg-brand-gold/20 text-amber-600 dark:text-brand-gold"
+                        : "bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-gray-400"
+                    }`}
+                  >
+                    <ChevronDown
+                      size={18}
+                      className={`transition-transform duration-300 ${
+                        isOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </div>
+                </button>
+                <div
+                  className={`grid transition-all duration-300 ease-in-out ${
+                    isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <p className="p-5 md:p-6 pt-0 text-slate-600 dark:text-gray-300 leading-relaxed max-w-3xl">
+                      {faq.a}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* CTA Layer */}
+      <div className="py-20 px-6 border-t border-slate-200 dark:border-brand-border bg-white dark:bg-brand-card transition-colors">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="w-16 h-16 bg-amber-100 dark:bg-brand-gold/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <MessageCircle className="text-amber-600 dark:text-brand-gold" size={32} />
+          </div>
+          <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">
+            {d.cta_title}
           </h2>
-          <p className="text-slate-600 dark:text-gray-300 mb-8">
-            Liên hệ trực tiếp với đội ngũ tư vấn — chúng tôi luôn sẵn sàng hỗ trợ bạn.
+          <p className="text-slate-600 dark:text-gray-300 mb-8 max-w-xl mx-auto text-lg">
+            {d.cta_desc}
           </p>
-          <Link to="/contact" className="btn-primary inline-flex items-center gap-2 px-8 py-3">
-            Liên hệ ngay <ArrowRight size={16} />
+          <Link to="/contact" className="btn-primary inline-flex items-center gap-2 px-8 py-4 text-base">
+            {d.cta_btn}
           </Link>
         </div>
       </div>

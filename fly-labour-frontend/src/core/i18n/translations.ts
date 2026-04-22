@@ -186,12 +186,24 @@ const en = {
     submitSuccess: 'Application submitted! We will contact you soon.',
     submitFail: 'Submission failed, please try again',
     slots_label: 'people',
+    originalLangWarning: 'Note: the job details below are written in Vietnamese by the employer.',
+    req_age: 'Age',
+    req_workTime: 'Work Time',
+    req_exp: 'Experience',
+    req_lang: 'Language',
+    req_transport: 'Transport',
+    req_other: 'Other Requirements',
+    req_checklist: 'Required Documents',
+    ben_departure: 'Departure Time',
+    ben_benefits: 'Benefits',
+    expiredBtn: 'Application Closed',
   },
 
   jobCard: {
     featured: '⭐ Featured',
     slots: 'openings',
     deadline: 'Exp:',
+    expired: 'Expired',
   },
 
   contact: {
@@ -206,6 +218,197 @@ const en = {
     namePlaceholder: 'John Smith',
     phonePlaceholder: '+61 400 000 000',
     messagePlaceholder: 'How can we help you?',
+    sending: 'Sending...',
+    success: 'Message sent successfully! We will reply soon.',
+    error: 'Failed to send, please try again',
+  },
+
+
+  about: {
+    badge: 'About Us',
+    title: 'Connecting Vietnamese workers',
+    titleAccent: 'with the world',
+    desc: 'Fly Labour is a pioneer in labor export in Vietnam, connecting thousands of workers with high-quality job opportunities abroad.',
+    btnJobs: 'View Jobs',
+    btnContact: 'Contact Consulting',
+    s_workers: 'Workers Placed',
+    s_partners: 'Recruitment Partners',
+    s_countries: 'Partner Countries',
+    s_exp: 'Years Experience',
+    m_badge: 'Our Mission',
+    m_title: 'Providing the best job opportunities for Vietnamese',
+    m_desc1: 'We believe that every Vietnamese worker deserves the opportunity to work in a professional environment, with fair pay and full benefits.',
+    m_desc2: 'Fly Labour is committed to operating transparently, legally, and always putting the interests of workers first in every decision.',
+    c_aus: 'Australia',
+    c_can: 'Canada',
+    c_nz: 'New Zealand',
+    c_other: 'And more',
+    jobs: 'jobs',
+    other_countries: '12+ other countries',
+    svc_badge: 'Services',
+    svc_title: 'What do we offer?',
+    svc_l_title: 'Labor Export',
+    svc_l_desc: 'Connect Vietnamese workers with reputable employers in Australia, Canada, New Zealand and more.',
+    svc_c_title: 'Document Consulting',
+    svc_c_desc: 'Experts support preparing documents, notarized translation, and guide the full visa process.',
+    svc_e_title: 'Language Training',
+    svc_e_desc: 'IELTS preparation courses, communicative English and professional training specifically for workers.',
+    svc_s_title: 'Post-departure Support',
+    svc_s_desc: 'Accompanying workers throughout their working time abroad — from adapting to extending contracts.',
+    w_badge: 'Why Choose Us',
+    w_title: 'Why choose Fly Labour?',
+    w1: 'Fully licensed by the Ministry of LABOUR, INVALIDS AND SOCIAL AFFAIRS',
+    w2: 'Over 10 years of experience in labor export',
+    w3: 'Reputable recruitment partner network in Australia, Canada, NZ',
+    w4: 'No illegal brokerage fees, 100% transparent',
+    w5: '24/7 support throughout working abroad',
+    w6: 'Worker contract completion rate reaches 97%',
+    t_title: 'Leadership Team',
+    t_ceo: 'CEO',
+    t_consultant: 'Head of Consulting',
+    t_legal: 'Legal Specialist',
+    t_training: 'Head of Training',
+    ct_title: 'Contact Us',
+    ct_desc: 'We are always ready to support you',
+    ct_hotline: 'Hotline',
+    ct_email: 'Email',
+    ct_addr: 'Address',
+    ct_btn: 'Send message now',
+  },
+
+  faq: {
+    badge: 'FAQ',
+    title: 'Frequently Asked',
+    titleAccent: 'Questions',
+    desc: 'Answer all questions about the process of working abroad with Fly Labour.',
+    c_program: 'About the Program',
+    c_req: 'Conditions & Requirements',
+    c_process: 'Process & Time',
+    c_ben: 'Benefits & Insurance',
+    cta_title: "Still haven\'t found the answer?",
+    cta_desc: 'Contact our consulting team directly — we are always ready to help you.',
+    cta_btn: 'Contact Now',
+    q1: 'What is Fly Labour?',
+    a1: 'Fly Labour is a platform connecting Vietnamese workers with employers abroad, mainly in Australia, Canada and New Zealand. We support the entire process from job search, document preparation, visa application to when you leave the country and start working.',
+    q2: 'Is Fly Labour licensed to operate?',
+    a2: 'Yes. Fly Labour is licensed by the Ministry of Labour, Invalids and Social Affairs (MOLISA) to send workers abroad under contracts. We operate completely legally and transparently.',
+    q3: 'How much does the service cost?',
+    a3: 'Job search and application are completely free. Costs related to visas and legal documents will be clearly and transparently communicated before you agree. We do not charge illegal brokerage fees.',
+    q4: 'What conditions do I need to meet to work abroad?',
+    a4: 'Basic conditions: Vietnamese citizen, age 18-45 (depending on position), good health, no criminal record, passport valid for at least 2 years. Specific experience and language requirements depend on each position and country.',
+    q5: "Is it okay if I don\'t know English?",
+    a5: 'Many positions do not require high English proficiency, especially in agriculture, food processing, and construction. Fly Labour provides basic communication English training programs specifically for workers before departure.',
+    q6: 'Can I bring my family with me?',
+    a6: 'Depending on the visa type and program. Some programs in Canada and Australia have pathways to sponsor relatives after a period of working. Consultants will assist you in exploring each specific case.',
+    q7: 'How long does it take from application to departure?',
+    a7: 'Usually 2-6 months depending on the position and country. Specifically: application review 1-2 weeks, interview 1-2 weeks, visa processing 1-3 months, departure preparation 2-4 weeks.',
+    q8: 'How long is the labor contract usually?',
+    a8: 'Most contracts are from 1-3 years, extendable depending on the employer\'s needs and the worker\'s wishes. Some programs offer long-term settlement routes.',
+    q9: 'Can I return home before the contract expires?',
+    a9: 'Yes, but advance notice is required and contract termination fees may apply. In emergencies (family, health), Fly Labour will assist in directly resolving the issue with the employer.',
+    q10: 'What rights do workers have?',
+    a10: 'Workers enjoy full rights according to the local labor laws: minimum wage as regulated, health insurance, occupational accident insurance, paid leave, paid holidays.',
+    q11: 'Is the salary paid correctly?',
+    a11: 'The labor contract clearly states the salary, working hours, and allowances. Fly Labour monitors the contract execution and has a complaint mechanism if the employer violates it.',
+    q12: 'If I have problems abroad, who do I contact?',
+    a12: 'Fly Labour offers a 24/7 hotline for workers abroad. In addition, the Vietnamese Embassy/Consulate in each country provides assistance in emergencies.',
+  },
+
+  process: {
+    badge: 'Process',
+    title: 'Registration Process',
+    titleAccent: 'Simple & Transparent',
+    desc: 'From application to departure, we accompany you every step of the way.',
+    s1_title: 'Job Search',
+    s1_desc: 'Browse hundreds of job opportunities in Australia, Canada, New Zealand and more. Filter by country, industry, and salary that suits your needs.',
+    s1_note: 'Free, no registration required',
+    s2_title: 'Submit Application',
+    s2_desc: 'Fill in your personal information, work experience, and upload your CV. Our consulting team will support you to perfect your resume to international standards.',
+    s2_note: 'Notarized translation support',
+    s3_title: 'Review & Interview',
+    s3_desc: 'The profile is forwarded to the employer for review. If suitable, you will be invited to an interview (direct or online) with the foreign employer.',
+    s3_note: 'Time: 7-14 working days',
+    s4_title: 'Visa & Paperwork',
+    s4_desc: "Upon acceptance, Fly Labour\'s legal team assists with the entire process of applying for labor visas, employment contracts, and necessary paperwork.",
+    s4_note: 'Full procedure support',
+    s5_title: 'Departure & Orientation',
+    s5_desc: 'We assist with flight booking, provide arrival orientation materials, and connect you with the Vietnamese community at your destination.',
+    s5_note: '24/7 support before flight',
+    s6_title: 'Start Working',
+    s6_desc: 'You begin your job abroad. Fly Labour continues to accompany and support you to solve any arising issues during your working time.',
+    s6_note: 'Accompany throughout contract',
+    d_badge: 'Documents',
+    d_title: 'Required Documents',
+    d1: 'Valid ID Card / Citizen ID',
+    d2: 'Passport valid for at least 2 years',
+    d3: 'Household Registration / Residence Certificate',
+    d4: 'Degrees, vocational certificates (if any)',
+    d5: "Health check certificate (per country\'s req)",
+    d6: '3x4 photos on white background (6 photos)',
+    d7: 'English CV (our team helps draft)',
+    d8: 'English certificates IELTS/TOEIC (if any)',
+    d_note: '* The list may vary depending on the requirements of each country and employer.',
+    cta_title: 'Need further support?',
+    cta_desc: 'Our advisory team is ready to answer all questions from Monday to Saturday, 8:00 - 18:00.',
+    cta_btn1: 'Contact Consulting',
+    cta_btn2: 'View Jobs',
+  },
+
+  privacy: {
+    title: 'Privacy Policy',
+    desc: 'Last updated: 01/01/2025',
+    sub: 'Fly Labour is committed to protecting your privacy and personal information. This page describes how we collect, use, and protect your data.',
+    cta_title: 'Questions about privacy policy?',
+    cta_btn: 'Contact Us',
+    s1: '1. Information We Collect',
+    c1: `When you use Fly Labour's services, we may collect:
+• **Personal information:** Name, DOB, address, phone, email, portrait photo
+• **Professional profile:** Work experience, education, certificates, CV
+• **Legal documents:** ID number, passport (only used for processing)
+• **Technical info:** IP address, browser type, access time (anonymous analytics)`,
+    s2: '2. Purpose of Using Information',
+    c2: `Your information is used to:
+• Connect you with suitable employers abroad
+• Process visa applications and required legal paperwork
+• Communicate and support throughout the registration process
+• Send notifications about new job opportunities (with your consent)
+• Improve our service quality`,
+    s3: '3. Sharing Information with Third Parties',
+    c3: `We **do not sell** your personal info to any party. Information is only shared when:
+• **Partner Employers:** Sharing only necessary details for application review, with your consent
+• **Government Agencies:** Upon legal request from authorities
+• **Service Providers:** Translation, medical, and transport agencies essential for your application (under confidentiality agreements)`,
+    s4: '4. Information Security',
+    c4: `Fly Labour implements strict security measures:
+• SSL/TLS encryption for all data transmission
+• Internal access control based on hierarchy
+• Storage systems are protected and backed up regularly
+• Employees are trained on information security
+• Passwords are never stored in plain text`,
+    s5: '5. Your Rights',
+    c5: `You have full rights regarding your personal information:
+• **Right to Access:** Request to see the info we hold about you
+• **Right to Edit:** Update or correct inaccurate info
+• **Right to Delete:** Request deletion of your account and data
+• **Right to Object:** Opt-out of marketing communications anytime
+• **Right to Complain:** Submit a complaint to us or relevant authorities`,
+    s6: '6. Cookies & Session Data',
+    c6: `Our website uses cookies to:
+• Maintain your login status
+• Remember language preferences
+• Analyze traffic (Google Analytics — anonymous data)
+
+You can disable cookies in browser settings, but some features may be affected.`,
+    s7: '7. Data Retention Period',
+    c7: `• Active Accounts: Data kept as long as you use our services
+• Post-Deletion: Data is removed within 30 days (unless required by law)
+• Submitted Applications: Kept up to 3 years for legal compliance`,
+    s8: '8. Privacy Contact',
+    c8: `If you have any questions or want to exercise your rights, please contact:
+• **Email:** privacy@flylabour.com
+• **Phone:** +61 400 000 000
+• **Address:** 123 Nguyen Van Linh, D7, HCMC
+We commit to responding within 5 working days.`,
   },
 
   notFound: {
@@ -547,12 +750,24 @@ const vi: typeof en = {
     submitSuccess: 'Ứng tuyển thành công! Chúng tôi sẽ liên hệ sớm.',
     submitFail: 'Ứng tuyển thất bại, thử lại sau',
     slots_label: 'người',
+    originalLangWarning: '',
+    req_age: 'Độ tuổi',
+    req_workTime: 'Thời gian làm việc',
+    req_exp: 'Kinh nghiệm',
+    req_lang: 'Ngoại ngữ',
+    req_transport: 'Phương tiện',
+    req_other: 'Yêu cầu khác',
+    req_checklist: 'Các hồ sơ cần chuẩn bị',
+    ben_departure: 'Thời gian xuất cảnh',
+    ben_benefits: 'Quyền lợi',
+    expiredBtn: 'Đã hết hạn nộp đơn',
   },
 
   jobCard: {
     featured: '⭐ Nổi bật',
     slots: 'chỉ tiêu',
     deadline: 'HSD:',
+    expired: 'Hết hạn',
   },
 
   contact: {
@@ -567,6 +782,197 @@ const vi: typeof en = {
     namePlaceholder: 'Nguyễn Văn A',
     phonePlaceholder: '0901 234 567',
     messagePlaceholder: 'Bạn cần tư vấn về vấn đề gì?',
+    sending: 'Đang gửi...',
+    success: 'Đã gửi liên hệ thành công! Chúng tôi sẽ phản hồi sớm.',
+    error: 'Gửi thất bại, vui lòng thử lại',
+  },
+
+
+  about: {
+    badge: 'Về chúng tôi',
+    title: 'Cầu nối lao động Việt Nam',
+    titleAccent: 'với thế giới',
+    desc: 'Fly Labour là đơn vị tiên phong trong lĩnh vực xuất khẩu lao động tại Việt Nam, kết nối hàng nghìn người lao động với cơ hội việc làm chất lượng cao ở nước ngoài.',
+    btnJobs: 'Xem việc làm',
+    btnContact: 'Liên hệ tư vấn',
+    s_workers: 'Lao động đã xuất cảnh',
+    s_partners: 'Đối tác tuyển dụng',
+    s_countries: 'Quốc gia hợp tác',
+    s_exp: 'Năm kinh nghiệm',
+    m_badge: 'Sứ mệnh',
+    m_title: 'Mang lại cơ hội việc làm tốt nhất cho người Việt',
+    m_desc1: 'Chúng tôi tin rằng mọi người lao động Việt Nam đều xứng đáng có cơ hội làm việc trong môi trường chuyên nghiệp, được trả lương xứng đáng và đảm bảo quyền lợi đầy đủ.',
+    m_desc2: 'Fly Labour cam kết hoạt động minh bạch, hợp pháp và luôn đặt lợi ích của người lao động lên hàng đầu trong mọi quyết định.',
+    c_aus: 'Úc (Australia)',
+    c_can: 'Canada',
+    c_nz: 'New Zealand',
+    c_other: 'Và nhiều hơn',
+    jobs: 'việc làm',
+    other_countries: '12+ quốc gia khác',
+    svc_badge: 'Dịch vụ',
+    svc_title: 'Chúng tôi cung cấp gì?',
+    svc_l_title: 'Xuất khẩu lao động',
+    svc_l_desc: 'Kết nối người lao động Việt Nam với các nhà tuyển dụng uy tín tại Úc, Canada, New Zealand và nhiều quốc gia khác.',
+    svc_c_title: 'Tư vấn hồ sơ',
+    svc_c_desc: 'Đội ngũ chuyên gia hỗ trợ chuẩn bị hồ sơ, dịch thuật công chứng, và hướng dẫn quy trình visa đầy đủ.',
+    svc_e_title: 'Đào tạo ngôn ngữ',
+    svc_e_desc: 'Chương trình luyện thi IELTS, học tiếng Anh giao tiếp và nghiệp vụ dành riêng cho người lao động.',
+    svc_s_title: 'Hỗ trợ sau xuất cảnh',
+    svc_s_desc: 'Đồng hành cùng người lao động trong suốt quá trình làm việc ở nước ngoài — từ thích nghi đến gia hạn hợp đồng.',
+    w_badge: 'Lý do chọn chúng tôi',
+    w_title: 'Tại sao nên chọn Fly Labour?',
+    w1: 'Giấy phép hoạt động đầy đủ, được Bộ LĐTBXH cấp phép',
+    w2: 'Hơn 10 năm kinh nghiệm trong ngành xuất khẩu lao động',
+    w3: 'Mạng lưới đối tác tuyển dụng uy tín tại Úc, Canada, NZ',
+    w4: 'Không thu phí môi giới trái phép, minh bạch 100%',
+    w5: 'Hỗ trợ 24/7 trong suốt quá trình làm việc ở nước ngoài',
+    w6: 'Tỷ lệ người lao động hoàn thành hợp đồng đạt 97%',
+    t_title: 'Đội ngũ lãnh đạo',
+    t_ceo: 'Giám đốc điều hành',
+    t_consultant: 'Trưởng phòng Tư vấn',
+    t_legal: 'Chuyên viên Pháp lý',
+    t_training: 'Trưởng phòng Đào tạo',
+    ct_title: 'Liên hệ với chúng tôi',
+    ct_desc: 'Chúng tôi luôn sẵn sàng hỗ trợ bạn',
+    ct_hotline: 'Hotline',
+    ct_email: 'Email',
+    ct_addr: 'Địa chỉ',
+    ct_btn: 'Gửi liên hệ ngay',
+  },
+
+  faq: {
+    badge: 'FAQ',
+    title: 'Câu hỏi',
+    titleAccent: 'thường gặp',
+    desc: 'Giải đáp mọi thắc mắc về quy trình đi lao động nước ngoài cùng Fly Labour.',
+    c_program: 'Về chương trình',
+    c_req: 'Điều kiện & Yêu cầu',
+    c_process: 'Quy trình & Thời gian',
+    c_ben: 'Quyền lợi & Bảo hiểm',
+    cta_title: 'Chưa tìm được câu trả lời?',
+    cta_desc: 'Liên hệ trực tiếp với đội ngũ tư vấn — chúng tôi luôn sẵn sàng hỗ trợ bạn.',
+    cta_btn: 'Liên hệ ngay',
+    q1: 'Fly Labour là gì?',
+    a1: 'Fly Labour là nền tảng kết nối lao động Việt Nam với nhà tuyển dụng ở nước ngoài, chủ yếu tại Úc, Canada và New Zealand. Chúng tôi hỗ trợ toàn bộ quy trình từ tìm việc, chuẩn bị hồ sơ, xin visa cho đến khi bạn xuất cảnh và bắt đầu làm việc.',
+    q2: 'Fly Labour có được cấp phép hoạt động không?',
+    a2: 'Có. Fly Labour được Bộ Lao động – Thương binh và Xã hội (LĐTBXH) cấp phép hoạt động đưa người lao động đi làm việc ở nước ngoài theo hợp đồng. Chúng tôi hoạt động hoàn toàn hợp pháp và minh bạch.',
+    q3: 'Chi phí sử dụng dịch vụ là bao nhiêu?',
+    a3: 'Việc tìm kiếm và ứng tuyển công việc hoàn toàn miễn phí. Các chi phí liên quan đến visa, giấy tờ pháp lý sẽ được thông báo rõ ràng và minh bạch trước khi bạn đồng ý. Chúng tôi không thu phí môi giới trái phép.',
+    q4: 'Tôi cần đáp ứng những điều kiện gì để đi lao động nước ngoài?',
+    a4: 'Điều kiện cơ bản: Công dân Việt Nam, tuổi từ 18–45 (tùy vị trí), sức khỏe tốt, không có tiền án tiền sự, hộ chiếu còn hạn ít nhất 2 năm. Yêu cầu cụ thể về kinh nghiệm, ngôn ngữ tùy thuộc từng vị trí và quốc gia.',
+    q5: 'Không biết tiếng Anh có được không?',
+    a5: 'Nhiều vị trí không yêu cầu tiếng Anh cao, đặc biệt trong lĩnh vực nông nghiệp, chế biến thực phẩm, xây dựng. Fly Labour có chương trình đào tạo tiếng Anh giao tiếp cơ bản dành riêng cho người lao động trước khi xuất cảnh.',
+    q6: 'Tôi có thể mang gia đình đi cùng không?',
+    a6: 'Tùy thuộc vào loại visa và chương trình. Một số chương trình tại Canada và Úc có pathway cho phép bảo lãnh người thân sau một thời gian làm việc. Tư vấn viên sẽ hỗ trợ bạn tìm hiểu từng trường hợp cụ thể.',
+    q7: 'Từ khi nộp hồ sơ đến khi xuất cảnh mất bao lâu?',
+    a7: 'Thông thường từ 2–6 tháng tùy vị trí và quốc gia. Cụ thể: xét duyệt hồ sơ 1–2 tuần, phỏng vấn 1–2 tuần, làm visa 1–3 tháng, chuẩn bị xuất cảnh 2–4 tuần.',
+    q8: 'Hợp đồng lao động thường có thời hạn bao lâu?',
+    a8: 'Đa số hợp đồng có thời hạn từ 1–3 năm, có thể gia hạn tùy nhu cầu của nhà tuyển dụng và nguyện vọng của người lao động. Một số chương trình có lộ trình định cư lâu dài.',
+    q9: 'Tôi có thể về nước trước khi hết hợp đồng không?',
+    a9: 'Có thể, nhưng cần thông báo trước và có thể phát sinh chi phí phá vỡ hợp đồng. Trong trường hợp khẩn cấp (gia đình, sức khỏe), Fly Labour sẽ hỗ trợ giải quyết trực tiếp với nhà tuyển dụng.',
+    q10: 'Người lao động được hưởng những quyền lợi gì?',
+    a10: 'Người lao động được hưởng đầy đủ quyền lợi theo luật lao động của nước sở tại: lương tối thiểu theo quy định, bảo hiểm y tế, bảo hiểm tai nạn lao động, ngày nghỉ phép, nghỉ lễ có lương.',
+    q11: 'Lương có được trả đúng không?',
+    a11: 'Hợp đồng lao động được ký kết rõ ràng về mức lương, thời gian làm việc và các khoản phụ cấp. Fly Labour giám sát việc thực thi hợp đồng và có cơ chế khiếu nại nếu nhà tuyển dụng vi phạm.',
+    q12: 'Nếu gặp vấn đề ở nước ngoài, tôi liên hệ với ai?',
+    a12: 'Fly Labour có đường dây hỗ trợ 24/7 cho người lao động đang ở nước ngoài. Ngoài ra, Đại sứ quán/Lãnh sự quán Việt Nam tại từng quốc gia cũng hỗ trợ trong các trường hợp khẩn cấp.',
+  },
+
+  process: {
+    badge: 'Quy trình',
+    title: 'Quy trình đăng ký',
+    titleAccent: 'đơn giản & minh bạch',
+    desc: 'Từ khi nộp hồ sơ đến khi xuất cảnh, chúng tôi đồng hành cùng bạn ở mọi bước.',
+    s1_title: 'Tìm kiếm việc làm',
+    s1_desc: 'Duyệt qua danh sách hàng trăm cơ hội việc làm tại Úc, Canada, New Zealand và nhiều quốc gia khác. Lọc theo quốc gia, ngành nghề, mức lương phù hợp với nhu cầu của bạn.',
+    s1_note: 'Miễn phí, không cần đăng ký',
+    s2_title: 'Nộp hồ sơ ứng tuyển',
+    s2_desc: 'Điền đầy đủ thông tin cá nhân, kinh nghiệm làm việc và upload CV của bạn. Đội ngũ tư vấn sẽ hỗ trợ bạn hoàn thiện hồ sơ đạt chuẩn quốc tế.',
+    s2_note: 'Hỗ trợ dịch thuật công chứng',
+    s3_title: 'Xét duyệt & phỏng vấn',
+    s3_desc: 'Hồ sơ được chuyển đến nhà tuyển dụng xem xét. Nếu phù hợp, bạn sẽ được mời phỏng vấn trực tiếp hoặc online với nhà tuyển dụng nước ngoài.',
+    s3_note: 'Thời gian: 7–14 ngày làm việc',
+    s4_title: 'Làm visa & giấy tờ',
+    s4_desc: 'Sau khi được chấp nhận, đội ngũ pháp lý của Fly Labour hỗ trợ toàn bộ quy trình xin visa lao động, hợp đồng lao động, và các giấy tờ cần thiết.',
+    s4_note: 'Hỗ trợ toàn bộ thủ tục',
+    s5_title: 'Xuất cảnh & định hướng',
+    s5_desc: 'Chúng tôi hỗ trợ đặt vé máy bay, cung cấp tài liệu định hướng nhập cảnh, và kết nối bạn với cộng đồng người Việt tại nước đến.',
+    s5_note: 'Hỗ trợ 24/7 trước ngày bay',
+    s6_title: 'Bắt đầu làm việc',
+    s6_desc: 'Bạn bắt đầu công việc tại nước ngoài. Fly Labour tiếp tục đồng hành, hỗ trợ giải quyết các vấn đề phát sinh trong suốt thời gian làm việc.',
+    s6_note: 'Đồng hành suốt hợp đồng',
+    d_badge: 'Hồ sơ',
+    d_title: 'Giấy tờ cần chuẩn bị',
+    d1: 'CMND/CCCD còn hiệu lực',
+    d2: 'Hộ chiếu (passport) còn hạn ít nhất 2 năm',
+    d3: 'Hộ khẩu/Giấy xác nhận thường trú',
+    d4: 'Bằng cấp, chứng chỉ nghề (nếu có)',
+    d5: 'Giấy khám sức khỏe (theo yêu cầu quốc gia)',
+    d6: 'Ảnh 3x4 nền trắng (6 ảnh)',
+    d7: 'CV tiếng Anh (đội ngũ hỗ trợ soạn thảo)',
+    d8: 'Chứng chỉ tiếng Anh IELTS/TOEIC (nếu có)',
+    d_note: '* Danh sách có thể thay đổi tùy theo yêu cầu của từng quốc gia và nhà tuyển dụng.',
+    cta_title: 'Cần hỗ trợ thêm?',
+    cta_desc: 'Đội ngũ tư vấn của chúng tôi sẵn sàng giải đáp mọi thắc mắc từ Thứ 2 đến Thứ 7, 8:00 – 18:00.',
+    cta_btn1: 'Liên hệ tư vấn',
+    cta_btn2: 'Xem việc làm',
+  },
+
+  privacy: {
+    title: 'Chính sách Bảo mật',
+    desc: 'Cập nhật lần cuối: 01/01/2025',
+    sub: 'Fly Labour cam kết bảo vệ quyền riêng tư và thông tin cá nhân của bạn. Trang này mô tả cách chúng tôi thu thập, sử dụng và bảo vệ dữ liệu của bạn.',
+    cta_title: 'Có câu hỏi về chính sách bảo mật?',
+    cta_btn: 'Liên hệ chúng tôi',
+    s1: '1. Thông tự chúng tôi thu thập',
+    c1: `Khi bạn sử dụng dịch vụ của Fly Labour, chúng tôi có thể thu thập các loại thông tin sau:
+• **Thông tin cá nhân:** Họ tên, ngày sinh, địa chỉ, số điện thoại, email, ảnh chân dung
+• **Thông tin hồ sơ nghề nghiệp:** Kinh nghiệm làm việc, trình độ học vấn, chứng chỉ, CV
+• **Thông tin giấy tờ pháp lý:** Số CCCD/CMND, hộ chiếu (chỉ dùng cho mục đích xử lý hồ sơ)
+• **Thông tin kỹ thuật:** Địa chỉ IP, loại trình duyệt, thời gian truy cập (thống kê ẩn danh)`,
+    s2: '2. Mục đích sử dụng thông tin',
+    c2: `Thông tin của bạn được sử dụng cho các mục đích sau:
+• Kết nối bạn với nhà tuyển dụng phù hợp ở nước ngoài
+• Xử lý hồ sơ visa và giấy tờ pháp lý theo yêu cầu
+• Liên lạc và hỗ trợ trong suốt quá trình đăng ký
+• Gửi thông báo về cơ hội việc làm mới (nếu bạn đồng ý)
+• Cải thiện chất lượng dịch vụ của chúng tôi`,
+    s3: '3. Chia sẻ thông tin với bên thứ ba',
+    c3: `Chúng tôi **không bán** thông tin cá nhân của bạn cho bất kỳ bên nào. Thông tin chỉ được chia sẻ trong các trường hợp:
+• **Nhà tuyển dụng đối tác:** Chỉ chia sẻ thông tin cần thiết để xem xét ứng tuyển, với sự đồng ý của bạn
+• **Cơ quan nhà nước:** Khi có yêu cầu hợp pháp từ cơ quan chức năng Việt Nam hoặc nước ngoài
+• **Đơn vị dịch vụ:** Công ty dịch thuật, y tế, vận tải phục vụ cho hồ sơ của bạn (có ràng buộc bảo mật)`,
+    s4: '4. Bảo mật thông tin',
+    c4: `Fly Labour áp dụng các biện pháp bảo mật nghiêm ngặt:
+• Mã hóa SSL/TLS cho toàn bộ dữ liệu truyền tải
+• Kiểm soát quyền truy cập nội bộ theo cấp bậc
+• Hệ thống lưu trữ được bảo vệ và sao lưu định kỳ
+• Nhân viên được đào tạo về bảo mật thông tin
+• Không lưu trữ mật khẩu dưới dạng văn bản thô`,
+    s5: '5. Quyền của bạn',
+    c5: `Bạn có đầy đủ các quyền sau đối với thông tin cá nhân của mình:
+• **Quyền truy cập:** Yêu cầu xem thông tin chúng tôi đang lưu giữ về bạn
+• **Quyền chỉnh sửa:** Cập nhật hoặc sửa thông tin không chính xác
+• **Quyền xóa:** Yêu cầu xóa tài khoản và dữ liệu (trừ trường hợp pháp luật yêu cầu lưu giữ)
+• **Quyền phản đối:** Từ chối nhận thông tin tiếp thị bất cứ lúc nào
+• **Quyền khiếu nại:** Gửi khiếu nại đến chúng tôi hoặc cơ quan bảo vệ dữ liệu có thẩm quyền`,
+    s6: '6. Cookie & Dữ liệu phiên',
+    c6: `Website sử dụng cookie để:
+• Duy trì trạng thái đăng nhập của bạn
+• Ghi nhớ tùy chọn ngôn ngữ
+• Phân tích lưu lượng truy cập (Google Analytics — dữ liệu ẩn danh)
+
+Bạn có thể tắt cookie trong cài đặt trình duyệt, tuy nhiên một số tính năng của website có thể bị ảnh hưởng.`,
+    s7: '7. Thời gian lưu trữ dữ liệu',
+    c7: `• Tài khoản đang hoạt động: Dữ liệu được lưu suốt thời gian sử dụng dịch vụ
+• Sau khi xóa tài khoản: Dữ liệu được xóa trong vòng 30 ngày (trừ dữ liệu cần lưu theo pháp luật)
+• Hồ sơ đã nộp: Lưu tối đa 3 năm phục vụ mục đích pháp lý và giải quyết tranh chấp`,
+    s8: '8. Liên hệ về bảo mật',
+    c8: `Nếu bạn có bất kỳ câu hỏi nào về chính sách bảo mật hoặc muốn thực hiện quyền của mình, vui lòng liên hệ:
+• **Email:** privacy@flylabour.com
+• **Điện thoại:** 0901 234 567
+• **Địa chỉ:** 219A Nơ Trang Long, P.12, Q. Bình Thạnh, TP.HCM
+Chúng tôi cam kết phản hồi trong vòng 5 ngày làm việc.`,
   },
 
   notFound: {

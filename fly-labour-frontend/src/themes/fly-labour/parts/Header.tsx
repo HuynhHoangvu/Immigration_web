@@ -222,9 +222,13 @@ export default function Header() {
             {/* Language toggle */}
             <button
               onClick={toggle}
-              className="hidden md:flex items-center justify-center w-9 h-9 rounded-xl border border-slate-200 dark:border-white/10 hover:border-amber-400 dark:hover:border-brand-gold transition-colors bg-white dark:bg-brand-card shadow-sm text-base"
+              className="hidden md:flex items-center justify-center gap-1.5 px-3 h-9 rounded-xl border border-slate-200 dark:border-white/10 hover:border-amber-400 dark:hover:border-brand-gold transition-colors bg-white dark:bg-brand-card shadow-sm text-sm font-bold text-slate-700 dark:text-gray-200"
             >
-              {lang === "vi" ? "🇻🇳" : "🇬🇧"}
+              {lang === "vi" ? (
+                <>🇻🇳 <span>VN</span></>
+              ) : (
+                <>🇺🇸 <span>EN</span></>
+              )}
             </button>
 
             {/* Auth */}
@@ -407,7 +411,7 @@ export default function Header() {
             </button>
             <div className="w-px h-4 bg-slate-200 dark:bg-white/10" />
             <button onClick={toggle} className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-gray-300 hover:text-amber-600 dark:hover:text-brand-gold">
-              <span>{lang === "vi" ? "🇻🇳" : "🇬🇧"}</span>
+              <span>{lang === "vi" ? "🇻🇳" : "🇺🇸"}</span>
               {lang === "vi" ? "English" : "Tiếng Việt"}
             </button>
           </div>

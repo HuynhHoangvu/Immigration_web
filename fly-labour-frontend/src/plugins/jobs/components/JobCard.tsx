@@ -107,7 +107,7 @@ export default function JobCard({ job, compact }: Props) {
           <div className="absolute top-3 left-3 flex gap-1.5 flex-wrap">
             {expired && (
               <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-700/80 text-slate-200 backdrop-blur-sm">
-                <TimerOff size={9} /> Hết hạn
+                <TimerOff size={9} /> {jc.expired}
               </span>
             )}
             {!expired && job.isHot && (
@@ -150,7 +150,7 @@ export default function JobCard({ job, compact }: Props) {
           <div className="flex gap-1.5 flex-wrap">
             {expired && (
               <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700/80 text-slate-500 dark:text-slate-300 border border-slate-200 dark:border-slate-500/40">
-                <TimerOff size={9} /> Hết hạn
+                <TimerOff size={9} /> {jc.expired}
               </span>
             )}
             {!expired && job.isHot && (

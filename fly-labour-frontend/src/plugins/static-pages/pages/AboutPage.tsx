@@ -10,54 +10,51 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
-
-const STATS = [
-  { value: "5,000+", label: "Lao động đã xuất cảnh" },
-  { value: "200+", label: "Đối tác tuyển dụng" },
-  { value: "15+", label: "Quốc gia hợp tác" },
-  { value: "10+", label: "Năm kinh nghiệm" },
-];
-
-const SERVICES = [
-  {
-    icon: Globe,
-    title: "Xuất khẩu lao động",
-    desc: "Kết nối người lao động Việt Nam với các nhà tuyển dụng uy tín tại Úc, Canada, New Zealand và nhiều quốc gia khác.",
-  },
-  {
-    icon: Briefcase,
-    title: "Tư vấn hồ sơ",
-    desc: "Đội ngũ chuyên gia hỗ trợ chuẩn bị hồ sơ, dịch thuật công chứng, và hướng dẫn quy trình visa đầy đủ.",
-  },
-  {
-    icon: Users,
-    title: "Đào tạo ngôn ngữ",
-    desc: "Chương trình luyện thi IELTS, học tiếng Anh giao tiếp và nghiệp vụ dành riêng cho người lao động.",
-  },
-  {
-    icon: Award,
-    title: "Hỗ trợ sau xuất cảnh",
-    desc: "Đồng hành cùng người lao động trong suốt quá trình làm việc ở nước ngoài — từ thích nghi đến gia hạn hợp đồng.",
-  },
-];
-
-const WHYS = [
-  "Giấy phép hoạt động đầy đủ, được Bộ LĐTBXH cấp phép",
-  "Hơn 10 năm kinh nghiệm trong ngành xuất khẩu lao động",
-  "Mạng lưới đối tác tuyển dụng uy tín tại Úc, Canada, NZ",
-  "Không thu phí môi giới trái phép, minh bạch 100%",
-  "Hỗ trợ 24/7 trong suốt quá trình làm việc ở nước ngoài",
-  "Tỷ lệ người lao động hoàn thành hợp đồng đạt 97%",
-];
-
-const TEAM = [
-  { name: "Nguyễn Văn An", role: "Giám đốc điều hành", initial: "A" },
-  { name: "Trần Thị Bình", role: "Trưởng phòng Tư vấn", initial: "B" },
-  { name: "Lê Minh Cường", role: "Chuyên viên Pháp lý", initial: "C" },
-  { name: "Phạm Thu Dung", role: "Trưởng phòng Đào tạo", initial: "D" },
-];
+import { useT } from "../../../core/hooks/useT";
 
 export default function AboutPage() {
+  const { t } = useT();
+  const d = t("about");
+
+  const STATS = [
+    { value: "5,000+", label: d.s_workers },
+    { value: "200+", label: d.s_partners },
+    { value: "15+", label: d.s_countries },
+    { value: "10+", label: d.s_exp },
+  ];
+
+  const SERVICES = [
+    {
+      icon: Globe,
+      title: d.svc_l_title,
+      desc: d.svc_l_desc,
+    },
+    {
+      icon: Briefcase,
+      title: d.svc_c_title,
+      desc: d.svc_c_desc,
+    },
+    {
+      icon: Users,
+      title: d.svc_e_title,
+      desc: d.svc_e_desc,
+    },
+    {
+      icon: Award,
+      title: d.svc_s_title,
+      desc: d.svc_s_desc,
+    },
+  ];
+
+  const WHYS = [d.w1, d.w2, d.w3, d.w4, d.w5, d.w6];
+
+  const TEAM = [
+    { name: "Nguyễn Văn An", role: d.t_ceo, initial: "A" },
+    { name: "Trần Thị Bình", role: d.t_consultant, initial: "B" },
+    { name: "Lê Minh Cường", role: d.t_legal, initial: "C" },
+    { name: "Phạm Thu Dung", role: d.t_training, initial: "D" },
+  ];
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#0d1117] transition-colors duration-300">
       {/* Hero */}
@@ -69,10 +66,10 @@ export default function AboutPage() {
         />
         <div className="relative max-w-4xl mx-auto text-center">
           <p className="text-amber-600 dark:text-brand-gold text-sm font-bold tracking-widest uppercase mb-4">
-            Về chúng tôi
+            {d.badge}
           </p>
           <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white leading-tight mb-6">
-            Cầu nối lao động Việt Nam
+            {d.title}
             <br />
             <span
               style={{
@@ -81,21 +78,21 @@ export default function AboutPage() {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              với thế giới
+              {d.titleAccent}
             </span>
           </h1>
           <p className="text-slate-600 dark:text-gray-300 text-lg max-w-2xl mx-auto leading-relaxed">
-            Fly Labour là đơn vị tiên phong trong lĩnh vực xuất khẩu lao động tại Việt Nam, kết nối hàng nghìn người lao động với cơ hội việc làm chất lượng cao ở nước ngoài.
+            {d.desc}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
             <Link to="/jobs" className="btn-primary flex items-center gap-2 px-6 py-3">
-              Xem việc làm <ArrowRight size={16} />
+              {d.btnJobs} <ArrowRight size={16} />
             </Link>
             <Link
               to="/contact"
               className="px-6 py-3 rounded-xl border border-slate-300 dark:border-brand-border text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-sm font-medium"
             >
-              Liên hệ tư vấn
+              {d.btnContact}
             </Link>
           </div>
         </div>
@@ -127,24 +124,24 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <div>
             <p className="text-amber-600 dark:text-brand-gold text-xs font-bold tracking-widest uppercase mb-3">
-              Sứ mệnh
+              {d.m_badge}
             </p>
             <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-5">
-              Mang lại cơ hội việc làm tốt nhất cho người Việt
+              {d.m_title}
             </h2>
             <p className="text-slate-600 dark:text-gray-300 leading-relaxed mb-4">
-              Chúng tôi tin rằng mọi người lao động Việt Nam đều xứng đáng có cơ hội làm việc trong môi trường chuyên nghiệp, được trả lương xứng đáng và đảm bảo quyền lợi đầy đủ.
+              {d.m_desc1}
             </p>
             <p className="text-slate-600 dark:text-gray-300 leading-relaxed">
-              Fly Labour cam kết hoạt động minh bạch, hợp pháp và luôn đặt lợi ích của người lao động lên hàng đầu trong mọi quyết định.
+              {d.m_desc2}
             </p>
           </div>
           <div className="grid grid-cols-2 gap-4">
             {[
-              { label: "Úc (Australia)", flag: "🇦🇺", jobs: "1,200+ việc làm" },
-              { label: "Canada", flag: "🇨🇦", jobs: "800+ việc làm" },
-              { label: "New Zealand", flag: "🇳🇿", jobs: "600+ việc làm" },
-              { label: "Và nhiều hơn", flag: "🌏", jobs: "12+ quốc gia khác" },
+              { label: d.c_aus, flag: "🇦🇺", jobs: `1,200+ ${d.jobs}` },
+              { label: d.c_can, flag: "🇨🇦", jobs: `800+ ${d.jobs}` },
+              { label: d.c_nz, flag: "🇳🇿", jobs: `600+ ${d.jobs}` },
+              { label: d.c_other, flag: "🌏", jobs: Object.values(d).includes("Và nhiều hơn") ? "12+ quốc gia khác" : d.other_countries },
             ].map((c) => (
               <div
                 key={c.label}
@@ -164,10 +161,10 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <p className="text-amber-600 dark:text-brand-gold text-xs font-bold tracking-widest uppercase mb-3">
-              Dịch vụ
+              {d.svc_badge}
             </p>
             <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
-              Chúng tôi cung cấp gì?
+              {d.svc_title}
             </h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -195,14 +192,14 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <div>
             <p className="text-amber-600 dark:text-brand-gold text-xs font-bold tracking-widest uppercase mb-3">
-              Lý do chọn chúng tôi
+              {d.w_badge}
             </p>
             <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-8">
-              Tại sao nên chọn Fly Labour?
+              {d.w_title}
             </h2>
             <ul className="space-y-3">
-              {WHYS.map((w) => (
-                <li key={w} className="flex items-start gap-3">
+              {WHYS.map((w, i) => (
+                <li key={i} className="flex items-start gap-3">
                   <CheckCircle size={16} className="text-amber-500 dark:text-brand-gold shrink-0 mt-0.5" />
                   <span className="text-slate-600 dark:text-gray-300 text-sm font-medium">{w}</span>
                 </li>
@@ -210,7 +207,7 @@ export default function AboutPage() {
             </ul>
           </div>
           <div className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border shadow-sm dark:shadow-none rounded-2xl p-8 transition-colors">
-            <h3 className="text-slate-900 dark:text-white font-semibold text-lg mb-6">Đội ngũ lãnh đạo</h3>
+            <h3 className="text-slate-900 dark:text-white font-semibold text-lg mb-6">{d.t_title}</h3>
             <div className="grid grid-cols-2 gap-4">
               {TEAM.map((m) => (
                 <div key={m.name} className="flex items-center gap-3">
@@ -235,14 +232,14 @@ export default function AboutPage() {
       <div className="py-16 px-6 bg-slate-100/50 dark:bg-brand-card/20 border-t border-slate-200 dark:border-brand-border transition-colors">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">
-            Liên hệ với chúng tôi
+            {d.ct_title}
           </h2>
-          <p className="text-slate-600 dark:text-gray-300 mb-8">Chúng tôi luôn sẵn sàng hỗ trợ bạn</p>
+          <p className="text-slate-600 dark:text-gray-300 mb-8">{d.ct_desc}</p>
           <div className="grid sm:grid-cols-3 gap-6 mb-8">
             {[
-              { icon: Phone, label: "Hotline", value: "0901 234 567" },
-              { icon: Mail, label: "Email", value: "info@flylabour.com" },
-              { icon: MapPin, label: "Địa chỉ", value: "123 Nguyễn Văn Linh, Q.7, TP.HCM" },
+              { icon: Phone, label: d.ct_hotline, value: "0901 234 567" },
+              { icon: Mail, label: d.ct_email, value: "info@flylabour.com" },
+              { icon: MapPin, label: d.ct_addr, value: "123 Nguyễn Văn Linh, Q.7, TP.HCM" },
             ].map((c) => (
               <div
                 key={c.label}
@@ -255,7 +252,7 @@ export default function AboutPage() {
             ))}
           </div>
           <Link to="/contact" className="btn-primary inline-flex items-center gap-2 px-8 py-3">
-            Gửi liên hệ ngay <ArrowRight size={16} />
+            {d.ct_btn} <ArrowRight size={16} />
           </Link>
         </div>
       </div>

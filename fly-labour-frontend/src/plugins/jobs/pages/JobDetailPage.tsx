@@ -369,6 +369,11 @@ export default function JobDetailPage() {
               <h2 className={`${sectionTitleClasses} mb-4`}>
                 {d.jobDescription}
               </h2>
+              {d.originalLangWarning && (
+                <div className="mb-4 text-xs font-medium text-amber-600 dark:text-brand-gold bg-amber-50 dark:bg-brand-gold/10 px-3 py-2 rounded-lg border border-amber-200 dark:border-brand-gold/20 inline-flex items-center gap-2">
+                  <span>🌐</span> {d.originalLangWarning}
+                </div>
+              )}
               <p className={`${bodyTextClasses} whitespace-pre-line`}>
                 {job.description}
               </p>
@@ -394,23 +399,23 @@ export default function JobDetailPage() {
                         className={`${sectionTitleClasses} flex items-center gap-3`}
                       >
                         <span className="w-1.5 h-6 bg-brand-gold rounded-full"></span>
-                        Yêu cầu công việc
+                        {d.requirements?.replace('📋 ', '') || 'Yêu cầu công việc'}
                       </h3>
                     </div>
                     <div>
                       <table className="w-full border-collapse">
                         <tbody className="divide-y divide-slate-100 dark:divide-white/5">
                           {[
-                            { label: "Độ tuổi", value: structReq?.age },
+                            { label: d.req_age || "Độ tuổi", value: structReq?.age },
                             {
-                              label: "Thời gian làm việc",
+                              label: d.req_workTime || "Thời gian làm việc",
                               value: structReq?.workTime,
                             },
                             {
-                              label: "Kinh nghiệm",
+                              label: d.req_exp || "Kinh nghiệm",
                               value: structReq?.experience,
                             },
-                            { label: "Ngoại ngữ", value: structReq?.language },
+                            { label: d.req_lang || "Ngoại ngữ", value: structReq?.language },
                           ].map((row, idx) => (
                             <tr
                               key={idx}
@@ -427,7 +432,7 @@ export default function JobDetailPage() {
                           {structReq?.transport && (
                             <tr className="transition-colors hover:bg-slate-50 dark:hover:bg-white/5">
                               <td className="p-4 text-sm font-medium text-slate-700 dark:text-gray-200">
-                                Phương tiện
+                                {d.req_transport || "Phương tiện"}
                               </td>
                               <td className="p-4 text-sm font-semibold text-slate-900 dark:text-white">
                                 {structReq.transport}
@@ -436,7 +441,7 @@ export default function JobDetailPage() {
                           )}
                           <tr>
                             <td className="p-4 text-sm font-medium text-slate-700 dark:text-gray-200 align-top">
-                              Yêu cầu khác
+                              {d.req_other || "Yêu cầu khác"}
                             </td>
                             <td className="p-4">
                               {structReq?.other ? (
@@ -459,7 +464,7 @@ export default function JobDetailPage() {
                           {structReq?.checklist && structReq.checklist.length > 0 && (
                             <tr>
                               <td className="p-4 text-sm font-medium text-slate-700 dark:text-gray-200 align-top">
-                                Các hồ sơ cần chuẩn bị
+                                {d.req_checklist || "Các hồ sơ cần chuẩn bị"}
                               </td>
                               <td className="p-4">
                                 <div className="space-y-3">
@@ -495,7 +500,7 @@ export default function JobDetailPage() {
                         className={`${sectionTitleClasses} flex items-center gap-3`}
                       >
                         <span className="w-1.5 h-6 bg-brand-gold rounded-full"></span>
-                        Quyền lợi đãi ngộ
+                        {d.benefits?.replace('🎁 ', '') || 'Quyền lợi đãi ngộ'}
                       </h3>
                     </div>
                     <div>
@@ -504,7 +509,7 @@ export default function JobDetailPage() {
                           {structBen?.departure && (
                             <tr className="transition-colors hover:bg-slate-50 dark:hover:bg-white/5">
                               <td className="w-1/3 p-4 text-sm font-medium text-slate-700 dark:text-gray-200">
-                                Thời gian xuất cảnh
+                                {d.ben_departure || "Thời gian xuất cảnh"}
                               </td>
                               <td className="p-4 text-sm font-semibold text-slate-900 dark:text-white">
                                 {structBen.departure}
@@ -513,7 +518,7 @@ export default function JobDetailPage() {
                           )}
                           <tr>
                             <td className="w-1/3 p-4 text-sm font-medium text-slate-700 dark:text-gray-200 align-top">
-                              Quyền lợi
+                              {d.ben_benefits || "Quyền lợi"}
                             </td>
                             <td className="p-4">
                               {structBen?.raw && !structBen.raw.startsWith('{"v2":') && !structBen.checklist?.length && (
@@ -816,7 +821,7 @@ export default function JobDetailPage() {
                 job.deadline &&
                 new Date(job.deadline) < new Date(new Date().toDateString()) ? (
                   <div className="w-full py-3.5 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 text-red-600 dark:text-red-400 text-center text-base font-semibold">
-                    Đã hết hạn nộp đơn
+                    {d.expiredBtn || "Đã hết hạn nộp đơn"}
                   </div>
                 ) : (
                   <button

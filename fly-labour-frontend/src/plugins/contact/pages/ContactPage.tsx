@@ -15,10 +15,10 @@ export default function ContactPage() {
     setSending(true);
     try {
       await contactApi.send(form);
-      toast.success("Đã gửi liên hệ thành công! Chúng tôi sẽ phản hồi sớm.");
+      toast.success(c.success || "Đã gửi liên hệ thành công! Chúng tôi sẽ phản hồi sớm.");
       setForm({ name: "", email: "", phone: "", message: "" });
     } catch {
-      toast.error("Gửi thất bại, vui lòng thử lại");
+      toast.error(c.error || "Gửi thất bại, vui lòng thử lại");
     } finally {
       setSending(false);
     }
@@ -80,7 +80,7 @@ export default function ContactPage() {
               {sending ? (
                 <>
                   <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
-                  Đang gửi...
+                  {c.sending || "Đang gửi..."}
                 </>
               ) : (
                 c.send
