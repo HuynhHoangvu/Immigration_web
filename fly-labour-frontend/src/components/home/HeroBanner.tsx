@@ -10,6 +10,9 @@ import {
   Pause,
 } from "lucide-react";
 import { useT } from "@core/hooks/useT";
+import clsx from "clsx";
+import CountryFlag from "@components/widgets/CountryFlag";
+import s from "./HeroBanner.module.scss";
 
 const SLIDE_CONFIG = [
   {
@@ -68,32 +71,32 @@ const KB_VARIANTS = [
 ];
 
 const TICKER_ITEMS = [
-  "🇦🇺 Sydney · NSW",
-  "🇦🇺 Melbourne · VIC",
-  "🇦🇺 Brisbane · QLD",
-  "🇦🇺 Perth · WA",
-  "🇦🇺 Adelaide · SA",
-  "🇨🇦 Toronto · ON",
-  "🇨🇦 Vancouver · BC",
-  "🇨🇦 Calgary · AB",
-  "🇨🇦 Montreal · QC",
-  "🇳🇿 Auckland",
-  "🇳🇿 Wellington",
-  "🇳🇿 Christchurch",
-  "🇯🇵 Tokyo",
-  "🇯🇵 Osaka",
-  "🇯🇵 Nagoya",
-  "🇯🇵 Yokohama",
-  "🇰🇷 Seoul",
-  "🇰🇷 Busan",
-  "🇰🇷 Incheon",
-  "🇬🇧 London",
-  "🇬🇧 Manchester",
-  "🇬🇧 Birmingham",
-  "🇩🇪 Berlin",
-  "🇩🇪 Munich",
-  "🇩🇪 Hamburg",
-  "🇩🇪 Frankfurt",
+  { country: "australia", text: "Sydney · NSW" },
+  { country: "australia", text: "Melbourne · VIC" },
+  { country: "australia", text: "Brisbane · QLD" },
+  { country: "australia", text: "Perth · WA" },
+  { country: "australia", text: "Adelaide · SA" },
+  { country: "canada", text: "Toronto · ON" },
+  { country: "canada", text: "Vancouver · BC" },
+  { country: "canada", text: "Calgary · AB" },
+  { country: "canada", text: "Montreal · QC" },
+  { country: "new_zealand", text: "Auckland" },
+  { country: "new_zealand", text: "Wellington" },
+  { country: "new_zealand", text: "Christchurch" },
+  { country: "japan", text: "Tokyo" },
+  { country: "japan", text: "Osaka" },
+  { country: "japan", text: "Nagoya" },
+  { country: "japan", text: "Yokohama" },
+  { country: "south_korea", text: "Seoul" },
+  { country: "south_korea", text: "Busan" },
+  { country: "south_korea", text: "Incheon" },
+  { country: "uk", text: "London" },
+  { country: "uk", text: "Manchester" },
+  { country: "uk", text: "Birmingham" },
+  { country: "germany", text: "Berlin" },
+  { country: "germany", text: "Munich" },
+  { country: "germany", text: "Hamburg" },
+  { country: "germany", text: "Frankfurt" },
 ];
 
 export default function HeroBanner() {
@@ -136,18 +139,18 @@ export default function HeroBanner() {
   const hiringText = h.hiring;
 
   return (
-    <section className="hero-banner relative min-h-screen flex flex-col overflow-hidden bg-slate-900 dark:bg-brand-dark">
+    <section className={s.section}>
       {/* Background images with crossfade */}
-      {SLIDE_CONFIG.map((s, i) => (
+      {SLIDE_CONFIG.map((sl, i) => (
         <div
           key={i}
-          className="absolute inset-0 transition-opacity duration-1000"
+          className={s.slideLayer}
           style={{ opacity: i === current ? 1 : 0, zIndex: 0 }}
         >
           <img
-            src={s.image}
-            alt={s.imageAlt}
-            className="w-full h-full object-cover"
+            src={sl.image}
+            alt={sl.imageAlt}
+            className={s.slideImg}
             onLoad={() =>
               setLoaded((prev) => {
                 const n = [...prev];
@@ -162,15 +165,13 @@ export default function HeroBanner() {
               willChange: "transform",
             }}
           />
-          {!loaded[i] && (
-            <div className="w-full h-full bg-slate-800 dark:bg-brand-dark animate-pulse" />
-          )}
+          {!loaded[i] && <div className={s.placeholder} />}
         </div>
       ))}
 
       {/* Overlay - Giữ nguyên màng đen nhẹ để nổi bật chữ Trắng */}
       <div
-        className="absolute inset-0 z-10"
+        className={s.overlayGradient}
         style={{
           background:
             "linear-gradient(105deg, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.2) 50%, rgba(10,10,10,0.05) 100%)",
@@ -179,7 +180,7 @@ export default function HeroBanner() {
 
       {/* Grain texture */}
       <div
-        className="absolute inset-0 z-10 opacity-[0.03] pointer-events-none"
+        className={s.grain}
         style={{
           backgroundImage:
             "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
@@ -188,30 +189,33 @@ export default function HeroBanner() {
 
       {/* Accent glow */}
       <div
-        className="absolute top-1/3 right-1/3 w-80 h-80 rounded-full blur-3xl z-10 pointer-events-none transition-all duration-1000"
+        className={s.accentGlow}
         style={{ background: config.accent, opacity: 0.15 }}
       />
 
       {/* Main content */}
-      <div className="relative z-20 flex-1 flex items-center">
-        <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 pt-16 sm:pt-20 lg:pt-24 pb-12 sm:pb-16 lg:pb-20">
-          <div className="max-w-6xl">
+      <div className={s.main}>
+        <div className={s.inner}>
+          <div className={s.narrow}>
             {/* Badge */}
             <div
-              className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-6 border animate-fade-up backdrop-blur-md"
+              className={s.badgeRow}
               style={{
                 background: `${config.accent}20`,
                 borderColor: `${config.accent}50`,
               }}
             >
-              <span className="text-sm font-medium text-white">{slideBadge}</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shadow-[0_0_8px_rgba(74,222,128,0.8)]" />
-              <span className="text-xs text-green-300 font-bold tracking-wide">{hiringText}</span>
+              <span className={s.badgeText} style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem" }}>
+                <CountryFlag country={config.ctaLink.split("country=")[1] || "australia"} />
+                {slideBadge.replace(/[\u{1F1E0}-\u{1F1FF}]{2}/gu, "").trim()}
+              </span>
+              <span className={s.badgeDot} />
+              <span className={s.badgeHiring}>{hiringText}</span>
             </div>
 
             {/* Headline */}
             <h1
-              className="font-display tracking-wide leading-tight mb-4 animate-slide-in drop-shadow-lg"
+              className={s.headline}
               style={{ fontSize: "clamp(1.6rem, 5.5vw, 3.75rem)" }}
             >
               <span style={{ color: "#ffffff", display: "block" }}>{slideTitle}</span>
@@ -228,7 +232,7 @@ export default function HeroBanner() {
 
             {/* Subtitle */}
             <p
-              className="text-white/90 text-sm sm:text-lg md:text-xl mb-5 sm:mb-8 max-w-2xl leading-relaxed drop-shadow-md"
+              className={s.subtitle}
               style={{
                 animationDelay: "0.1s",
                 animation:
@@ -241,58 +245,33 @@ export default function HeroBanner() {
             {/* Search bar */}
             <form
               onSubmit={handleSearch}
-              className="flex flex-wrap gap-2 sm:gap-3 mb-5 sm:mb-8 animate-fade-up"
+              className={clsx(s.searchForm, s.searchFormAnim)}
               style={{ animationDelay: "0.2s" }}
             >
-              <div className="flex-1 relative max-w-md">
-                <Search
-                  size={18}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60"
-                />
+              <div className={s.inputWrap}>
+                <Search size={18} className={s.searchIcon} />
                 <input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder={h.heroSearch}
-                  className="pl-12 pr-4 h-11 sm:h-14 text-sm w-full rounded-xl outline-none transition-all duration-300 focus:bg-white/25"
-                  style={{
-                    background: "rgba(255,255,255,0.15)",
-                    backdropFilter: "blur(12px)",
-                    border: "1px solid rgba(255,255,255,0.3)",
-                    color: "#fff",
-                    fontSize: "0.95rem",
-                  }}
+                  className={s.searchInput}
                 />
               </div>
-              <button
-                type="submit"
-                className="btn-primary text-sm px-5 sm:px-7 h-11 sm:h-14 whitespace-nowrap font-semibold shadow-lg"
-              >
+              <button type="submit" className={clsx("btn-primary", s.btnSearch)}>
                 {h.heroSearchBtn}
               </button>
-              <Link
-                to="/jobs"
-                className="hidden sm:flex text-sm px-5 h-11 sm:h-14 items-center gap-2 whitespace-nowrap rounded-xl font-semibold transition-all duration-300 hover:bg-white/25"
-                style={{
-                  background: "rgba(255,255,255,0.15)",
-                  backdropFilter: "blur(12px)",
-                  border: "1px solid rgba(255,255,255,0.3)",
-                  color: "#fff",
-                }}
-              >
+              <Link to="/jobs" className={s.linkViewAll}>
                 <Briefcase size={16} /> {h.heroViewAll}
               </Link>
             </form>
 
             {/* Quick category filters */}
-            <div
-              className="flex flex-wrap gap-2 mb-10 animate-fade-up"
-              style={{ animationDelay: "0.25s" }}
-            >
+            <div className={s.categories} style={{ animationDelay: "0.25s" }}>
               {h.heroCategories.map((cat: string) => (
                 <Link
                   key={cat}
                   to={`/jobs?search=${cat.split(" ").slice(1).join(" ")}`}
-                  className="text-xs px-4 py-2 bg-white/10 hover:bg-white/25 border border-white/20 hover:border-white/50 rounded-full text-white/90 hover:text-white transition-all duration-300 backdrop-blur-sm"
+                  className={s.catLink}
                 >
                   {cat}
                 </Link>
@@ -300,21 +279,13 @@ export default function HeroBanner() {
             </div>
 
             {/* Stats */}
-            <div
-              className="flex flex-wrap gap-5 sm:gap-8 lg:gap-10 animate-fade-up"
-              style={{ animationDelay: "0.3s" }}
-            >
+            <div className={s.stats} style={{ animationDelay: "0.3s" }}>
               {slide.statsValues.map((val: string, i: number) => (
                 <div key={i}>
-                  <p
-                    className="font-display text-3xl sm:text-4xl md:text-5xl font-bold drop-shadow-sm"
-                    style={{ color: config.accent }}
-                  >
+                  <p className={s.statValue} style={{ color: config.accent }}>
                     {val}
                   </p>
-                  <p className="text-white/80 text-sm mt-1 font-medium tracking-wide">
-                    {slide.statsLabels[i]}
-                  </p>
+                  <p className={s.statLabel}>{slide.statsLabels[i]}</p>
                 </div>
               ))}
             </div>
@@ -323,59 +294,56 @@ export default function HeroBanner() {
       </div>
 
       {/* Slide index top-right */}
-      <div className="absolute top-24 right-8 z-20 hidden lg:flex items-baseline gap-1 drop-shadow-lg">
-        <span
-          className="font-display text-4xl font-bold"
-          style={{ color: config.accent }}
-        >
+      <div className={s.slideIndex}>
+        <span className={s.slideIndexCurrent} style={{ color: config.accent }}>
           {String(current + 1).padStart(2, "0")}
         </span>
-        <span className="text-white/30 text-lg mx-1">/</span>
-        <span className="font-display text-xl text-white/40 font-semibold">
+        <span className={s.slideIndexSep}>/</span>
+        <span className={s.slideIndexTotal}>
           {String(SLIDE_CONFIG.length).padStart(2, "0")}
         </span>
       </div>
 
       {/* Country switcher (desktop right) */}
-      <div className="absolute right-8 top-1/2 -translate-y-1/2 hidden xl:flex flex-col gap-2.5 z-20">
-        {SLIDE_CONFIG.map((s, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrent(i)}
-            className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 border backdrop-blur-md ${
-              i === current
-                ? "text-white shadow-[0_0_15px_rgba(255,255,255,0.1)] scale-105"
-                : "text-white/60 border-white/10 bg-white/5 hover:bg-white/20 hover:border-white/30 hover:text-white"
-            }`}
-            style={
-              i === current
-                ? {
-                    borderColor: `${s.accent}80`,
-                    background: `${s.accent}30`,
-                    color: "#fff",
-                  }
-                : {}
-            }
-          >
-            {h.slides[i].badge.split(" ")[0]}
-          </button>
-        ))}
+      <div className={s.countryRail}>
+        {SLIDE_CONFIG.map((sl, i) => {
+          const slideCountry = sl.ctaLink.split("country=")[1] || "australia";
+          const badgeText = h.slides[i].badge.replace(/[\u{1F1E0}-\u{1F1FF}]{2}/gu, "").split(" ")[0];
+          return (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setCurrent(i)}
+              className={clsx(s.countryBtn, i === current && s.countryBtnActive)}
+              style={
+                i === current
+                  ? {
+                      borderColor: `${sl.accent}80`,
+                      background: `${sl.accent}30`,
+                      color: "#fff",
+                    }
+                  : {}
+              }
+            >
+              <CountryFlag country={slideCountry} style={{ marginRight: "0.25rem" }} />
+              {badgeText}
+            </button>
+          );
+        })}
       </div>
 
       {/* Bottom controls */}
-      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex items-center gap-4 z-20">
-        <button
-          onClick={prev}
-          className="w-10 h-10 rounded-xl border border-white/20 bg-white/10 backdrop-blur-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-all duration-300"
-        >
+      <div className={s.bottomBar}>
+        <button type="button" onClick={prev} className={s.navBtn}>
           <ChevronLeft size={18} />
         </button>
-        <div className="flex gap-2.5 items-center px-2">
+        <div className={s.dots}>
           {SLIDE_CONFIG.map((_, i) => (
             <button
               key={i}
+              type="button"
               onClick={() => setCurrent(i)}
-              className="h-1.5 rounded-full transition-all duration-500 ease-out"
+              className={s.dot}
               style={{
                 width: i === current ? "2.5rem" : "0.5rem",
                 background:
@@ -387,31 +355,30 @@ export default function HeroBanner() {
           ))}
         </div>
         <button
+          type="button"
           onClick={() => setPlaying((p) => !p)}
-          className="w-10 h-10 rounded-xl border border-white/20 bg-white/10 backdrop-blur-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-all duration-300"
+          className={s.navBtn}
         >
           {playing ? (
             <Pause size={14} fill="currentColor" />
           ) : (
-            <Play size={14} fill="currentColor" className="ml-0.5" />
+            <Play size={14} fill="currentColor" className={s.playIconNudge} />
           )}
         </button>
-        <button
-          onClick={next}
-          className="w-10 h-10 rounded-xl border border-white/20 bg-white/10 backdrop-blur-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-all duration-300"
-        >
+        <button type="button" onClick={next} className={s.navBtn}>
           <ChevronRight size={18} />
         </button>
       </div>
 
       {/* Location ticker */}
-      <div className="relative z-20 bg-black/40 backdrop-blur-md border-t border-white/10 py-3">
+      <div className={s.tickerBar}>
         <div className="ticker-wrap">
-          <div className="ticker-content text-[13px] text-white/80 font-medium tracking-wide">
-            {[...TICKER_ITEMS, ...TICKER_ITEMS].map((loc, i) => (
-              <span key={i} className="inline-flex items-center gap-2 mr-10">
+          <div className={clsx("ticker-content", s.tickerInner)}>
+            {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
+              <span key={i} className={s.tickerItem} style={{ display: "inline-flex", alignItems: "center", gap: "0.25rem" }}>
                 <MapPin size={11} style={{ color: config.accent }} />
-                <span>{loc}</span>
+                <CountryFlag country={item.country} style={{ width: "1rem", height: "auto" }} />
+                <span>{item.text}</span>
               </span>
             ))}
           </div>

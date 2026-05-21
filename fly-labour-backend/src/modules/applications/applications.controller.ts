@@ -28,8 +28,8 @@ export class ApplicationsController {
   @UseGuards(JwtAuthGuard, EmployerGuard)
   @ApiBearerAuth('JWT')
   @ApiOperation({ summary: '[Employer] Applications received for my job listings' })
-  getEmployerApplications(@Request() req: any) {
-    return this.appsService.findByEmployer(req.user.id)
+  getEmployerApplications(@Request() req: any, @Query() query: { status?: string; jobId?: string; search?: string }) {
+    return this.appsService.findByEmployer(req.user.id, query)
   }
 
   @Get()
@@ -76,7 +76,7 @@ export class ApplicationsController {
   @UseGuards(JwtAuthGuard, EmployerGuard)
   @ApiBearerAuth('JWT')
   @ApiOperation({ summary: '[Employer] Cập nhật trạng thái đơn của ứng viên' })
-  employerUpdateStatus(@Param('id') id: string, @Body() body: { status: string }, @Request() req: any) {
-    return this.appsService.employerUpdateStatus(id, req.user.id, body.status as any)
+  employerUpdateStatus(@Param('id') id: string, @Body() body: { status: string; employerNote?: string }, @Request() req: any) {
+    return this.appsService.employerUpdateStatus(id, req.user.id, body.status as any, body.employerNote)
   }
 }

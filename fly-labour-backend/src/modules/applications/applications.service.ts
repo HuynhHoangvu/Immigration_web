@@ -84,13 +84,18 @@ export class ApplicationsService {
     })
   }
 
-  async findByEmployer(employerId: string) {
-    return this.appsRepo.createQueryBuilder('app')
+  async findByEmployer(employerId: string, query?: { status?: string; jobId?: string; search?: string }) {
+    const qb = this.appsRepo.createQueryBuilder('app')
       .leftJoinAndSelect('app.job', 'job')
       .leftJoinAndSelect('app.user', 'user')
       .where('job.createdById = :employerId', { employerId })
       .orderBy('app.createdAt', 'DESC')
-      .getMany()
+    if (query?.status) qb.andWhere('app.status = :status', { status: query.status })
+    if (query?.jobId) qb.andWhere('app.jobId = :jobId', { jobId: query.jobId })
+    if (query?.search) {
+      qb.andWhere('(app.fullName ILIKE :s OR app.email ILIKE :s OR job.title ILIKE :s)', { s: `%${query.search}%` })
+    }
+    return qb.getMany()
   }
 
   async withdraw(id: string, userId: string) {
@@ -102,11 +107,17 @@ export class ApplicationsService {
     return this.appsRepo.save(app)
   }
 
-  async employerUpdateStatus(id: string, employerId: string, status: ApplicationStatus) {
+  async employerUpdateStatus(id: string, employerId: string, status: ApplicationStatus, employerNote?: string) {
     const app = await this.appsRepo.findOne({ where: { id }, relations: ['job'] })
     if (!app) throw new NotFoundException('Không tìm thấy đơn ứng tuyển')
     if (app.job?.createdById !== employerId) throw new ForbiddenException('Bạn không có quyền cập nhật đơn này')
+    const allowed = [ApplicationStatus.REVIEWING, ApplicationStatus.APPROVED, ApplicationStatus.REJECTED]
+    const isStatusUnchanged = status === app.status
+    if (!allowed.includes(status) && !isStatusUnchanged) {
+      throw new ForbiddenException('Trạng thái không hợp lệ cho nhà tuyển dụng')
+    }
     app.status = status
+    if (employerNote !== undefined) app.employerNote = employerNote
     return this.appsRepo.save(app)
   }
 }

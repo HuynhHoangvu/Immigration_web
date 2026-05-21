@@ -20,3 +20,14 @@ npm-debug.log*
 # OS
 .DS_Store
 Thumbs.db
+.blackboxcli/
+
+# Windows reserved filenames
+NUL
+CON
+PRN
+AUX
+
+# Scratch / temp
+scratch/
+_class-tokens.json

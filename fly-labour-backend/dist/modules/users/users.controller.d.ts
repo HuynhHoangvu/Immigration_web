@@ -6,6 +6,7 @@ export declare class UsersController {
         fullName?: string;
         phone?: string;
         address?: string;
+        avatar?: string;
         cvUrl?: string;
         companyName?: string;
         companyDescription?: string;

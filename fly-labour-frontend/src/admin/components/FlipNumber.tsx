@@ -1,8 +1,9 @@
 import { motion, AnimatePresence } from "framer-motion";
+import s from "./FlipNumber.module.scss";
 
 function FlipNumber({ value }: { value: string }) {
   return (
-    <div className="relative h-8 w-7 bg-gradient-to-b from-red-500 to-red-700 rounded shadow-md border border-red-400 overflow-hidden flex justify-center items-center">
+    <div className={s.shell}>
       <AnimatePresence mode="popLayout">
         <motion.span
           key={value}
@@ -10,7 +11,7 @@ function FlipNumber({ value }: { value: string }) {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -20, opacity: 0 }}
           transition={{ duration: 0.4, ease: "backOut" }}
-          className="text-white font-mono font-bold text-sm"
+          className={`font-mono ${s.digit}`}
         >
           {value}
         </motion.span>

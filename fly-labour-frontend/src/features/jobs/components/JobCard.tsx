@@ -16,6 +16,9 @@ import {
 } from "@core/utils/helpers";
 import { useT } from "@core/hooks/useT";
 import { getImageUrl } from "@core/services/api";
+import CountryFlag from "@components/widgets/CountryFlag";
+import clsx from "clsx";
+import s from "./JobCard.module.scss";
 
 const COUNTRY_IMAGES: Record<string, string> = {
   australia:
@@ -32,26 +35,9 @@ const CATEGORY_IMAGES: Record<string, string> = {
   "3": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&q=70&fit=crop",
   "4": "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=70&fit=crop",
   "5": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=70&fit=crop",
-  "6": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=70&fit=crop",
+  "6": "https://images.unsplash.com/photo-1559839734-2b65d9df7ec2?w=600&q=70&fit=crop",
   "7": "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=600&q=70&fit=crop",
   "8": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&q=70&fit=crop",
-};
-
-const FLAG_MAP: Record<string, string> = {
-  australia: "🇦🇺",
-  canada: "🇨🇦",
-  new_zealand: "🇳🇿",
-  norway: "🇳🇴",
-  germany: "🇩🇪",
-  portugal: "🇵🇹",
-  czech: "🇨🇿",
-  us: "🇺🇸",
-  uk: "🇬🇧",
-  japan: "🇯🇵",
-  singapore: "🇸🇬",
-  south_korea: "🇰🇷",
-  taiwan: "🇹🇼",
-  uae: "🇦🇪",
 };
 
 interface Props {
@@ -72,7 +58,6 @@ export default function JobCard({ job, compact }: Props) {
   const countryName = countryLabel
     .replace(/[\u{1F1E0}-\u{1F1FF}]{2}/gu, "")
     .trim();
-  const flag = FLAG_MAP[job.country] ?? "";
   const expired = isExpired(job.deadline);
   const thumbUrl =
     job.image ||
@@ -82,17 +67,14 @@ export default function JobCard({ job, compact }: Props) {
   return (
     <Link
       to={`/jobs/${job.id}`}
-      className={`group flex flex-col h-full min-h-[20rem] sm:min-h-[24rem] lg:min-h-[28rem] bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-3xl overflow-hidden transition-all duration-300
-        hover:-translate-y-0.5 hover:shadow-lg hover:shadow-amber-500/8 hover:border-amber-300 dark:hover:border-brand-gold/40
-        ${expired ? "opacity-70" : ""}`}
+      className={clsx(s.link, expired && s.linkExpired)}
     >
-      {/* ── Thumbnail ── */}
       {!compact && (
-        <div className="relative h-36 sm:h-40 lg:h-44 overflow-hidden bg-slate-100 dark:bg-brand-dark flex-shrink-0">
+        <div className={s.thumbWrap}>
           <img
             src={thumbUrl}
             alt={job.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            className={s.thumbImg}
             loading="lazy"
             onError={(e) => {
               const img = e.currentTarget;
@@ -100,39 +82,32 @@ export default function JobCard({ job, compact }: Props) {
               if (img.src !== fb && fb) img.src = fb;
             }}
           />
-          {/* overlay gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+          <div className={s.thumbGradient} />
 
-          {/* Badge top-left */}
-          <div className="absolute top-3 left-3 flex gap-1.5 flex-wrap">
+          <div className={s.badgesTop}>
             {expired && (
-              <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-700/80 text-slate-200 backdrop-blur-sm">
+              <span className={s.badgeExpired}>
                 <TimerOff size={9} /> {jc.expired}
               </span>
             )}
             {!expired && job.isHot && (
-              <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-sm">
-                <Flame size={9} className="fill-yellow-300 text-yellow-300" />{" "}
-                HOT
+              <span className={s.badgeHot}>
+                <Flame size={9} className={s.badgeHotIcon} /> HOT
               </span>
             )}
             {!expired && job.isFeatured && (
-              <span className="inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400 text-amber-900 shadow-sm">
-                {jc.featured}
-              </span>
+              <span className={s.badgeFeatured}>{jc.featured}</span>
             )}
           </div>
 
-          {/* Country badge bottom-right */}
-          <div className="absolute bottom-3 right-3">
-            <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-black/50 text-white backdrop-blur-sm border border-white/20">
-              {flag} {countryName}
+          <div className={s.countryBadgeWrap}>
+            <span className={s.countryBadge}>
+              <CountryFlag country={job.country} /> {countryName}
             </span>
           </div>
 
-          {/* Deadline bottom-left */}
           {job.deadline && !expired && (
-            <div className="absolute bottom-3 left-3 text-[10px] font-medium text-white/80">
+            <div className={s.deadline}>
               {jc.deadline}{" "}
               {new Date(job.deadline).toLocaleDateString("vi-VN", {
                 day: "2-digit",
@@ -143,74 +118,56 @@ export default function JobCard({ job, compact }: Props) {
         </div>
       )}
 
-      {/* ── Card Body ── */}
-      <div className="flex flex-col flex-1 min-h-0 p-3 sm:p-4 lg:p-5 gap-2 sm:gap-3">
-        {/* Compact mode: badges on top */}
+      <div className={s.body}>
         {compact && (
-          <div className="flex gap-1.5 flex-wrap">
+          <div className={s.badgesCompact}>
             {expired && (
-              <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700/80 text-slate-500 dark:text-slate-300 border border-slate-200 dark:border-slate-500/40">
+              <span className={s.badgeExpiredLight}>
                 <TimerOff size={9} /> {jc.expired}
               </span>
             )}
             {!expired && job.isHot && (
-              <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white">
-                <Flame size={9} className="fill-yellow-300 text-yellow-300" />{" "}
-                HOT
+              <span className={s.badgeHot}>
+                <Flame size={9} className={s.badgeHotIcon} /> HOT
               </span>
             )}
-            <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-white/10">
-              {flag} {countryName}
+            <span className={s.badgeCountryCompact}>
+              <CountryFlag country={job.country} /> {countryName}
             </span>
           </div>
         )}
 
-        {/* Job title — Level 1: to, đậm, tối */}
-        <h3 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base leading-snug line-clamp-2 group-hover:text-amber-600 dark:group-hover:text-brand-gold transition-colors">
-          {job.title}
-        </h3>
+        <h3 className={s.title}>{job.title}</h3>
 
-        {/* Company — Level 2: vừa, nhạt hơn */}
-        {job.company && (
-          <p className="text-sm font-medium text-slate-500 dark:text-slate-400 -mt-1">
-            {job.company}
-          </p>
-        )}
+        {job.company && <p className={s.company}>{job.company}</p>}
 
-        {/* Salary highlight — nổi bật bằng màu, không cần to */}
-        <div className="flex items-center gap-1.5 bg-amber-50 dark:bg-brand-gold/5 border border-amber-200 dark:border-brand-gold/20 rounded-xl px-2 py-1.5 sm:px-3 sm:py-2">
-          <TrendingUp
-            size={13}
-            className="text-amber-600 dark:text-brand-gold flex-shrink-0"
-          />
-          <span className="text-amber-700 dark:text-brand-gold font-bold text-sm">
+        <div className={s.salaryRow}>
+          <TrendingUp size={13} className={s.salaryIcon} />
+          <span className={s.salaryText}>
             {formatSalary(job.salaryMin, job.salaryMax, job.salaryCurrency)}
           </span>
         </div>
 
-        {/* Meta row: location / type / slots — Level 3: nhỏ, nhạt, đồng đều */}
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <div className={s.metaRow}>
           {job.location && (
-            <span className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 dark:text-slate-400">
-              <MapPin size={11} className="flex-shrink-0" /> {job.location}
+            <span className={s.metaItem}>
+              <MapPin size={11} className={s.metaIcon} /> {job.location}
             </span>
           )}
-          <span className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 dark:text-slate-400">
-            <Clock size={11} className="flex-shrink-0" />{" "}
+          <span className={s.metaItem}>
+            <Clock size={11} className={s.metaIcon} />{" "}
             {getJobTypeLabel(job.jobType)}
           </span>
           {job.slots && (
-            <span className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 dark:text-slate-400">
-              <Users size={11} className="flex-shrink-0" /> {job.slots}{" "}
-              {jc.slots}
+            <span className={s.metaItem}>
+              <Users size={11} className={s.metaIcon} /> {job.slots} {jc.slots}
             </span>
           )}
         </div>
 
-        {/* Footer: category + time — nhỏ nhất, vai trò phụ */}
-        <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-white/5 mt-auto">
+        <div className={s.footer}>
           {job.category ? (
-            <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-white/5">
+            <span className={s.categoryTag}>
               {job.category.icon?.startsWith("http") ||
               job.category.icon?.startsWith("/") ||
               job.category.icon?.match(/^\d+$/) ? (
@@ -221,7 +178,7 @@ export default function JobCard({ job, compact }: Props) {
                       : getImageUrl(job.category.icon)
                   }
                   alt=""
-                  className="w-3 h-3 object-contain"
+                  className={s.categoryIcon}
                 />
               ) : (
                 job.category.icon
@@ -233,9 +190,7 @@ export default function JobCard({ job, compact }: Props) {
           ) : (
             <span />
           )}
-          <span className="text-xs font-medium text-slate-400 dark:text-slate-500">
-            {timeAgo(job.createdAt)}
-          </span>
+          <span className={s.timeAgo}>{timeAgo(job.createdAt)}</span>
         </div>
       </div>
     </Link>

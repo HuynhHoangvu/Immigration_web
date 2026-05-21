@@ -65,21 +65,21 @@ export const JOBTYPE_LABELS: Record<JobType, string> = {
 }
 
 export const APP_STATUS_LABELS: Record<AppStatus, { label: string; color: string }> = {
-  pending:   { label: 'Pending Review',  color: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20' },
-  reviewing: { label: 'Under Review',    color: 'text-blue-400 bg-blue-400/10 border-blue-400/20' },
-  approved:  { label: 'Approved',        color: 'text-green-400 bg-green-400/10 border-green-400/20' },
-  rejected:  { label: 'Rejected',        color: 'text-red-400 bg-red-400/10 border-red-400/20' },
-  withdrawn: { label: 'Withdrawn',       color: 'text-slate-900 bg-gray-400/10 border-gray-400/20' },
+  pending:   { label: 'Pending Review',  color: 'app-status app-status--pending' },
+  reviewing: { label: 'Under Review',    color: 'app-status app-status--reviewing' },
+  approved:  { label: 'Approved',        color: 'app-status app-status--approved' },
+  rejected:  { label: 'Rejected',        color: 'app-status app-status--rejected' },
+  withdrawn: { label: 'Withdrawn',       color: 'app-status app-status--withdrawn' },
 }
 
 export function getAppStatusLabel(status: AppStatus): { label: string; color: string } {
   const s = getDict().appStatus
   const colors: Record<AppStatus, string> = {
-    pending:   'text-yellow-400 bg-yellow-400/10 border-yellow-400/20',
-    reviewing: 'text-blue-400 bg-blue-400/10 border-blue-400/20',
-    approved:  'text-green-400 bg-green-400/10 border-green-400/20',
-    rejected:  'text-red-400 bg-red-400/10 border-red-400/20',
-    withdrawn: 'text-slate-900 bg-gray-400/10 border-gray-400/20',
+    pending:   'app-status app-status--pending',
+    reviewing: 'app-status app-status--reviewing',
+    approved:  'app-status app-status--approved',
+    rejected:  'app-status app-status--rejected',
+    withdrawn: 'app-status app-status--withdrawn',
   }
   return { label: s[status] ?? status, color: colors[status] }
 }

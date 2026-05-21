@@ -1,0 +1,198 @@
+.digitBox {
+  display: flex;
+  width: 2rem;
+  height: 2.25rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  background: var(--text-base);
+  color: var(--surface);
+  font-family: "Courier New", monospace;
+  font-size: 1.125rem;
+  font-weight: 700;
+  box-shadow: var(--shadow-xs);
+  position: relative;
+}
+
+.digitValue {
+  position: absolute;
+}
+
+.countdown {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.clockIcon {
+  color: var(--error);
+}
+
+.countdownPanel {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 1.5rem;
+  background: var(--surface-secondary);
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-xs);
+  backdrop-filter: blur(8px);
+}
+
+.digitsWrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.digitGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.digitColon {
+  color: var(--error);
+  font-weight: 600;
+}
+
+.section {
+  padding: 4rem 0;
+}
+
+.shell {
+  overflow: hidden;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.headLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.flashBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 1rem;
+  background: linear-gradient(to right, var(--error), var(--accent-secondary));
+  padding: 0.625rem 1rem;
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(239, 68, 68, 0.25);
+  font-family: "Montserrat", sans-serif;
+}
+
+.flashIcon {
+  color: var(--accent-bright);
+  fill: var(--accent-bright);
+  animation: u-pulse 2s infinite;
+}
+
+.flashText {
+  font-size: 1.125rem;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: -0.01em;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navBtn {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-default);
+  background: var(--surface);
+  box-shadow: var(--shadow-xs);
+  color: var(--text-secondary);
+  transition: color 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-secondary);
+  }
+}
+
+.loadingGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+@media (min-width: 640px) {
+  .head {
+    margin-bottom: 2rem;
+    gap: 1rem;
+  }
+
+  .headLeft {
+    gap: 1rem;
+  }
+
+  .loadingGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .loadingGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .loadingGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1536px) {
+  .loadingGrid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.skeletonCard {
+  height: 300px;
+  width: 100%;
+  border-radius: 1rem;
+  background: var(--surface-secondary);
+  animation: u-pulse 2s infinite;
+  box-shadow: inset 0 0 0 1px var(--border-default);
+}
+
+.swiper {
+  padding-bottom: 1rem;
+}
+
+.slide,
+.slideInner {
+  height: 100%;
+}
+
+.divider {
+  margin-top: 1.5rem;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(239, 68, 68, 0.4), transparent);
+}

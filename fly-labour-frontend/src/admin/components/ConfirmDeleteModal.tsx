@@ -1,4 +1,6 @@
 import { Trash2 } from "lucide-react";
+import clsx from "clsx";
+import s from "./ConfirmDeleteModal.module.scss";
 
 interface ConfirmDeleteModalProps {
   message?: string;
@@ -12,28 +14,34 @@ export default function ConfirmDeleteModal({
   onCancel,
 }: ConfirmDeleteModalProps) {
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+    <div className={s.overlay}>
       <div
-        className="absolute inset-0 modal-overlay"
+        className={clsx(s.backdrop, "modal-overlay")}
         onClick={onCancel}
       />
-      <div className="relative modal-content modal-error-content max-w-sm w-full p-6 text-center">
+      <div
+        className={clsx(
+          "modal-content",
+          "modal-error-content",
+          s.dialog,
+        )}
+      >
         {/* Icon — styled, no emoji */}
         <div className="error-icon-container">
           <Trash2 size={24} />
         </div>
-        <h3 className="modal-title mb-1">Xác nhận xóa?</h3>
-        <p className="modal-message mb-5">{message}</p>
-        <div className="flex gap-3">
+        <h3 className={clsx("modal-title", s.titleTight)}>Xác nhận xóa?</h3>
+        <p className={clsx("modal-message", s.messageBlock)}>{message}</p>
+        <div className={s.actions}>
           <button
             onClick={onConfirm}
-            className="btn-danger flex-1 py-2.5 text-sm"
+            className={clsx("btn-danger", s.btnStretch)}
           >
             Xóa
           </button>
           <button
             onClick={onCancel}
-            className="btn-outline flex-1 py-2.5 text-sm"
+            className={clsx("btn-outline", s.btnStretch)}
           >
             Hủy
           </button>

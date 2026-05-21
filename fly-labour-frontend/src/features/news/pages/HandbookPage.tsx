@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Search, Calendar, ArrowRight, BookOpen, Loader2 } from "lucide-react";
 import { newsApi, getImageUrl } from "@core/services/api";
 import { formatDate } from "@core/utils/helpers";
+import s from "./HandbookPage.module.scss";
 
 interface NewsItem {
   id: string;
@@ -20,8 +21,6 @@ export default function HandbookPage() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    // For now, we use the same news API but we could filter by category if the backend supported it.
-    // Or we filter by keywords in title for "Handbook/Cẩm nang"
     newsApi
       .getAllHandbook()
       .then((r) => {
@@ -38,103 +37,95 @@ export default function HandbookPage() {
       (n.excerpt || "").toLowerCase().includes(search.toLowerCase()),
   );
 
-  const cardClasses =
-    "bg-white dark:bg-brand-card rounded-[2rem] overflow-hidden border border-slate-100 dark:border-white/5 shadow-sm hover:shadow-2xl hover:shadow-brand-gold/10 hover:border-brand-gold/50 transition-all duration-500";
-
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0d1117] transition-colors duration-300 pt-20 pb-20">
-      {/* Page Header */}
-      <div className="bg-slate-50/50 dark:bg-brand-card/30 backdrop-blur-xl border-b border-slate-100 dark:border-white/5">
-        <div className="max-w-7xl mx-auto px-6 py-20 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-gold/10 border border-brand-gold/20 mb-8 shadow-sm">
-            <BookOpen size={14} className="text-brand-gold" />
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-brand-gold">
+    <div className={`${s.page} fl-surface-page`}>
+      <div className={`fl-strip-breadcrumb ${s.headerStrip}`}>
+        <div className={`fl-container-7xl ${s.headerInner}`}>
+          <div className={s.badge}>
+            <BookOpen size={14} className={s.badgeIcon} />
+            <span className={s.badgeText}>
               Cẩm nang định cư & Visa
             </span>
           </div>
-          <h1 className="text-4xl md:text-7xl font-bold text-slate-900 dark:text-white mb-8 leading-tight tracking-tight">
+          <h1 className={s.title}>
             <span className="gradient-text">Cẩm nang FLY LABOUR</span>
           </h1>
-          <p className="text-slate-500 dark:text-gray-300 max-w-2xl mx-auto text-base md:text-xl font-medium leading-relaxed">
+          <p className={`${s.desc} fl-max-2xl`}>
             Toàn bộ kinh nghiệm, quy trình và những lưu ý quan trọng khi bắt đầu hành trình vươn tầm thế giới.
           </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-16 space-y-20">
-        {/* Search Bar */}
-        <div className="relative max-w-2xl mx-auto group">
-          <Search
-            size={20}
-            className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-brand-gold transition-colors"
-          />
+      <div className={`fl-container-7xl ${s.content}`}>
+        <div className={`fl-max-2xl ${s.searchWrap}`}>
+          <Search size={20} className={s.searchIcon} />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Tìm kiếm tài liệu, hướng dẫn..."
-            className="w-full h-16 pl-14 pr-8 text-base font-medium rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5 text-slate-900 dark:text-white placeholder:text-slate-400 focus:bg-white dark:focus:bg-black focus:border-brand-gold outline-none shadow-inner transition-all"
+            className={s.searchInput}
           />
         </div>
 
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <Loader2 size={40} className="animate-spin text-brand-gold mb-4" />
-            <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">
+          <div className={s.loadingWrap}>
+            <Loader2 size={40} className={`animate-spin ${s.loader}`} />
+            <p className={s.loadingText}>
               Đang tra cứu cẩm nang...
             </p>
           </div>
         ) : filtered.length === 0 ? (
-          <div className="text-center py-32 bg-slate-50 dark:bg-white/5 rounded-[3rem] border border-dashed border-slate-200 dark:border-white/10 max-w-3xl mx-auto">
-            <div className="text-6xl mb-6">📚</div>
-            <p className="text-slate-900 dark:text-white font-bold text-2xl mb-2">
+          <div className={`${s.empty} fl-max-3xl`}>
+            <div className={s.emptyEmoji}>📚</div>
+            <p className={s.emptyTitle}>
               Không tìm thấy nội dung
             </p>
-            <p className="text-slate-500 dark:text-gray-300 font-medium">
+            <p className={s.emptyDesc}>
               Bạn có thể thử tìm kiếm theo tên quốc gia hoặc loại visa.
             </p>
           </div>
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
+          <div className={s.grid}>
             {filtered.map((item) => (
               <Link
                 key={item.id}
                 to={`/news/${item.slug}`}
-                className={`group ${cardClasses} flex flex-col hover:-translate-y-2 transition-transform`}
+                className={s.card}
               >
-                <div className="relative h-64 overflow-hidden bg-slate-100 dark:bg-brand-dark">
+                <div className={s.imageWrap}>
                   {item.image ? (
                     <img
                       src={getImageUrl(item.image)}
                       alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      className={s.img}
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-6xl opacity-10">
+                    <div className={s.placeholder}>
                       📖
                     </div>
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-8">
-                     <span className="text-white text-xs font-bold uppercase tracking-[0.2em] flex items-center gap-2">
+                  <div className={s.overlay}>
+                     <span className={s.overlayText}>
                         Đọc tài liệu <ArrowRight size={14} />
                      </span>
                   </div>
                 </div>
-                <div className="p-8 flex flex-col flex-1 bg-white dark:bg-brand-card">
-                  <div className="flex items-center gap-2 text-slate-400 dark:text-gray-300 text-xs font-bold uppercase tracking-widest mb-4">
-                    <Calendar size={12} className="text-brand-gold" />
+                <div className={s.body}>
+                  <div className={s.meta}>
+                    <Calendar size={12} className={s.metaIcon} />
                     {formatDate(item.createdAt)}
                   </div>
-                  <h3 className="text-slate-900 dark:text-white font-bold text-xl mb-4 group-hover:text-brand-gold transition-colors line-clamp-2 leading-tight tracking-tight">
+                  <h3 className={s.cardTitle}>
                     {item.title}
                   </h3>
                   {item.excerpt && (
-                    <p className="text-slate-500 dark:text-gray-300 text-sm leading-relaxed line-clamp-3 flex-1 font-medium">
+                    <p className={s.excerpt}>
                       {item.excerpt}
                     </p>
                   )}
-                  <div className="mt-8 pt-6 border-t border-slate-50 dark:border-white/5 flex items-center justify-between">
-                     <BookOpen size={16} className="text-brand-gold opacity-50" />
-                     <span className="text-xs font-bold uppercase tracking-widest text-slate-400 group-hover:text-brand-gold transition-colors">
+                  <div className={s.footer}>
+                     <BookOpen size={16} className={s.footerIcon} />
+                     <span className={s.footerText}>
                         Xem chi tiết
                      </span>
                   </div>

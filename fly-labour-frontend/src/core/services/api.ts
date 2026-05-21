@@ -45,6 +45,8 @@ api.interceptors.response.use(
 export const authApi = {
   login:    (email: string, password: string) =>
     api.post('/auth/login', { email, password }),
+  loginGoogle: (credential: string) =>
+    api.post('/auth/google', { credential }),
   register: (data: { fullName: string; email: string; phone: string; password: string; address?: string }) =>
     api.post('/auth/register', data),
   getMe:    () => api.get('/auth/me'),
@@ -75,11 +77,23 @@ export const applicationsApi = {
   getMy:                () => api.get('/applications/my'),
   getStats:             () => api.get('/applications/stats'),
   withdraw:             (id: string) => api.patch(`/applications/${id}/withdraw`),
-  employerUpdateStatus: (id: string, status: string) =>
-    api.patch(`/applications/${id}/employer-status`, { status }),
+  employerUpdateStatus: (id: string, status: string, employerNote?: string) =>
+    api.patch(`/applications/${id}/employer-status`, { status, employerNote }),
 }
 
-// ── Categories ────────────────────────────────
+// ── Study Applications ──────────────────────────────
+export const studyApplicationsApi = {
+  create:        (data: Record<string, any>) => api.post('/study-applications', data),
+  getAll:        (params?: Record<string, any>) => api.get('/study-applications', { params }),
+  getOne:       (id: string) => api.get(`/study-applications/${id}`),
+  updateStatus:  (id: string, status: string, adminNote?: string) =>
+    api.patch(`/study-applications/${id}/status`, { status, adminNote }),
+  getMy:         () => api.get('/study-applications/my'),
+  getStats:      () => api.get('/study-applications/stats'),
+  getPublic:     (params?: Record<string, any>) => api.get('/study-applications/public', { params }),
+}
+
+// ── Categories
 export const categoriesApi = {
   getAll: () => api.get('/categories'),
   getAllAdmin: () => api.get('/categories/admin/all'),
@@ -119,7 +133,9 @@ export const employerApi = {
   createJob:       (data: FormData) => api.post('/jobs/employer', data, { headers: { 'Content-Type': 'multipart/form-data' } }),
   updateJob:       (id: string, data: FormData) => api.patch(`/jobs/employer/${id}`, data, { headers: { 'Content-Type': 'multipart/form-data' } }),
   deleteJob:       (id: string) => api.delete(`/jobs/employer/${id}`),
-  getApplications: () => api.get('/applications/employer'),
+  getApplications: (params?: Record<string, unknown>) =>
+    api.get('/applications/employer', { params }),
+  getJobPerformance: () => api.get('/jobs/employer/performance'),
 }
 
 // ── News ──────────────────────────────────────
@@ -130,6 +146,10 @@ export const newsApi = {
   // Handbook (type=handbook)
   getAllHandbook:       () => api.get('/news/handbook'),
   getAllHandbookAdmin:  () => api.get('/news/admin/handbook'),
+  getAllStudy:          (params?: Record<string, unknown>) => api.get('/news/study', { params }),
+  getAllStudyAdmin:     () => api.get('/news/admin/study'),
+  getAllTravel:         (params?: Record<string, unknown>) => api.get('/news/travel', { params }),
+  getAllTravelAdmin:    () => api.get('/news/admin/travel'),
   // Shared
   getOne:  (slug: string) => api.get(`/news/${slug}`),
   create:  (data: FormData) => api.post('/news', data),
@@ -152,6 +172,17 @@ export const settingsApi = {
   save:   (data: Record<string, string>) => api.put('/settings', data),
 }
 
+async function uploadImageFile(
+  file: File,
+): Promise<{ url: string; filename: string }> {
+  const fd = new FormData()
+  fd.append('file', file)
+  const res = await api.post<{ url: string; filename: string }>('/upload/image', fd, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  })
+  return res.data
+}
+
 // ── Upload ────────────────────────────────────
 export const uploadApi = {
   cv: (file: File) => {
@@ -159,13 +190,8 @@ export const uploadApi = {
     fd.append('file', file)
     return api.post('/upload/cv', fd, { headers: { 'Content-Type': 'multipart/form-data' } })
   },
-  image: (file: File): Promise<{ url: string; filename: string }> => {
-    const fd = new FormData()
-    fd.append('file', file)
-    return api.post<{ url: string; filename: string }>('/upload/image', fd, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    }).then(r => r.data)
-  },
+  image: uploadImageFile,
+  avatar: uploadImageFile,
 }
 
 // ── Chores ────────────────────────────────────

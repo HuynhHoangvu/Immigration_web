@@ -4,6 +4,8 @@ import { Plus, Pencil, Trash2, X, CheckCircle, Loader2, Upload, Image as ImageIc
 import type { Category } from "@core/types";
 import { categoriesApi, getImageUrl } from "@core/services/api";
 import toast from "react-hot-toast";
+import clsx from "clsx";
+import s from "./AdminCategoriesPage.module.scss";
 
 type FormData = {
   name: string;
@@ -23,20 +25,7 @@ const EMPTY: FormData = {
   sortOrder: "0",
 };
 
-const ICON_OPTIONS = [
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "10",
-  "11",
- 
-];
+const ICON_OPTIONS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"];
 
 export default function AdminCategoriesPage() {
   const [cats, setCats] = useState<Category[]>([]);
@@ -81,7 +70,7 @@ export default function AdminCategoriesPage() {
     });
     setEditing(c);
     setFile(null);
-    setPreview((c.icon && (c.icon.startsWith("http") || c.icon.startsWith("/") || c.icon.includes("."))) ? getImageUrl(c.icon) : null);
+    setPreview(c.icon && (c.icon.startsWith("http") || c.icon.startsWith("/") || c.icon.includes(".")) ? getImageUrl(c.icon) : null);
     setModal("edit");
   };
 
@@ -142,105 +131,63 @@ export default function AdminCategoriesPage() {
     }
   };
 
-  // Helper classes
-  const cardClasses =
-    "bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl shadow-sm dark:shadow-none transition-all duration-300";
-  const inputClasses =
-    "w-full text-sm rounded-xl px-4 bg-slate-50 dark:bg-[#1a1a1a] border border-slate-200 dark:border-white/5 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-black focus:border-amber-400 dark:focus:border-brand-gold outline-none transition-all";
-
   return (
-    <div className="space-y-6 transition-colors duration-300">
-      <div className="flex items-center justify-between flex-wrap gap-4">
+    <div className={s.page}>
+      <div className={s.head}>
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Quản lý Danh mục
-          </h1>
-          <p className="text-slate-500 dark:text-brand-muted text-sm font-medium">
-            {cats.length} danh mục ngành nghề đang hoạt động
-          </p>
+          <h1 className={s.title}>Quản lý Danh mục</h1>
+          <p className={s.sub}>{cats.length} danh mục ngành nghề đang hoạt động</p>
         </div>
-        <button
-          onClick={openAdd}
-          className="btn-primary flex items-center gap-2 text-sm px-5 py-2.5 shadow-lg shadow-amber-500/20"
-        >
+        <button onClick={openAdd} className={clsx("btn-primary", s.addBtn)}>
           <Plus size={18} /> Thêm danh mục mới
         </button>
       </div>
 
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-32 text-slate-400 dark:text-brand-muted">
-          <Loader2 size={32} className="animate-spin mb-4 text-amber-500" />
-          <p className="font-medium">Đang tải dữ liệu...</p>
+        <div className={s.loading}>
+          <Loader2 size={32} className={clsx(s.loadingIcon, s.spin)} />
+          <p>Đang tải dữ liệu...</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className={s.grid}>
           {cats.map((cat) => (
-            <div
-              key={cat.id}
-              className={`${cardClasses} p-5 relative group ${!cat.isActive ? "opacity-60 grayscale-[0.5]" : "hover:border-amber-400/50 hover:shadow-xl hover:shadow-amber-500/5"}`}
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-brand-gold/5 border border-amber-100 dark:border-brand-gold/10 flex items-center justify-center text-2xl shadow-sm transition-colors overflow-hidden">
+            <div key={cat.id} className={clsx(s.card, cat.isActive ? s.cardActive : s.cardInactive)}>
+              <div className={s.cardHead}>
+                <div className={s.iconWrap}>
                   {cat.icon && (cat.icon.startsWith("http") || cat.icon.startsWith("/") || cat.icon.match(/^\d+$/) || cat.icon.includes(".")) ? (
                     <img
-                      src={
-                        cat.icon.match(/^\d+$/)
-                          ? `/${cat.icon}.png`
-                          : getImageUrl(cat.icon)
-                      }
+                      src={cat.icon.match(/^\d+$/) ? `/${cat.icon}.png` : getImageUrl(cat.icon)}
                       alt={cat.name}
-                      className="w-10 h-10 object-contain"
+                      className={s.iconImg}
                     />
                   ) : (
                     cat.icon || "🏷️"
                   )}
                 </div>
-                <div className="flex gap-1.5 opacity-0 group-hover:opacity-100 transition-all duration-200">
-                  <button
-                    onClick={() => openEdit(cat)}
-                    className="p-2 rounded-xl bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-brand-muted hover:text-amber-600 dark:hover:text-brand-gold transition-colors shadow-sm"
-                  >
+                <div className={s.hoverActions}>
+                  <button onClick={() => openEdit(cat)} className={clsx(s.iconBtn, s.editBtn)}>
                     <Pencil size={14} />
                   </button>
-                  <button
-                    onClick={() => setDeleting(cat.id)}
-                    className="p-2 rounded-xl bg-red-50 dark:bg-red-500/5 text-red-400 hover:text-red-600 transition-colors shadow-sm"
-                  >
+                  <button onClick={() => setDeleting(cat.id)} className={clsx(s.iconBtn, s.delBtn)}>
                     <Trash2 size={14} />
                   </button>
                 </div>
               </div>
 
-              <h3 className="font-bold text-slate-900 dark:text-white text-base mb-0.5">
-                {cat.name}
-              </h3>
-              {cat.nameEn && (
-                <p className="text-slate-400 dark:text-brand-muted text-xs font-semibold uppercase tracking-tight">
-                  {cat.nameEn}
-                </p>
-              )}
-              {cat.description && (
-                <p className="text-slate-600 dark:text-gray-400 text-xs mt-2 line-clamp-2 leading-relaxed">
-                  {cat.description}
-                </p>
-              )}
+              <h3 className={s.name}>{cat.name}</h3>
+              {cat.nameEn && <p className={s.nameEn}>{cat.nameEn}</p>}
+              {cat.description && <p className={s.desc}>{cat.description}</p>}
 
-              <div className="flex items-center justify-between mt-5 pt-4 border-t border-slate-50 dark:border-white/5">
+              <div className={s.foot}>
                 {cat._count && (
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                    <span className="text-[11px] text-slate-500 dark:text-brand-muted font-bold uppercase tracking-wider">
-                      {cat._count.jobs} việc làm
-                    </span>
+                  <div className={s.jobs}>
+                    <div className={s.dot} />
+                    <span className={s.jobsText}>{cat._count.jobs} việc làm</span>
                   </div>
                 )}
                 <button
                   onClick={() => toggleActive(cat)}
-                  className={`text-[10px] px-3 py-1 rounded-full border font-bold uppercase tracking-widest transition-all ${
-                    cat.isActive
-                      ? "text-green-600 bg-green-50 border-green-200 hover:bg-green-100"
-                      : "text-slate-400 bg-slate-50 border-slate-200 hover:bg-slate-100"
-                  }`}
+                  className={clsx(s.statusBtn, cat.isActive ? s.statusOn : s.statusOff)}
                 >
                   {cat.isActive ? "Hiển thị" : "Đang ẩn"}
                 </button>
@@ -248,39 +195,24 @@ export default function AdminCategoriesPage() {
             </div>
           ))}
 
-          {cats.length === 0 && (
-            <div className={`${cardClasses} col-span-full py-20 text-center`}>
-              <p className="text-slate-400 dark:text-brand-muted font-medium">
-                Chưa có danh mục nào được tạo.
-              </p>
-            </div>
-          )}
+          {cats.length === 0 && <div className={s.empty}>Chưa có danh mục nào được tạo.</div>}
         </div>
       )}
 
-      {/* Add/Edit Modal */}
       {modal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-          <div className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-3xl w-full max-w-md shadow-2xl animate-in zoom-in-95 duration-200 overflow-hidden">
-            <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-white/5">
-              <h2 className="font-bold text-slate-900 dark:text-white text-lg">
-                {modal === "add" ? "Thêm danh mục mới" : "Chỉnh sửa danh mục"}
-              </h2>
-              <button
-                onClick={() => setModal(null)}
-                className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 text-slate-400 transition-colors"
-              >
+        <div className={s.modalOverlay}>
+          <div className={clsx(s.modalCard, "animate-in zoom-in-95 duration-200")}>
+            <div className={s.modalHead}>
+              <h2 className={s.modalTitle}>{modal === "add" ? "Thêm danh mục mới" : "Chỉnh sửa danh mục"}</h2>
+              <button onClick={() => setModal(null)} className={s.closeBtn}>
                 <X size={20} />
               </button>
             </div>
 
-            <div className="p-6 space-y-5">
-              {/* Icon Selection */}
+            <div className={s.modalBody}>
               <div>
-                <label className="text-[10px] font-bold text-slate-400 dark:text-brand-muted uppercase tracking-widest mb-3 block">
-                  Biểu tượng (Icon)
-                </label>
-                <div className="flex items-center gap-2 mb-3">
+                <label className={s.label}>Biểu tượng (Icon)</label>
+                <div className={s.iconList}>
                   {ICON_OPTIONS.map((ic) => (
                     <button
                       key={ic}
@@ -289,22 +221,18 @@ export default function AdminCategoriesPage() {
                         setFile(null);
                         setPreview(null);
                       }}
-                      className={`w-8 h-8 rounded-lg text-lg flex items-center justify-center border transition-all overflow-hidden ${form.icon === ic && !file ? "bg-amber-100 border-amber-400 scale-110 shadow-sm" : "bg-slate-50 dark:bg-white/5 border-slate-100 dark:border-white/5 hover:border-amber-200"}`}
+                      className={clsx(s.iconOption, form.icon === ic && !file && s.iconOptionActive)}
                     >
-                      <img
-                        src={`/${ic}.png`}
-                        alt=""
-                        className="w-6 h-6 object-contain"
-                      />
+                      <img src={`/${ic}.png`} alt="" className={s.iconOptionImg} />
                     </button>
                   ))}
                 </div>
 
-                <div className="relative group">
+                <div className="relative">
                   <input
                     type="file"
                     id="cat-image"
-                    className="hidden"
+                    className={s.hidden}
                     accept="image/*"
                     onChange={(e) => {
                       const f = e.target.files?.[0];
@@ -315,40 +243,15 @@ export default function AdminCategoriesPage() {
                       }
                     }}
                   />
-                  <label
-                    htmlFor="cat-image"
-                    className={`flex items-center gap-3 p-3 rounded-2xl border-2 border-dashed cursor-pointer transition-all ${
-                      file || (editing && (form.icon.startsWith("http") || form.icon.startsWith("/")))
-                        ? "border-amber-400 bg-amber-50/30 dark:bg-amber-500/5"
-                        : "border-slate-200 dark:border-white/10 hover:border-amber-400 dark:hover:border-brand-gold"
-                    }`}
-                  >
-                    <div className="w-12 h-12 rounded-xl bg-white dark:bg-brand-dark border border-slate-100 dark:border-white/5 flex items-center justify-center overflow-hidden shadow-sm">
-                      {preview ? (
-                        <img
-                          src={preview}
-                          alt="preview"
-                          className="w-full h-full object-contain"
-                        />
-                      ) : (
-                        <ImageIcon
-                          size={24}
-                          className="text-slate-300 dark:text-brand-muted"
-                        />
-                      )}
+                  <label htmlFor="cat-image" className={clsx(s.uploadLabel, (file || preview) && s.uploadActive)}>
+                    <div className={s.thumb}>
+                      {preview ? <img src={preview} alt="preview" className={s.thumbImg} /> : <ImageIcon size={24} className={s.thumbPlaceholder} />}
                     </div>
-                    <div className="flex-1">
-                      <p className="text-xs font-bold text-slate-700 dark:text-white mb-0.5">
-                        {file ? "Đã chọn ảnh mới" : (preview ? "Ảnh hiện tại" : "Tải ảnh icon mới")}
-                      </p>
-                      <p className="text-[10px] text-slate-400 dark:text-brand-muted font-medium">
-                        Dung lượng tối đa 50MB
-                      </p>
+                    <div className={s.uploadMain}>
+                      <p className={s.uploadTitle}>{file ? "Đã chọn ảnh mới" : preview ? "Ảnh hiện tại" : "Tải ảnh icon mới"}</p>
+                      <p className={s.uploadDesc}>Dung lượng tối đa 50MB</p>
                     </div>
-                    <Upload
-                      size={18}
-                      className="text-slate-400 group-hover:text-amber-500 transition-colors"
-                    />
+                    <Upload size={18} className={s.uploadIcon} />
                   </label>
                   {(file || preview) && (
                     <button
@@ -358,7 +261,7 @@ export default function AdminCategoriesPage() {
                         setPreview(null);
                         setForm((f) => ({ ...f, icon: "🏷️" }));
                       }}
-                      className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg hover:bg-red-600 transition-colors"
+                      className={s.removeBtn}
                     >
                       <X size={12} />
                     </button>
@@ -366,98 +269,46 @@ export default function AdminCategoriesPage() {
                 </div>
               </div>
 
-              {/* Names */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 dark:text-brand-muted uppercase tracking-widest block">
-                    Tên tiếng Việt *
-                  </label>
-                  <input
-                    value={form.name}
-                    onChange={setField("name")}
-                    className={`${inputClasses} h-11`}
-                    placeholder="VD: Nông nghiệp"
-                  />
+              <div className={s.grid2}>
+                <div>
+                  <label className={s.label}>Tên tiếng Việt *</label>
+                  <input value={form.name} onChange={setField("name")} className={s.input} placeholder="VD: Nông nghiệp" />
                 </div>
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 dark:text-brand-muted uppercase tracking-widest block">
-                    Tên tiếng Anh
-                  </label>
-                  <input
-                    value={form.nameEn}
-                    onChange={setField("nameEn")}
-                    className={`${inputClasses} h-11`}
-                    placeholder="VD: Agriculture"
-                  />
+                <div>
+                  <label className={s.label}>Tên tiếng Anh</label>
+                  <input value={form.nameEn} onChange={setField("nameEn")} className={s.input} placeholder="VD: Agriculture" />
                 </div>
               </div>
 
-              {/* Description */}
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-slate-400 dark:text-brand-muted uppercase tracking-widest block">
-                  Mô tả ngắn
-                </label>
-                <textarea
-                  value={form.description}
-                  onChange={setField("description")}
-                  className={`${inputClasses} py-3 h-24 resize-none`}
-                  placeholder="Giới thiệu về ngành nghề này..."
-                />
+              <div>
+                <label className={s.label}>Mô tả ngắn</label>
+                <textarea value={form.description} onChange={setField("description")} className={s.textarea} placeholder="Giới thiệu về ngành nghề này..." />
               </div>
 
-              {/* Order & Active */}
-              <div className="flex items-center gap-6 pt-2">
-                <div className="flex-1 space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 dark:text-brand-muted uppercase tracking-widest block">
-                    Thứ tự ưu tiên
-                  </label>
-                  <input
-                    type="number"
-                    value={form.sortOrder}
-                    onChange={setField("sortOrder")}
-                    className={`${inputClasses} h-11`}
-                  />
+              <div className={s.row}>
+                <div className={s.grow}>
+                  <label className={s.label}>Thứ tự ưu tiên</label>
+                  <input type="number" value={form.sortOrder} onChange={setField("sortOrder")} className={s.input} />
                 </div>
-                <label className="flex items-center gap-3 cursor-pointer mt-5 group">
-                  <div
-                    className={`w-10 h-5 rounded-full relative transition-colors ${form.isActive ? "bg-amber-500" : "bg-slate-200 dark:bg-white/10"}`}
-                  >
-                    <div
-                      className={`absolute top-1 w-3 h-3 rounded-full bg-white transition-all ${form.isActive ? "left-6" : "left-1"}`}
-                    />
+                <label className={s.toggleLabel}>
+                  <div className={clsx(s.track, form.isActive ? s.trackOn : s.trackOff)}>
+                    <div className={clsx(s.thumbSmall, form.isActive ? s.thumbOn : s.thumbOff)} />
                   </div>
                   <input
                     type="checkbox"
                     checked={form.isActive}
-                    onChange={(e) =>
-                      setForm((f) => ({ ...f, isActive: e.target.checked }))
-                    }
-                    className="hidden"
+                    onChange={(e) => setForm((f) => ({ ...f, isActive: e.target.checked }))}
+                    className={s.hidden}
                   />
-                  <span className="text-sm font-bold text-slate-700 dark:text-white uppercase tracking-tighter">
-                    Hiển thị
-                  </span>
+                  <span className={s.toggleText}>Hiển thị</span>
                 </label>
               </div>
             </div>
 
-            <div className="flex gap-3 p-6 border-t border-slate-100 dark:border-white/5 bg-slate-50/30 dark:bg-black/10">
-              <button
-                onClick={() => setModal(null)}
-                className="flex-1 h-11 rounded-xl font-bold text-slate-600 dark:text-white border border-slate-200 dark:border-brand-border hover:bg-white dark:hover:bg-white/5 transition-all"
-              >
-                Hủy
-              </button>
-              <button
-                onClick={handleSave}
-                disabled={saving}
-                className="btn-primary flex-1 flex items-center justify-center gap-2 h-11 font-bold shadow-lg shadow-amber-500/20 disabled:opacity-60"
-              >
-                {saving ? (
-                  <Loader2 size={16} className="animate-spin" />
-                ) : (
-                  <CheckCircle size={16} />
-                )}
+            <div className={clsx(s.footActions, "fl-surface-muted-30")}>
+              <button onClick={() => setModal(null)} className={s.cancelBtn}>Hủy</button>
+              <button onClick={handleSave} disabled={saving} className={clsx("btn-primary", s.saveBtn)}>
+                {saving ? <Loader2 size={16} className={s.spin} /> : <CheckCircle size={16} />}
                 {modal === "add" ? "Thêm ngay" : "Cập nhật"}
               </button>
             </div>

@@ -1,0 +1,424 @@
+@use "../../../styles/breakpoints" as bp;
+
+.page {
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.hero {
+  position: relative;
+  padding: 8rem 1.5rem 5rem;
+  overflow: hidden;
+}
+
+.heroBg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right, #fffbeb, #ffffff, rgba(254, 243, 199, 0.3));
+}
+
+.heroOrb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 37.5rem;
+  height: 37.5rem;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(48px);
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.heroInner {
+  position: relative;
+  text-align: center;
+}
+
+.badge {
+  color: #d97706;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+
+  @include bp.mq-md {
+    font-size: 3rem;
+  }
+}
+
+.titleAccent {
+  background: linear-gradient(135deg, #e4a808, #fdd52f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.desc {
+  color: #475569;
+  font-size: 1.125rem;
+  line-height: 1.65;
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.jobsBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+}
+
+.contactBtn {
+  display: inline-flex;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color 0.2s ease, background-color 0.2s ease;
+
+  &:hover {
+    color: #0f172a;
+    background: #f1f5f9;
+  }
+}
+
+.stats {
+  padding: 3.5rem 1.5rem;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+
+  @include bp.mq-md {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.statItem {
+  text-align: center;
+}
+
+.statValue {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  background: linear-gradient(135deg, #e4a808, #fdd52f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.statLabel {
+  color: #475569;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.section {
+  padding: 5rem 1.5rem;
+}
+
+.twoCol {
+  display: grid;
+  gap: 3rem;
+  align-items: center;
+
+  @include bp.mq-md {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.sectionBadge {
+  color: #d97706;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.sectionTitle {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 1.25rem;
+}
+
+.paragraph {
+  color: #475569;
+  line-height: 1.7;
+}
+
+.paragraphSpacing {
+  margin-bottom: 1rem;
+}
+
+.countriesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.countryCard {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: var(--shadow-xs);
+}
+
+.countryFlag {
+  font-size: 1.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.countryLabel {
+  color: #0f172a;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.countryJobs {
+  color: #d97706;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
+
+.mutedSection {
+  padding: 5rem 1.5rem;
+  background: rgba(241, 245, 249, 0.5);
+}
+
+.centerHead {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.servicesGrid {
+  display: grid;
+  gap: 1.5rem;
+
+  @include bp.mq-md {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @include bp.mq-lg {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.serviceCard {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: var(--shadow-xs);
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: #fbbf24;
+  }
+}
+
+.serviceIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.serviceTitle {
+  color: #0f172a;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.serviceDesc {
+  color: #475569;
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
+.whyList {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.whyItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.whyIcon {
+  color: #f59e0b;
+  margin-top: 0.125rem;
+  flex-shrink: 0;
+}
+
+.whyText {
+  color: #475569;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.teamPanel {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  box-shadow: var(--shadow-xs);
+  border-radius: 1rem;
+  padding: 2rem;
+}
+
+.teamTitle {
+  color: #0f172a;
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.teamMember {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.memberAvatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #78350f;
+  font-weight: 700;
+  box-shadow: var(--shadow-xs);
+  flex-shrink: 0;
+}
+
+.memberMeta {
+  min-width: 0;
+}
+
+.memberName {
+  color: #0f172a;
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.memberRole {
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.contactSection {
+  padding: 4rem 1.5rem;
+  background: rgba(241, 245, 249, 0.5);
+  border-top: 1px solid #e2e8f0;
+}
+
+.contactHead {
+  text-align: center;
+}
+
+.contactTitle {
+  color: #0f172a;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.contactDesc {
+  color: #475569;
+  margin-bottom: 2rem;
+}
+
+.contactGrid {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+
+  @include bp.mq-sm {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.contactCard {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  box-shadow: var(--shadow-xs);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  transition: border-color 0.2s ease;
+}
+
+.contactIcon {
+  color: #f59e0b;
+  margin: 0 auto 0.75rem;
+  display: block;
+}
+
+.contactLabel {
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.contactValue {
+  color: #0f172a;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.contactCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+}

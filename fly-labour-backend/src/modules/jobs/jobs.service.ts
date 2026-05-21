@@ -5,12 +5,14 @@ import { Job, JobStatus } from './job.entity';
 import { CreateJobDto, UpdateJobDto, QueryJobDto } from './dto/job.dto';
 import { GcsService } from '../../common/services/gcs.service';
 import { PAGINATION } from '../../common/constants';
+import { JobTranslationService } from './job-translation.service';
 
 @Injectable()
 export class JobsService {
   constructor(
     @InjectRepository(Job) private jobsRepo: Repository<Job>,
     private gcsService: GcsService,
+    private translationService: JobTranslationService,
   ) {}
 
   async findAll(query: QueryJobDto) {
@@ -104,14 +106,21 @@ export class JobsService {
   }
 
   async create(dto: CreateJobDto, file?: Express.Multer.File) {
-    const job = this.jobsRepo.create(dto);
+    const translatedDto = await this.translationService.enrichEnglishFields(dto);
+    const job = this.jobsRepo.create(translatedDto);
     if (file) job.image = await this.saveFile(file);
     return this.jobsRepo.save(job);
   }
 
   async update(id: string, dto: UpdateJobDto, file?: Express.Multer.File) {
     const job = await this.findOneRaw(id);
-    Object.assign(job, dto);
+    const translatedDto = await this.translationService.enrichEnglishFields(
+      dto,
+      job as any,
+      Boolean(dto.forceRetranslate),
+    );
+    delete (translatedDto as any).forceRetranslate;
+    Object.assign(job, translatedDto);
     if (file) job.image = await this.saveFile(file);
     return this.jobsRepo.save(job);
   }
@@ -136,8 +145,39 @@ export class JobsService {
     return { data, meta: { total, page: +page, limit: +limit, totalPages: Math.ceil(total / limit) } };
   }
 
+  async getEmployerPerformance(employerId: string) {
+    const rows = await this.jobsRepo
+      .createQueryBuilder('job')
+      .leftJoin('applications', 'app', 'app.jobId = job.id')
+      .select('job.id', 'jobId')
+      .addSelect('job.title', 'title')
+      .addSelect('job.viewCount', 'viewCount')
+      .addSelect('COUNT(app.id)', 'applicationCount')
+      .addSelect(`COUNT(app.id) FILTER (WHERE app.status = 'approved')`, 'approvedCount')
+      .where('job.createdById = :employerId', { employerId })
+      .groupBy('job.id')
+      .addGroupBy('job.title')
+      .addGroupBy('job.viewCount')
+      .orderBy('job.createdAt', 'DESC')
+      .getRawMany()
+
+    return rows.map((r) => {
+      const views = Number(r.viewCount || 0)
+      const apps = Number(r.applicationCount || 0)
+      return {
+        jobId: r.jobId,
+        title: r.title,
+        viewCount: views,
+        applicationCount: apps,
+        approvedCount: Number(r.approvedCount || 0),
+        conversionRate: views > 0 ? Number(((apps / views) * 100).toFixed(2)) : 0,
+      }
+    })
+  }
+
   async createByEmployer(dto: CreateJobDto, employerId: string, file?: Express.Multer.File) {
-    const job = this.jobsRepo.create({ ...dto, createdById: employerId, status: JobStatus.PENDING_REVIEW });
+    const translatedDto = await this.translationService.enrichEnglishFields(dto);
+    const job = this.jobsRepo.create({ ...translatedDto, createdById: employerId, status: JobStatus.PENDING_REVIEW });
     if (file) job.image = await this.saveFile(file);
     return this.jobsRepo.save(job);
   }
@@ -164,7 +204,13 @@ export class JobsService {
     if (job.createdById !== employerId) {
       throw new ForbiddenException('You can only edit your own job listings');
     }
-    Object.assign(job, dto);
+    const translatedDto = await this.translationService.enrichEnglishFields(
+      dto,
+      job as any,
+      Boolean(dto.forceRetranslate),
+    );
+    delete (translatedDto as any).forceRetranslate;
+    Object.assign(job, translatedDto);
     if (file) job.image = await this.saveFile(file);
     return this.jobsRepo.save(job);
   }

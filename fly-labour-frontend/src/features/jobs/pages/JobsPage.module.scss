@@ -1,0 +1,386 @@
+.page {
+  min-height: 100vh;
+  padding-top: 5rem;
+  background: var(--background);
+  transition: background-color 0.3s ease;
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 3.5rem 1.5rem;
+}
+
+.heroGrad {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom right,
+    #fffbeb,
+    #ffffff,
+    rgb(254 243 199 / 0.5)
+  );
+  transition: background 0.5s ease;
+}
+
+.heroBlob {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 500px;
+  height: 500px;
+  border-radius: 9999px;
+  filter: blur(64px);
+  opacity: 0.3;
+  pointer-events: none;
+  transform: translate(30%, -40%);
+}
+
+.heroInner {
+  position: relative;
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.kicker {
+  color: #d97706;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.75rem;
+  line-height: 1.15;
+
+  @media (min-width: 768px) {
+    font-size: 3rem;
+  }
+}
+
+.subtitle {
+  color: #475569;
+  margin-bottom: 2rem;
+  max-width: 36rem;
+  text-align: justify;
+}
+
+.filterCard {
+  border-radius: var(--radius-2xl);
+  border: 1px solid rgb(226 232 240 / 0.6);
+  background: rgb(255 255 255 / 0.8);
+  backdrop-filter: blur(12px);
+  padding: 1.25rem;
+  box-shadow:
+    0 20px 25px -5px rgb(226 232 240 / 0.5),
+    0 8px 10px -6px rgb(0 0 0 / 0.05);
+  transition: box-shadow 0.2s ease;
+}
+
+.filterInner {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @media (min-width: 768px) {
+    gap: 1.25rem;
+  }
+}
+
+.searchWrap {
+  position: relative;
+  max-width: 42rem;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  height: 3rem;
+  padding-left: 2.75rem;
+  padding-right: 2.5rem;
+  font-size: 0.875rem;
+  border-radius: var(--radius-xl);
+  background: #f1f5f9;
+  border: 1px solid transparent;
+  color: #0f172a;
+  outline: none;
+  transition: all 0.2s ease;
+
+  &::placeholder {
+    color: #94a3b8;
+  }
+
+  &:focus {
+    background: #fff;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 1px var(--accent-primary);
+  }
+}
+
+.clearSearch {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: #0f172a;
+  }
+}
+
+.filtersRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.selectWrap {
+  position: relative;
+}
+
+.select {
+  appearance: none;
+  height: 2.5rem;
+  padding-left: 0.75rem;
+  padding-right: 2rem;
+  border-radius: var(--radius-xl);
+  font-size: 0.875rem;
+  border-width: 1px;
+  border-style: solid;
+  cursor: pointer;
+  outline: none;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+
+  &:focus {
+    box-shadow: 0 0 0 2px rgb(228 168 8 / 0.35);
+  }
+}
+
+.selectNeutral {
+  background: #f1f5f9;
+  border-color: transparent;
+  color: #334155;
+
+  &:hover {
+    background: #e2e8f0;
+  }
+}
+
+.selectActive {
+  background: #fef3c7;
+  color: #78350f;
+  border-color: #fcd34d;
+  font-weight: 500;
+}
+
+.selectChevron {
+  pointer-events: none;
+  position: absolute;
+  right: 0.625rem;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.6;
+}
+
+.option {
+  background: #fff;
+  color: #0f172a;
+}
+
+.clearAllBtn {
+  height: 2.5rem;
+  padding: 0 0.75rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  color: #dc2626;
+  font-size: 0.875rem;
+  transition: background 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  cursor: pointer;
+
+  &:hover {
+    background: #fee2e2;
+  }
+}
+
+.badgeCount {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 9999px;
+  background: #fecaca;
+  color: #b91c1c;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.results {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2rem 1.5rem;
+}
+
+.resultsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.foundText {
+  font-size: 0.875rem;
+  color: #475569;
+}
+
+.foundStrong {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.sortRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: #475569;
+}
+
+.sortSelect {
+  appearance: none;
+  background: transparent;
+  color: #0f172a;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding-right: 1rem;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: #d97706;
+  }
+}
+
+.sortChevron {
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.6;
+}
+
+.sortWrap {
+  position: relative;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: stretch;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  @media (min-width: 1280px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.skeleton {
+  height: 18rem;
+  background: #fff;
+  border-radius: var(--radius-2xl);
+  border: 1px solid #e2e8f0;
+  animation: jobsPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes jobsPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.empty {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-2xl);
+  padding: 4rem;
+  text-align: center;
+  max-width: 28rem;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: var(--shadow-sm);
+}
+
+.emptyEmoji {
+  font-size: 2.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.emptyTitle {
+  color: #0f172a;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.emptySub {
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.emptyBtn {
+  margin-top: 1rem;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  background: transparent;
+  border-radius: var(--radius-xl);
+  font-size: 0.875rem;
+  padding: 0.5rem 1.25rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: var(--surface-secondary);
+  }
+}

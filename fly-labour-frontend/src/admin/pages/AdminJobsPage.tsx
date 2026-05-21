@@ -7,13 +7,10 @@ import {
   X,
   CheckCircle,
   XCircle,
-  Eye,
   Upload,
   Image as ImageIcon,
-  Clock,
   Briefcase,
   Search,
-  Filter,
   DollarSign,
   TrendingUp,
   FileText,
@@ -23,17 +20,18 @@ import {
   getCountryLabels,
   JOBTYPE_LABELS,
   formatSalary,
-  formatDate,
 } from "@core/utils/helpers";
 import toast from "react-hot-toast";
 import { categoriesApi, jobsApi, getImageUrl } from "@core/services/api";
+import clsx from "clsx";
+import aj from "./AdminJobsPage.module.scss";
 
-const STATUS_COLORS = {
-  active: "text-green-600 bg-green-50 border-green-200 dark:text-green-400 dark:bg-green-400/10 dark:border-green-400/20",
-  paused: "text-amber-600 bg-amber-50 border-amber-200 dark:text-yellow-400 dark:bg-yellow-400/10 dark:border-yellow-400/20",
-  closed: "text-red-600 bg-red-50 border-red-200 dark:text-red-400 dark:bg-red-400/10 dark:border-red-400/20",
-  draft: "text-slate-500 bg-slate-100 border-slate-200 dark:text-gray-400 dark:bg-gray-400/10 dark:border-gray-400/20",
-  pending_review: "text-orange-600 bg-orange-50 border-orange-200 dark:text-amber-400 dark:bg-orange-400/10 dark:border-amber-400/20",
+const STATUS_BADGE: Record<string, string> = {
+  active: aj.statusActive,
+  paused: aj.statusPaused,
+  closed: aj.statusClosed,
+  draft: aj.statusDraft,
+  pending_review: aj.statusPendingReview,
 };
 
 const STATUS_LABELS = {
@@ -148,10 +146,8 @@ export default function AdminJobsPage() {
   const [deleting, setDeleting] = useState<string | null>(null);
   const [imgTab, setImgTab] = useState<"upload" | "url">("upload");
   const [urlInput, setUrlInput] = useState("");
-  const [salaryPeriod, setSalaryPeriod] = useState<"hourly" | "weekly" | "monthly" | "yearly">("monthly");
   const [tableSalaryPeriod, setTableSalaryPeriod] = useState<"hourly" | "weekly" | "monthly" | "yearly">("monthly");
   const [salaryInputMode, setSalaryInputMode] = useState<"hourly" | "monthly">("monthly");
-  const fileRef = useRef<HTMLInputElement>(null);
   const fileObjRef = useRef<File | null>(null);
   
   const [reqPresets, setReqPresets] = useState<string[]>([]);
@@ -197,7 +193,6 @@ export default function AdminJobsPage() {
     setEditing(null);
     setUrlInput("");
     fileObjRef.current = null;
-    setSalaryPeriod("monthly");
     setSalaryInputMode("monthly");
     setModal("add");
   };
@@ -239,7 +234,6 @@ export default function AdminJobsPage() {
           req_language: parsed.v2.language || "",
           req_other: parsed.v2.other || "",
           req_checklist: parsed.v2.checklist || [],
-          req_transport: parsed.v2.transport || "",
           requirements: parsed.v2.raw || ""
         }));
       }
@@ -312,7 +306,6 @@ export default function AdminJobsPage() {
         "req_language",
         "req_other",
         "req_checklist",
-        "req_transport",
         "ben_departure",
         "ben_checklist"
       ];
@@ -417,23 +410,23 @@ export default function AdminJobsPage() {
   };
 
   // UI Helpers
-  const cardClasses = "bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl shadow-sm transition-colors";
-  const inputClasses = "w-full text-sm rounded-xl px-4 bg-slate-50 dark:bg-[#1a1a1a] border border-slate-200 dark:border-white/5 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-black focus:border-amber-400 dark:focus:border-brand-gold outline-none transition-all";
+  const cardClasses = "bg-white  border border-slate-200  rounded-2xl shadow-sm transition-colors";
+  const inputClasses = "w-full text-sm rounded-xl px-4 bg-slate-50  border border-slate-200  text-slate-900  focus:bg-white  focus:border-amber-400  outline-none transition-all";
 
   return (
     <div className="space-y-6 transition-colors duration-300">
       {/* Header Area */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
+          <h1 className="text-2xl font-bold text-slate-900  flex items-center gap-3">
             Quản lý Việc làm
             {pendingJobs.length > 0 && (
-              <span className="text-[10px] px-2.5 py-1 rounded-full bg-amber-50 dark:bg-amber-400/10 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-400/30 font-black uppercase tracking-widest animate-pulse">
+              <span className="text-[10px] px-2.5 py-1 rounded-full bg-amber-50  text-amber-600  border border-amber-200  font-black uppercase tracking-widest animate-pulse">
                 {pendingJobs.length} đơn chờ duyệt
               </span>
             )}
           </h1>
-          <p className="text-slate-500 dark:text-brand-muted text-sm mt-1">Tổng cộng {total} tin tuyển dụng trên hệ thống</p>
+          <p className="text-slate-500  text-sm mt-1">Tổng cộng {total} tin tuyển dụng trên hệ thống</p>
         </div>
         <button onClick={openAdd} className="btn-primary flex items-center gap-2 text-sm px-5 py-2.5 shadow-lg shadow-amber-500/20">
           <Plus size={18} /> Đăng bài mới
@@ -455,7 +448,7 @@ export default function AdminJobsPage() {
             className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider border transition-all ${
               statusFilter === tab.value
                 ? "bg-amber-600 border-amber-600 text-white shadow-md shadow-amber-600/20"
-                : "bg-white dark:bg-brand-card border-slate-200 dark:border-white/10 text-slate-500 dark:text-brand-muted hover:border-amber-400"
+                : "bg-white  border-slate-200  text-slate-500  hover:border-amber-400"
             }`}
           >
             {tab.label} <span className="ml-1 opacity-60">({tab.count})</span>
@@ -466,7 +459,7 @@ export default function AdminJobsPage() {
       {/* Toolbar Area */}
       <div className={`${cardClasses} p-4 flex flex-wrap gap-4 items-center`}>
         <div className="relative flex-1 min-w-[280px] max-w-sm">
-          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-brand-muted" />
+          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 " />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -476,13 +469,13 @@ export default function AdminJobsPage() {
         </div>
         <div className="flex items-center gap-3 ml-auto">
           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Đổi đơn vị lương:</span>
-          <div className="flex p-1 bg-slate-100 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/5">
+          <div className="flex p-1 bg-slate-100  rounded-xl border border-slate-200 ">
             {(["hourly", "weekly", "monthly", "yearly"] as const).map((p) => (
               <button
                 key={p}
                 onClick={() => setTableSalaryPeriod(p)}
                 className={`px-3 py-1 rounded-lg text-[10px] font-bold uppercase transition-all ${
-                  tableSalaryPeriod === p ? "bg-white dark:bg-brand-gold shadow-sm text-amber-700 dark:text-amber-900" : "text-slate-500 dark:text-brand-muted hover:text-slate-900 dark:hover:text-white"
+                  tableSalaryPeriod === p ? "bg-white  shadow-sm text-amber-700 " : "text-slate-500  hover:text-slate-900 "
                 }`}
               >
                 {{ hourly: "Giờ", weekly: "Tuần", monthly: "Tháng", yearly: "Năm" }[p]}
@@ -497,7 +490,7 @@ export default function AdminJobsPage() {
         <div className="overflow-x-auto custom-scrollbar">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="border-b border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-black/20 text-[10px] font-bold text-slate-400 dark:text-brand-muted uppercase tracking-widest">
+              <tr className="border-b border-slate-100  fl-surface-muted-50  text-[10px] font-bold text-slate-400  uppercase tracking-widest">
                 <th className="text-left px-5 py-4 w-16 text-center">Ảnh</th>
                 <th className="text-left px-5 py-4">Công việc</th>
                 <th className="text-left px-5 py-4 hidden sm:table-cell">Quốc gia</th>
@@ -507,35 +500,35 @@ export default function AdminJobsPage() {
                 <th className="text-right px-5 py-4">Thao tác</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-white/5">
+            <tbody className="divide-y divide-slate-100 ">
               {loading ? (
-                [...Array(6)].map((_, i) => <tr key={i}><td colSpan={7} className="px-5 py-4"><div className="h-12 bg-slate-50 dark:bg-white/5 rounded-xl animate-pulse" /></td></tr>)
+                [...Array(6)].map((_, i) => <tr key={i}><td colSpan={7} className="px-5 py-4"><div className="h-12 bg-slate-50  rounded-xl animate-pulse" /></td></tr>)
               ) : filtered.map((job) => (
-                <tr key={job.id} className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group">
+                <tr key={job.id} className="hover:bg-slate-50  transition-colors group">
                   <td className="px-5 py-4">
-                    <div className="w-12 h-12 rounded-xl overflow-hidden bg-slate-100 dark:bg-brand-dark border border-slate-200 dark:border-white/5 flex-shrink-0 shadow-sm">
+                    <div className="w-12 h-12 rounded-xl overflow-hidden bg-slate-100  border border-slate-200  flex-shrink-0 shadow-sm">
                       {job.image ? (
                         <img src={getImageUrl(job.image)} alt="" className="w-full h-full object-cover transition-transform group-hover:scale-110" />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-slate-300 dark:text-brand-muted"><ImageIcon size={18} /></div>
+                        <div className="w-full h-full flex items-center justify-center text-slate-300 "><ImageIcon size={18} /></div>
                       )}
                     </div>
                   </td>
                   <td className="px-5 py-4">
                     <div className="min-w-0">
-                      <p className="text-slate-900 dark:text-white font-bold text-sm line-clamp-1 group-hover:text-amber-600 dark:group-hover:text-brand-gold transition-colors">{job.title}</p>
-                      <p className="text-slate-500 dark:text-brand-muted text-[11px] font-medium">{job.company}</p>
+                      <p className="text-slate-900  font-bold text-sm line-clamp-1 group-hover:text-amber-600  transition-colors">{job.title}</p>
+                      <p className="text-slate-500  text-[11px] font-medium">{job.company}</p>
                       <div className="flex gap-1.5 mt-1">
                         {job.isHot && <span className="bg-red-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase shadow-sm shadow-red-500/20">Hot</span>}
-                        {job.isFeatured && <span className="bg-amber-100 dark:bg-brand-gold/20 text-amber-700 dark:text-brand-gold text-[8px] font-black px-1.5 py-0.5 rounded border border-amber-200 dark:border-brand-gold/30 uppercase">Nổi bật</span>}
+                        {job.isFeatured && <span className="bg-amber-100  text-amber-700  text-[8px] font-black px-1.5 py-0.5 rounded border border-amber-200  uppercase">Nổi bật</span>}
                       </div>
                     </div>
                   </td>
                   <td className="px-5 py-4 hidden sm:table-cell">
-                    <span className="badge-country border-slate-200 dark:border-transparent text-[10px]">{getCountryLabels()[job.country]}</span>
+                    <span className="badge-country border-slate-200  text-[10px]">{getCountryLabels()[job.country]}</span>
                   </td>
                   <td className="px-5 py-4 hidden md:table-cell">
-                    <span className="text-amber-700 dark:text-brand-gold font-bold text-xs">
+                    <span className="text-amber-700  font-bold text-xs">
                       {job.salaryMin || job.salaryMax ? (() => {
                         const cur = job.salaryCurrency || "";
                         if (tableSalaryPeriod === "monthly") return formatSalary(job.salaryMin, job.salaryMax, cur);
@@ -547,25 +540,27 @@ export default function AdminJobsPage() {
                   </td>
                   <td className="px-5 py-4 hidden lg:table-cell">
                     <div className="flex flex-col gap-0.5">
-                      <p className="text-slate-700 dark:text-gray-300 text-[11px] font-bold truncate max-w-[140px]">{job.createdBy?.companyName || job.createdBy?.fullName || "Hệ thống"}</p>
+                      <p className="text-slate-700  text-[11px] font-bold truncate max-w-[140px]">{job.createdBy?.companyName || job.createdBy?.fullName || "Hệ thống"}</p>
                       <span className={`text-[9px] font-bold uppercase tracking-tighter ${job.createdBy ? "text-blue-500" : "text-amber-500"}`}>{job.createdBy ? "Đối tác" : "Nội bộ"}</span>
                     </div>
                   </td>
                   <td className="px-5 py-4">
-                    <span className={`text-[10px] px-2.5 py-1 rounded-full border font-black uppercase tracking-wider ${STATUS_COLORS[job.status] || ""}`}>
-                      {STATUS_LABELS[job.status]}
+                    <span
+                      className={clsx(aj.statusPillBase, STATUS_BADGE[job.status] ?? aj.statusDraft)}
+                    >
+                      {(STATUS_LABELS as Record<string, string>)[job.status] ?? job.status}
                     </span>
                   </td>
                   <td className="px-5 py-4">
                     <div className="flex items-center justify-end gap-1">
                       {job.status === "pending_review" && (
                         <>
-                          <button onClick={() => handleApprove(job.id)} title="Duyệt bài" className="p-2 rounded-xl bg-green-50 dark:bg-green-400/10 text-green-600 hover:bg-green-100 transition-all"><CheckCircle size={16} /></button>
-                          <button onClick={() => handleReject(job.id)} title="Từ chối" className="p-2 rounded-xl bg-red-50 dark:bg-red-400/10 text-red-600 hover:bg-red-100 transition-all"><XCircle size={16} /></button>
+                          <button onClick={() => handleApprove(job.id)} title="Duyệt bài" className="p-2 rounded-xl bg-green-50  text-green-600 hover:bg-green-100 transition-all"><CheckCircle size={16} /></button>
+                          <button onClick={() => handleReject(job.id)} title="Từ chối" className="p-2 rounded-xl bg-red-50  text-red-600 hover:bg-red-100 transition-all"><XCircle size={16} /></button>
                         </>
                       )}
-                      <button onClick={() => openEdit(job)} className="p-2 rounded-xl bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-brand-muted hover:text-amber-600 dark:hover:text-brand-gold transition-all"><Pencil size={16} /></button>
-                      <button onClick={() => setDeleting(job.id)} className="p-2 rounded-xl bg-slate-100 dark:bg-white/5 text-slate-500 hover:text-red-500 transition-all"><Trash2 size={16} /></button>
+                      <button onClick={() => openEdit(job)} className="p-2 rounded-xl bg-slate-100  text-slate-500  hover:text-amber-600  transition-all"><Pencil size={16} /></button>
+                      <button onClick={() => setDeleting(job.id)} className="p-2 rounded-xl bg-slate-100  text-slate-500 hover:text-red-500 transition-all"><Trash2 size={16} /></button>
                     </div>
                   </td>
                 </tr>
@@ -578,27 +573,27 @@ export default function AdminJobsPage() {
       {/* ══ Add/Edit Modal ══ */}
       {modal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-3xl w-full max-w-3xl max-h-[92vh] overflow-hidden flex flex-col shadow-2xl">
-            <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-white/5 shrink-0">
-              <h2 className="font-bold text-slate-900 dark:text-white text-lg flex items-center gap-2">
+          <div className="bg-white  border border-slate-200  rounded-3xl fl-max-3xl max-h-[92vh] overflow-hidden flex flex-col shadow-2xl">
+            <div className="flex items-center justify-between p-6 border-b border-slate-100  shrink-0">
+              <h2 className="font-bold text-slate-900  text-lg flex items-center gap-2">
                 <Briefcase className="text-amber-600" />
                 {modal === "add" ? "Đăng bài mới" : "Chỉnh sửa bài đăng"}
               </h2>
-              <button onClick={() => setModal(null)} className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-white/10 text-slate-400 transition-colors"><X size={20} /></button>
+              <button onClick={() => setModal(null)} className="p-2 rounded-xl hover:bg-slate-100  text-slate-400 transition-colors"><X size={20} /></button>
             </div>
 
             <div className="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
               {/* 1. Hình ảnh & Thông tin chính */}
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 pb-6 border-b border-slate-100 dark:border-white/5">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 pb-6 border-b border-slate-100 ">
                 <div className="md:col-span-4 space-y-3">
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
                     <ImageIcon size={14} /> Hình đại diện *
                   </label>
-                  <div className="relative w-full aspect-square rounded-2xl overflow-hidden border border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-black/40 group">
+                  <div className="relative w-full aspect-square rounded-2xl overflow-hidden border border-slate-200  bg-slate-50  group">
                     {form.imagePreview ? (
                       <img src={getImageUrl(form.imagePreview)} alt="preview" className="w-full h-full object-cover" />
                     ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center text-slate-300 dark:text-brand-muted gap-2">
+                      <div className="w-full h-full flex flex-col items-center justify-center text-slate-300  gap-2">
                         <ImageIcon size={30} className="opacity-20" />
                         <p className="text-[10px] font-medium">Chưa có ảnh</p>
                       </div>
@@ -609,11 +604,11 @@ export default function AdminJobsPage() {
                     )}
                   </div>
                   <div className="flex gap-1.5">
-                    <button onClick={() => setImgTab("upload")} className={`flex-1 py-1.5 text-[9px] font-black rounded-lg border transition-all ${imgTab === "upload" ? "bg-slate-900 dark:bg-brand-gold text-white dark:text-amber-900 border-transparent shadow-sm" : "bg-white dark:bg-white/5 text-slate-500 border-slate-200 dark:border-white/5"}`}>TẢI LÊN</button>
-                    <button onClick={() => setImgTab("url")} className={`flex-1 py-1.5 text-[9px] font-black rounded-lg border transition-all ${imgTab === "url" ? "bg-slate-900 dark:bg-brand-gold text-white dark:text-amber-900 border-transparent shadow-sm" : "bg-white dark:bg-white/5 text-slate-500 border-slate-200 dark:border-white/5"}`}>LINK URL</button>
+                    <button onClick={() => setImgTab("upload")} className={`flex-1 py-1.5 text-[9px] font-black rounded-lg border transition-all ${imgTab === "upload" ? "bg-slate-900  text-white  border-transparent shadow-sm" : "bg-white  text-slate-500 border-slate-200 "}`}>TẢI LÊN</button>
+                    <button onClick={() => setImgTab("url")} className={`flex-1 py-1.5 text-[9px] font-black rounded-lg border transition-all ${imgTab === "url" ? "bg-slate-900  text-white  border-transparent shadow-sm" : "bg-white  text-slate-500 border-slate-200 "}`}>LINK URL</button>
                   </div>
                   {imgTab === "upload" ? (
-                    <label className="w-full border-2 border-dashed border-slate-100 dark:border-white/5 hover:border-amber-400 rounded-xl py-2 flex flex-col items-center gap-1 text-slate-400 hover:text-amber-600 transition-all cursor-pointer">
+                    <label className="w-full border-2 border-dashed border-slate-100  hover:border-amber-400 rounded-xl py-2 flex flex-col items-center gap-1 text-slate-400 hover:text-amber-600 transition-all cursor-pointer">
                       <Upload size={14} /> <span className="text-[9px] font-bold">CHỌN TỆP</span>
                       <input type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
                     </label>
@@ -682,7 +677,7 @@ export default function AdminJobsPage() {
               </div>
 
               {/* 3. Lương & Trạng thái */}
-              <div className="space-y-4 pb-6 border-b border-slate-100 dark:border-white/5">
+              <div className="space-y-4 pb-6 border-b border-slate-100 ">
                 <div className="flex items-center gap-2 text-slate-400 font-bold text-[10px] uppercase tracking-widest">
                   <DollarSign size={14} /> Tài chính & Trạng thái
                 </div>
@@ -690,19 +685,19 @@ export default function AdminJobsPage() {
                 {/* Row: Lương + Trạng thái */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {/* Khối lương */}
-                  <div className="md:col-span-2 p-4 bg-slate-50 dark:bg-black/20 border border-slate-100 dark:border-white/5 rounded-2xl space-y-3">
+                  <div className="md:col-span-2 p-4 bg-slate-50  border border-slate-100  rounded-2xl space-y-3">
                     {/* Toggle nhập theo giờ / tháng */}
                     <div className="flex items-center justify-between">
                       <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Đơn vị lương nhập</span>
-                      <div className="flex rounded-lg border border-slate-200 dark:border-white/10 overflow-hidden text-[10px] font-black">
+                      <div className="flex rounded-lg border border-slate-200  overflow-hidden text-[10px] font-black">
                         <button type="button"
                           onClick={() => setSalaryInputMode("hourly")}
-                          className={`px-3 py-1 transition-colors ${salaryInputMode === "hourly" ? "bg-amber-500 text-white" : "bg-white dark:bg-white/5 text-slate-500 hover:text-amber-500"}`}>
+                          className={`px-3 py-1 transition-colors ${salaryInputMode === "hourly" ? "bg-amber-500 text-white" : "bg-white  text-slate-500 hover:text-amber-500"}`}>
                           /GIỜ
                         </button>
                         <button type="button"
                           onClick={() => setSalaryInputMode("monthly")}
-                          className={`px-3 py-1 transition-colors ${salaryInputMode === "monthly" ? "bg-amber-500 text-white" : "bg-white dark:bg-white/5 text-slate-500 hover:text-amber-500"}`}>
+                          className={`px-3 py-1 transition-colors ${salaryInputMode === "monthly" ? "bg-amber-500 text-white" : "bg-white  text-slate-500 hover:text-amber-500"}`}>
                           /THÁNG
                         </button>
                       </div>
@@ -727,15 +722,15 @@ export default function AdminJobsPage() {
                       const est = getSalaryEstimates(val, salaryInputMode);
                       const cur = form.salaryCurrency;
                       return (
-                        <div className="flex flex-wrap gap-2 pt-1 border-t border-slate-200 dark:border-white/5">
+                        <div className="flex flex-wrap gap-2 pt-1 border-t border-slate-200 ">
                           {salaryInputMode === "monthly" && (
-                            <span className="text-[10px] px-2 py-0.5 rounded-md bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 font-bold">≈ {est.hourly} {cur}/giờ</span>
+                            <span className="text-[10px] px-2 py-0.5 rounded-md bg-amber-50  text-amber-700  font-bold">≈ {est.hourly} {cur}/giờ</span>
                           )}
                           {salaryInputMode === "hourly" && (
-                            <span className="text-[10px] px-2 py-0.5 rounded-md bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 font-bold">≈ {est.monthly} {cur}/tháng</span>
+                            <span className="text-[10px] px-2 py-0.5 rounded-md bg-amber-50  text-amber-700  font-bold">≈ {est.monthly} {cur}/tháng</span>
                           )}
-                          <span className="text-[10px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-gray-400 font-medium">≈ {est.weekly} {cur}/tuần</span>
-                          <span className="text-[10px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-gray-400 font-medium">≈ {est.yearly} {cur}/năm</span>
+                          <span className="text-[10px] px-2 py-0.5 rounded-md bg-slate-100  text-slate-600  font-medium">≈ {est.weekly} {cur}/tuần</span>
+                          <span className="text-[10px] px-2 py-0.5 rounded-md bg-slate-100  text-slate-600  font-medium">≈ {est.yearly} {cur}/năm</span>
                         </div>
                       );
                     })()}
@@ -774,28 +769,28 @@ export default function AdminJobsPage() {
                 </div>
 
                 {/* Hot / Featured */}
-                <div className="flex gap-6 items-center bg-slate-50 dark:bg-black/20 px-4 py-3 rounded-2xl border border-slate-100 dark:border-white/5">
+                <div className="flex gap-6 items-center bg-slate-50  px-4 py-3 rounded-2xl border border-slate-100 ">
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Phân loại:</span>
                   <label className="flex items-center gap-2 cursor-pointer group">
                     <input type="checkbox" checked={form.isHot} onChange={e => setForm(f => ({ ...f, isHot: e.target.checked }))} className="w-5 h-5 accent-red-500 rounded-lg shadow-sm" />
-                    <span className="text-xs font-bold text-slate-600 dark:text-gray-300 group-hover:text-red-500 transition-colors">🔥 TIN HOT</span>
+                    <span className="text-xs font-bold text-slate-600  group-hover:text-red-500 transition-colors">🔥 TIN HOT</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer group">
                     <input type="checkbox" checked={form.isFeatured} onChange={e => setForm(f => ({ ...f, isFeatured: e.target.checked }))} className="w-5 h-5 accent-amber-500 rounded-lg shadow-sm" />
-                    <span className="text-xs font-bold text-slate-600 dark:text-gray-300 group-hover:text-amber-500 transition-colors">⭐ NỔI BẬT</span>
+                    <span className="text-xs font-bold text-slate-600  group-hover:text-amber-500 transition-colors">⭐ NỔI BẬT</span>
                   </label>
                 </div>
               </div>
 
               {/* 4. Yêu cầu & Quyền lợi (Dạng bảng) */}
               <div className="space-y-4">
-                <div className="flex items-center gap-2 text-slate-400 font-bold text-[10px] uppercase tracking-widest border-b border-slate-100 dark:border-white/5 pb-2">
+                <div className="flex items-center gap-2 text-slate-400 font-bold text-[10px] uppercase tracking-widest border-b border-slate-100  pb-2">
                   <TrendingUp size={14} /> Cấu hình hiển thị dạng bảng
                 </div>
                 <div className="grid grid-cols-1 gap-6">
                   {/* Yêu cầu */}
-                  <div className="p-5 bg-blue-50/50 dark:bg-blue-500/5 border border-blue-100 dark:border-blue-500/10 rounded-2xl space-y-4">
-                    <h3 className="text-blue-700 dark:text-blue-400 font-black text-[10px] uppercase tracking-widest">1. YÊU CẦU CÔNG VIỆC</h3>
+                  <div className="p-5 bg-blue-50/50  border border-blue-100  rounded-2xl space-y-4">
+                    <h3 className="text-blue-700  font-black text-[10px] uppercase tracking-widest">1. YÊU CẦU CÔNG VIỆC</h3>
                     <div className="space-y-3">
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                         <div className="space-y-1">
@@ -823,7 +818,7 @@ export default function AdminJobsPage() {
                         <p className="text-[9px] font-bold text-slate-400 uppercase mb-2">Checklist Hồ sơ</p>
                         <div className="flex flex-wrap gap-2 mb-3">
                           {form.req_checklist?.map(item => (
-                             <div key={item} className="flex items-center gap-1 px-2 py-1 bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-lg text-[10px] font-bold border border-blue-200 dark:border-blue-500/30 hover:border-red-400 group transition-all">
+                             <div key={item} className="flex items-center gap-1 px-2 py-1 bg-blue-100  text-blue-700  rounded-lg text-[10px] font-bold border border-blue-200  hover:border-red-400 group transition-all">
                                 <span>{item}</span>
                                 <button type="button" onClick={() => setForm({...form, req_checklist: form.req_checklist?.filter(i => i !== item)})} className="opacity-40 group-hover:opacity-100 hover:text-red-500">
                                    <X size={12} />
@@ -852,8 +847,8 @@ export default function AdminJobsPage() {
                         </div>
                         <div className="mt-3 flex flex-wrap gap-2 text-slate-400">
                            {reqPresets.map(p => (
-                             <div key={p} className="flex items-center gap-1 text-[9px] bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-lg border border-transparent hover:border-blue-400 group transition-all">
-                               <button type="button" onClick={() => setForm({...form, req_checklist: [...(form.req_checklist || []), p].filter((v, i, a) => a.indexOf(v) === i)})} className="hover:text-blue-600 dark:hover:text-blue-400">+ {p}</button>
+                             <div key={p} className="flex items-center gap-1 text-[9px] bg-slate-100  px-2 py-0.5 rounded-lg border border-transparent hover:border-blue-400 group transition-all">
+                               <button type="button" onClick={() => setForm({...form, req_checklist: [...(form.req_checklist || []), p].filter((v, i, a) => a.indexOf(v) === i)})} className="hover:text-blue-600 ">+ {p}</button>
                                <button type="button" onClick={() => updateReqPresets(reqPresets.filter(i => i !== p))} className="hidden group-hover:flex ml-1 text-red-500 font-bold px-1 hover:bg-red-50 rounded">×</button>
                              </div>
                            ))}
@@ -863,8 +858,8 @@ export default function AdminJobsPage() {
                   </div>
 
                   {/* Quyền lợi */}
-                  <div className="p-5 bg-green-50/50 dark:bg-green-500/5 border border-green-100 dark:border-green-500/10 rounded-2xl space-y-4">
-                    <h3 className="text-green-700 dark:text-green-400 font-black text-[10px] uppercase tracking-widest">2. QUYỀN LỢI ĐÃI NGỘ</h3>
+                  <div className="p-5 bg-green-50/50  border border-green-100  rounded-2xl space-y-4">
+                    <h3 className="text-green-700  font-black text-[10px] uppercase tracking-widest">2. QUYỀN LỢI ĐÃI NGỘ</h3>
                     <div className="space-y-3">
                       <div className="space-y-1">
                         <label className="text-[9px] font-bold text-slate-400 uppercase">Thời gian xuất cảnh</label>
@@ -874,7 +869,7 @@ export default function AdminJobsPage() {
                         <p className="text-[9px] font-bold text-slate-400 uppercase mb-2">Checklist Quyền lợi</p>
                         <div className="flex flex-wrap gap-2 mb-3">
                           {form.ben_checklist?.map(item => (
-                             <div key={item} className="flex items-center gap-1 px-2 py-1 bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-300 rounded-lg text-[10px] font-bold border border-green-200 dark:border-green-500/30 hover:border-red-400 group transition-all">
+                             <div key={item} className="flex items-center gap-1 px-2 py-1 bg-green-100  text-green-700  rounded-lg text-[10px] font-bold border border-green-200  hover:border-red-400 group transition-all">
                                 <span>{item}</span>
                                 <button type="button" onClick={() => setForm({...form, ben_checklist: form.ben_checklist?.filter(i => i !== item)})} className="opacity-40 group-hover:opacity-100 hover:text-red-500">
                                    <X size={12} />
@@ -903,8 +898,8 @@ export default function AdminJobsPage() {
                         </div>
                         <div className="mt-3 flex flex-wrap gap-2 text-slate-400">
                            {benPresets.map(p => (
-                             <div key={p} className="flex items-center gap-1 text-[9px] bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-lg border border-transparent hover:border-green-400 group transition-all">
-                               <button type="button" onClick={() => setForm({...form, ben_checklist: [...(form.ben_checklist || []), p].filter((v, i, a) => a.indexOf(v) === i)})} className="hover:text-green-600 dark:hover:text-green-400">+ {p}</button>
+                             <div key={p} className="flex items-center gap-1 text-[9px] bg-slate-100  px-2 py-0.5 rounded-lg border border-transparent hover:border-green-400 group transition-all">
+                               <button type="button" onClick={() => setForm({...form, ben_checklist: [...(form.ben_checklist || []), p].filter((v, i, a) => a.indexOf(v) === i)})} className="hover:text-green-600 ">+ {p}</button>
                                <button type="button" onClick={() => updateBenPresets(benPresets.filter(i => i !== p))} className="hidden group-hover:flex ml-1 text-red-500 font-bold px-1 hover:bg-red-50 rounded">×</button>
                              </div>
                            ))}
@@ -917,7 +912,7 @@ export default function AdminJobsPage() {
 
               {/* 4. Nội dung chi tiết */}
               <div className="space-y-4">
-                <div className="flex items-center gap-2 text-slate-400 font-bold text-[10px] uppercase tracking-widest border-b border-slate-100 dark:border-white/5 pb-2">
+                <div className="flex items-center gap-2 text-slate-400 font-bold text-[10px] uppercase tracking-widest border-b border-slate-100  pb-2">
                   <FileText size={14} /> Mô tả công việc
                 </div>
                 <div className="space-y-1.5">
@@ -926,8 +921,8 @@ export default function AdminJobsPage() {
               </div>
             </div>
 
-            <div className="p-6 border-t border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-black/20 flex gap-3">
-              <button onClick={() => setModal(null)} className="flex-1 h-12 rounded-2xl font-bold border border-slate-200 dark:border-brand-border text-slate-600 dark:text-white hover:bg-white dark:hover:bg-white/5 transition-all">Hủy bỏ</button>
+            <div className="p-6 border-t border-slate-100  fl-surface-muted-50  flex gap-3">
+              <button onClick={() => setModal(null)} className="flex-1 h-12 rounded-2xl font-bold border border-slate-200  text-slate-600  hover:bg-white  transition-all">Hủy bỏ</button>
               <button onClick={handleSave} disabled={saving} className="flex-[2] h-12 btn-primary font-bold shadow-lg shadow-amber-500/20 disabled:opacity-50">
                 {saving ? "Đang xử lý..." : modal === "add" ? "Đăng bài tuyển dụng" : "Cập nhật bài viết"}
               </button>

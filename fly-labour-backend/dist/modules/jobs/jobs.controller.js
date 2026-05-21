@@ -49,6 +49,9 @@ let JobsController = class JobsController {
     findEmployerJobs(req, query) {
         return this.jobsService.findByEmployer(req.user.id, query);
     }
+    getEmployerPerformance(req) {
+        return this.jobsService.getEmployerPerformance(req.user.id);
+    }
     createByEmployer(dto, req, file) {
         return this.jobsService.createByEmployer(dto, req.user.id, file);
     }
@@ -120,6 +123,16 @@ __decorate([
     __metadata("design:paramtypes", [Object, job_dto_1.QueryJobDto]),
     __metadata("design:returntype", void 0)
 ], JobsController.prototype, "findEmployerJobs", null);
+__decorate([
+    (0, common_1.Get)('employer/performance'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, employer_guard_1.EmployerGuard),
+    (0, swagger_1.ApiBearerAuth)('JWT'),
+    (0, swagger_1.ApiOperation)({ summary: '[Employer] Job performance (views, apps, conversion)' }),
+    __param(0, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], JobsController.prototype, "getEmployerPerformance", null);
 __decorate([
     (0, common_1.Post)('employer'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, employer_guard_1.EmployerGuard),

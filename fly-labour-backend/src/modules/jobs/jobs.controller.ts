@@ -57,6 +57,14 @@ export class JobsController {
     return this.jobsService.findByEmployer(req.user.id, query)
   }
 
+  @Get('employer/performance')
+  @UseGuards(JwtAuthGuard, EmployerGuard)
+  @ApiBearerAuth('JWT')
+  @ApiOperation({ summary: '[Employer] Job performance (views, apps, conversion)' })
+  getEmployerPerformance(@Request() req: any) {
+    return this.jobsService.getEmployerPerformance(req.user.id)
+  }
+
   @Post('employer')
   @UseGuards(JwtAuthGuard, EmployerGuard)
   @ApiBearerAuth('JWT')

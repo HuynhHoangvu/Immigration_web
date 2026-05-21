@@ -1,0 +1,36 @@
+// Match Tailwind defaults used across the app
+$bp-sm: 640px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1280px;
+$bp-2xl: 1536px;
+
+@mixin mq-sm {
+  @media (min-width: $bp-sm) {
+    @content;
+  }
+}
+
+@mixin mq-md {
+  @media (min-width: $bp-md) {
+    @content;
+  }
+}
+
+@mixin mq-lg {
+  @media (min-width: $bp-lg) {
+    @content;
+  }
+}
+
+@mixin mq-xl {
+  @media (min-width: $bp-xl) {
+    @content;
+  }
+}
+
+@mixin mq-2xl {
+  @media (min-width: $bp-2xl) {
+    @content;
+  }
+}

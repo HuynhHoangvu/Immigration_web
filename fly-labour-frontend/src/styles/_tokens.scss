@@ -1,0 +1,66 @@
+// Fly Labour — design tokens → CSS custom properties (light UI only).
+// Giữ khớp với src/core/constants/designTokens.ts (lightTheme / brandPalette).
+
+/// Emit toàn bộ biến giao diện lên `:root`. Import một lần từ foundation.scss hoặc global.scss.
+@mixin emit-root-vars {
+  :root {
+    /* ── Surfaces ── */
+    --background: #fafaf9;
+    --surface: #ffffff;
+    --surface-secondary: #f5f5f3;
+
+    /* ── Text hierarchy ── */
+    --text-base: #2a2a2a;
+    --text-secondary: #626262;
+    --text-tertiary: #a0a09f;
+
+    /* ── Borders ── */
+    --border-default: #e5e5e4;
+    --border-subtle: #d4d4d2;
+    --border-strong: #b8b8b6;
+
+    --scrollbar-track: #f5f5f3;
+
+    /* ── Brand accent ── */
+    --accent-primary: #e4a808;
+    --accent-secondary: #ff9500;
+    --accent-bright: #fdd52f;
+
+    /* ── Semantic states ── */
+    --success: #10b981;
+    --success-bg: rgba(16, 185, 129, 0.08);
+    --success-border: rgba(16, 185, 129, 0.2);
+    --warning: #f59e0b;
+    --warning-bg: rgba(245, 158, 11, 0.08);
+    --warning-border: rgba(245, 158, 11, 0.2);
+    --error: #ef4444;
+    --error-bg: rgba(239, 68, 68, 0.08);
+    --error-border: rgba(239, 68, 68, 0.2);
+    --info: #3b82f6;
+    --info-bg: rgba(59, 130, 246, 0.08);
+    --info-border: rgba(59, 130, 246, 0.2);
+
+    /* ── Shadows ── */
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.15);
+    --shadow-accent: 0 4px 20px rgba(228, 168, 8, 0.3);
+    --shadow-accent-lg: 0 8px 30px rgba(228, 168, 8, 0.2);
+
+    /* ── Radius ── */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-2xl: 24px;
+    --radius-full: 9999px;
+
+    /* ── Legacy admin / marketing tokens (still referenced in SCSS + Tailwind) ── */
+    --brand-card: #1a1a19;
+    --brand-bg-dark: #0f0f0e;
+    --brand-border-admin: #3a3a38;
+    --admin-page-bg-dark: #0d1117;
+  }
+}

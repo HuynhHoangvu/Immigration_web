@@ -14,6 +14,7 @@ const auth_module_1 = require("./modules/auth/auth.module");
 const users_module_1 = require("./modules/users/users.module");
 const jobs_module_1 = require("./modules/jobs/jobs.module");
 const applications_module_1 = require("./modules/applications/applications.module");
+const study_applications_module_1 = require("./modules/study-applications/study-applications.module");
 const categories_module_1 = require("./modules/categories/categories.module");
 const news_module_1 = require("./modules/news/news.module");
 const contact_module_1 = require("./modules/contact/contact.module");
@@ -82,6 +83,7 @@ exports.AppModule = AppModule = __decorate([
             users_module_1.UsersModule,
             jobs_module_1.JobsModule,
             applications_module_1.ApplicationsModule,
+            study_applications_module_1.StudyApplicationsModule,
             categories_module_1.CategoriesModule,
             news_module_1.NewsModule,
             contact_module_1.ContactModule,

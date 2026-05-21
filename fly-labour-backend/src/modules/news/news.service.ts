@@ -13,7 +13,14 @@ export class CreateNewsDto {
   @ApiProperty({ required: false }) @IsOptional() content?: string
   @ApiProperty({ required: false }) @IsOptional() image?: string
   @ApiProperty({ required: false }) @IsOptional() isPublished?: boolean
-  @ApiProperty({ required: false, enum: ['news', 'handbook'] }) @IsOptional() type?: 'news' | 'handbook'
+  @ApiProperty({ required: false, enum: ['news', 'handbook', 'study', 'travel'] }) @IsOptional() type?: 'news' | 'handbook' | 'study' | 'travel'
+  @ApiProperty({ required: false }) @IsOptional() country?: string
+  @ApiProperty({ required: false }) @IsOptional() registerUrl?: string
+  @ApiProperty({ required: false }) @IsOptional() priceFrom?: number
+  @ApiProperty({ required: false }) @IsOptional() priceTo?: number
+  @ApiProperty({ required: false }) @IsOptional() priceCurrency?: string
+  @ApiProperty({ required: false }) @IsOptional() itinerary?: string
+  @ApiProperty({ required: false }) @IsOptional() studyType?: string
 }
 
 @Injectable()
@@ -32,6 +39,17 @@ export class NewsService {
     return this.newsRepo.find({ where: { isPublished: true, type: 'handbook' }, order: { createdAt: 'DESC' }, take: 50 })
   }
 
+  findAllStudy(country?: string, studyType?: string) {
+    const where: any = { isPublished: true, type: 'study' }
+    if (country) where.country = country
+    if (studyType) where.studyType = studyType
+    return this.newsRepo.find({ where, order: { createdAt: 'DESC' }, take: 100 })
+  }
+
+  findAllTravel() {
+    return this.newsRepo.find({ where: { isPublished: true, type: 'travel' }, order: { createdAt: 'DESC' }, take: 100 })
+  }
+
   // ── Admin ─────────────────────────────────────────────────────────────────
   findAllAdmin() {
     return this.newsRepo.find({ where: { type: 'news' }, order: { createdAt: 'DESC' } })
@@ -39,6 +57,14 @@ export class NewsService {
 
   findAllHandbookAdmin() {
     return this.newsRepo.find({ where: { type: 'handbook' }, order: { createdAt: 'DESC' } })
+  }
+
+  findAllStudyAdmin() {
+    return this.newsRepo.find({ where: { type: 'study' }, order: { createdAt: 'DESC' } })
+  }
+
+  findAllTravelAdmin() {
+    return this.newsRepo.find({ where: { type: 'travel' }, order: { createdAt: 'DESC' } })
   }
 
   async findOne(slug: string) {
@@ -82,7 +108,11 @@ export class NewsService {
   }
 
   private async saveFile(file: Express.Multer.File, type: string): Promise<string> {
-    const folder = type === 'handbook' ? 'handbook' : 'news'
+    const folder =
+      type === 'handbook' ? 'handbook'
+      : type === 'study' ? 'study'
+      : type === 'travel' ? 'travel'
+      : 'news'
     return this.gcsService.uploadFile(file, folder)
   }
 }

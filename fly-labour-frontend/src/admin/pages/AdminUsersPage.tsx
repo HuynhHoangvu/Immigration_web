@@ -17,6 +17,8 @@ import { formatDate } from "@core/utils/helpers";
 import toast from "react-hot-toast";
 import type { User } from "@core/types";
 import { usersApi } from "@core/services/api";
+import clsx from "clsx";
+import s from "./AdminUsersPage.module.scss";
 
 type EditForm = {
   fullName: string;
@@ -118,126 +120,91 @@ export default function AdminUsersPage() {
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
       setEditForm((f) => ({ ...f, [k]: e.target.value }));
 
-  // Dynamic CSS classes
-  const cardClasses =
-    "bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl shadow-sm transition-colors duration-300";
-  const inputClasses =
-    "w-full h-10 pl-10 pr-4 text-sm rounded-xl bg-slate-50 dark:bg-[#1a1a1a] border border-slate-200 dark:border-white/5 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-black focus:border-amber-400 dark:focus:border-brand-gold outline-none transition-all";
+  const roleChipClass = (role: string) => {
+    if (role === "admin") return s.chipAdmin;
+    if (role === "employer") return s.chipEmployer;
+    return s.chipUser;
+  };
+
+  const avatarClass = (role: string) => {
+    if (role === "admin") return s.avatarAdmin;
+    if (role === "employer") return s.avatarEmployer;
+    return s.avatarUser;
+  };
 
   return (
-    <div className="space-y-6 transition-colors duration-300">
-      <div className="flex items-center justify-between flex-wrap gap-4">
+    <div className={s.page}>
+      <div className={s.headRow}>
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Quản lý Người dùng
-          </h1>
-          <p className="text-slate-500 dark:text-brand-muted text-sm mt-1 font-medium">
+          <h1 className={s.title}>Quản lý Người dùng</h1>
+          <p className={s.subtitle}>
             {users.length} tài khoản hệ thống ·{" "}
-            <span className="text-green-600 dark:text-green-400 font-bold">
+            <span className={s.subActive}>
               {users.filter((u) => u.isActive).length} đang hoạt động
             </span>
           </p>
         </div>
       </div>
 
-      {/* Search Toolbar */}
-      <div className={`${cardClasses} p-4`}>
-        <div className="relative max-w-sm">
-          <Search
-            size={16}
-            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-brand-muted"
-          />
+      <div className={clsx(s.card, s.toolbar)}>
+        <div className={s.searchWrap}>
+          <Search size={16} className={s.searchIcon} />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className={inputClasses}
+            className={s.searchInput}
             placeholder="Tìm theo tên, email người dùng..."
           />
         </div>
       </div>
 
-      {/* Main Table */}
-      <div className={`${cardClasses} overflow-hidden`}>
-        <div className="overflow-x-auto custom-scrollbar">
-          <table className="w-full border-collapse">
+      <div className={clsx(s.card, "overflow-hidden")}>
+        <div className={clsx(s.tableWrap, "custom-scrollbar")}>
+          <table className={s.table}>
             <thead>
-              <tr className="border-b border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-black/20 text-[10px] font-bold text-slate-400 dark:text-brand-muted uppercase tracking-widest">
-                <th className="text-left px-5 py-4">Người dùng</th>
-                <th className="text-left px-5 py-4 hidden md:table-cell">
-                  Số điện thoại
-                </th>
-                <th className="text-left px-5 py-4 hidden sm:table-cell">
-                  Vai trò
-                </th>
-                <th className="text-left px-5 py-4 hidden lg:table-cell">
-                  Ngày tham gia
-                </th>
-                <th className="text-left px-5 py-4">Trạng thái</th>
-                <th className="text-right px-5 py-4">Thao tác</th>
+              <tr className={clsx(s.theadRow, "fl-surface-muted-50")}>
+                <th className={s.th}>Người dùng</th>
+                <th className={clsx(s.th, s.thMd)}>Số điện thoại</th>
+                <th className={clsx(s.th, s.thSm)}>Vai trò</th>
+                <th className={clsx(s.th, s.thLg)}>Ngày tham gia</th>
+                <th className={s.th}>Trạng thái</th>
+                <th className={clsx(s.th, s.thRight)}>Thao tác</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-white/5">
+            <tbody className={s.tbody}>
               {loading ? (
                 [...Array(6)].map((_, i) => (
                   <tr key={i}>
-                    <td colSpan={6} className="px-5 py-6 text-center">
-                      <Loader2 className="animate-spin inline-block text-amber-500" />
+                    <td colSpan={6} className={s.loadingCell}>
+                      <Loader2 className={clsx(s.loader, s.spin)} />
                     </td>
                   </tr>
                 ))
               ) : filtered.length === 0 ? (
                 <tr>
-                  <td
-                    colSpan={6}
-                    className="py-20 text-center text-slate-400 font-medium italic"
-                  >
+                  <td colSpan={6} className={s.emptyCell}>
                     Không tìm thấy người dùng nào phù hợp
                   </td>
                 </tr>
               ) : (
                 filtered.map((user) => (
-                  <tr
-                    key={user.id}
-                    className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group"
-                  >
-                    <td className="px-5 py-4">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className="w-10 h-10 rounded-xl flex items-center justify-center text-amber-900 font-bold text-sm shadow-sm shrink-0"
-                          style={{
-                            background:
-                              user.role === "admin"
-                                ? "linear-gradient(135deg,#e4a808,#fdd52f)"
-                                : user.role === "employer"
-                                  ? "linear-gradient(135deg,#3B82F6,#8B5CF6)"
-                                  : "linear-gradient(135deg,#94a3b8,#64748b)",
-                          }}
-                        >
+                  <tr key={user.id} className={s.trHover}>
+                    <td className={s.td}>
+                      <div className={s.userRow}>
+                        <div className={clsx(s.avatar, avatarClass(user.role))}>
                           {user.fullName.charAt(0)}
                         </div>
-                        <div className="min-w-0">
-                          <p className="text-slate-900 dark:text-white font-bold text-sm truncate group-hover:text-amber-600 dark:group-hover:text-brand-gold transition-colors">
-                            {user.fullName}
-                          </p>
-                          <p className="text-slate-500 dark:text-brand-muted text-[11px] font-medium truncate">
-                            {user.email}
-                          </p>
+                        <div className={s.userMain}>
+                          <p className={s.userName}>{user.fullName}</p>
+                          <p className={s.userMail}>{user.email}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-5 py-4 hidden md:table-cell text-slate-600 dark:text-gray-300 text-sm font-medium">
+                    <td className={clsx(s.td, s.tdMd, s.phone)}>
                       {user.phone || "—"}
                     </td>
-                    <td className="px-5 py-4 hidden sm:table-cell">
-                      <span
-                        className={`text-[10px] px-2.5 py-1 rounded-full border font-black uppercase tracking-wider flex items-center gap-1.5 w-fit ${
-                          user.role === "admin"
-                            ? "text-amber-600 bg-amber-50 border-amber-200 dark:text-brand-gold dark:bg-brand-gold/10 dark:border-brand-gold/20"
-                            : user.role === "employer"
-                              ? "text-blue-600 bg-blue-50 border-blue-200 dark:text-blue-400 dark:bg-blue-400/10 dark:border-blue-400/20"
-                              : "text-slate-500 bg-slate-50 border-slate-200 dark:text-gray-400 dark:bg-white/5 dark:border-white/10"
-                        }`}
-                      >
+                    <td className={clsx(s.td, s.tdSm)}>
+                      <span className={clsx(s.chip, roleChipClass(user.role))}>
                         {user.role === "admin" ? (
                           <ShieldCheck size={10} />
                         ) : user.role === "employer" ? (
@@ -248,26 +215,25 @@ export default function AdminUsersPage() {
                         {user.role}
                       </span>
                     </td>
-                    <td className="px-5 py-4 hidden lg:table-cell text-slate-400 dark:text-brand-muted text-xs font-medium">
+                    <td className={clsx(s.td, s.tdLg, s.date)}>
                       {formatDate(user.createdAt)}
                     </td>
-                    <td className="px-5 py-4">
+                    <td className={s.td}>
                       <span
-                        className={`text-[10px] px-2 py-0.5 rounded-full border font-black uppercase tracking-widest ${
-                          user.isActive
-                            ? "text-green-600 bg-green-50 border-green-200 dark:text-green-400 dark:bg-green-400/10 dark:border-green-400/20"
-                            : "text-red-600 bg-red-50 border-red-200 dark:text-red-400 dark:bg-red-400/10 dark:border-red-400/20"
-                        }`}
+                        className={clsx(
+                          s.chip,
+                          user.isActive ? s.chipActive : s.chipLocked,
+                        )}
                       >
                         {user.isActive ? "Hoạt động" : "Đã khóa"}
                       </span>
                     </td>
-                    <td className="px-5 py-4">
-                      <div className="flex items-center justify-end gap-1">
+                    <td className={clsx(s.td, s.tdRight)}>
+                      <div className={s.actions}>
                         <button
                           onClick={() => openEdit(user)}
                           title="Chỉnh sửa"
-                          className="p-2 rounded-xl bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-brand-muted hover:text-amber-600 dark:hover:text-brand-gold transition-all"
+                          className={clsx(s.iconBtn, s.editBtn)}
                         >
                           <Pencil size={16} />
                         </button>
@@ -275,24 +241,19 @@ export default function AdminUsersPage() {
                           <button
                             onClick={() => toggleActive(user.id)}
                             title={user.isActive ? "Khóa tài khoản" : "Mở khóa"}
-                            className={`p-2 rounded-xl bg-slate-100 dark:bg-white/5 transition-all ${
-                              user.isActive
-                                ? "text-slate-500 hover:text-red-500"
-                                : "text-slate-500 hover:text-green-500"
-                            }`}
-                          >
-                            {user.isActive ? (
-                              <Lock size={16} />
-                            ) : (
-                              <Unlock size={16} />
+                            className={clsx(
+                              s.iconBtn,
+                              user.isActive ? s.lockBtn : s.unlockBtn,
                             )}
+                          >
+                            {user.isActive ? <Lock size={16} /> : <Unlock size={16} />}
                           </button>
                         )}
                         {user.role !== "admin" && (
                           <button
                             onClick={() => setDeleting(user.id)}
                             title="Xóa vĩnh viễn"
-                            className="p-2 rounded-xl bg-slate-100 dark:bg-white/5 text-slate-500 hover:text-red-600 transition-all"
+                            className={clsx(s.iconBtn, s.deleteBtn)}
                           >
                             <Trash2 size={16} />
                           </button>
@@ -307,78 +268,55 @@ export default function AdminUsersPage() {
         </div>
       </div>
 
-      {/* Edit User Modal */}
       {editModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-3xl w-full max-w-md shadow-2xl overflow-hidden flex flex-col">
-            <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-white/5">
-              <h2 className="font-bold text-slate-900 dark:text-white text-lg flex items-center gap-2">
-                <Pencil size={18} className="text-amber-600" />
+        <div className={clsx(s.modalOverlay, "animate-in fade-in duration-200")}>
+          <div className={s.modalCard}>
+            <div className={s.modalHead}>
+              <h2 className={s.modalTitle}>
+                <Pencil size={18} className={s.iconAmber} />
                 Chỉnh sửa tài khoản
               </h2>
-              <button
-                onClick={() => setEditModal(null)}
-                className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-white/10 text-slate-400 transition-colors"
-              >
+              <button onClick={() => setEditModal(null)} className={s.closeBtn}>
                 <X size={20} />
               </button>
             </div>
 
-            <div className="p-6 space-y-5">
-              {/* Profile Card Header */}
-              <div className="flex items-center gap-4 p-4 bg-slate-50 dark:bg-brand-gold/5 border border-slate-100 dark:border-brand-gold/10 rounded-2xl">
-                <div
-                  className="w-14 h-14 rounded-2xl flex items-center justify-center text-amber-900 font-black text-xl shadow-md shrink-0"
-                  style={{
-                    background:
-                      editModal.role === "admin"
-                        ? "linear-gradient(135deg,#e4a808,#fdd52f)"
-                        : "linear-gradient(135deg,#3B82F6,#8B5CF6)",
-                  }}
-                >
+            <div className={s.modalBody}>
+              <div className={s.profileCard}>
+                <div className={clsx(s.avatarLg, avatarClass(editModal.role))}>
                   {editModal.fullName.charAt(0)}
                 </div>
-                <div className="min-w-0">
-                  <p className="text-slate-900 dark:text-white font-bold text-base truncate">
-                    {editModal.fullName}
-                  </p>
-                  <p className="text-slate-500 dark:text-brand-muted text-xs truncate font-medium">
-                    {editModal.email}
-                  </p>
+                <div className={s.profileMain}>
+                  <p className={s.profileName}>{editModal.fullName}</p>
+                  <p className={s.profileMail}>{editModal.email}</p>
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">
-                    Họ và tên *
-                  </label>
+              <div className={s.form}>
+                <div className={s.field}>
+                  <label className={s.label}>Họ và tên *</label>
                   <input
                     value={editForm.fullName}
                     onChange={setEF("fullName")}
-                    className={`${inputClasses} h-12`}
+                    className={s.input}
                     placeholder="Nhập họ tên đầy đủ"
                   />
                 </div>
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">
-                    Số điện thoại
-                  </label>
+                <div className={s.field}>
+                  <label className={s.label}>Số điện thoại</label>
                   <input
                     value={editForm.phone}
                     onChange={setEF("phone")}
-                    className={`${inputClasses} h-12`}
+                    className={s.input}
                     placeholder="09xx xxx xxx"
                   />
                 </div>
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">
-                    Phân quyền vai trò
-                  </label>
+                <div className={s.field}>
+                  <label className={s.label}>Phân quyền vai trò</label>
                   <select
                     value={editForm.role}
                     onChange={setEF("role")}
-                    className={`${inputClasses} h-12 appearance-none font-bold`}
+                    className={clsx(s.input, "appearance-none font-bold")}
                   >
                     <option value="user" className="font-bold">
                       👤 User (Ứng viên)
@@ -392,13 +330,19 @@ export default function AdminUsersPage() {
                   </select>
                 </div>
 
-                <div className="pt-2">
-                  <label className="flex items-center gap-3 cursor-pointer group p-3 bg-slate-50 dark:bg-black/20 rounded-xl border border-slate-100 dark:border-white/5 w-full">
+                <div className={s.toggleWrap}>
+                  <label className={s.toggleLabel}>
                     <div
-                      className={`w-10 h-5 rounded-full relative transition-colors ${editForm.isActive ? "bg-green-500" : "bg-slate-200 dark:bg-white/10"}`}
+                      className={clsx(
+                        s.toggleTrack,
+                        editForm.isActive ? s.toggleOn : s.toggleOff,
+                      )}
                     >
                       <div
-                        className={`absolute top-1 w-3 h-3 rounded-full bg-white transition-all ${editForm.isActive ? "left-6" : "left-1"}`}
+                        className={clsx(
+                          s.toggleThumb,
+                          editForm.isActive ? s.thumbOn : s.thumbOff,
+                        )}
                       />
                     </div>
                     <input
@@ -410,30 +354,25 @@ export default function AdminUsersPage() {
                           isActive: e.target.checked,
                         }))
                       }
-                      className="hidden"
+                      className={s.hidden}
                     />
-                    <span className="text-sm font-bold text-slate-700 dark:text-white uppercase tracking-tighter">
-                      Trạng thái hoạt động
-                    </span>
+                    <span className={s.toggleText}>Trạng thái hoạt động</span>
                   </label>
                 </div>
               </div>
             </div>
 
-            <div className="p-6 border-t border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-black/20 flex gap-3">
-              <button
-                onClick={() => setEditModal(null)}
-                className="flex-1 h-11 rounded-xl font-bold border border-slate-200 dark:border-brand-border text-slate-600 dark:text-white hover:bg-white dark:hover:bg-white/5 transition-all"
-              >
+            <div className={clsx(s.modalFoot, "fl-surface-muted-50")}>
+              <button onClick={() => setEditModal(null)} className={s.cancelBtn}>
                 Hủy bỏ
               </button>
               <button
                 onClick={handleSaveEdit}
                 disabled={saving}
-                className="flex-[2] h-11 btn-primary font-bold shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2"
+                className={clsx("btn-primary", s.saveBtn)}
               >
                 {saving ? (
-                  <Loader2 size={16} className="animate-spin" />
+                  <Loader2 size={16} className={s.spin} />
                 ) : (
                   <CheckCircle size={16} />
                 )}

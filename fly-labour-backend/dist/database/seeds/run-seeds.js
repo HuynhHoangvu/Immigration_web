@@ -353,6 +353,82 @@ async function seed() {
         ]);
         console.log('✅ Tạo 3 tin tức mẫu');
     }
+    const studyProgramsToSeed = [
+        {
+            title: 'Đại học Quốc gia Úc (ANU) - Chương trình Cử nhân & Thạc sĩ',
+            slug: 'dai-hoc-quoc-gia-uc-anu',
+            excerpt: 'Đại học danh tiếng top 1 tại Úc, tọa lạc tại thủ đô Canberra với các chương trình học bổng lên tới 50% học phí.',
+            content: '<p>Đại học Quốc gia Úc (ANU) là thành viên của Nhóm 8 trường đại học nghiên cứu hàng đầu nước Úc (Group of Eight). Trường đào tạo đa dạng các chuyên ngành từ Kinh tế, Luật, Kỹ thuật, Công nghệ thông tin đến Y khoa và Nghệ thuật.</p><p>Học viên đăng ký qua hệ thống Fly Visa sẽ được hướng dẫn phỏng vấn học bổng và hoàn thiện hồ sơ xin visa du học miễn phí.</p>',
+            image: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&q=75',
+            type: 'study',
+            country: 'australia',
+            studyType: 'university',
+            priceFrom: 35000,
+            priceTo: 55000,
+            priceCurrency: 'AUD',
+            itinerary: 'Kỳ nhập học Tháng 2 và Tháng 7 hàng năm',
+            registerUrl: 'https://www.anu.edu.au',
+            isPublished: true,
+        },
+        {
+            title: 'Cao đẳng Langara Canada - Lộ trình chuyển tiếp Đại học hàng đầu',
+            slug: 'cao-dang-langara-canada',
+            excerpt: 'Học tập tại Vancouver với chương trình Cao đẳng liên thông Đại học chất lượng cao, cơ hội làm việc và định cư hấp dẫn.',
+            content: '<p>Cao đẳng Langara (Langara College) là một trong những cơ sở đào tạo chuyển tiếp đại học hàng đầu của Canada, thu hút hàng ngàn sinh viên quốc tế mỗi năm. Chương trình giúp tiết kiệm học phí tối đa trước khi chuyển tiếp vào các đại học lớn như UBC, SFU.</p><p>Sinh viên sau khi tốt nghiệp chương trình 2 năm được cấp giấy phép làm việc (PGWP) lên tới 3 năm để tích lũy kinh nghiệm định cư.</p>',
+            image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=75',
+            type: 'study',
+            country: 'canada',
+            studyType: 'college',
+            priceFrom: 16000,
+            priceTo: 22000,
+            priceCurrency: 'CAD',
+            itinerary: 'Kỳ nhập học Tháng 1, Tháng 5 và Tháng 9',
+            registerUrl: 'https://langara.ca',
+            isPublished: true,
+        },
+        {
+            title: 'Du học nghề Điều dưỡng tại Đức - Miễn 100% học phí & Trợ cấp cao',
+            slug: 'du-hoc-nghe-dieu-duong-duc',
+            excerpt: 'Học tập và làm việc tại các bệnh viện lớn ở Đức. Nhận lương học nghề từ 1.100 đến 1.300 EUR/tháng từ năm thứ nhất.',
+            content: '<p>Chương trình du học nghề điều dưỡng Đức dành cho các bạn trẻ đã tốt nghiệp THPT, có sức khỏe tốt. Học viên được tài trợ hoàn toàn học phí chuyên ngành tại Đức trong suốt 3 năm học.</p><p>Vừa học vừa làm thực hành có trả lương. Sau tốt nghiệp cam kết có việc làm ngay với mức lương từ 2.800 đến 3.500 EUR/tháng và cơ hội định cư lâu dài sau 5 năm.</p>',
+            image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=75',
+            type: 'study',
+            country: 'germany',
+            studyType: 'vocational',
+            priceFrom: 0,
+            priceTo: 0,
+            priceCurrency: 'EUR',
+            itinerary: 'Nhập học Tháng 3 và Tháng 9 hàng năm',
+            registerUrl: '',
+            isPublished: true,
+        },
+        {
+            title: 'Du học nghề Úc ngành Bếp thương mại & Quản trị Khách sạn',
+            slug: 'du-hoc-nghe-bep-khach-san-uc',
+            excerpt: 'Chương trình học nghề kết hợp thực tập hưởng lương hấp dẫn tại Sydney và Melbourne. Cơ hội làm việc lâu dài.',
+            content: '<p>Chương trình đào tạo chứng chỉ nghề III, IV và Cao đẳng nâng cao ngành Bếp thương mại (Commercial Cookery) và Quản trị khách sạn tại Úc. Thời gian học linh hoạt, ưu tiên thực hành.</p><p>Học sinh được giới thiệu việc làm thực tập hưởng lương tại các nhà hàng, khách sạn đối tác của Fly Visa với mức thu nhập ổn định từ 25 - 30 AUD/giờ.</p>',
+            image: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800&q=75',
+            type: 'study',
+            country: 'australia',
+            studyType: 'vocational',
+            priceFrom: 12000,
+            priceTo: 18000,
+            priceCurrency: 'AUD',
+            itinerary: 'Kỳ nhập học linh hoạt: Tháng 1, 4, 7, 10',
+            registerUrl: '',
+            isPublished: true,
+        },
+    ];
+    for (const prog of studyProgramsToSeed) {
+        const exist = await newsRepo.findOne({ where: { slug: prog.slug } });
+        if (!exist) {
+            await newsRepo.save(newsRepo.create(prog));
+            console.log(`✅ Đã seed đơn du học: ${prog.title}`);
+        }
+        else {
+            console.log(`⏭️  Đơn du học đã tồn tại: ${prog.title}`);
+        }
+    }
     await AppDataSource.destroy();
     console.log('\n🎉 Seed hoàn tất!');
     console.log('📧 Admin: admin@flylabour.com / Admin@123');

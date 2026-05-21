@@ -1,0 +1,295 @@
+.page {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.headTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.headSub {
+  color: #64748b;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .statsGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-xs);
+}
+
+.statCard {
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.statIconWrap {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-xs);
+}
+
+.statValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+}
+
+.twoCol {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .twoCol {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.panel {
+  padding: 1.5rem;
+}
+
+.panelHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.panelTitle {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.panelLink {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #d97706;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.panelLink:hover {
+  text-decoration: underline;
+}
+
+.list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.skeleton {
+  height: 4rem;
+  background: #f1f5f9;
+  border-radius: 0.75rem;
+}
+
+.empty {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  background: #f8fafc;
+  border-radius: 1rem;
+  border: 1px dashed #e2e8f0;
+}
+
+.emptyText {
+  color: #64748b;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.emptyBtn {
+  display: inline-block;
+  font-size: 0.875rem;
+  padding: 0.625rem 1.5rem;
+  font-weight: 500;
+}
+
+.item {
+  padding: 1rem;
+  background: #f8fafc;
+  border: 1px solid #f1f5f9;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.item:hover {
+  border-color: #fde68a;
+}
+
+.itemMain {
+  min-width: 0;
+}
+
+.itemTitle {
+  color: #0f172a;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.itemSub {
+  color: #64748b;
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.itemStatus {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  box-shadow: var(--shadow-xs);
+}
+
+.appAvatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #78350f;
+  font-size: 0.875rem;
+  font-weight: 700;
+  box-shadow: var(--shadow-xs);
+  flex-shrink: 0;
+}
+
+.appMain {
+  min-width: 0;
+  flex: 1;
+}
+
+.appTitle {
+  color: #0f172a;
+  font-size: 0.875rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.appSub {
+  color: #64748b;
+  font-size: 0.75rem;
+  margin-top: 0.125rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.appDate {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.tip {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 1rem;
+  padding: 1.25rem;
+}
+
+.tipInner {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.tipIconWrap {
+  padding: 0.5rem;
+  background: #fff;
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-xs);
+}
+
+.tipIcon {
+  color: #d97706;
+}
+
+.tipTitle {
+  color: #0f172a;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.tipText {
+  color: #475569;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  line-height: 1.7;
+}
+
+.tipMain {
+  flex: 1;
+}
+
+.tipBtn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  background: #fff;
+  color: #b45309;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 0.75rem;
+  border: 1px solid #fde68a;
+  box-shadow: var(--shadow-xs);
+}
+
+.tipBtn:hover {
+  background: #fef3c7;
+}

@@ -26,6 +26,14 @@ export declare class JobsController {
             totalPages: number;
         };
     }>;
+    getEmployerPerformance(req: any): Promise<{
+        jobId: any;
+        title: any;
+        viewCount: number;
+        applicationCount: number;
+        approvedCount: number;
+        conversionRate: number;
+    }[]>;
     createByEmployer(dto: CreateJobDto, req: any, file?: Express.Multer.File): Promise<import("./job.entity").Job>;
     updateByEmployer(id: string, dto: UpdateJobDto, req: any, file?: Express.Multer.File): Promise<import("./job.entity").Job>;
     deleteByEmployer(id: string, req: any): Promise<{
@@ -36,9 +44,13 @@ export declare class JobsController {
             createdBy: any;
             id: string;
             title: string;
+            titleEn: string;
             description: string;
+            descriptionEn: string;
             requirements: string;
+            requirementsEn: string;
             benefits: string;
+            benefitsEn: string;
             company: string;
             location: string;
             country: string;

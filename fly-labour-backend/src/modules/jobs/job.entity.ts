@@ -13,14 +13,26 @@ export class Job {
   @Column()
   title: string
 
+  @Column({ nullable: true })
+  titleEn: string
+
   @Column({ type: 'text' })
   description: string
+
+  @Column({ type: 'text', nullable: true })
+  descriptionEn: string
 
   @Column({ type: 'text', nullable: true })
   requirements: string
 
   @Column({ type: 'text', nullable: true })
+  requirementsEn: string
+
+  @Column({ type: 'text', nullable: true })
   benefits: string
+
+  @Column({ type: 'text', nullable: true })
+  benefitsEn: string
 
   @Column({ nullable: true })
   company: string

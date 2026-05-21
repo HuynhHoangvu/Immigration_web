@@ -6,10 +6,8 @@ import { useThemeStore } from '@core/store/themeStore'
  * Usage:
  * const { theme, toggle, isDark } = useTheme()
  *
- * Trong template:
- * <div className="bg-white dark:bg-slate-900 text-black dark:text-white">
- *   {isDark ? 'Dark' : 'Light'}
- * </div>
+ * Trong template (app chỉ dùng giao diện sáng):
+ * <div className="bg-white text-slate-900">...</div>
  */
 export function useTheme() {
   const theme = useThemeStore((s) => s.theme)
@@ -18,8 +16,9 @@ export function useTheme() {
 
   return {
     theme,
-    isDark: theme === 'dark',
-    isLight: theme === 'light',
+    /** App is light-theme only — always false. Kept for call sites still branching on theme. */
+    isDark: false,
+    isLight: true,
     toggle,
     setTheme,
   }

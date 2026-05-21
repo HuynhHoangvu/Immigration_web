@@ -1,0 +1,41 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+}
+
+.content {
+  position: relative;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.sizeSm {
+  max-width: 24rem;
+}
+
+.sizeMd {
+  max-width: 28rem;
+}
+
+.sizeLg {
+  max-width: 32rem;
+}
+
+.sizeXl {
+  max-width: 42rem;
+}
+
+.body {
+  padding: 1.25rem;
+}

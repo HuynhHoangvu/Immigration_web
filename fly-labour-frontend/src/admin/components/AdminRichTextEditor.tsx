@@ -40,6 +40,7 @@ import {
 import toast from "react-hot-toast";
 import { uploadApi } from "@core/services/api";
 import clsx from "clsx";
+import s from "./AdminRichTextEditor.module.scss";
 
 /** Legacy plain-text bài cũ → HTML hợp lệ cho TipTap */
 function coerceEditorHtml(input: string): string {
@@ -83,11 +84,9 @@ function ToolbarButton({
       disabled={disabled}
       onClick={onClick}
       className={clsx(
-        "p-2 rounded-lg text-slate-600 dark:text-slate-300 transition-colors shrink-0",
-        active
-          ? "bg-amber-100 dark:bg-brand-gold/20 text-amber-900 dark:text-brand-gold"
-          : "hover:bg-slate-100 dark:hover:bg-white/10",
-        disabled && "opacity-40 pointer-events-none",
+        s.toolbarBtn,
+        active && s.toolbarBtnActive,
+        disabled && s.toolbarBtnDisabled,
       )}
     >
       {children}
@@ -117,19 +116,19 @@ export default function AdminRichTextEditor({
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
-          class: "text-amber-700 dark:text-brand-gold underline font-medium",
+          class: "admin-rte-link",
         },
       }),
       Image.configure({
         HTMLAttributes: {
-          class: "max-w-full h-auto rounded-2xl my-6 border border-slate-200 dark:border-white/10",
+          class: "admin-rte-image",
         },
       }),
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       Table.configure({
         resizable: true,
         HTMLAttributes: {
-          class: "border-collapse table-fixed w-full my-4 text-sm",
+          class: "admin-rte-table",
         },
       }),
       TableRow,
@@ -140,8 +139,7 @@ export default function AdminRichTextEditor({
     content: coerceEditorHtml(value),
     editorProps: {
       attributes: {
-        class:
-          "admin-tiptap-editor prose prose-slate dark:prose-invert max-w-none min-h-[560px] px-2 py-4 md:px-4 focus:outline-none text-slate-800 dark:text-slate-100 text-base leading-relaxed",
+        class: "admin-tiptap-editor prose max-w-none",
       },
     },
     onUpdate: ({ editor: ed }) => {
@@ -203,21 +201,16 @@ export default function AdminRichTextEditor({
 
   if (!editor) {
     return (
-      <div className="flex items-center justify-center min-h-[200px] text-slate-400 gap-2">
-        <Loader2 className="animate-spin w-5 h-5" />
-        <span className="text-sm font-medium">Đang mở trình soạn thảo…</span>
+      <div className={s.loadingWrap}>
+        <Loader2 className={s.loadingSpinner} aria-hidden />
+        <span className={s.loadingText}>Đang mở trình soạn thảo…</span>
       </div>
     );
   }
 
   return (
-    <div
-      className={clsx(
-        "rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-black/20 overflow-hidden",
-        className,
-      )}
-    >
-      <div className="flex flex-wrap items-center gap-0.5 p-2 border-b border-slate-100 dark:border-white/5 bg-slate-50/80 dark:bg-white/[0.03] sticky top-0 z-10">
+    <div className={clsx(s.root, className)}>
+      <div className={s.toolbar}>
         <ToolbarButton
           title="Hoàn tác"
           onClick={() => editor.chain().focus().undo().run()}
@@ -232,7 +225,7 @@ export default function AdminRichTextEditor({
         >
           <Redo2 size={18} />
         </ToolbarButton>
-        <span className="w-px h-6 bg-slate-200 dark:bg-white/10 mx-1" />
+        <span className={s.toolbarDivider} />
         <ToolbarButton
           title="Tiêu đề 2"
           active={editor.isActive("heading", { level: 2 })}
@@ -258,7 +251,7 @@ export default function AdminRichTextEditor({
         >
           <Pilcrow size={18} />
         </ToolbarButton>
-        <span className="w-px h-6 bg-slate-200 dark:bg-white/10 mx-1" />
+        <span className={s.toolbarDivider} />
         <ToolbarButton
           title="Đậm"
           active={editor.isActive("bold")}
@@ -287,7 +280,7 @@ export default function AdminRichTextEditor({
         >
           <Strikethrough size={18} />
         </ToolbarButton>
-        <span className="w-px h-6 bg-slate-200 dark:bg-white/10 mx-1" />
+        <span className={s.toolbarDivider} />
         <ToolbarButton
           title="Danh sách bullet"
           active={editor.isActive("bulletList")}
@@ -315,7 +308,7 @@ export default function AdminRichTextEditor({
         >
           <Minus size={18} />
         </ToolbarButton>
-        <span className="w-px h-6 bg-slate-200 dark:bg-white/10 mx-1" />
+        <span className={s.toolbarDivider} />
         <ToolbarButton
           title="Căn trái"
           active={editor.isActive({ textAlign: "left" })}
@@ -337,7 +330,7 @@ export default function AdminRichTextEditor({
         >
           <AlignRight size={18} />
         </ToolbarButton>
-        <span className="w-px h-6 bg-slate-200 dark:bg-white/10 mx-1" />
+        <span className={s.toolbarDivider} />
         <ToolbarButton title="Liên kết" onClick={setLink}>
           <Link2 size={18} />
         </ToolbarButton>
@@ -348,19 +341,19 @@ export default function AdminRichTextEditor({
           <ImageIcon size={18} />
         </ToolbarButton>
         <ToolbarButton title="Chèn ảnh từ URL" onClick={insertImageFromUrl}>
-          <span className="text-[10px] font-black px-0.5">URL</span>
+          <span className={s.toolbarUrlLabel}>URL</span>
         </ToolbarButton>
         <input
           ref={imageInputRef}
           type="file"
           accept="image/jpeg,image/png,image/webp,image/gif"
-          className="hidden"
+          className={s.fileInput}
           onChange={onImageFile}
         />
         <ToolbarButton title="Chèn bảng 3×3" onClick={insertTable}>
           <Table2 size={18} />
         </ToolbarButton>
-        <span className="w-px h-6 bg-slate-200 dark:bg-white/10 mx-1" />
+        <span className={s.toolbarDivider} />
         <ToolbarButton
           title="Màu chữ"
           onClick={() => colorInputRef.current?.click()}

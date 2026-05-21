@@ -1,0 +1,103 @@
+.page {
+  min-height: 100vh;
+  padding: 7rem 1.5rem 2rem;
+}
+
+.inner {
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.title {
+  transition: color 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  color: #1e293b;
+  transition: color 0.3s ease;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm);
+  padding: 2rem;
+  transition: background-color 0.3s ease;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #0f172a;
+  margin-bottom: 0.375rem;
+  display: block;
+}
+
+.input {
+  width: 100%;
+  font-size: 0.875rem;
+  border-radius: var(--radius-xl);
+  padding: 0 1rem;
+  background: #f1f5f9;
+  border: 1px solid transparent;
+  color: #0f172a;
+  outline: none;
+  transition: all 0.2s ease;
+
+  &::placeholder {
+    color: #94a3b8;
+  }
+
+  &:focus {
+    background: #fff;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 1px var(--accent-primary);
+  }
+}
+
+.inputH12 {
+  height: 3rem;
+}
+
+.textarea {
+  height: 7rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  resize: none;
+}
+
+.submit {
+  width: 100%;
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+
+.spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgb(0 0 0 / 0.3);
+  border-top-color: #000;
+  border-radius: 9999px;
+  animation: contactSpin 0.7s linear infinite;
+}
+
+@keyframes contactSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}

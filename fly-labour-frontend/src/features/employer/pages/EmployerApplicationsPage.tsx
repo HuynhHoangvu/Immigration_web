@@ -13,6 +13,8 @@ import { employerApi, applicationsApi, getImageUrl } from "@core/services/api";
 import { APP_STATUS_LABELS, formatDate } from "@core/utils/helpers";
 import toast from "react-hot-toast";
 import type { Application } from "@core/types";
+import clsx from "clsx";
+import s from "./EmployerApplicationsPage.module.scss";
 
 // Cấu hình trạng thái với màu sắc linh hoạt cho cả 2 chế độ
 const EMPLOYER_STATUS_OPTIONS = [
@@ -21,21 +23,21 @@ const EMPLOYER_STATUS_OPTIONS = [
     label: "Đang xem xét",
     icon: Clock,
     color:
-      "text-blue-600 border-blue-200 bg-blue-50 dark:text-blue-400 dark:border-blue-400/30 dark:bg-blue-400/5",
+      "text-blue-600 border-blue-200 bg-blue-50   ",
   },
   {
     value: "approved",
     label: "Phê duyệt",
     icon: CheckCircle,
     color:
-      "text-green-600 border-green-200 bg-green-50 dark:text-green-400 dark:border-green-400/30 dark:bg-green-400/5",
+      "text-green-600 border-green-200 bg-green-50   ",
   },
   {
     value: "rejected",
     label: "Từ chối",
     icon: XCircle,
     color:
-      "text-red-600 border-red-200 bg-red-50 dark:text-red-400 dark:border-red-400/30 dark:bg-red-400/5",
+      "text-red-600 border-red-200 bg-red-50   ",
   },
 ];
 
@@ -80,78 +82,70 @@ export default function EmployerApplicationsPage() {
   );
 
   return (
-    <div className="space-y-6 transition-colors duration-300">
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+    <div className={s.page}>
+      <div className={s.head}>
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+          <h1 className={s.title}>
             Hồ sơ ứng viên
           </h1>
-          <p className="text-slate-500 dark:text-gray-300 text-sm">
+          <p className={s.sub}>
             {apps.length} hồ sơ đã nhận
           </p>
         </div>
       </div>
 
-      {/* Search Bar - Chuyển sang style linh hoạt */}
-      <div className="relative">
-        <Search
-          size={16}
-          className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-300"
-        />
+      <div className={s.searchWrap}>
+        <Search size={16} className={s.searchIcon} />
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Tìm theo tên, email hoặc tên vị trí..."
-          className="w-full h-12 pl-11 pr-4 text-sm rounded-xl bg-white dark:bg-[#1e1e1e] border border-slate-200 dark:border-white/5 text-slate-900 dark:text-white placeholder:text-slate-400 focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none shadow-sm dark:shadow-none transition-all"
+          className={s.searchInput}
         />
       </div>
 
       {loading ? (
-        <div className="space-y-3">
+        <div className={s.skeletonList}>
           {[...Array(5)].map((_, i) => (
-            <div
-              key={i}
-              className="h-20 bg-white dark:bg-brand-card rounded-2xl animate-pulse border border-slate-200 dark:border-brand-border"
-            />
+            <div key={i} className={clsx(s.skeleton, "animate-pulse")} />
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-3xl p-16 text-center shadow-sm">
-          <p className="text-5xl mb-4">📂</p>
-          <p className="text-slate-900 dark:text-white font-semibold text-lg mb-1">
+        <div className={s.empty}>
+          <p className={s.emptyEmoji}>📂</p>
+          <p className={s.emptyTitle}>
             {search ? "Không tìm thấy kết quả" : "Chưa có hồ sơ nào"}
           </p>
-          <p className="text-slate-500 dark:text-gray-300 text-sm max-w-xs mx-auto">
+          <p className={clsx(s.emptySub, "fl-max-xs")}>
             Hồ sơ sẽ xuất hiện tại đây khi ứng viên nộp vào các tin tuyển dụng
             của bạn.
           </p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className={s.list}>
           {filtered.map((app) => {
             const status = APP_STATUS_LABELS[app.status];
             const isOpen = expanded === app.id;
             return (
               <div
                 key={app.id}
-                className={`bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl overflow-hidden transition-all ${isOpen ? "ring-1 ring-brand-gold/30 shadow-lg" : "shadow-sm"}`}
+                className={clsx(s.appCard, isOpen && s.appCardOpen)}
               >
-                {/* Main Row */}
                 <button
                   onClick={() => setExpanded(isOpen ? null : app.id)}
-                  className="w-full flex items-center gap-4 p-5 text-left hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
+                  className={s.rowBtn}
                 >
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center text-amber-900 font-bold text-sm shrink-0 shadow-sm"
+                    className={s.avatar}
                     style={{
                       background: "linear-gradient(135deg,#e4a808,#fdd52f)",
                     }}
                   >
                     {app.fullName.charAt(0)}
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap mb-0.5">
-                      <p className="text-slate-900 dark:text-white font-bold text-sm">
+                  <div className={s.main}>
+                    <div className={s.nameRow}>
+                      <p className={s.name}>
                         {app.fullName}
                       </p>
                       <span
@@ -160,27 +154,26 @@ export default function EmployerApplicationsPage() {
                         {status?.label}
                       </span>
                     </div>
-                    <p className="text-slate-500 dark:text-gray-300 text-xs truncate font-medium">
+                    <p className={s.subline}>
                       {app.email} <span className="mx-1 opacity-50">•</span>{" "}
                       {app.job?.title}
                     </p>
                   </div>
-                  <div className="flex items-center gap-4 shrink-0">
-                    <p className="text-slate-400 dark:text-gray-300 text-xs hidden md:block">
+                  <div className={s.right}>
+                    <p className={s.date}>
                       {formatDate(app.createdAt)}
                     </p>
                     <div
-                      className={`p-1.5 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-400 transition-transform duration-300 ${isOpen ? "rotate-180 text-amber-600" : ""}`}
+                      className={clsx(s.chevWrap, isOpen && s.chevOpen)}
                     >
                       <ChevronDown size={16} />
                     </div>
                   </div>
                 </button>
 
-                {/* Expanded details */}
                 {isOpen && (
-                  <div className="border-t border-slate-100 dark:border-white/5 p-5 space-y-5 bg-slate-50/50 dark:bg-black/10">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className={clsx(s.details, "fl-surface-muted-50")}>
+                    <div className={s.metaGrid}>
                       {[
                         { label: "Điện thoại", value: app.phone },
                         {
@@ -196,12 +189,12 @@ export default function EmployerApplicationsPage() {
                       ].map((f) => (
                         <div
                           key={f.label}
-                          className="p-4 bg-white dark:bg-brand-card border border-slate-100 dark:border-white/5 rounded-2xl shadow-sm dark:shadow-none"
+                          className={s.metaCard}
                         >
-                          <p className="text-slate-400 dark:text-gray-300 text-xs font-bold uppercase tracking-widest mb-1">
+                          <p className={s.metaLabel}>
                             {f.label}
                           </p>
-                          <p className="text-slate-900 dark:text-white text-sm font-semibold">
+                          <p className={s.metaValue}>
                             {f.value}
                           </p>
                         </div>
@@ -209,43 +202,42 @@ export default function EmployerApplicationsPage() {
                     </div>
 
                     {app.coverLetter && (
-                      <div className="p-4 bg-white dark:bg-brand-card border border-slate-100 dark:border-white/5 rounded-2xl shadow-sm dark:shadow-none">
-                        <p className="text-slate-400 dark:text-gray-300 text-xs font-bold uppercase tracking-widest mb-2">
+                      <div className={s.cover}>
+                        <p className={s.metaLabel}>
                           Thư xin việc
                         </p>
-                        <p className="text-slate-700 dark:text-gray-300 text-sm leading-relaxed whitespace-pre-wrap">
+                        <p className={s.coverText}>
                           {app.coverLetter}
                         </p>
                       </div>
                     )}
 
-                    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+                    <div className={s.actions}>
                       {app.cvUrl ? (
-                        <div className="flex-1">
-                          <p className="text-slate-400 dark:text-gray-300 text-xs font-bold uppercase tracking-widest mb-2">
+                        <div className={s.cvArea}>
+                          <p className={s.cvLabel}>
                             Hồ sơ đính kèm
                           </p>
                           <a
                             href={getImageUrl(app.cvUrl)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-amber-50 dark:bg-brand-gold/10 text-amber-700 dark:text-brand-gold text-sm font-bold border border-amber-200 dark:border-brand-gold/30 hover:bg-amber-100 dark:hover:bg-brand-gold/20 transition-all"
+                            className={s.cvBtn}
                           >
                             <FileText size={16} /> Xem CV chi tiết{" "}
                             <ExternalLink size={14} />
                           </a>
                         </div>
                       ) : (
-                        <div className="flex-1" />
+                        <div className={s.cvArea} />
                       )}
 
-                      {/* Status actions */}
                       {app.status !== "withdrawn" && (
-                        <div className="shrink-0">
-                          <p className="text-slate-400 dark:text-gray-300 text-xs font-bold uppercase tracking-widest mb-3 sm:text-right">
+                        <div className={s.statusArea}>
+                          <p className={s.statusLabel}>
                             Cập nhật trạng thái hồ sơ
                           </p>
-                          <div className="flex flex-wrap gap-2">
+                          <div className={s.statusActions}>
                             {EMPLOYER_STATUS_OPTIONS.map((opt) => (
                               <button
                                 key={opt.value}
@@ -259,12 +251,12 @@ export default function EmployerApplicationsPage() {
                                 className={`flex items-center gap-2 px-4 py-2 rounded-xl border text-xs font-bold transition-all disabled:opacity-50 shadow-sm ${
                                   app.status === opt.value
                                     ? opt.color
-                                    : "bg-white dark:bg-brand-card border-slate-200 dark:border-white/10 text-slate-600 dark:text-gray-300 hover:border-amber-400 dark:hover:border-brand-gold hover:text-slate-900 dark:hover:text-white"
+                                    : s.statusBtn
                                 }`}
                               >
                                 {updatingId === app.id &&
                                 app.status !== opt.value ? (
-                                  <div className="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                                  <div className={clsx(s.spinMini, "animate-spin")} />
                                 ) : (
                                   <opt.icon size={14} />
                                 )}

@@ -29,8 +29,8 @@ let ApplicationsController = class ApplicationsController {
     myApplications(req) {
         return this.appsService.findByUser(req.user.id);
     }
-    getEmployerApplications(req) {
-        return this.appsService.findByEmployer(req.user.id);
+    getEmployerApplications(req, query) {
+        return this.appsService.findByEmployer(req.user.id, query);
     }
     findAll(query) {
         return this.appsService.findAll(query);
@@ -48,7 +48,7 @@ let ApplicationsController = class ApplicationsController {
         return this.appsService.withdraw(id, req.user.id);
     }
     employerUpdateStatus(id, body, req) {
-        return this.appsService.employerUpdateStatus(id, req.user.id, body.status);
+        return this.appsService.employerUpdateStatus(id, req.user.id, body.status, body.employerNote);
     }
 };
 exports.ApplicationsController = ApplicationsController;
@@ -77,8 +77,9 @@ __decorate([
     (0, swagger_1.ApiBearerAuth)('JWT'),
     (0, swagger_1.ApiOperation)({ summary: '[Employer] Applications received for my job listings' }),
     __param(0, (0, common_1.Request)()),
+    __param(1, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], ApplicationsController.prototype, "getEmployerApplications", null);
 __decorate([

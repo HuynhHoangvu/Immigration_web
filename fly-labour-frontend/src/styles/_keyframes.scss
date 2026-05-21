@@ -1,0 +1,166 @@
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes subtlePulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes kenBurns {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.12) translate(-2%, -2%);
+  }
+}
+
+@keyframes kenBurnsReverse {
+  0% {
+    transform: scale(1.12) translate(2%, 2%);
+  }
+  100% {
+    transform: scale(1) translate(0, 0);
+  }
+}
+
+// Replaces former tailwind arbitrary animation utilities
+@keyframes flyZoomIn95 {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes flySlideFromTop2 {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes flySlideFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes flySlideFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.fly-anim-fade-in {
+  animation: fadeIn 0.2s ease-out both;
+}
+
+.fly-anim-fade-in-fast {
+  animation: fadeIn 0.15s ease-out both;
+}
+
+.fly-anim-fade-in-slow {
+  animation: fadeIn 0.3s ease-out both;
+}
+
+.fly-anim-zoom-in-95 {
+  animation: flyZoomIn95 0.2s ease-out both;
+}
+
+.fly-anim-zoom-in-95-slow {
+  animation: flyZoomIn95 0.3s ease-out both;
+}
+
+.fly-anim-slide-from-top-2 {
+  animation: flySlideFromTop2 0.15s ease-out both;
+}
+
+.fly-anim-slide-from-top-2-slow {
+  animation: flySlideFromTop2 0.3s ease-out both;
+}
+
+.fly-anim-slide-from-left {
+  animation: flySlideFromLeft 0.3s ease-out both;
+}
+
+.fly-anim-slide-from-right {
+  animation: flySlideFromRight 0.3s ease-out both;
+}

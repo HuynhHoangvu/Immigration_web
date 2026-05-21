@@ -48,6 +48,9 @@ export class Application {
   @Column({ type: 'text', nullable: true })
   adminNote: string
 
+  @Column({ type: 'text', nullable: true })
+  employerNote: string
+
   @Column({ type: 'enum', enum: ApplicationStatus, default: ApplicationStatus.PENDING })
   status: ApplicationStatus
 

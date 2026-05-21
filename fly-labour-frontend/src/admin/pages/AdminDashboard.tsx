@@ -15,8 +15,9 @@ import {
 import { Users, Briefcase, ClipboardList, Eye, TrendingUp } from "lucide-react";
 import { jobsApi, applicationsApi, usersApi } from "@core/services/api";
 import { APP_STATUS_LABELS, formatDate } from "@core/utils/helpers";
-import { useThemeStore } from "@core/store/themeStore";
 import type { Application } from "@core/types";
+import clsx from "clsx";
+import s from "./AdminDashboard.module.scss";
 
 const PIE_COLORS = ["#fdd52f", "#3B82F6", "#10B981", "#EF4444", "#8B5CF6"];
 const MONTHLY_DATA = [
@@ -28,13 +29,20 @@ const MONTHLY_DATA = [
   { month: "T1", apps: 89, users: 143 },
 ];
 
+const STATUS_CHIP_CLASS: Record<string, string> = {
+  pending: "text-amber-600 bg-amber-50 border-amber-200",
+  reviewing: "text-blue-600 bg-blue-50 border-blue-200",
+  approved: "text-green-600 bg-green-50 border-green-200",
+  rejected: "text-red-600 bg-red-50 border-red-200",
+  withdrawn: "text-slate-500 bg-slate-50 border-slate-200",
+};
+
 export default function AdminDashboard() {
   const [jobStats, setJobStats] = useState<any>(null);
   const [appStats, setAppStats] = useState<any[]>([]);
   const [userStats, setUserStats] = useState<any>(null);
   const [recentApps, setRecentApps] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
-  const { theme } = useThemeStore();
 
   useEffect(() => {
     Promise.all([
@@ -108,88 +116,73 @@ export default function AdminDashboard() {
     },
   ];
 
-  const cardClasses =
-    "bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl shadow-sm dark:shadow-none transition-all duration-300";
-  const textMuted = "text-slate-400 dark:text-brand-muted";
-  const chartTickColor = theme === "dark" ? "#94a3b8" : "#64748b";
+  const chartTickColor = "#64748b";
 
   if (loading)
     return (
-      <div className="space-y-7 animate-pulse">
-        <div className="h-8 w-48 bg-slate-200 dark:bg-white/10 rounded-lg" />
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className={clsx(s.skeletonPage, "animate-pulse")}>
+        <div className={s.skeletonTitle} />
+        <div className={s.statGridSkel}>
           {[...Array(4)].map((_, i) => (
-            <div
-              key={i}
-              className="h-32 bg-white dark:bg-brand-card rounded-2xl border border-slate-200 dark:border-brand-border"
-            />
+            <div key={i} className={s.skeletonCard} />
           ))}
         </div>
       </div>
     );
 
   return (
-    <div className="space-y-8 transition-colors duration-300">
+    <div className={s.page}>
       <div>
-        <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
+        <h1 className={s.heading}>
           Dashboard
         </h1>
-        <p className="text-slate-500 dark:text-brand-muted text-sm mt-1">
+        <p className={s.subtitle}>
           Hệ thống ghi nhận{" "}
-          <span className="font-bold text-amber-600 dark:text-brand-gold">
+          <span className={s.subtitleAccent}>
             {totalApps}
           </span>{" "}
           đơn ứng tuyển mới
         </p>
       </div>
 
-      {/* Top Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className={s.statGrid}>
         {STAT_CARDS.map((card) => (
-          <div
-            key={card.label}
-            className={`${cardClasses} p-5 group hover:border-amber-400/50`}
-          >
-            <div className="flex items-start justify-between mb-4">
+          <div key={card.label} className={s.statCard}>
+            <div className={s.statTop}>
               <div
-                className="w-11 h-11 rounded-xl flex items-center justify-center shadow-sm"
+                className={s.iconBubble}
                 style={{ background: `${card.color}15` }}
               >
                 <card.icon size={20} style={{ color: card.color }} />
               </div>
-              <div className="p-1.5 bg-green-50 dark:bg-green-500/10 rounded-lg">
-                <TrendingUp
-                  size={14}
-                  className="text-green-600 dark:text-green-400"
-                />
+              <div className={s.trendWrap}>
+                <TrendingUp size={14} className={s.trendIco} />
               </div>
             </div>
-            <p className="text-3xl font-bold text-slate-900 dark:text-white leading-none mb-1">
+            <p className={s.statValue}>
               {card.value}
             </p>
-            <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-brand-muted">
+            <p className={s.statLabel}>
               {card.label}
             </p>
-            <p className="text-xs font-semibold text-amber-600 dark:text-brand-gold mt-2">
+            <p className={s.statSub}>
               {card.sub}
             </p>
           </div>
         ))}
       </div>
 
-      {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Bar Chart */}
-        <div className={`${cardClasses} p-6 lg:col-span-2`}>
-          <div className="flex items-center justify-between mb-8">
-            <h3 className="font-bold text-slate-900 dark:text-white text-base">
+      <div className={s.chartRow}>
+        <div className={s.chartBarPanel}>
+          <div className={s.chartHead}>
+            <h3 className={s.chartTitle}>
               Tăng trưởng ứng tuyển & Người dùng
             </h3>
-            <span className="text-[10px] font-bold uppercase tracking-widest px-3 py-1 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-full text-slate-400">
+            <span className={s.badgePill}>
               6 tháng gần nhất
             </span>
           </div>
-          <div className="h-[250px]">
+          <div className={s.chartHeight}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={MONTHLY_DATA}
@@ -198,7 +191,7 @@ export default function AdminDashboard() {
                 <CartesianGrid
                   strokeDasharray="3 3"
                   vertical={false}
-                  stroke={theme === "dark" ? "#334155" : "#e2e8f0"}
+                  stroke="#e2e8f0"
                 />
                 <XAxis
                   dataKey="month"
@@ -212,10 +205,10 @@ export default function AdminDashboard() {
                   tickLine={false}
                 />
                 <Tooltip
-                  cursor={{ fill: theme === "dark" ? "#1e293b" : "#f8fafc" }}
+                  cursor={{ fill: "#f5f5f3" }}
                   contentStyle={{
-                    background: theme === "dark" ? "#0f172a" : "#ffffff",
-                    border: `1px solid ${theme === "dark" ? "#334155" : "#e2e8f0"}`,
+                    background: "#ffffff",
+                    border: "1px solid #e2e8f0",
                     borderRadius: "12px",
                     boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
                   }}
@@ -239,15 +232,14 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Pie Chart */}
-        <div className={`${cardClasses} p-6 flex flex-col`}>
-          <h3 className="font-bold text-slate-900 dark:text-white text-base mb-2">
+        <div className={s.piePanel}>
+          <h3 className={s.pieTitle}>
             Thị trường chính
           </h3>
-          <p className={`${textMuted} text-xs mb-6`}>
+          <p className={s.pieDesc}>
             Phân bổ việc làm theo quốc gia
           </p>
-          <div className="flex-1 flex items-center justify-center">
+          <div className={s.pieCenter}>
             <ResponsiveContainer width="100%" height={180}>
               <PieChart>
                 <Pie
@@ -265,22 +257,19 @@ export default function AdminDashboard() {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="grid grid-cols-1 gap-2 mt-6">
+          <div className={s.pieLegend}>
             {byCountry.map((c, i) => (
-              <div
-                key={c.name}
-                className="flex items-center justify-between p-2 rounded-xl bg-slate-50 dark:bg-black/20"
-              >
-                <div className="flex items-center gap-2">
+              <div key={c.name} className={s.legendRow}>
+                <div className={s.legendLeft}>
                   <div
-                    className="w-2 h-2 rounded-full"
+                    className={s.legendDot}
                     style={{ background: PIE_COLORS[i] }}
                   />
-                  <span className="text-xs font-bold text-slate-600 dark:text-gray-300">
+                  <span className={s.legendName}>
                     {c.name}
                   </span>
                 </div>
-                <span className="text-xs font-black text-slate-900 dark:text-white">
+                <span className={s.legendVal}>
                   {c.value}
                 </span>
               </div>
@@ -289,19 +278,20 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Bottom Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Application Status */}
-        <div className={`${cardClasses} p-6`}>
-          <h3 className="font-bold text-slate-900 dark:text-white text-base mb-6">
+      <div className={s.bottomGrid}>
+        <div className={s.panel}>
+          <h3 className={s.panelTitle}>
             Quy trình tuyển dụng
           </h3>
-          <div className="space-y-5">
+          <div className={s.pipelineStack}>
             {appStats.map((item) => (
-              <div key={item.status} className="group">
-                <div className="flex justify-between items-center mb-2">
+              <div key={item.status}>
+                <div className={s.pipelineRowHead}>
                   <span
-                    className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-md border ${APP_STATUS_LABELS[item.status as keyof typeof APP_STATUS_LABELS]?.color} bg-white dark:bg-black/20`}
+                    className={clsx(
+                      s.statusChipRow,
+                      STATUS_CHIP_CLASS[item.status] || STATUS_CHIP_CLASS.withdrawn,
+                    )}
                   >
                     {
                       APP_STATUS_LABELS[
@@ -309,13 +299,13 @@ export default function AdminDashboard() {
                       ]?.label
                     }
                   </span>
-                  <span className="text-xs font-black text-slate-900 dark:text-white">
+                  <span className={s.countBadge}>
                     {item.count}
                   </span>
                 </div>
-                <div className="h-1.5 bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden">
+                <div className={s.barTrack}>
                   <div
-                    className="h-full rounded-full bg-amber-500 transition-all duration-1000 ease-out"
+                    className={s.barFill}
                     style={{
                       width: `${totalApps ? (parseInt(item.count) / totalApps) * 100 : 0}%`,
                     }}
@@ -326,59 +316,53 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Recent Applications */}
-        <div className={`${cardClasses} p-6 lg:col-span-2`}>
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="font-bold text-slate-900 dark:text-white text-base">
+        <div className={s.panelWide}>
+          <div className={s.panelHeadRow}>
+            <h3 className={s.panelTitleTight}>
               Đơn ứng tuyển mới nhất
             </h3>
             <Link
               to="/admin/applications"
-              className="text-xs font-bold text-amber-600 dark:text-brand-gold hover:underline transition-colors"
+              className={s.linkDash}
             >
               Quản lý tất cả →
             </Link>
           </div>
-          <div className="space-y-3">
+          <div className={s.appList}>
             {recentApps.map((app) => (
-              <div
-                key={app.id}
-                className="flex items-center gap-4 p-4 bg-slate-50 dark:bg-black/20 border border-slate-100 dark:border-white/5 rounded-2xl hover:border-amber-400/50 transition-all group"
-              >
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center text-amber-900 font-bold text-sm shadow-sm"
-                  style={{
-                    background: "linear-gradient(135deg,#fdd52f,#e4a808)",
-                  }}
-                >
+              <div key={app.id} className={s.appRow}>
+                <div className={s.appAvatar}>
                   {app.fullName.charAt(0)}
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-slate-900 dark:text-white font-bold text-sm truncate group-hover:text-amber-600 dark:group-hover:text-brand-gold transition-colors">
+                <div className={s.appBody}>
+                  <p className={s.appName}>
                     {app.fullName}
                   </p>
-                  <p className="text-slate-500 dark:text-brand-muted text-[11px] truncate mt-0.5">
+                  <p className={s.appJobLine}>
                     Ứng tuyển:{" "}
-                    <span className="font-semibold text-slate-700 dark:text-gray-300">
+                    <span className={s.appJobTitle}>
                       {app.job?.title}
                     </span>
                   </p>
                 </div>
-                <div className="text-right shrink-0">
+                <div className={s.appAside}>
                   <span
-                    className={`text-[9px] font-bold uppercase tracking-tighter px-2 py-1 rounded-md border ${APP_STATUS_LABELS[app.status]?.color} bg-white dark:bg-brand-card`}
+                    className={clsx(
+                      s.statusChipRow,
+                      STATUS_CHIP_CLASS[app.status] || STATUS_CHIP_CLASS.withdrawn,
+                    )}
                   >
                     {APP_STATUS_LABELS[app.status]?.label}
                   </span>
-                  <p className="text-slate-400 dark:text-brand-muted text-[10px] mt-1.5 font-medium">
+                  <p className={s.dateMeta}>
                     {formatDate(app.createdAt)}
                   </p>
                 </div>
               </div>
             ))}
             {recentApps.length === 0 && (
-              <div className="text-center py-10">
-                <p className="text-slate-400 dark:text-brand-muted text-sm italic">
+              <div className={s.emptyBox}>
+                <p className={s.emptyText}>
                   Chưa có đơn ứng tuyển nào được ghi nhận
                 </p>
               </div>

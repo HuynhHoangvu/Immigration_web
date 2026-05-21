@@ -73,6 +73,10 @@ __decorate([
     __metadata("design:type", String)
 ], Application.prototype, "adminNote", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
+    __metadata("design:type", String)
+], Application.prototype, "employerNote", void 0);
+__decorate([
     (0, typeorm_1.Column)({ type: 'enum', enum: ApplicationStatus, default: ApplicationStatus.PENDING }),
     __metadata("design:type", String)
 ], Application.prototype, "status", void 0);

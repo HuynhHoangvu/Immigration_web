@@ -1,39 +1,45 @@
 import { X } from "lucide-react";
+import clsx from "clsx";
+import s from "./Modal.module.scss";
 
 interface ModalProps {
   title: string;
   onClose: () => void;
   children: React.ReactNode;
-  /** Tailwind max-width class, mặc định max-w-2xl */
   size?: "sm" | "md" | "lg" | "xl";
 }
 
 const SIZE_MAP = {
-  sm: "max-w-sm",
-  md: "max-w-md",
-  lg: "max-w-lg",
-  xl: "max-w-2xl",
+  sm: s.sizeSm,
+  md: s.sizeMd,
+  lg: s.sizeLg,
+  xl: s.sizeXl,
 };
 
-export default function Modal({ title, onClose, children, size = "xl" }: ModalProps) {
+export default function Modal({
+  title,
+  onClose,
+  children,
+  size = "xl",
+}: ModalProps) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className={s.overlay}>
+      <div className={clsx("modal-overlay", s.backdrop)} onClick={onClose} />
       <div
-        className="absolute inset-0 modal-overlay"
-        onClick={onClose}
-      />
-      <div
-        className={`relative modal-content w-full ${SIZE_MAP[size]} max-h-[90vh] overflow-y-auto custom-scrollbar`}
+        className={clsx(
+          "modal-content",
+          "custom-scrollbar",
+          s.content,
+          SIZE_MAP[size],
+        )}
       >
-        {/* Header */}
         <div className="modal-header">
           <h2 className="modal-title">{title}</h2>
-          <button onClick={onClose} className="modal-close-btn">
+          <button type="button" onClick={onClose} className="modal-close-btn">
             <X size={16} />
           </button>
         </div>
-        {/* Body */}
-        <div className="p-5">{children}</div>
+        <div className={s.body}>{children}</div>
       </div>
     </div>
   );

@@ -8,9 +8,17 @@ export class CreateJobDto {
   @IsString()
   title: string
 
+  @ApiProperty({ required: false })
+  @IsString() @IsOptional()
+  titleEn?: string
+
   @ApiProperty()
   @IsString()
   description: string
+
+  @ApiProperty({ required: false })
+  @IsString() @IsOptional()
+  descriptionEn?: string
 
   @ApiProperty({ required: false })
   @IsString() @IsOptional()
@@ -18,7 +26,15 @@ export class CreateJobDto {
 
   @ApiProperty({ required: false })
   @IsString() @IsOptional()
+  requirementsEn?: string
+
+  @ApiProperty({ required: false })
+  @IsString() @IsOptional()
   benefits?: string
+
+  @ApiProperty({ required: false })
+  @IsString() @IsOptional()
+  benefitsEn?: string
 
   @ApiProperty({ required: false })
   @IsString() @IsOptional()
@@ -84,6 +100,11 @@ export class CreateJobDto {
   @ApiProperty({ required: false })
   @IsString() @IsOptional()
   categoryId?: string
+
+  @ApiProperty({ required: false, description: 'Force refresh auto-translation for English fields on update' })
+  @IsOptional() @Transform(({ value }) => value === 'true' || value === true)
+  @IsBoolean()
+  forceRetranslate?: boolean
 }
 
 export class UpdateJobDto extends CreateJobDto {}

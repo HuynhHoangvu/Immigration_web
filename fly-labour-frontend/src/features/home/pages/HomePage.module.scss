@@ -1,0 +1,8 @@
+.dragWrap {
+  position: relative;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}

@@ -20,6 +20,7 @@ export declare class Application {
     cvUrl: string;
     coverLetter: string;
     adminNote: string;
+    employerNote: string;
     status: ApplicationStatus;
     user: User;
     userId: string;

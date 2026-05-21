@@ -1,0 +1,255 @@
+.wrap {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 2rem;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.editOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgb(0 0 0 / 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editDialog {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  box-shadow: var(--shadow-xl);
+  max-width: 20rem;
+}
+
+.editTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.editInput {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  background: #fff;
+  color: #111827;
+  margin-bottom: 0.75rem;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--accent-primary);
+  }
+}
+
+.editActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btnSave {
+  flex: 1;
+  background: #22c55e;
+  color: #fff;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+
+  &:hover {
+    background: #16a34a;
+  }
+}
+
+.btnCancel {
+  flex: 1;
+  background: #9ca3af;
+  color: #fff;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background: #6b7280;
+  }
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.itemWrap {
+  position: relative;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius-2xl);
+  padding: 0.625rem 1rem;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow:
+    0 25px 50px -12px rgb(0 0 0 / 0.25),
+    0 0 0 2px transparent;
+
+  &:hover {
+    border-color: #9ca3af;
+  }
+}
+
+.cardHotline:hover {
+  box-shadow:
+    0 25px 50px -12px rgb(0 0 0 / 0.25),
+    0 0 0 2px rgb(34 197 94 / 0.4);
+}
+
+.cardZalo:hover {
+  box-shadow:
+    0 25px 50px -12px rgb(0 0 0 / 0.25),
+    0 0 0 2px rgb(0 104 255 / 0.35);
+}
+
+.cardMessenger:hover {
+  box-shadow:
+    0 25px 50px -12px rgb(0 0 0 / 0.25),
+    0 0 0 2px rgb(0 153 255 / 0.35);
+}
+
+.iconBase {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: var(--shadow-lg);
+  flex-shrink: 0;
+}
+
+.iconHotline {
+  background: #22c55e;
+}
+
+.iconZalo {
+  background: #0068ff;
+}
+
+.iconMessenger {
+  background: #0099ff;
+}
+
+.zaloLetter {
+  font-size: 0.875rem;
+  font-weight: 900;
+}
+
+.label {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  line-height: 1;
+}
+
+.value {
+  font-size: 0.875rem;
+  color: #000;
+  font-weight: 600;
+}
+
+.editFab {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: var(--accent-primary);
+  border: none;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111827;
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+
+  .itemWrap:hover & {
+    opacity: 1;
+  }
+
+  &:hover {
+    background: #eab308;
+  }
+}
+
+.pulse {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-2xl);
+  animation: floatContactPing 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+  opacity: 0.25;
+}
+
+@keyframes floatContactPing {
+  75%,
+  100% {
+    transform: scale(1.15);
+    opacity: 0;
+  }
+}
+
+.toggleWrap {
+  position: relative;
+}
+
+.toggleBtn {
+  position: relative;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.toggleIcon {
+  color: #0f172a;
+}

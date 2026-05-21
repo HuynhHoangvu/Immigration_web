@@ -5,6 +5,7 @@ import { AuthModule } from './modules/auth/auth.module'
 import { UsersModule } from './modules/users/users.module'
 import { JobsModule } from './modules/jobs/jobs.module'
 import { ApplicationsModule } from './modules/applications/applications.module'
+import { StudyApplicationsModule } from './modules/study-applications/study-applications.module'
 import { CategoriesModule } from './modules/categories/categories.module'
 import { NewsModule } from './modules/news/news.module'
 import { ContactModule } from './modules/contact/contact.module'
@@ -29,14 +30,12 @@ const logger = new Logger('TypeORM')
         const isProduction = nodeEnv !== 'development';
 
         if (databaseUrl) {
-          // Kiểm tra xem URL có phải là mạng nội bộ của Railway không
           const isInternalUrl = databaseUrl.includes('.internal');
 
           return {
             type: 'postgres',
             url: databaseUrl,
-            // Nếu là nội bộ -> Tắt SSL (false). Nếu là Public -> Bật SSL
-            ssl: isInternalUrl ? false : { rejectUnauthorized: false }, 
+            ssl: isInternalUrl ? false : { rejectUnauthorized: false },
             entities: [join(__dirname, '**', '*.entity{.ts,.js}')],
             synchronize: true,
             logging: !isProduction,
@@ -52,7 +51,6 @@ const logger = new Logger('TypeORM')
           };
         }
 
-        // Cấu hình fallback cho Local (Docker/Localhost)
         const host = cfg.get<string>('DB_HOST', 'localhost')
         const password = cfg.get<string>('DB_PASSWORD')
         if (!password) logger.warn('DB_PASSWORD not set — using default "123456" (development only)')
@@ -78,6 +76,7 @@ const logger = new Logger('TypeORM')
     UsersModule,
     JobsModule,
     ApplicationsModule,
+    StudyApplicationsModule,
     CategoriesModule,
     NewsModule,
     ContactModule,

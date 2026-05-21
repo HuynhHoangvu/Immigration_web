@@ -1,0 +1,130 @@
+@use "./mixins" as mx;
+@use "./breakpoints" as bp;
+
+// Lớp semantic mỏng — dùng dần khi tách khỏi Tailwind (convert-shared).
+.fl-text-secondary {
+  color: var(--text-secondary);
+}
+
+.fl-text-tertiary {
+  color: var(--text-tertiary);
+}
+
+.fl-surface-page {
+  background-color: var(--background);
+  color: var(--text-base);
+}
+
+.fl-surface-raised {
+  background-color: var(--surface);
+}
+
+/// Breadcrumb / vùng phụ có blur (tin tức, handbook, chi tiết tin).
+.fl-strip-breadcrumb {
+  background-color: color-mix(in srgb, var(--surface-secondary) 55%, transparent);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+/// Thanh sticky (FAQ…) — đọc được khi cuộn.
+.fl-strip-sticky {
+  background-color: color-mix(in srgb, var(--background) 88%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/// Panel trong card/modal/footer bảng.
+.fl-surface-muted-50 {
+  background-color: color-mix(in srgb, var(--surface-secondary) 45%, transparent);
+}
+
+.fl-surface-muted-30 {
+  background-color: color-mix(in srgb, var(--surface-secondary) 28%, transparent);
+}
+
+.fl-truncate {
+  @include mx.text-truncate;
+}
+
+/// Container căn chỉnh với `max-w-screen-2xl` + px-4/sm:px-6/lg:px-10 (Header & trang chủ).
+.fl-shell {
+  width: 100%;
+  max-width: 96rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  @include bp.mq-sm {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  @include bp.mq-lg {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+/// Căn giữa + max-width (giống Tailwind max-w-*), không padding ngang.
+@mixin _fl-mx-auto($max-width) {
+  width: 100%;
+  max-width: $max-width;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fl-max-xs {
+  @include _fl-mx-auto(20rem);
+}
+
+.fl-max-lg {
+  @include _fl-mx-auto(32rem);
+}
+
+.fl-max-xl {
+  @include _fl-mx-auto(36rem);
+}
+
+.fl-max-2xl {
+  @include _fl-mx-auto(42rem);
+}
+
+.fl-max-3xl {
+  @include _fl-mx-auto(48rem);
+}
+
+.fl-max-4xl {
+  @include _fl-mx-auto(56rem);
+}
+
+.fl-max-5xl {
+  @include _fl-mx-auto(64rem);
+}
+
+.fl-max-6xl {
+  @include _fl-mx-auto(72rem);
+}
+
+.fl-max-7xl {
+  @include _fl-mx-auto(80rem);
+}
+
+/// `max-w-*` + `mx-auto` + `px-6`.
+.fl-container-4xl {
+  @include _fl-mx-auto(56rem);
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.fl-container-6xl {
+  @include _fl-mx-auto(72rem);
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.fl-container-7xl {
+  @include _fl-mx-auto(80rem);
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}

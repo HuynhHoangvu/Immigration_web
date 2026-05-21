@@ -19,10 +19,12 @@ const typeorm_2 = require("typeorm");
 const job_entity_1 = require("./job.entity");
 const gcs_service_1 = require("../../common/services/gcs.service");
 const constants_1 = require("../../common/constants");
+const job_translation_service_1 = require("./job-translation.service");
 let JobsService = class JobsService {
-    constructor(jobsRepo, gcsService) {
+    constructor(jobsRepo, gcsService, translationService) {
         this.jobsRepo = jobsRepo;
         this.gcsService = gcsService;
+        this.translationService = translationService;
     }
     async findAll(query) {
         const { page = 1, search, country, categoryId, jobType, isHot, isFeatured, sort } = query;
@@ -107,14 +109,17 @@ let JobsService = class JobsService {
         return job;
     }
     async create(dto, file) {
-        const job = this.jobsRepo.create(dto);
+        const translatedDto = await this.translationService.enrichEnglishFields(dto);
+        const job = this.jobsRepo.create(translatedDto);
         if (file)
             job.image = await this.saveFile(file);
         return this.jobsRepo.save(job);
     }
     async update(id, dto, file) {
         const job = await this.findOneRaw(id);
-        Object.assign(job, dto);
+        const translatedDto = await this.translationService.enrichEnglishFields(dto, job, Boolean(dto.forceRetranslate));
+        delete translatedDto.forceRetranslate;
+        Object.assign(job, translatedDto);
         if (file)
             job.image = await this.saveFile(file);
         return this.jobsRepo.save(job);
@@ -136,8 +141,37 @@ let JobsService = class JobsService {
         const [data, total] = await qb.getManyAndCount();
         return { data, meta: { total, page: +page, limit: +limit, totalPages: Math.ceil(total / limit) } };
     }
+    async getEmployerPerformance(employerId) {
+        const rows = await this.jobsRepo
+            .createQueryBuilder('job')
+            .leftJoin('applications', 'app', 'app.jobId = job.id')
+            .select('job.id', 'jobId')
+            .addSelect('job.title', 'title')
+            .addSelect('job.viewCount', 'viewCount')
+            .addSelect('COUNT(app.id)', 'applicationCount')
+            .addSelect(`COUNT(app.id) FILTER (WHERE app.status = 'approved')`, 'approvedCount')
+            .where('job.createdById = :employerId', { employerId })
+            .groupBy('job.id')
+            .addGroupBy('job.title')
+            .addGroupBy('job.viewCount')
+            .orderBy('job.createdAt', 'DESC')
+            .getRawMany();
+        return rows.map((r) => {
+            const views = Number(r.viewCount || 0);
+            const apps = Number(r.applicationCount || 0);
+            return {
+                jobId: r.jobId,
+                title: r.title,
+                viewCount: views,
+                applicationCount: apps,
+                approvedCount: Number(r.approvedCount || 0),
+                conversionRate: views > 0 ? Number(((apps / views) * 100).toFixed(2)) : 0,
+            };
+        });
+    }
     async createByEmployer(dto, employerId, file) {
-        const job = this.jobsRepo.create({ ...dto, createdById: employerId, status: job_entity_1.JobStatus.PENDING_REVIEW });
+        const translatedDto = await this.translationService.enrichEnglishFields(dto);
+        const job = this.jobsRepo.create({ ...translatedDto, createdById: employerId, status: job_entity_1.JobStatus.PENDING_REVIEW });
         if (file)
             job.image = await this.saveFile(file);
         return this.jobsRepo.save(job);
@@ -161,7 +195,9 @@ let JobsService = class JobsService {
         if (job.createdById !== employerId) {
             throw new common_1.ForbiddenException('You can only edit your own job listings');
         }
-        Object.assign(job, dto);
+        const translatedDto = await this.translationService.enrichEnglishFields(dto, job, Boolean(dto.forceRetranslate));
+        delete translatedDto.forceRetranslate;
+        Object.assign(job, translatedDto);
         if (file)
             job.image = await this.saveFile(file);
         return this.jobsRepo.save(job);
@@ -213,6 +249,7 @@ exports.JobsService = JobsService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(job_entity_1.Job)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
-        gcs_service_1.GcsService])
+        gcs_service_1.GcsService,
+        job_translation_service_1.JobTranslationService])
 ], JobsService);
 //# sourceMappingURL=jobs.service.js.map

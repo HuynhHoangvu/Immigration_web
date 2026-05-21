@@ -22,6 +22,13 @@ export const useAuthStore = create<AuthState>()(
         set({ user, token, isAuthenticated: true })
       },
 
+      loginWithGoogle: async (credential?: string) => {
+        if (!credential) return
+        const res = await authApi.loginGoogle(credential)
+        const { user, token } = res.data as { user: User; token: string }
+        set({ user, token, isAuthenticated: true })
+      },
+
       logout: () => set({ user: null, token: null, isAuthenticated: false }),
 
       setUser: (user: User) => set({ user }),

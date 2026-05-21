@@ -2,10 +2,12 @@ import { Repository } from 'typeorm';
 import { Job, JobStatus } from './job.entity';
 import { CreateJobDto, UpdateJobDto, QueryJobDto } from './dto/job.dto';
 import { GcsService } from '../../common/services/gcs.service';
+import { JobTranslationService } from './job-translation.service';
 export declare class JobsService {
     private jobsRepo;
     private gcsService;
-    constructor(jobsRepo: Repository<Job>, gcsService: GcsService);
+    private translationService;
+    constructor(jobsRepo: Repository<Job>, gcsService: GcsService, translationService: JobTranslationService);
     findAll(query: QueryJobDto): Promise<{
         data: Job[];
         meta: {
@@ -25,9 +27,13 @@ export declare class JobsService {
             createdBy: any;
             id: string;
             title: string;
+            titleEn: string;
             description: string;
+            descriptionEn: string;
             requirements: string;
+            requirementsEn: string;
             benefits: string;
+            benefitsEn: string;
             company: string;
             location: string;
             country: string;
@@ -71,6 +77,14 @@ export declare class JobsService {
             totalPages: number;
         };
     }>;
+    getEmployerPerformance(employerId: string): Promise<{
+        jobId: any;
+        title: any;
+        viewCount: number;
+        applicationCount: number;
+        approvedCount: number;
+        conversionRate: number;
+    }[]>;
     createByEmployer(dto: CreateJobDto, employerId: string, file?: Express.Multer.File): Promise<Job>;
     approveJob(id: string): Promise<Job>;
     rejectJob(id: string): Promise<Job>;

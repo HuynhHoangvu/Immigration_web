@@ -16,9 +16,13 @@ export declare enum JobStatus {
 export declare class Job {
     id: string;
     title: string;
+    titleEn: string;
     description: string;
+    descriptionEn: string;
     requirements: string;
+    requirementsEn: string;
     benefits: string;
+    benefitsEn: string;
     company: string;
     location: string;
     country: string;

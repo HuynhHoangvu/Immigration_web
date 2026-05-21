@@ -8,13 +8,16 @@ import ScrollToTop from "@components/widgets/ScrollToTop";
 import UserLayout from "@components/layout/UserLayout";
 import AdminLayout from "@/admin/layout/AdminLayout";
 
-// ── User pages ────────────────────────────────────────────────────────────────
+// ── Public site + user account (UserLayout) ─────────────────────────────────────
 import HomePage from "@features/home/pages/HomePage";
 import JobsPage from "@features/jobs/pages/JobsPage";
 import JobDetailPage from "@features/jobs/pages/JobDetailPage";
 import NewsPage from "@features/news/pages/NewsPage";
 import NewsDetailPage from "@features/news/pages/NewsDetailPage";
 import HandbookPage from "@features/news/pages/HandbookPage";
+import StudyPage from "@features/study/StudyPage";
+import StudyDetailPage from "@features/study/pages/StudyDetailPage";
+import TravelPage from "@features/travel/TravelPage";
 import ContactPage from "@features/contact/pages/ContactPage";
 import LoginPage from "@features/auth/pages/LoginPage";
 import RegisterPage from "@features/auth/pages/RegisterPage";
@@ -24,6 +27,7 @@ import ProcessPage from "@features/static-pages/pages/ProcessPage";
 import FaqPage from "@features/static-pages/pages/FaqPage";
 import PrivacyPage from "@features/static-pages/pages/PrivacyPage";
 import PolicyPage from "@features/static-pages/pages/PolicyPage";
+import TermsOfServicePage from "@features/static-pages/pages/TermsOfServicePage";
 import NotFoundPage from "@features/static-pages/pages/NotFoundPage";
 
 // ── Employer pages ────────────────────────────────────────────────────────────
@@ -45,8 +49,11 @@ import AdminChoresPage from "@/admin/pages/AdminChoresPage";
 import AdminContactsPage from "@/admin/pages/AdminContactsPage";
 import AdminPoliciesPage from "@/admin/pages/AdminPoliciesPage";
 import AdminHandbookPage from "@/admin/pages/AdminHandbookPage";
+import AdminStudyNewsPage from "@/admin/pages/AdminStudyNewsPage";
+import AdminStudyProgramsPage from "@/admin/pages/AdminStudyProgramsPage";
+import AdminStudyApplicationsPage from "@/admin/pages/AdminStudyApplicationsPage";
+import AdminTravelPage from "@/admin/pages/AdminTravelPage";
 
-import { lazy, Suspense } from "react";
 // ── Bootstrap components ──────────────────────────────────────────────────────
 function ContentLoader() {
   const load = useContentStore((s) => s.load);
@@ -85,7 +92,7 @@ export default function App() {
       />
 
       <Routes>
-        {/* ── User routes (wrapped by UserLayout via Outlet) ── */}
+        {/* ── Public / user (UserLayout + Outlet) ─────────────────────────────── */}
         <Route element={<UserLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/jobs" element={<JobsPage />} />
@@ -93,11 +100,15 @@ export default function App() {
           <Route path="/news" element={<NewsPage />} />
           <Route path="/news/:slug" element={<NewsDetailPage />} />
           <Route path="/handbook" element={<HandbookPage />} />
+          <Route path="/study" element={<StudyPage />} />
+          <Route path="/study/:slug" element={<StudyDetailPage />} />
+          <Route path="/travel" element={<TravelPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/process" element={<ProcessPage />} />
           <Route path="/faq" element={<FaqPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/tos" element={<TermsOfServicePage />} />
           <Route path="/policy/:slug" element={<PolicyPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="*" element={<NotFoundPage />} />
@@ -128,6 +139,10 @@ export default function App() {
           <Route path="chores" element={<AdminChoresPage />} />
           <Route path="contacts" element={<AdminContactsPage />} />
           <Route path="handbook" element={<AdminHandbookPage />} />
+          <Route path="study-programs" element={<AdminStudyProgramsPage />} />
+          <Route path="study-news" element={<AdminStudyNewsPage />} />
+          <Route path="study-applications" element={<AdminStudyApplicationsPage />} />
+          <Route path="travel" element={<AdminTravelPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

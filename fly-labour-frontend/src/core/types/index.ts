@@ -19,9 +19,13 @@ export interface Category {
 export interface Job {
   id: string
   title: string
+  titleEn?: string
   description: string
+  descriptionEn?: string
   requirements?: string
+  requirementsEn?: string
   benefits?: string
+  benefitsEn?: string
   company?: string
   location?: string
   country: Country
@@ -74,9 +78,37 @@ export interface Application {
   cvUrl?: string
   coverLetter?: string
   adminNote?: string
+  employerNote?: string
   status: AppStatus
   job?: Job
   jobId: string
+  user?: User
+  userId?: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface StudyApplication {
+  id: string
+  fullName: string
+  email: string
+  phone: string
+  dateOfBirth?: string
+  address?: string
+  education?: string
+  experience?: string
+  languageLevel?: string
+  cvUrl?: string
+  coverLetter?: string
+  adminNote?: string
+  status: AppStatus
+  // Study-specific fields
+  targetCountry?: string
+  university?: string
+  major?: string
+  degreeLevel?: string
+  intake?: string
+  budget?: string
   user?: User
   userId?: string
   createdAt: string
@@ -91,13 +123,21 @@ export interface News {
   content: string
   image?: string
   isPublished: boolean
-  type: 'news' | 'handbook'
+  type: 'news' | 'handbook' | 'study' | 'travel'
+  country?: string
+  registerUrl?: string
+  studyType?: string
+  priceFrom?: number
+  priceTo?: number
+  priceCurrency?: string
+  itinerary?: string
   createdAt: string
 }
 
-export interface PaginatedResponse<T> {
-  data: T[]
-  meta: { total: number; page: number; limit: number; totalPages: number }
+export interface EmployerJobPerformance {
+  jobId: string
+  applicationCount?: number
+  conversionRate?: number
 }
 
 export interface AuthState {
@@ -106,6 +146,7 @@ export interface AuthState {
   isAuthenticated: boolean
   login: (email: string, password: string) => Promise<void>
   register: (data: RegisterData) => Promise<void>
+  loginWithGoogle: (credential?: string) => Promise<void>
   logout: () => void
   setUser: (user: User) => void
 }
@@ -119,6 +160,11 @@ export interface RegisterData {
   role?: 'user' | 'employer'
   companyName?: string
   website?: string
+}
+
+export interface PaginatedResponse<T> {
+  data: T[]
+  meta: { total: number; page: number; limit: number; totalPages: number }
 }
 
 export type ChoreStatus = 'pending' | 'in_progress' | 'done'

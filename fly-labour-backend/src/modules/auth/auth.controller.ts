@@ -22,6 +22,12 @@ export class AuthController {
     return this.authService.login(dto)
   }
 
+  @Post('google')
+  @ApiOperation({ summary: 'Đăng nhập bằng Google' })
+  googleLogin(@Body() body: { idToken: string }) {
+    return this.authService.loginWithGoogle(body?.idToken)
+  }
+
   @Get('me')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('JWT')

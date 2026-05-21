@@ -29,8 +29,14 @@ let NewsController = class NewsController {
     }
     findAll() { return this.newsService.findAll(); }
     findAllHandbook() { return this.newsService.findAllHandbook(); }
+    findAllStudy(country, studyType) {
+        return this.newsService.findAllStudy(country, studyType);
+    }
+    findAllTravel() { return this.newsService.findAllTravel(); }
     findAllAdmin() { return this.newsService.findAllAdmin(); }
     findAllHandbookAdmin() { return this.newsService.findAllHandbookAdmin(); }
+    findAllStudyAdmin() { return this.newsService.findAllStudyAdmin(); }
+    findAllTravelAdmin() { return this.newsService.findAllTravelAdmin(); }
     findOne(slug) { return this.newsService.findOne(slug); }
     create(dto, file) {
         return this.newsService.create(dto, file);
@@ -56,6 +62,22 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], NewsController.prototype, "findAllHandbook", null);
 __decorate([
+    (0, common_1.Get)('study'),
+    (0, swagger_1.ApiOperation)({ summary: 'Du học đã publish (type=study)' }),
+    __param(0, (0, common_1.Query)('country')),
+    __param(1, (0, common_1.Query)('studyType')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", void 0)
+], NewsController.prototype, "findAllStudy", null);
+__decorate([
+    (0, common_1.Get)('travel'),
+    (0, swagger_1.ApiOperation)({ summary: 'Gói du lịch đã publish (type=travel)' }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], NewsController.prototype, "findAllTravel", null);
+__decorate([
     (0, common_1.Get)('admin/all'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, admin_guard_1.AdminGuard),
     (0, swagger_1.ApiBearerAuth)('JWT'),
@@ -71,6 +93,22 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], NewsController.prototype, "findAllHandbookAdmin", null);
+__decorate([
+    (0, common_1.Get)('admin/study'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, admin_guard_1.AdminGuard),
+    (0, swagger_1.ApiBearerAuth)('JWT'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], NewsController.prototype, "findAllStudyAdmin", null);
+__decorate([
+    (0, common_1.Get)('admin/travel'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, admin_guard_1.AdminGuard),
+    (0, swagger_1.ApiBearerAuth)('JWT'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], NewsController.prototype, "findAllTravelAdmin", null);
 __decorate([
     (0, common_1.Get)(':slug'),
     (0, swagger_1.ApiOperation)({ summary: 'Chi tiết bài viết theo slug' }),

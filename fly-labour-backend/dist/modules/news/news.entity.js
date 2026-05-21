@@ -43,6 +43,34 @@ __decorate([
     __metadata("design:type", String)
 ], News.prototype, "type", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], News.prototype, "country", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], News.prototype, "studyType", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], News.prototype, "registerUrl", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true, type: 'decimal', precision: 12, scale: 2 }),
+    __metadata("design:type", Number)
+], News.prototype, "priceFrom", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true, type: 'decimal', precision: 12, scale: 2 }),
+    __metadata("design:type", Number)
+], News.prototype, "priceTo", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true, default: 'VND' }),
+    __metadata("design:type", String)
+], News.prototype, "priceCurrency", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
+    __metadata("design:type", String)
+], News.prototype, "itinerary", void 0);
+__decorate([
     (0, typeorm_1.Column)({ default: true }),
     __metadata("design:type", Boolean)
 ], News.prototype, "isPublished", void 0);

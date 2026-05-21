@@ -16,6 +16,8 @@ import {
 } from "@core/utils/helpers";
 import toast from "react-hot-toast";
 import type { Job, Category } from "@core/types";
+import clsx from "clsx";
+import s from "./EmployerJobsPage.module.scss";
 
 const PRESET_COUNTRIES = getCountriesList();
 const BLANK = {
@@ -38,16 +40,11 @@ const BLANK = {
   categoryId: "",
 };
 
-// Huy hiệu trạng thái với màu sắc tương phản tốt trên cả 2 nền
 const STATUS_BADGE: Record<string, string> = {
-  active:
-    "text-green-600 bg-green-50 border-green-200 dark:text-green-400 dark:bg-green-400/10 dark:border-green-400/20",
-  draft:
-    "text-amber-600 bg-amber-50 border-amber-200 dark:text-yellow-400 dark:bg-yellow-400/10 dark:border-yellow-400/20",
-  paused:
-    "text-slate-500 bg-slate-100 border-slate-200 dark:text-slate-300 dark:bg-gray-400/10 dark:border-gray-400/20",
-  closed:
-    "text-red-600 bg-red-50 border-red-200 dark:text-red-400 dark:bg-red-400/10 dark:border-red-400/20",
+  active: s.statusActive,
+  draft: s.statusDraft,
+  paused: s.statusPaused,
+  closed: s.statusClosed,
 };
 
 export default function EmployerJobsPage() {
@@ -189,118 +186,112 @@ export default function EmployerJobsPage() {
     setForm((prev) => ({ ...prev, salaryCurrency: currency }));
   };
 
-  // Class dùng chung để đồng bộ giao diện
-  const cardClasses =
-    "bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl shadow-sm dark:shadow-none transition-colors";
-  const inputClasses =
-    "w-full text-sm rounded-xl px-4 bg-slate-50 dark:bg-[#1a1a1a] border border-slate-200 dark:border-white/5 text-slate-900 dark:text-white placeholder:text-slate-400 focus:bg-white dark:focus:bg-black focus:border-amber-400 dark:focus:border-brand-gold focus:ring-1 focus:ring-amber-400 dark:focus:ring-brand-gold outline-none transition-all";
+  const cardClasses = s.card;
+  const inputClasses = s.input;
 
   return (
-    <div className="space-y-6 transition-colors duration-300">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <div className={s.page}>
+      <div className={s.head}>
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+          <h1 className={s.headTitle}>
             Tin tuyển dụng của tôi
           </h1>
-          <p className="text-slate-500 dark:text-gray-300 text-sm">
+          <p className={s.headSub}>
             {jobs.length} tin đăng đang được quản lý
           </p>
         </div>
         <button
           onClick={openCreate}
-          className="btn-primary flex items-center gap-2 text-sm px-5 py-2.5 shadow-lg shadow-amber-500/20"
+          className={clsx("btn-primary", s.createBtn)}
         >
           <Plus size={18} /> Đăng tin mới
         </button>
       </div>
 
       {loading ? (
-        <div className="space-y-3">
+        <div className={s.loadingList}>
           {[...Array(4)].map((_, i) => (
-            <div
-              key={i}
-              className="h-24 bg-white dark:bg-brand-card rounded-2xl animate-pulse border border-slate-200 dark:border-brand-border"
-            />
+            <div key={i} className={clsx(s.loadingItem, "animate-pulse")} />
           ))}
         </div>
       ) : jobs.length === 0 ? (
-        <div className={`${cardClasses} p-16 text-center`}>
-          <div className="w-20 h-20 bg-slate-50 dark:bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Briefcase
-              size={32}
-              className="text-slate-300 dark:text-gray-300"
-            />
+        <div className={clsx(cardClasses, s.empty)}>
+          <div className={s.emptyIcon}>
+            <Briefcase size={32} />
           </div>
-          <p className="text-slate-900 dark:text-white font-bold text-lg mb-1">
+          <p className={s.emptyTitle}>
             Chưa có tin tuyển dụng nào
           </p>
-          <p className="text-slate-500 dark:text-gray-300 text-sm mb-6 max-w-xs mx-auto">
+          <p className={clsx(s.emptySub, "fl-max-xs")}>
             Bắt đầu tìm kiếm ứng viên tiềm năng bằng cách tạo tin tuyển dụng đầu
             tiên của bạn.
           </p>
           <button
             onClick={openCreate}
-            className="btn-primary text-sm px-6 py-2.5 font-medium"
+            className={clsx("btn-primary", s.emptyBtn)}
           >
             Đăng tin ngay
           </button>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className={s.list}>
           {jobs.map((job) => (
             <div
               key={job.id}
-              className={`${cardClasses} p-4 flex items-center gap-4 group hover:border-amber-400/50 transition-all`}
+              className={clsx(cardClasses, s.jobRow)}
             >
-              <div className="w-16 h-16 rounded-xl bg-slate-100 dark:bg-white/5 shrink-0 overflow-hidden border border-slate-100 dark:border-white/5">
+              <div className={s.thumb}>
                 {job.image ? (
                   <img
                     src={getImageUrl(job.image)}
                     alt=""
-                    className="w-full h-full object-cover transition-transform group-hover:scale-110"
+                    className={s.thumbImage}
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-slate-400 dark:text-gray-300">
+                  <div className={s.thumbFallback}>
                     <ImageIcon size={20} />
                   </div>
                 )}
               </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap mb-1">
-                  <h3 className="text-slate-900 dark:text-white font-bold truncate text-sm sm:text-base">
+              <div className={s.jobMain}>
+                <div className={s.jobTitleRow}>
+                  <h3 className={s.jobTitle}>
                     {job.title}
                   </h3>
                   <span
-                    className={`text-xs px-2 py-0.5 rounded-full border font-bold uppercase tracking-wider ${STATUS_BADGE[job.status] || ""}`}
+                    className={clsx(
+                      s.statusBadge,
+                      STATUS_BADGE[job.status] || s.statusPaused,
+                    )}
                   >
                     {job.status === "active" ? "Đang tuyển" : job.status}
                   </span>
                 </div>
-                <div className="flex items-center gap-2 text-slate-500 dark:text-gray-300 text-xs font-medium">
+                <div className={s.jobMeta}>
                   <span>{getCountryLabels()[job.country]}</span>
                   <span>•</span>
                   <span>{job.slots || 0} chỉ tiêu</span>
                   <span>•</span>
                   <span>{getJobTypeLabel(job.jobType)}</span>
                 </div>
-                <p className="text-slate-400 dark:text-gray-300 text-xs mt-1">
+                <p className={s.jobViews}>
                   Lượt xem:{" "}
-                  <span className="text-slate-600 dark:text-white font-bold">
+                  <span className={s.jobViewsStrong}>
                     {job.viewCount || 0}
                   </span>
                 </p>
               </div>
-              <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+              <div className={s.jobActions}>
                 <button
                   onClick={() => openEdit(job)}
-                  className="p-2.5 text-slate-400 hover:text-amber-600 dark:hover:text-brand-gold hover:bg-amber-50 dark:hover:bg-brand-gold/10 rounded-xl transition-all"
+                  className={clsx(s.iconBtn, s.editBtn)}
                   title="Chỉnh sửa"
                 >
                   <Edit2 size={16} />
                 </button>
                 <button
                   onClick={() => setDeleteId(job.id)}
-                  className="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
+                  className={clsx(s.iconBtn, s.deleteBtn)}
                   title="Xóa"
                 >
                   <Trash2 size={16} />
@@ -311,72 +302,71 @@ export default function EmployerJobsPage() {
         </div>
       )}
 
-      {/* Form Modal */}
       {modal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
-          <div className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-3xl w-full max-w-2xl my-auto shadow-2xl animate-in fade-in zoom-in duration-200">
-            <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-white/5">
-              <h2 className="font-bold text-slate-900 dark:text-white text-lg">
+        <div className={s.modalBackdrop}>
+          <div className={clsx(s.modalCard, "animate-in fade-in zoom-in duration-200")}>
+            <div className={s.modalHead}>
+              <h2 className={s.modalTitle}>
                 {editing
                   ? "Chỉnh sửa tin tuyển dụng"
                   : "Đăng tin tuyển dụng mới"}
               </h2>
               <button
                 onClick={() => setModal(false)}
-                className="p-2 text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl transition-colors"
+                className={s.closeBtn}
               >
                 <X size={20} />
               </button>
             </div>
 
-            <div className="p-6 space-y-5 max-h-[70vh] overflow-y-auto custom-scrollbar">
+            <div className={clsx(s.modalBody, "custom-scrollbar")}>
               {/* Vị trí & Công ty */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="md:col-span-2">
-                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
+              <div className={s.sectionGrid2}>
+                <div className={s.span2}>
+                  <label className={s.label}>
                     Tiêu đề tuyển dụng *
                   </label>
                   <input
                     value={form.title}
                     onChange={f("title")}
-                    className={`${inputClasses} h-12`}
+                    className={clsx(inputClasses, s.inputH12)}
                     placeholder="VD: Công nhân hái trái cây tại Úc"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
+                  <label className={s.label}>
                     Tên doanh nghiệp
                   </label>
                   <input
                     value={form.company}
                     onChange={f("company")}
-                    className={`${inputClasses} h-12`}
+                    className={clsx(inputClasses, s.inputH12)}
                     placeholder="Tên công ty"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
+                  <label className={s.label}>
                     Địa điểm cụ thể
                   </label>
                   <input
                     value={form.location}
                     onChange={f("location")}
-                    className={`${inputClasses} h-12`}
+                    className={clsx(inputClasses, s.inputH12)}
                     placeholder="Thành phố / Bang"
                   />
                 </div>
               </div>
 
               {/* Quốc gia & Loại hình */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className={s.sectionGrid2}>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
+                  <label className={s.label}>
                     Quốc gia *
                   </label>
                   <select
                     value={form.country}
                     onChange={f("country")}
-                    className={`${inputClasses} h-12 appearance-none`}
+                    className={clsx(inputClasses, s.inputH12, "appearance-none")}
                   >
                     {PRESET_COUNTRIES.map((c) => (
                       <option key={c.value} value={c.value}>
@@ -389,19 +379,19 @@ export default function EmployerJobsPage() {
                     <input
                       value={form.countryCustom}
                       onChange={f("countryCustom")}
-                      className={`${inputClasses} h-12 mt-2`}
+                      className={clsx(inputClasses, s.inputH12, "mt-2")}
                       placeholder="Nhập tên quốc gia"
                     />
                   )}
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
+                  <label className={s.label}>
                     Loại hình
                   </label>
                   <select
                     value={form.jobType}
                     onChange={f("jobType")}
-                    className={`${inputClasses} h-12 appearance-none`}
+                    className={clsx(inputClasses, s.inputH12, "appearance-none")}
                   >
                     {Object.entries(JOBTYPE_LABELS).map(([v, l]) => (
                       <option key={v} value={v}>
@@ -413,39 +403,39 @@ export default function EmployerJobsPage() {
               </div>
 
               {/* Lương & Tiền tệ */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className={s.sectionGrid3}>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
+                  <label className={s.label}>
                     Lương tối thiểu
                   </label>
                   <input
                     type="number"
                     value={form.salaryMin}
                     onChange={f("salaryMin")}
-                    className={`${inputClasses} h-12`}
+                    className={clsx(inputClasses, s.inputH12)}
                     placeholder="Min"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
+                  <label className={s.label}>
                     Lương tối đa
                   </label>
                   <input
                     type="number"
                     value={form.salaryMax}
                     onChange={f("salaryMax")}
-                    className={`${inputClasses} h-12`}
+                    className={clsx(inputClasses, s.inputH12)}
                     placeholder="Max"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
+                  <label className={s.label}>
                     Tiền tệ
                   </label>
                   <select
                     value={form.salaryCurrency}
                     onChange={handleCurrencyChange}
-                    className={`${inputClasses} h-12 appearance-none`}
+                    className={clsx(inputClasses, s.inputH12, "appearance-none")}
                   >
                     <option value="AUD">🇦🇺 AUD (Úc)</option>
                     <option value="CAD">🇨🇦 CAD (Canada)</option>
@@ -460,49 +450,49 @@ export default function EmployerJobsPage() {
               </div>
 
               {/* Chỉ tiêu & Hạn nộp */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className={s.sectionGrid3}>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
+                  <label className={s.label}>
                     Chỉ tiêu
                   </label>
                   <input
                     type="number"
                     value={form.slots}
                     onChange={f("slots")}
-                    className={`${inputClasses} h-12`}
+                    className={clsx(inputClasses, s.inputH12)}
                     placeholder="Số lượng"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
+                  <label className={s.label}>
                     Hạn nộp
                   </label>
                   <input
                     type="date"
                     value={form.deadline}
                     onChange={f("deadline")}
-                    className={`${inputClasses} h-12`}
+                    className={clsx(inputClasses, s.inputH12)}
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
+                  <label className={s.label}>
                     Trạng thái
                   </label>
                   <select
                     value={form.status}
                     onChange={f("status")}
-                    className={`${inputClasses} h-12 appearance-none font-bold`}
+                    className={clsx(inputClasses, s.inputH12, "appearance-none font-bold")}
                   >
-                    <option value="active" className="text-green-600 font-bold">
+                    <option value="active" className={s.optionGreen}>
                       Đang tuyển
                     </option>
-                    <option value="draft" className="text-slate-500 font-bold">
+                    <option value="draft" className={s.optionSlate}>
                       Bản nháp
                     </option>
-                    <option value="paused" className="text-amber-600 font-bold">
+                    <option value="paused" className={s.optionAmber}>
                       Tạm dừng
                     </option>
-                    <option value="closed" className="text-red-600 font-bold">
+                    <option value="closed" className={s.optionRed}>
                       Đã đóng
                     </option>
                   </select>
@@ -510,15 +500,15 @@ export default function EmployerJobsPage() {
               </div>
 
               {/* Ngành nghề & Ảnh */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className={s.sectionGrid2}>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
+                  <label className={s.label}>
                     Ngành nghề
                   </label>
                   <select
                     value={form.categoryId}
                     onChange={f("categoryId")}
-                    className={`${inputClasses} h-12 appearance-none`}
+                    className={clsx(inputClasses, s.inputH12, "appearance-none")}
                   >
                     <option value="">— Chọn ngành —</option>
                     {categories.map((c) => (
@@ -529,16 +519,16 @@ export default function EmployerJobsPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
+                  <label className={s.label}>
                     Ảnh bìa
                   </label>
-                  <div className="flex gap-3">
-                    <label className="flex-1 flex items-center justify-center gap-2 h-12 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-xl text-sm font-medium text-slate-600 dark:text-gray-300 hover:text-amber-600 hover:border-amber-400 cursor-pointer transition-all">
+                  <div className={s.uploadRow}>
+                    <label className={s.uploadBtn}>
                       <ImageIcon size={16} /> {preview ? "Thay đổi" : "Tải lên"}
                       <input
                         type="file"
                         accept="image/*"
-                        className="hidden"
+                        className={s.inputHidden}
                         onChange={(e) => {
                           const file = e.target.files?.[0];
                           if (!file) return;
@@ -551,11 +541,11 @@ export default function EmployerJobsPage() {
                       />
                     </label>
                     {(preview || form.image) && (
-                      <div className="w-12 h-12 rounded-xl border border-slate-200 dark:border-white/10 overflow-hidden shrink-0 shadow-sm">
+                      <div className={s.previewBox}>
                         <img
                           src={preview || getImageUrl(form.image)}
                           alt=""
-                          className="w-full h-full object-cover"
+                          className={s.previewImg}
                         />
                       </div>
                     )}
@@ -564,54 +554,54 @@ export default function EmployerJobsPage() {
               </div>
 
               {/* Văn bản dài */}
-              <div className="space-y-4 pt-2">
+              <div className={s.fieldGroup}>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
+                  <label className={s.label}>
                     Mô tả công việc *
                   </label>
                   <textarea
                     value={form.description}
                     onChange={f("description")}
-                    className={`${inputClasses} h-32 py-3 resize-none`}
+                    className={clsx(s.textarea, "h-32")}
                     placeholder="Mô tả nhiệm vụ chính..."
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
+                  <label className={s.label}>
                     Yêu cầu ứng viên
                   </label>
                   <textarea
                     value={form.requirements}
                     onChange={f("requirements")}
-                    className={`${inputClasses} h-24 py-3 resize-none`}
+                    className={clsx(s.textarea, "h-24")}
                     placeholder="Kỹ năng, kinh nghiệm..."
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 dark:text-gray-300 mb-2 block uppercase tracking-wider">
+                  <label className={s.label}>
                     Quyền lợi
                   </label>
                   <textarea
                     value={form.benefits}
                     onChange={f("benefits")}
-                    className={`${inputClasses} h-24 py-3 resize-none`}
+                    className={clsx(s.textarea, "h-24")}
                     placeholder="Lương thưởng, bảo hiểm, hỗ trợ..."
                   />
                 </div>
               </div>
             </div>
 
-            <div className="flex gap-3 p-6 border-t border-slate-100 dark:border-white/5">
+            <div className={s.modalFoot}>
               <button
                 onClick={() => setModal(false)}
-                className="flex-1 px-6 py-3 rounded-xl font-bold border border-slate-200 dark:border-brand-border text-slate-600 dark:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all"
+                className={s.cancelBtn}
               >
                 Hủy
               </button>
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="flex-1 btn-primary py-3 font-bold shadow-lg shadow-amber-500/20"
+                className={clsx("btn-primary", s.saveBtn)}
               >
                 {saving
                   ? "Đang xử lý..."
@@ -624,30 +614,29 @@ export default function EmployerJobsPage() {
         </div>
       )}
 
-      {/* Delete Confirmation Modal */}
       {deleteId && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md">
-          <div className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl animate-in fade-in zoom-in duration-150">
-            <div className="w-16 h-16 bg-red-50 dark:bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-4 text-red-500">
+        <div className={s.deleteBackdrop}>
+          <div className={clsx(s.deleteCard, "animate-in fade-in zoom-in duration-150")}>
+            <div className={s.deleteIcon}>
               <Trash2 size={32} />
             </div>
-            <h3 className="font-bold text-slate-900 dark:text-white text-xl mb-2">
+            <h3 className={s.deleteTitle}>
               Xóa tin tuyển dụng?
             </h3>
-            <p className="text-slate-500 dark:text-gray-300 text-sm mb-6 leading-relaxed">
+            <p className={s.deleteText}>
               Dữ liệu tin tuyển dụng và hồ sơ ứng viên liên quan sẽ bị xóa vĩnh
               viễn khỏi hệ thống.
             </p>
-            <div className="flex gap-3">
+            <div className={s.deleteActions}>
               <button
                 onClick={() => setDeleteId(null)}
-                className="flex-1 px-6 py-3 rounded-xl font-bold border border-slate-200 dark:border-brand-border text-slate-600 dark:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all"
+                className={s.cancelBtn}
               >
                 Hủy
               </button>
               <button
                 onClick={handleDelete}
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white rounded-xl py-3 text-sm font-bold shadow-lg shadow-red-500/20 transition-all"
+                className={s.confirmDeleteBtn}
               >
                 Xác nhận xóa
               </button>

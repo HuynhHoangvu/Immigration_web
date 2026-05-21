@@ -1,6 +1,6 @@
 import {
   Controller, Get, Post, Patch, Delete,
-  Body, Param, UseGuards, UseInterceptors, UploadedFile
+  Body, Param, Query, UseGuards, UseInterceptors, UploadedFile
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiTags, ApiBearerAuth, ApiOperation, ApiConsumes } from '@nestjs/swagger'
@@ -25,6 +25,16 @@ export class NewsController {
   @ApiOperation({ summary: 'Cẩm nang đã publish (type=handbook)' })
   findAllHandbook() { return this.newsService.findAllHandbook() }
 
+  @Get('study')
+  @ApiOperation({ summary: 'Du học đã publish (type=study)' })
+  findAllStudy(@Query('country') country?: string, @Query('studyType') studyType?: string) {
+    return this.newsService.findAllStudy(country, studyType)
+  }
+
+  @Get('travel')
+  @ApiOperation({ summary: 'Gói du lịch đã publish (type=travel)' })
+  findAllTravel() { return this.newsService.findAllTravel() }
+
   @Get('admin/all')
   @UseGuards(JwtAuthGuard, AdminGuard)
   @ApiBearerAuth('JWT')
@@ -34,6 +44,16 @@ export class NewsController {
   @UseGuards(JwtAuthGuard, AdminGuard)
   @ApiBearerAuth('JWT')
   findAllHandbookAdmin() { return this.newsService.findAllHandbookAdmin() }
+
+  @Get('admin/study')
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  @ApiBearerAuth('JWT')
+  findAllStudyAdmin() { return this.newsService.findAllStudyAdmin() }
+
+  @Get('admin/travel')
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  @ApiBearerAuth('JWT')
+  findAllTravelAdmin() { return this.newsService.findAllTravelAdmin() }
 
   @Get(':slug')
   @ApiOperation({ summary: 'Chi tiết bài viết theo slug' })

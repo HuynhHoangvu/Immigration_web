@@ -19,6 +19,7 @@ const swagger_1 = require("@nestjs/swagger");
 const multer_1 = require("multer");
 const common_2 = require("@nestjs/common");
 const jwt_auth_guard_1 = require("../../common/guards/jwt-auth.guard");
+const admin_guard_1 = require("../../common/guards/admin.guard");
 const path_1 = require("path");
 const gcs_service_1 = require("../../common/services/gcs.service");
 let UploadController = class UploadController {
@@ -31,6 +32,10 @@ let UploadController = class UploadController {
     }
     async uploadImage(file) {
         const url = await this.gcsService.uploadFile(file, 'images');
+        return { url, filename: file.originalname };
+    }
+    async uploadAvatar(file) {
+        const url = await this.gcsService.uploadFile(file, 'avatars');
         return { url, filename: file.originalname };
     }
 };
@@ -60,9 +65,9 @@ __decorate([
 ], UploadController.prototype, "uploadCv", null);
 __decorate([
     (0, common_1.Post)('image'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, admin_guard_1.AdminGuard),
     (0, swagger_1.ApiBearerAuth)('JWT'),
-    (0, swagger_1.ApiOperation)({ summary: 'Upload ảnh (JPG/PNG/WebP/GIF)' }),
+    (0, swagger_1.ApiOperation)({ summary: '[Admin] Upload ảnh (JPG/PNG/WebP/GIF) — dùng cho soạn thảo bài viết' }),
     (0, swagger_1.ApiConsumes)('multipart/form-data'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
         storage: (0, multer_1.memoryStorage)(),
@@ -81,6 +86,29 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UploadController.prototype, "uploadImage", null);
+__decorate([
+    (0, common_1.Post)('avatar'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)('JWT'),
+    (0, swagger_1.ApiOperation)({ summary: 'Upload ảnh đại diện (JPG/PNG/WebP/GIF)' }),
+    (0, swagger_1.ApiConsumes)('multipart/form-data'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
+        storage: (0, multer_1.memoryStorage)(),
+        limits: { fileSize: 5 * 1024 * 1024 },
+        fileFilter: (_req, file, cb) => {
+            const allowed = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+            const ext = (0, path_1.extname)(file.originalname).toLowerCase();
+            if (allowed.includes(ext))
+                cb(null, true);
+            else
+                cb(new Error('Chỉ chấp nhận file JPG, PNG, WebP, GIF'), false);
+        },
+    })),
+    __param(0, (0, common_1.UploadedFile)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UploadController.prototype, "uploadAvatar", null);
 exports.UploadController = UploadController = __decorate([
     (0, swagger_1.ApiTags)('📎 Upload'),
     (0, common_1.Controller)('upload'),

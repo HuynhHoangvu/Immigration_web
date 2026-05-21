@@ -3,10 +3,11 @@ import Header from "@components/layout/Header";
 import Footer from "@components/layout/Footer";
 import FloatingContact from "@components/widgets/FloatingContact";
 import BackgroundMusic from "@components/widgets/BackgroundMusic";
+import s from "./UserLayout.module.scss";
 
 export default function UserLayout() {
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0d1117] transition-colors duration-300">
+    <div className={`${s.root} fl-surface-page`}>
       <Header />
       <Outlet />
       <Footer />

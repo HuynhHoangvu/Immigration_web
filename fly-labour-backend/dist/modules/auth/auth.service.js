@@ -18,11 +18,13 @@ const jwt_1 = require("@nestjs/jwt");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const bcrypt = require("bcryptjs");
+const google_auth_library_1 = require("google-auth-library");
 const user_entity_1 = require("../users/user.entity");
 let AuthService = class AuthService {
     constructor(usersRepo, jwtService) {
         this.usersRepo = usersRepo;
         this.jwtService = jwtService;
+        this.googleClient = new google_auth_library_1.OAuth2Client(process.env.GOOGLE_CLIENT_ID);
     }
     async register(dto) {
         const exists = await this.usersRepo.findOne({ where: { email: dto.email } });
@@ -64,6 +66,44 @@ let AuthService = class AuthService {
             throw new common_1.UnauthorizedException();
         const { password, ...result } = user;
         return result;
+    }
+    async loginWithGoogle(idToken) {
+        if (!idToken)
+            throw new common_1.UnauthorizedException('Thiếu Google token');
+        if (!process.env.GOOGLE_CLIENT_ID) {
+            throw new common_1.UnauthorizedException('GOOGLE_CLIENT_ID chưa được cấu hình');
+        }
+        const ticket = await this.googleClient.verifyIdToken({
+            idToken,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+        const payload = ticket.getPayload();
+        if (!payload?.email)
+            throw new common_1.UnauthorizedException('Token Google không hợp lệ');
+        let user = await this.usersRepo.findOne({ where: { email: payload.email } });
+        if (!user) {
+            const randomPassword = await bcrypt.hash(`google-${payload.sub}-${Date.now()}`, 12);
+            user = this.usersRepo.create({
+                email: payload.email,
+                fullName: payload.name || payload.email.split('@')[0],
+                avatar: payload.picture,
+                password: randomPassword,
+                role: user_entity_1.UserRole.USER,
+            });
+            await this.usersRepo.save(user);
+        }
+        else if (!user.avatar && payload.picture) {
+            user.avatar = payload.picture;
+            await this.usersRepo.save(user);
+        }
+        if (!user.isActive)
+            throw new common_1.UnauthorizedException('Tài khoản đã bị khóa, vui lòng liên hệ admin');
+        const { password, ...result } = user;
+        return {
+            message: 'Đăng nhập Google thành công!',
+            user: result,
+            token: this.signToken(user),
+        };
     }
     signToken(user) {
         return this.jwtService.sign({

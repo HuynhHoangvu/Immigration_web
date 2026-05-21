@@ -4,7 +4,11 @@ export declare class ApplicationsController {
     constructor(appsService: ApplicationsService);
     create(dto: CreateApplicationDto, req: any): Promise<import("./application.entity").Application>;
     myApplications(req: any): Promise<import("./application.entity").Application[]>;
-    getEmployerApplications(req: any): Promise<import("./application.entity").Application[]>;
+    getEmployerApplications(req: any, query: {
+        status?: string;
+        jobId?: string;
+        search?: string;
+    }): Promise<import("./application.entity").Application[]>;
     findAll(query: {
         page?: number;
         limit?: number;
@@ -25,5 +29,6 @@ export declare class ApplicationsController {
     withdraw(id: string, req: any): Promise<import("./application.entity").Application>;
     employerUpdateStatus(id: string, body: {
         status: string;
+        employerNote?: string;
     }, req: any): Promise<import("./application.entity").Application>;
 }

@@ -10,6 +10,10 @@ export declare class UploadController {
         url: string;
         filename: string;
     }>;
+    uploadAvatar(file: Express.Multer.File): Promise<{
+        url: string;
+        filename: string;
+    }>;
 }
 export declare class UploadModule {
 }

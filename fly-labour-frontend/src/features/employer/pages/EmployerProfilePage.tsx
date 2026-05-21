@@ -10,10 +10,13 @@ import {
   Eye,
   EyeOff,
   CheckCircle,
+  Camera,
 } from "lucide-react";
-import { usersApi } from "@core/services/api";
+import { usersApi, uploadApi, getImageUrl } from "@core/services/api";
 import { useAuthStore } from "@core/store/authStore";
 import toast from "react-hot-toast";
+import clsx from "clsx";
+import s from "./EmployerProfilePage.module.scss";
 
 export default function EmployerProfilePage() {
   const { user, setUser } = useAuthStore();
@@ -26,6 +29,7 @@ export default function EmployerProfilePage() {
     website: user?.website || "",
   });
   const [savingInfo, setSavingInfo] = useState(false);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
 
   const [pw, setPw] = useState({
     currentPassword: "",
@@ -96,122 +100,149 @@ export default function EmployerProfilePage() {
   const fp = (k: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setPw((prev) => ({ ...prev, [k]: e.target.value }));
 
-  // Class dùng chung để đồng bộ UI
-  const cardClasses =
-    "bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl shadow-sm dark:shadow-none transition-colors";
-  const inputClasses =
-    "w-full text-sm rounded-xl px-4 bg-slate-50 dark:bg-[#1a1a1a] border border-slate-200 dark:border-white/5 text-slate-900 dark:text-white placeholder:text-slate-400 focus:bg-white dark:focus:bg-black focus:border-amber-400 dark:focus:border-brand-gold focus:ring-1 focus:ring-amber-400 dark:focus:ring-brand-gold outline-none transition-all";
-
   return (
-    <div className="space-y-6 max-w-3xl transition-colors duration-300">
+    <div className={clsx(s.page, "fl-max-3xl")}>
       <div>
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+        <h1 className={s.headTitle}>
           Hồ sơ Doanh nghiệp
         </h1>
-        <p className="text-slate-500 dark:text-gray-300 text-sm mt-1">
+        <p className={s.headSub}>
           Cập nhật thông tin công ty để thu hút ứng viên chất lượng hơn.
         </p>
       </div>
 
-      {/* Company info card */}
-      <div className={`${cardClasses} p-6 space-y-6`}>
-        <div className="flex items-center gap-2 mb-1">
-          <Building2
-            size={18}
-            className="text-amber-600 dark:text-brand-gold"
-          />
-          <h2 className="font-bold text-slate-900 dark:text-white">
+      <div className={clsx(s.card, s.page)}>
+        <div className={s.sectionTitleRow}>
+          <Building2 size={18} className={s.iconAmber} />
+          <h2 className={s.sectionTitle}>
             Thông tin công ty
           </h2>
         </div>
 
-        {/* Profile Header */}
-        <div className="flex items-center gap-5 p-4 bg-slate-50 dark:bg-white/5 rounded-2xl border border-slate-100 dark:border-white/5">
-          <div
-            className="w-20 h-20 rounded-2xl flex items-center justify-center text-amber-900 font-black text-3xl shrink-0 shadow-md"
-            style={{ background: "linear-gradient(135deg,#e4a808,#fdd52f)" }}
-          >
-            {(info.companyName || info.fullName || "C").charAt(0).toUpperCase()}
+        <div className={s.profileHead}>
+          <div className={s.avatarWrap}>
+            {user?.avatar ? (
+              <img
+                src={getImageUrl(user.avatar)}
+                alt=""
+                className={s.avatarImage}
+              />
+            ) : (
+              <div
+                className={s.avatarFallback}
+                style={{ background: "linear-gradient(135deg,#e4a808,#fdd52f)" }}
+              >
+                {(info.companyName || info.fullName || "C").charAt(0).toUpperCase()}
+              </div>
+            )}
+            <label className={s.avatarUpload}>
+              {uploadingAvatar ? (
+                <div className={clsx(s.spinSm, "animate-spin")} />
+              ) : (
+                <Camera size={14} />
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                className={s.hiddenInput}
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  e.target.value = "";
+                  if (!file) return;
+                  setUploadingAvatar(true);
+                  try {
+                    const { url } = await uploadApi.image(file);
+                    const res = await usersApi.updateMe({ avatar: url });
+                    setUser(res.data);
+                    toast.success("Đã cập nhật ảnh đại diện");
+                  } catch {
+                    toast.error("Tải ảnh đại diện thất bại");
+                  } finally {
+                    setUploadingAvatar(false);
+                  }
+                }}
+              />
+            </label>
           </div>
-          <div className="min-w-0">
-            <p className="text-slate-900 dark:text-white font-bold text-lg truncate">
+          <div className={s.minW0}>
+            <p className={s.companyName}>
               {info.companyName || "Tên doanh nghiệp"}
             </p>
-            <p className="text-slate-500 dark:text-gray-300 text-sm flex items-center gap-1.5 mt-1">
-              <Mail size={14} className="text-amber-500 dark:text-brand-gold" />{" "}
+            <p className={s.companyEmail}>
+              <Mail size={14} className={s.mailIcon} />{" "}
               {user?.email}
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-slate-500 dark:text-gray-300 uppercase tracking-wider flex items-center gap-2">
+        <div className={s.formGrid}>
+          <div className={s.field}>
+            <label className={s.label}>
               <User size={13} /> Người đại diện *
             </label>
             <input
               value={info.fullName}
               onChange={fi("fullName")}
-              className={`${inputClasses} h-12`}
+              className={s.input}
               placeholder="Nguyễn Văn A"
             />
           </div>
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-slate-500 dark:text-gray-300 uppercase tracking-wider flex items-center gap-2">
+          <div className={s.field}>
+            <label className={s.label}>
               <Phone size={13} /> Số điện thoại
             </label>
             <input
               value={info.phone}
               onChange={fi("phone")}
-              className={`${inputClasses} h-12`}
+              className={s.input}
               placeholder="0901 234 567"
             />
           </div>
-          <div className="sm:col-span-2 space-y-1.5">
-            <label className="text-xs font-bold text-slate-500 dark:text-gray-300 uppercase tracking-wider flex items-center gap-2">
+          <div className={clsx(s.field, s.span2)}>
+            <label className={s.label}>
               <Building2 size={13} /> Tên chính thức công ty *
             </label>
             <input
               value={info.companyName}
               onChange={fi("companyName")}
-              className={`${inputClasses} h-12`}
+              className={s.input}
               placeholder="Công ty TNHH Giải pháp Nhân sự"
             />
           </div>
-          <div className="sm:col-span-2 space-y-1.5">
-            <label className="text-xs font-bold text-slate-500 dark:text-gray-300 uppercase tracking-wider flex items-center gap-2">
+          <div className={clsx(s.field, s.span2)}>
+            <label className={s.label}>
               <Globe size={13} /> Địa chỉ Website
             </label>
             <input
               value={info.website}
               onChange={fi("website")}
-              className={`${inputClasses} h-12`}
+              className={s.input}
               placeholder="https://company.com"
             />
           </div>
-          <div className="sm:col-span-2 space-y-1.5">
-            <label className="text-xs font-bold text-slate-500 dark:text-gray-300 uppercase tracking-wider block">
+          <div className={clsx(s.field, s.span2)}>
+            <label className={s.labelBlock}>
               Giới thiệu về doanh nghiệp
             </label>
             <textarea
               value={info.companyDescription}
               onChange={fi("companyDescription")}
               rows={5}
-              className={`${inputClasses} py-3 resize-none`}
+              className={s.textarea}
               placeholder="Chia sẻ về lĩnh vực hoạt động, văn hóa công ty để ứng viên tin tưởng hơn..."
             />
           </div>
         </div>
 
-        <div className="flex justify-end pt-2">
+        <div className={s.saveRow}>
           <button
             onClick={handleSaveInfo}
             disabled={savingInfo}
-            className="btn-primary flex items-center gap-2 px-8 py-3 text-sm font-bold shadow-lg shadow-amber-500/20"
+            className={clsx("btn-primary", s.saveBtn)}
           >
             {savingInfo ? (
               <>
-                <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />{" "}
+                <div className={clsx(s.spinDark, s.spin)} />{" "}
                 Đang lưu...
               </>
             ) : (
@@ -223,75 +254,73 @@ export default function EmployerProfilePage() {
         </div>
       </div>
 
-      {/* Account summary card */}
-      <div className={`${cardClasses} p-6`}>
-        <div className="flex items-center gap-2 mb-6">
-          <CheckCircle size={18} className="text-green-500" />
-          <h2 className="font-bold text-slate-900 dark:text-white">
+      <div className={s.card}>
+        <div className={s.sectionTitleRow}>
+          <CheckCircle size={18} className={s.iconGreen} />
+          <h2 className={s.sectionTitle}>
             Tài khoản & Trạng thái
           </h2>
         </div>
-        <div className="space-y-4 text-sm font-medium">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5">
-            <span className="text-slate-500 dark:text-gray-300 uppercase text-xs tracking-widest font-bold">
+        <div className={s.statusList}>
+          <div className={s.statusRow}>
+            <span className={s.statusKey}>
               Email đăng nhập
             </span>
-            <span className="text-slate-900 dark:text-white">
+            <span className={s.statusValue}>
               {user?.email}
             </span>
           </div>
-          <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5">
-            <span className="text-slate-500 dark:text-gray-300 uppercase text-xs tracking-widest font-bold">
+          <div className={s.statusRow}>
+            <span className={s.statusKey}>
               Loại tài khoản
             </span>
-            <span className="text-amber-600 dark:text-brand-gold font-bold">
+            <span className={s.roleValue}>
               Nhà tuyển dụng
             </span>
           </div>
-          <div className="flex items-center justify-between">
-            <span className="text-slate-500 dark:text-gray-300 uppercase text-xs tracking-widest font-bold">
+          <div className={s.statusRow}>
+            <span className={s.statusKey}>
               Trạng thái hệ thống
             </span>
-            <span className="text-green-600 dark:text-green-400 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />{" "}
+            <span className={s.onlineValue}>
+              <span className={clsx(s.onlineDot, "animate-pulse")} />{" "}
               Đang hoạt động
             </span>
           </div>
         </div>
       </div>
 
-      {/* Change password card */}
-      <div className={`${cardClasses} p-6 space-y-5`}>
-        <div className="flex items-center gap-2 mb-1">
-          <Lock size={18} className="text-amber-600 dark:text-brand-gold" />
-          <h2 className="font-bold text-slate-900 dark:text-white">
+      <div className={clsx(s.card, s.page)}>
+        <div className={s.sectionTitleRow}>
+          <Lock size={18} className={s.iconAmber} />
+          <h2 className={s.sectionTitle}>
             Bảo mật & Mật khẩu
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 pt-2">
+        <div className={s.passwordGrid}>
           {[
             { key: "currentPassword", label: "Mật khẩu hiện tại" },
             { key: "newPassword", label: "Mật khẩu mới (tối thiểu 8 ký tự)" },
             { key: "confirmPassword", label: "Xác nhận lại mật khẩu mới" },
           ].map((f) => (
-            <div key={f.key} className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-500 dark:text-gray-300 uppercase tracking-wider block">
+            <div key={f.key} className={s.field}>
+              <label className={s.labelBlock}>
                 {f.label}
               </label>
-              <div className="relative">
+              <div className={s.passwordInputWrap}>
                 <input
                   type={showPw ? "text" : "password"}
                   value={pw[f.key as keyof typeof pw]}
                   onChange={fp(f.key)}
-                  className={`${inputClasses} h-12 pr-12`}
+                  className={clsx(s.input, s.passwordInput)}
                   placeholder="••••••••"
                 />
                 {f.key === "currentPassword" && (
                   <button
                     type="button"
                     onClick={() => setShowPw((s) => !s)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white transition-colors"
+                    className={s.togglePw}
                   >
                     {showPw ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
@@ -301,15 +330,15 @@ export default function EmployerProfilePage() {
           ))}
         </div>
 
-        <div className="flex justify-end pt-2">
+        <div className={s.saveRow}>
           <button
             onClick={handleChangePw}
             disabled={savingPw}
-            className="flex items-center gap-2 px-6 py-3 text-sm font-bold rounded-xl border border-slate-300 dark:border-brand-border text-slate-700 dark:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all"
+            className={s.passwordSave}
           >
             {savingPw ? (
               <>
-                <div className="w-4 h-4 border-2 border-slate-300 border-t-slate-600 rounded-full animate-spin" />{" "}
+                <div className={clsx(s.spinSlate, s.spin)} />{" "}
                 Đang cập nhật...
               </>
             ) : (

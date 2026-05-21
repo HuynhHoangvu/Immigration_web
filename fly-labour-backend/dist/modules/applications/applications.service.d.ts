@@ -39,7 +39,11 @@ export declare class ApplicationsService {
     updateStatus(id: string, dto: UpdateApplicationStatusDto): Promise<Application>;
     getStatsByStatus(): Promise<any[]>;
     findByUser(userId: string): Promise<Application[]>;
-    findByEmployer(employerId: string): Promise<Application[]>;
+    findByEmployer(employerId: string, query?: {
+        status?: string;
+        jobId?: string;
+        search?: string;
+    }): Promise<Application[]>;
     withdraw(id: string, userId: string): Promise<Application>;
-    employerUpdateStatus(id: string, employerId: string, status: ApplicationStatus): Promise<Application>;
+    employerUpdateStatus(id: string, employerId: string, status: ApplicationStatus, employerNote?: string): Promise<Application>;
 }

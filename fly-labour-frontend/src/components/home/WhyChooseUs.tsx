@@ -1,5 +1,7 @@
 import { Shield, Globe, Clock, HeartHandshake } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useT } from "@core/hooks/useT";
+import s from "./WhyChooseUs.module.scss";
 
 const FEATURE_ICONS = [
   <Shield size={24} />,
@@ -13,78 +15,70 @@ export default function WhyChooseUs() {
   const h = t("home");
 
   return (
-    <section className="py-20 relative overflow-hidden transition-colors duration-300">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-500/5 dark:via-brand-gold/[0.02] to-transparent transition-colors duration-500" />
+    <section className={s.section}>
+      <div className={s.sectionBg} />
 
-      <div className="w-full px-4 md:px-8 xl:px-12 overflow-hidden relative">
-        <div className="relative">
-          {/* Stats row */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-10 sm:mb-14 lg:mb-20">
+      <div className={`fl-shell ${s.shell}`}>
+        <div className={s.inner}>
+          <div className={s.statsGrid}>
             {h.statsValues.map((val: string, i: number) => (
-              <div
-                key={i}
-                className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl shadow-sm dark:shadow-none p-3 sm:p-4 lg:p-6 text-center group hover:border-amber-400 dark:hover:border-brand-gold/50 hover:shadow-xl hover:shadow-amber-500/10 transition-all duration-300"
-              >
-                <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 mx-auto mb-2 sm:mb-3 lg:mb-4 flex items-center justify-center">
+              <div key={i} className={s.statCard}>
+                <div className={s.statIconWrap}>
                   <img
                     src={`/dashboar_img/${i + 1}.png`}
                     alt=""
-                    className="w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-500"
+                    className={s.statIcon}
                   />
                 </div>
-                <p className="font-display text-2xl sm:text-3xl lg:text-4xl gradient-text mb-1">
+                <p className={`gradient-text ${s.statValue}`}>
                   {val}
                 </p>
-                <p className="text-slate-600 dark:text-brand-muted text-sm font-medium transition-colors">
+                <p className={s.statLabel}>
                   {h.statsLabels[i]}
                 </p>
               </div>
             ))}
           </div>
 
-          {/* Why choose us */}
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
+          <div className={s.bodyGrid}>
             <div>
-              <p className="text-amber-600 dark:text-brand-gold text-sm font-bold uppercase tracking-widest mb-3 transition-colors">
+              <p className={s.badge}>
                 {h.whyBadge}
               </p>
-              <h2 className="section-title text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-5 transition-colors">
+              <h2 className={`section-title ${s.title}`}>
                 {h.whyTitle}{" "}
                 <span className="gradient-text">{h.whyTitleAccent}</span>{" "}
                 {h.whySubtitle}
               </h2>
-              <p className="text-slate-700 dark:text-gray-300 leading-relaxed mb-8 transition-colors">
+              <p className={s.desc}>
                 {h.whyDesc}
               </p>
-              <div className="flex flex-wrap gap-3">
-                <a
-                  href="/jobs"
-                  className="btn-primary text-sm px-6 py-2.5 font-medium shadow-md"
+              <div className={s.actions}>
+                <Link
+                  to="/jobs"
+                  className="btn-primary"
                 >
                   {h.findJob}
-                </a>
-                <a
-                  href="/contact"
-                  className="px-6 py-2.5 rounded-xl border border-slate-300 dark:border-brand-border text-slate-700 dark:text-brand-muted hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-colors text-sm font-medium"
+                </Link>
+                <Link
+                  to="/contact"
+                  className="btn-outline"
                 >
                   {h.freeConsult}
-                </a>
+                </Link>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className={s.featuresGrid}>
               {h.featureTitles.map((title: string, i: number) => (
-                <div
-                  key={i}
-                  className="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl shadow-sm dark:shadow-none p-5 group hover:border-amber-400 dark:hover:border-brand-gold/50 hover:shadow-xl hover:shadow-amber-500/10 transition-all duration-300"
-                >
-                  <div className="w-11 h-11 rounded-xl bg-amber-50 dark:bg-brand-gold/10 border border-amber-200 dark:border-brand-gold/20 flex items-center justify-center text-amber-600 dark:text-brand-gold mb-4 group-hover:bg-amber-100 dark:group-hover:bg-brand-gold/20 transition-colors shadow-sm dark:shadow-none">
+                <div key={i} className={s.featureCard}>
+                  <div className={s.featureIconWrap}>
                     {FEATURE_ICONS[i]}
                   </div>
-                  <h4 className="font-semibold text-slate-900 dark:text-white text-sm mb-2 transition-colors">
+                  <h4 className={s.featureTitle}>
                     {title}
                   </h4>
-                  <p className="text-slate-600 dark:text-gray-300 text-xs leading-relaxed transition-colors">
+                  <p className={s.featureDesc}>
                     {h.featureDescs[i]}
                   </p>
                 </div>

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import clsx from "clsx";
 import { HelpCircle, ChevronDown, MessageCircle } from "lucide-react";
-import { useT } from "../../../core/hooks/useT";
-
+import { useT } from "@core/hooks/useT";
+import s from "./FaqPage.module.scss";
 export default function FaqPage() {
   const { t } = useT();
   const d = t("faq");
@@ -83,37 +84,23 @@ export default function FaqPage() {
   const filteredFaqs = FAQS.filter((f) => f.category === activeCategory);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0d1117] transition-colors duration-300">
-      {/* Hero */}
-      <div className="relative pt-32 pb-16 px-6 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-white to-amber-100/30 dark:from-[#1a0f00] dark:via-brand-dark dark:to-brand-dark transition-colors duration-500" />
-        <div className="relative max-w-3xl mx-auto text-center">
-          <HelpCircle size={48} className="text-amber-500 dark:text-brand-gold mx-auto mb-6 opacity-80" />
-          <p className="text-amber-600 dark:text-brand-gold text-sm font-bold tracking-widest uppercase mb-4">
-            {d.badge}
-          </p>
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white leading-tight mb-6">
+    <div className={`${s.page} fl-surface-page`}>
+      <div className={s.hero}>
+        <div className={s.heroBg} />
+        <div className={`${s.heroInner} fl-max-3xl`}>
+          <HelpCircle size={48} className={s.heroIcon} />
+          <p className={s.badge}>{d.badge}</p>
+          <h1 className={s.title}>
             {d.title}
             <br />
-            <span
-              style={{
-                background: "linear-gradient(135deg,#e4a808,#fdd52f)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              {d.titleAccent}
-            </span>
+            <span className={s.titleAccent}>{d.titleAccent}</span>
           </h1>
-          <p className="text-slate-600 dark:text-gray-300 text-lg max-w-2xl mx-auto leading-relaxed">
-            {d.desc}
-          </p>
+          <p className={`${s.desc} fl-max-2xl`}>{d.desc}</p>
         </div>
       </div>
 
-      {/* Categories */}
-      <div className="sticky top-16 z-20 bg-slate-50/80 dark:bg-[#0d1117]/80 backdrop-blur-md border-y border-slate-200 dark:border-brand-border py-4 px-6 transition-colors">
-        <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-center gap-2">
+      <div className={`${s.categoryBar} fl-strip-sticky`}>
+        <div className={`${s.categoryWrap} fl-max-4xl`}>
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
@@ -121,11 +108,7 @@ export default function FaqPage() {
                 setActiveCategory(cat);
                 setOpenIndex(0);
               }}
-              className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
-                activeCategory === cat
-                  ? "bg-amber-500 dark:bg-brand-gold text-white dark:text-brand-dark shadow-md"
-                  : "bg-white dark:bg-brand-card text-slate-600 dark:text-gray-300 border border-slate-200 dark:border-brand-border hover:border-amber-400 dark:hover:border-brand-gold/30 hover:bg-amber-50 dark:hover:bg-brand-gold/5"
-              }`}
+              className={clsx(s.catBtn, activeCategory === cat && s.catBtnActive)}
             >
               {cat}
             </button>
@@ -133,55 +116,29 @@ export default function FaqPage() {
         </div>
       </div>
 
-      {/* FAQ Accordion */}
-      <div className="py-16 px-6 relative">
-        <div className="max-w-3xl mx-auto space-y-4">
+      <div className={s.faqSection}>
+        <div className={`${s.faqList} fl-max-3xl`}>
           {filteredFaqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
-              <div
-                key={index}
-                className={`group bg-white dark:bg-brand-card border rounded-2xl transition-all duration-300 overflow-hidden ${
-                  isOpen
-                    ? "border-amber-400 dark:border-brand-gold/50 shadow-md shadow-amber-900/5 dark:shadow-none"
-                    : "border-slate-200 dark:border-brand-border shadow-sm dark:shadow-none hover:border-amber-200 dark:hover:border-brand-gold/20"
-                }`}
-              >
+              <div key={index} className={clsx(s.faqItem, isOpen && s.faqItemOpen)}>
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : index)}
-                  className="w-full flex items-center justify-between p-5 md:p-6 text-left focus:outline-none"
+                  className={s.faqToggle}
                 >
-                  <span
-                    className={`font-semibold pr-6 transition-colors ${
-                      isOpen ? "text-amber-600 dark:text-brand-gold" : "text-slate-900 dark:text-white"
-                    }`}
-                  >
+                  <span className={clsx(s.faqQuestion, isOpen && s.faqQuestionOpen)}>
                     {faq.q}
                   </span>
-                  <div
-                    className={`shrink-0 w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300 ${
-                      isOpen
-                        ? "bg-amber-100 dark:bg-brand-gold/20 text-amber-600 dark:text-brand-gold"
-                        : "bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-gray-400"
-                    }`}
-                  >
+                  <div className={clsx(s.faqIconWrap, isOpen && s.faqIconWrapOpen)}>
                     <ChevronDown
                       size={18}
-                      className={`transition-transform duration-300 ${
-                        isOpen ? "rotate-180" : ""
-                      }`}
+                      className={clsx(s.faqChevron, isOpen && s.faqChevronOpen)}
                     />
                   </div>
                 </button>
-                <div
-                  className={`grid transition-all duration-300 ease-in-out ${
-                    isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-                  }`}
-                >
-                  <div className="overflow-hidden">
-                    <p className="p-5 md:p-6 pt-0 text-slate-600 dark:text-gray-300 leading-relaxed max-w-3xl">
-                      {faq.a}
-                    </p>
+                <div className={clsx(s.faqAnswerGrid, isOpen && s.faqAnswerGridOpen)}>
+                  <div className={s.faqAnswerInner}>
+                    <p className={s.faqAnswer}>{faq.a}</p>
                   </div>
                 </div>
               </div>
@@ -190,19 +147,14 @@ export default function FaqPage() {
         </div>
       </div>
 
-      {/* CTA Layer */}
-      <div className="py-20 px-6 border-t border-slate-200 dark:border-brand-border bg-white dark:bg-brand-card transition-colors">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="w-16 h-16 bg-amber-100 dark:bg-brand-gold/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <MessageCircle className="text-amber-600 dark:text-brand-gold" size={32} />
+      <div className={s.cta}>
+        <div className={`${s.ctaInner} fl-max-4xl`}>
+          <div className={s.ctaIconBox}>
+            <MessageCircle className={s.ctaIcon} size={32} />
           </div>
-          <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">
-            {d.cta_title}
-          </h2>
-          <p className="text-slate-600 dark:text-gray-300 mb-8 max-w-xl mx-auto text-lg">
-            {d.cta_desc}
-          </p>
-          <Link to="/contact" className="btn-primary inline-flex items-center gap-2 px-8 py-4 text-base">
+          <h2 className={s.ctaTitle}>{d.cta_title}</h2>
+          <p className={`${s.ctaDesc} fl-max-xl`}>{d.cta_desc}</p>
+          <Link to="/contact" className={`btn-primary ${s.ctaBtn}`}>
             {d.cta_btn}
           </Link>
         </div>

@@ -8,3 +8,4 @@ export { default as AdminSettingsPage } from "./AdminSettingsPage";
 export { default as AdminChoresPage } from "./AdminChoresPage";
 export { default as AdminContactsPage } from "./AdminContactsPage";
 export { default as AdminPoliciesPage } from "./AdminPoliciesPage";
+export { default as AdminTravelPage } from "./AdminTravelPage";

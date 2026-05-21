@@ -5,6 +5,7 @@ import JobCard from "@features/jobs/components/JobCard";
 import { jobsApi } from "@core/services/api";
 import { useT } from "@core/hooks/useT";
 import type { Job } from "@core/types";
+import s from "./LatestJobsSection.module.scss";
 
 export default function LatestJobsSection() {
   const [latestJobs, setLatestJobs] = useState<Job[]>([]);
@@ -21,36 +22,33 @@ export default function LatestJobsSection() {
   }, []);
 
   return (
-    <section className="py-16 transition-colors duration-300">
-      <div className="w-full px-4 md:px-8 xl:px-12 overflow-hidden">
-        <div className="flex items-end justify-between mb-10">
+    <section className={s.section}>
+      <div className={`fl-shell ${s.shell}`}>
+        <div className={s.header}>
           <div>
-            <p className="text-amber-600 dark:text-brand-gold text-sm font-bold uppercase tracking-widest mb-2 transition-colors">
+            <p className={s.badge}>
               {h.latestBadge}
             </p>
-            <h2 className="section-title text-3xl md:text-4xl font-bold text-slate-900 dark:text-white transition-colors">
+            <h2 className={s.title}>
               <span className="gradient-text">{h.latestTitle}</span>
             </h2>
           </div>
           <Link
             to="/jobs"
-            className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-xl border border-slate-300 dark:border-brand-border text-slate-700 dark:text-brand-muted hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors whitespace-nowrap"
+            className={s.viewAll}
           >
             {h.viewAll} <ArrowRight size={14} />
           </Link>
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className={s.grid}>
             {[...Array(6)].map((_, i) => (
-              <div
-                key={i}
-                className="h-72 bg-slate-100 dark:bg-[#1e1e1e] rounded-2xl animate-pulse border border-slate-200 dark:border-brand-border transition-colors"
-              />
+              <div key={i} className={s.skeleton} />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className={s.grid}>
             {latestJobs.map((job) => (
               <JobCard key={job.id} job={job} />
             ))}

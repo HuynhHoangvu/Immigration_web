@@ -1,0 +1,42 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+}
+
+.dialog {
+  position: relative;
+  width: 100%;
+  max-width: 24rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.titleTight {
+  margin-bottom: 0.25rem;
+}
+
+.messageBlock {
+  margin-bottom: 1.25rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btnStretch {
+  flex: 1;
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+  font-size: 0.875rem;
+}

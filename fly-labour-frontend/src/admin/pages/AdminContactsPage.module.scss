@@ -1,0 +1,67 @@
+.page { display:grid; gap:1.5rem; }
+.head { display:flex; flex-direction:column; align-items:flex-start; justify-content:space-between; gap:1rem; }
+@media (min-width:640px){ .head{ flex-direction:row; align-items:center; } }
+.title { display:inline-flex; align-items:center; gap:.5rem; font-size:1.5rem; font-weight:700; color:#0f172a; }
+.titleIcon { color:#d97706; }
+.sub { color:#64748b; font-size:.875rem; margin-top:.25rem; }
+.subAccent { margin-left:.5rem; color:#d97706; font-weight:700; }
+.filterWrap { display:flex; align-items:center; gap:.25rem; padding:.25rem; border:1px solid #e2e8f0; border-radius:.75rem; background:#f1f5f9; }
+.filterBtn { padding:.375rem 1rem; border-radius:.5rem; font-size:.75rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#64748b; transition:.2s; }
+.filterBtn:hover { color:#0f172a; }
+.filterBtnActive { background:#fff; box-shadow:var(--shadow-xs); color:#b45309; }
+
+.contentGrid { display:grid; gap:1.5rem; grid-template-columns:1fr; }
+@media (min-width:1024px){ .contentGrid{ grid-template-columns:1fr 1fr; } }
+.card { background:#fff; border:1px solid #e2e8f0; border-radius:1rem; box-shadow:var(--shadow-xs); transition:border-color .2s; }
+.listCol { display:grid; gap:.75rem; overflow-y:auto; max-height:calc(100vh - 200px); padding-right:.25rem; }
+.skeleton { height:6rem; border-radius:1rem; border:1px solid #e2e8f0; background:#fff; animation:contacts-pulse 1.5s ease infinite; }
+@keyframes contacts-pulse { 50% { opacity:.6; } }
+.empty { padding:3rem; text-align:center; }
+.emptyEmoji { font-size:2.25rem; margin-bottom:1rem; opacity:.5; }
+.emptyText { color:#64748b; font-weight:500; }
+
+.contactItem { border:2px solid; border-radius:1rem; padding:1rem; cursor:pointer; transition:.2s; display:block; }
+.contactItem:hover { border-color:#f59e0b; }
+.contactSelected { border-color:#f59e0b; background:#fffbeb; box-shadow:var(--shadow-md); }
+.contactRead { border-color:#f1f5f9; background:#fff; opacity:.75; }
+.contactUnread { border-color:#fde68a; background:#fff; box-shadow:var(--shadow-xs); }
+.rowTop { display:flex; align-items:flex-start; justify-content:space-between; gap:.75rem; }
+.rowMain { display:flex; align-items:flex-start; gap:1rem; min-width:0; }
+.avatar { width:2.5rem; height:2.5rem; border-radius:.75rem; display:flex; align-items:center; justify-content:center; color:#78350f; font-weight:900; font-size:.875rem; background:linear-gradient(135deg,#e4a808,#fdd52f); box-shadow:var(--shadow-xs); flex-shrink:0; }
+.mainText { min-width:0; }
+.nameRow { display:flex; align-items:center; gap:.5rem; margin-bottom:.25rem; }
+.name { color:#0f172a; font-weight:700; font-size:.875rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.dot { width:.5rem; height:.5rem; border-radius:999px; background:#f59e0b; animation:contacts-pulse 1.5s ease infinite; flex-shrink:0; }
+.email { color:#64748b; font-size:11px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.snippet { color:#475569; font-size:.75rem; margin-top:.5rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-style:italic; }
+.aside { text-align:right; flex-shrink:0; }
+.dateSm { color:#94a3b8; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.02em; }
+.statusIcon { margin-top:.5rem; display:flex; justify-content:flex-end; }
+.statusRead { color:#22c55e; }
+.statusUnread { color:#f59e0b; }
+
+.detail { overflow:hidden; display:flex; flex-direction:column; min-height:500px; }
+.detailEmpty { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:3rem; flex:1; }
+.detailIconWrap { width:5rem; height:5rem; background:#f8fafc; border-radius:999px; display:flex; align-items:center; justify-content:center; margin-bottom:1rem; }
+.detailIcon { color:#cbd5e1; }
+.detailEmptyText { color:#94a3b8; font-size:.875rem; font-weight:500; }
+.detailHead { display:flex; align-items:center; justify-content:space-between; padding:1.5rem; border-bottom:1px solid #f1f5f9; background:#f8fafc; }
+.detailHeadLeft { display:flex; align-items:center; gap:.75rem; }
+.detailHeadIcon { padding:.5rem; border-radius:.75rem; background:#fffbeb; color:#d97706; box-shadow:var(--shadow-xs); }
+.detailHeadTitle { color:#0f172a; font-weight:700; font-size:.875rem; }
+.readBadge { margin-left:.5rem; padding:.125rem .5rem; border-radius:999px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; background:#f0fdf4; color:#16a34a; border:1px solid #bbf7d0; }
+.closeBtn { padding:.5rem; border-radius:.75rem; color:#94a3b8; }
+.closeBtn:hover { background:#e2e8f0; }
+.detailBody { padding:1.5rem; display:grid; gap:1.5rem; flex:1; overflow-y:auto; }
+.infoGrid { display:grid; gap:1rem; grid-template-columns:1fr; }
+@media (min-width:640px){ .infoGrid{ grid-template-columns:1fr 1fr; } }
+.infoCard { padding:1rem; background:#f8fafc; border:1px solid #f1f5f9; border-radius:1rem; box-shadow:var(--shadow-xs); }
+.infoLabel { display:inline-flex; align-items:center; gap:.5rem; margin-bottom:.5rem; color:#94a3b8; text-transform:uppercase; font-size:10px; font-weight:700; letter-spacing:.12em; }
+.infoValue { color:#0f172a; font-size:1rem; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.messageCard { padding:1.5rem; background:#f8fafc; border:1px solid #f1f5f9; border-radius:1rem; }
+.messageTitle { font-size:10px; font-weight:700; color:#d97706; text-transform:uppercase; letter-spacing:.12em; margin-bottom:1rem; }
+.messageBody { color:#334155; font-size:.875rem; line-height:1.65; white-space:pre-wrap; }
+.actions { display:flex; gap:1rem; padding-top:1rem; }
+.replyBtn { flex:1; display:inline-flex; align-items:center; justify-content:center; gap:.75rem; padding:.875rem 1rem; border-radius:.75rem; background:linear-gradient(135deg,#f59e0b,#d97706); color:#fff; font-weight:700; font-size:.875rem; box-shadow:0 10px 22px rgba(217,119,6,.22); }
+.deleteBtn { padding:.875rem 1.5rem; border-radius:.75rem; border:1px solid #fecaca; color:#ef4444; font-size:.875rem; font-weight:700; display:inline-flex; align-items:center; gap:.5rem; }
+.deleteBtn:hover { background:#fef2f2; }

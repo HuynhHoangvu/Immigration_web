@@ -140,13 +140,20 @@ let ApplicationsService = class ApplicationsService {
             order: { createdAt: 'DESC' },
         });
     }
-    async findByEmployer(employerId) {
-        return this.appsRepo.createQueryBuilder('app')
+    async findByEmployer(employerId, query) {
+        const qb = this.appsRepo.createQueryBuilder('app')
             .leftJoinAndSelect('app.job', 'job')
             .leftJoinAndSelect('app.user', 'user')
             .where('job.createdById = :employerId', { employerId })
-            .orderBy('app.createdAt', 'DESC')
-            .getMany();
+            .orderBy('app.createdAt', 'DESC');
+        if (query?.status)
+            qb.andWhere('app.status = :status', { status: query.status });
+        if (query?.jobId)
+            qb.andWhere('app.jobId = :jobId', { jobId: query.jobId });
+        if (query?.search) {
+            qb.andWhere('(app.fullName ILIKE :s OR app.email ILIKE :s OR job.title ILIKE :s)', { s: `%${query.search}%` });
+        }
+        return qb.getMany();
     }
     async withdraw(id, userId) {
         const app = await this.appsRepo.findOne({ where: { id }, relations: ['job'] });
@@ -159,13 +166,20 @@ let ApplicationsService = class ApplicationsService {
         app.status = application_entity_1.ApplicationStatus.WITHDRAWN;
         return this.appsRepo.save(app);
     }
-    async employerUpdateStatus(id, employerId, status) {
+    async employerUpdateStatus(id, employerId, status, employerNote) {
         const app = await this.appsRepo.findOne({ where: { id }, relations: ['job'] });
         if (!app)
             throw new common_1.NotFoundException('Không tìm thấy đơn ứng tuyển');
         if (app.job?.createdById !== employerId)
             throw new common_1.ForbiddenException('Bạn không có quyền cập nhật đơn này');
+        const allowed = [application_entity_1.ApplicationStatus.REVIEWING, application_entity_1.ApplicationStatus.APPROVED, application_entity_1.ApplicationStatus.REJECTED];
+        const isStatusUnchanged = status === app.status;
+        if (!allowed.includes(status) && !isStatusUnchanged) {
+            throw new common_1.ForbiddenException('Trạng thái không hợp lệ cho nhà tuyển dụng');
+        }
         app.status = status;
+        if (employerNote !== undefined)
+            app.employerNote = employerNote;
         return this.appsRepo.save(app);
     }
 };

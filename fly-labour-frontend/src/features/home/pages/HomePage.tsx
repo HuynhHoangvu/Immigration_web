@@ -23,6 +23,7 @@ import EmployerCTASection from "@components/home/EmployerCTASection";
 import EnglishTestCtaRow from "@components/home/EnglishTestCtaRow";
 import { useEditModeStore } from "@core/store/editModeStore";
 import { useSectionManager } from "@core/hooks/useSectionManager";
+import s from "./HomePage.module.scss";
 
 const SECTION_COMPONENTS: Record<string, React.ReactNode> = {
   hero: <HeroBanner />,
@@ -63,7 +64,7 @@ function DraggableSection({
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
       {/* Thêm một lớp phủ cursor-grab để biểu thị có thể kéo thả nếu cần */}
-      <div className="relative group cursor-grab active:cursor-grabbing">
+      <div className={s.dragWrap}>
         {children}
       </div>
     </div>

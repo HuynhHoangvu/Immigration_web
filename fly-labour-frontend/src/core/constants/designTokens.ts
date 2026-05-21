@@ -5,6 +5,8 @@
  * Last Updated: April 6, 2026
  * Documentation: /DESIGN_SYSTEM.md (single source of truth)
  *
+ * Đồng bộ CSS variables: `src/styles/_tokens.scss` (emit qua `foundation.scss`).
+ *
  * Dùng file này cho: inline styles, chart colors, JS logic cần giá trị màu.
  * Dùng Tailwind classes (bg-theme-*, text-theme-*) cho JSX thông thường.
  */

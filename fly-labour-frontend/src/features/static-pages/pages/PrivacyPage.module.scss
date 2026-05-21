@@ -1,0 +1,131 @@
+@use "../../../styles/breakpoints" as bp;
+
+.page {
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.hero {
+  position: relative;
+  padding: 8rem 1.5rem 4rem;
+  overflow: hidden;
+}
+
+.heroBg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right, #fffbeb, #ffffff, rgba(254, 243, 199, 0.3));
+  transition: background 0.5s ease;
+}
+
+.heroInner {
+  position: relative;
+  text-align: center;
+}
+
+.heroIcon {
+  color: #f59e0b;
+  display: block;
+  margin: 0 auto 1rem;
+}
+
+.heroTitle {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 1rem;
+
+  @include bp.mq-md {
+    font-size: 2.25rem;
+  }
+}
+
+.desc {
+  color: #64748b;
+}
+
+.sub {
+  color: #475569;
+  font-size: 0.875rem;
+  margin-top: 0.75rem;
+}
+
+.content {
+  padding: 3rem 1.5rem;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.cardTitle {
+  color: #0f172a;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.body {
+  color: #334155;
+  font-size: 0.875rem;
+  line-height: 1.625;
+}
+
+.bulletRow {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.bulletDot {
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
+.strong {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.para {
+  margin-top: 0.25rem;
+}
+
+.sectionLead {
+  font-weight: 600;
+  color: #0f172a;
+  margin-top: 0.5rem;
+}
+
+.ctaSection {
+  padding: 3rem 1.5rem;
+  border-top: 1px solid #e2e8f0;
+  background: rgba(241, 245, 249, 0.5);
+  transition: background-color 0.2s ease;
+  text-align: center;
+}
+
+.ctaText {
+  color: #475569;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.ctaBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.5rem;
+  font-size: 0.875rem;
+}

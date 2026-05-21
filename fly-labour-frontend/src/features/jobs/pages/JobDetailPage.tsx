@@ -29,23 +29,11 @@ import {
 } from "@core/services/api";
 import type { Job } from "@core/types";
 import toast from "react-hot-toast";
+import clsx from "clsx";
+import CountryFlag from "@components/widgets/CountryFlag";
+import s from "./JobDetailPage.module.scss";
 
-const FLAG_MAP: Record<string, string> = {
-  australia: "🇦🇺",
-  canada: "🇨🇦",
-  new_zealand: "🇳🇿",
-  norway: "🇳🇴",
-  germany: "🇩🇪",
-  portugal: "🇵🇹",
-  czech: "🇨🇿",
-  us: "🇺🇸",
-  uk: "🇬🇧",
-  japan: "🇯🇵",
-  singapore: "🇸🇬",
-  south_korea: "🇰🇷",
-  taiwan: "🇹🇼",
-  uae: "🇦🇪",
-};
+
 
 const FALLBACK_IMAGES: Record<string, string> = {
   australia:
@@ -127,22 +115,22 @@ export default function JobDetailPage() {
 
   if (loading)
     return (
-      <div className="min-h-screen bg-slate-50 dark:bg-[#0d1117] transition-colors duration-300 pt-28 flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full animate-spin" />
+      <div className={`${s.centerState} fl-surface-page`}>
+        <div className={`${s.spinner} animate-spin`} />
       </div>
     );
 
   if (!job)
     return (
-      <div className="min-h-screen bg-slate-50 dark:bg-[#0d1117] transition-colors duration-300 pt-28 flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-5xl mb-4">😕</p>
-          <p className="text-slate-900 dark:text-white font-semibold mb-2">
+      <div className={`${s.centerState} fl-surface-page`}>
+        <div className={s.notFound}>
+          <p className={s.notFoundEmoji}>😕</p>
+          <p className={s.notFoundText}>
             {d.back}
           </p>
           <Link
             to="/jobs"
-            className="btn-primary inline-block text-sm px-5 py-2 font-medium"
+            className={clsx("btn-primary", s.notFoundBtn)}
           >
             {d.back}
           </Link>
@@ -206,61 +194,52 @@ export default function JobDetailPage() {
   const countryName = countryLabel
     .replace(/[\u{1F1E0}-\u{1F1FF}]{2}/gu, "")
     .trim();
-  const flag = FLAG_MAP[job.country] ?? "";
   const eduOptions: string[] = d.eduOptions;
   const engOptions: string[] = d.engOptions;
 
   // CSS đồng bộ UI
-  const cardClasses =
-    "bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl shadow-sm dark:shadow-none overflow-hidden transition-colors";
+  const cardClasses = s.card;
 
   // Input: Chữ thường (font-normal), màu xám nhẹ hơn để phân biệt với Label
-  const inputClasses =
-    "w-full text-sm font-normal rounded-xl px-4 bg-slate-50 dark:bg-[#1e1e1e] border border-slate-200 dark:border-white/5 text-slate-900 dark:text-white placeholder:text-slate-400 focus:bg-white dark:focus:bg-black focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none transition-all";
+  const inputClasses = s.input;
 
   // PHÂN CẤP CHỮ CHUẨN XÁC
   // 1. Tiêu đề chính: Đậm, rõ ràng
-  const sectionTitleClasses =
-    "font-bold text-lg md:text-xl text-slate-900 dark:text-white";
+  const sectionTitleClasses = s.sectionTitle;
   // 2. Nội dung đoạn văn
-  const bodyTextClasses =
-    "text-sm font-normal text-slate-900 dark:text-gray-100 leading-relaxed";
+  const bodyTextClasses = s.bodyText;
   // 3. Nhãn (Label form)
-  const labelClasses = "text-sm font-medium text-slate-900 dark:text-gray-100";
-  // 4. Giá trị động (Dữ liệu API)
-  const valueClasses = "text-sm font-semibold text-slate-900 dark:text-white";
-
+  const labelClasses = s.label;
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0d1117] transition-colors duration-300 pt-20">
-      {/* Breadcrumb */}
-      <div className="border-b border-slate-200 dark:border-brand-border bg-white/60 dark:bg-brand-card/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-gray-200">
+    <div className={`${s.page} fl-surface-page`}>
+      <div className={s.breadcrumb}>
+        <div className={`fl-container-7xl ${s.breadcrumbInner}`}>
           <Link
             to="/"
-            className="hover:text-slate-900 dark:hover:text-white transition-colors"
+            className={s.breadcrumbLink}
           >
             {d.home}
           </Link>
           <span>/</span>
           <Link
             to="/jobs"
-            className="hover:text-slate-900 dark:hover:text-white transition-colors"
+            className={s.breadcrumbLink}
           >
             {d.jobs}
           </Link>
           <span>/</span>
-          <span className="text-slate-900 dark:text-white font-medium truncate max-w-xs">
+          <span className={s.breadcrumbCurrent}>
             {job.title}
           </span>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-6">
+      <div className={`fl-container-7xl ${s.content}`}>
+        <div className={s.layout}>
+          <div className={s.mainCol}>
             {/* Job Header Card */}
             <div className={cardClasses}>
-              <div className="relative h-52 md:h-64 bg-slate-200 dark:bg-brand-dark overflow-hidden">
+              <div className="relative h-52 md:h-64 bg-slate-200  overflow-hidden">
                 <img
                   src={
                     job.image ||
@@ -272,8 +251,8 @@ export default function JobDetailPage() {
                 />
 
                 <div className="absolute top-4 left-4 flex gap-2 flex-wrap">
-                  <span className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-full bg-black/70 text-white backdrop-blur-sm border border-white/30 shadow-lg">
-                    {flag} {countryName}
+                  <span className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full bg-black/70 text-white backdrop-blur-sm border border-white/30 shadow-lg">
+                    <CountryFlag country={job.country} /> {countryName}
                   </span>
                   <span className="inline-flex items-center text-xs font-bold px-3 py-1.5 rounded-full bg-black/70 text-white backdrop-blur-sm border border-white/30 shadow-lg">
                     {getJobTypeLabel(job.jobType)}
@@ -299,34 +278,34 @@ export default function JobDetailPage() {
                     <span className="badge-hot font-bold">🔥 Hot</span>
                   )}
                   {job.isFeatured && (
-                    <span className="bg-amber-100 text-amber-800 dark:bg-brand-gold/20 dark:text-brand-gold text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide">
+                    <span className="bg-amber-100 text-amber-800   text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide">
                       {d.featured}
                     </span>
                   )}
-                  <span className="badge-country font-medium border dark:border-transparent">
-                    {flag} {countryName}
+                  <span className="badge-country font-medium border inline-flex items-center gap-1.5">
+                    <CountryFlag country={job.country} /> {countryName}
                   </span>
-                  <span className="text-xs font-medium px-3 py-1 rounded-full border text-slate-800 dark:text-gray-100 bg-slate-100 dark:bg-gray-700/40 border-slate-200 dark:border-gray-600">
+                  <span className="text-xs font-medium px-3 py-1 rounded-full border text-slate-800  bg-slate-100  border-slate-200 ">
                     {getJobTypeLabel(job.jobType)}
                   </span>
                 </div>
 
-                <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-3">
+                <h1 className="text-2xl md:text-3xl font-bold text-slate-900  mb-3">
                   {job.title}
                 </h1>
                 {job.company && (
-                  <div className="flex items-center gap-2 text-slate-800 dark:text-gray-100 text-base font-semibold mb-6">
+                  <div className="flex items-center gap-2 text-slate-800  text-base font-semibold mb-6">
                     <Building2 size={18} /> {job.company}
                   </div>
                 )}
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 border-t border-slate-100 dark:border-white/5 pt-5">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 border-t border-slate-100  pt-5">
                   {/* Thu nhập — chiếm full width trên mobile nếu dài */}
                   <div className="col-span-2 md:col-span-1">
-                    <p className="text-xs font-medium text-slate-500 dark:text-gray-400 mb-1">
+                    <p className="text-xs font-medium text-slate-500  mb-1">
                       {d.salary}
                     </p>
-                    <p className="text-amber-600 dark:text-brand-gold font-bold text-sm leading-snug break-words">
+                    <p className="text-amber-600  font-bold text-sm leading-snug break-words">
                       {formatSalary(
                         job.salaryMin,
                         job.salaryMax,
@@ -336,28 +315,28 @@ export default function JobDetailPage() {
                   </div>
                   {job.location && (
                     <div>
-                      <p className="text-xs font-medium text-slate-500 dark:text-gray-400 mb-1">
+                      <p className="text-xs font-medium text-slate-500  mb-1">
                         {d.location}
                       </p>
-                      <p className="text-sm font-semibold text-slate-900 dark:text-white">{job.location}</p>
+                      <p className="text-sm font-semibold text-slate-900 ">{job.location}</p>
                     </div>
                   )}
                   {job.slots && (
                     <div>
-                      <p className="text-xs font-medium text-slate-500 dark:text-gray-400 mb-1">
+                      <p className="text-xs font-medium text-slate-500  mb-1">
                         {d.slots}
                       </p>
-                      <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                      <p className="text-sm font-semibold text-slate-900 ">
                         {job.slots} {d.slots_label}
                       </p>
                     </div>
                   )}
                   {job.deadline && (
                     <div>
-                      <p className="text-xs font-medium text-slate-500 dark:text-gray-400 mb-1">
+                      <p className="text-xs font-medium text-slate-500  mb-1">
                         {d.deadline}
                       </p>
-                      <p className="text-sm font-semibold text-slate-900 dark:text-white">{formatDate(job.deadline)}</p>
+                      <p className="text-sm font-semibold text-slate-900 ">{formatDate(job.deadline)}</p>
                     </div>
                   )}
                 </div>
@@ -370,7 +349,7 @@ export default function JobDetailPage() {
                 {d.jobDescription}
               </h2>
               {d.originalLangWarning && (
-                <div className="mb-4 text-xs font-medium text-amber-600 dark:text-brand-gold bg-amber-50 dark:bg-brand-gold/10 px-3 py-2 rounded-lg border border-amber-200 dark:border-brand-gold/20 inline-flex items-center gap-2">
+                <div className="mb-4 text-xs font-medium text-amber-600  bg-amber-50  px-3 py-2 rounded-lg border border-amber-200  inline-flex items-center gap-2">
                   <span>🌐</span> {d.originalLangWarning}
                 </div>
               )}
@@ -393,8 +372,8 @@ export default function JobDetailPage() {
               return (
                 <div className="grid grid-cols-1 gap-6">
                   {/* Yêu cầu công việc block */}
-                  <div className="bg-white dark:bg-[#131926] rounded-2xl border border-slate-200 dark:border-brand-border overflow-hidden shadow-sm">
-                    <div className="bg-slate-50 dark:bg-black/20 px-6 py-5 border-b border-slate-200 dark:border-white/5">
+                  <div className="bg-white  rounded-2xl border border-slate-200  overflow-hidden shadow-sm">
+                    <div className="bg-slate-50  px-6 py-5 border-b border-slate-200 ">
                       <h3
                         className={`${sectionTitleClasses} flex items-center gap-3`}
                       >
@@ -404,7 +383,7 @@ export default function JobDetailPage() {
                     </div>
                     <div>
                       <table className="w-full border-collapse">
-                        <tbody className="divide-y divide-slate-100 dark:divide-white/5">
+                        <tbody className="divide-y divide-slate-100 ">
                           {[
                             { label: d.req_age || "Độ tuổi", value: structReq?.age },
                             {
@@ -419,28 +398,28 @@ export default function JobDetailPage() {
                           ].map((row, idx) => (
                             <tr
                               key={idx}
-                              className="transition-colors hover:bg-slate-50 dark:hover:bg-white/5"
+                              className="transition-colors hover:bg-slate-50 "
                             >
-                              <td className="w-1/3 p-4 text-sm font-medium text-slate-700 dark:text-gray-200">
+                              <td className="w-1/3 p-4 text-sm font-medium text-slate-700 ">
                                 {row.label}
                               </td>
-                              <td className="p-4 text-sm font-semibold text-slate-900 dark:text-white">
+                              <td className="p-4 text-sm font-semibold text-slate-900 ">
                                 {row.value || "—"}
                               </td>
                             </tr>
                           ))}
                           {structReq?.transport && (
-                            <tr className="transition-colors hover:bg-slate-50 dark:hover:bg-white/5">
-                              <td className="p-4 text-sm font-medium text-slate-700 dark:text-gray-200">
+                            <tr className="transition-colors hover:bg-slate-50 ">
+                              <td className="p-4 text-sm font-medium text-slate-700 ">
                                 {d.req_transport || "Phương tiện"}
                               </td>
-                              <td className="p-4 text-sm font-semibold text-slate-900 dark:text-white">
+                              <td className="p-4 text-sm font-semibold text-slate-900 ">
                                 {structReq.transport}
                               </td>
                             </tr>
                           )}
                           <tr>
-                            <td className="p-4 text-sm font-medium text-slate-700 dark:text-gray-200 align-top">
+                            <td className="p-4 text-sm font-medium text-slate-700  align-top">
                               {d.req_other || "Yêu cầu khác"}
                             </td>
                             <td className="p-4">
@@ -449,7 +428,7 @@ export default function JobDetailPage() {
                                   {structReq.other}
                                 </p>
                               ) : (
-                                <span className="text-sm text-slate-400 dark:text-gray-500">—</span>
+                                <span className="text-sm text-slate-400 ">—</span>
                               )}
                               {!structReq && job.requirements &&
                                 !job.requirements.startsWith('{"v2":') && (
@@ -463,7 +442,7 @@ export default function JobDetailPage() {
                           </tr>
                           {structReq?.checklist && structReq.checklist.length > 0 && (
                             <tr>
-                              <td className="p-4 text-sm font-medium text-slate-700 dark:text-gray-200 align-top">
+                              <td className="p-4 text-sm font-medium text-slate-700  align-top">
                                 {d.req_checklist || "Các hồ sơ cần chuẩn bị"}
                               </td>
                               <td className="p-4">
@@ -473,13 +452,13 @@ export default function JobDetailPage() {
                                       key={item}
                                       className="flex items-start gap-3"
                                     >
-                                      <div className="mt-1 flex-shrink-0 w-4 h-4 rounded-full bg-amber-50 dark:bg-brand-gold/10 flex items-center justify-center">
+                                      <div className="mt-1 flex-shrink-0 w-4 h-4 rounded-full bg-amber-50  flex items-center justify-center">
                                         <CheckCircle
                                           size={14}
-                                          className="text-amber-600 dark:text-brand-gold"
+                                          className="text-amber-600 "
                                         />
                                       </div>
-                                      <span className="text-sm font-medium text-slate-900 dark:text-gray-100 leading-relaxed">
+                                      <span className="text-sm font-medium text-slate-900  leading-relaxed">
                                         {item}
                                       </span>
                                     </div>
@@ -494,8 +473,8 @@ export default function JobDetailPage() {
                   </div>
 
                   {/* Quyền lợi block */}
-                  <div className="bg-white dark:bg-[#131926] rounded-2xl border border-slate-200 dark:border-brand-border overflow-hidden shadow-sm">
-                    <div className="bg-slate-50 dark:bg-black/20 px-6 py-5 border-b border-slate-200 dark:border-white/5">
+                  <div className="bg-white  rounded-2xl border border-slate-200  overflow-hidden shadow-sm">
+                    <div className="bg-slate-50  px-6 py-5 border-b border-slate-200 ">
                       <h3
                         className={`${sectionTitleClasses} flex items-center gap-3`}
                       >
@@ -505,24 +484,24 @@ export default function JobDetailPage() {
                     </div>
                     <div>
                       <table className="w-full border-collapse">
-                        <tbody className="divide-y divide-slate-100 dark:divide-white/5">
+                        <tbody className="divide-y divide-slate-100 ">
                           {structBen?.departure && (
-                            <tr className="transition-colors hover:bg-slate-50 dark:hover:bg-white/5">
-                              <td className="w-1/3 p-4 text-sm font-medium text-slate-700 dark:text-gray-200">
+                            <tr className="transition-colors hover:bg-slate-50 ">
+                              <td className="w-1/3 p-4 text-sm font-medium text-slate-700 ">
                                 {d.ben_departure || "Thời gian xuất cảnh"}
                               </td>
-                              <td className="p-4 text-sm font-semibold text-slate-900 dark:text-white">
+                              <td className="p-4 text-sm font-semibold text-slate-900 ">
                                 {structBen.departure}
                               </td>
                             </tr>
                           )}
                           <tr>
-                            <td className="w-1/3 p-4 text-sm font-medium text-slate-700 dark:text-gray-200 align-top">
+                            <td className="w-1/3 p-4 text-sm font-medium text-slate-700  align-top">
                               {d.ben_benefits || "Quyền lợi"}
                             </td>
                             <td className="p-4">
                               {structBen?.raw && !structBen.raw.startsWith('{"v2":') && !structBen.checklist?.length && (
-                                <p className="text-sm font-medium text-slate-900 dark:text-gray-100 leading-relaxed mb-4 whitespace-pre-line">
+                                <p className="text-sm font-medium text-slate-900  leading-relaxed mb-4 whitespace-pre-line">
                                   {structBen.raw}
                                 </p>
                               )}
@@ -532,13 +511,13 @@ export default function JobDetailPage() {
                                     key={item}
                                     className="flex items-start gap-3"
                                   >
-                                    <div className="mt-1 flex-shrink-0 w-4 h-4 rounded-full bg-green-50 dark:bg-green-500/10 flex items-center justify-center">
+                                    <div className="mt-1 flex-shrink-0 w-4 h-4 rounded-full bg-green-50  flex items-center justify-center">
                                       <CheckCircle
                                         size={14}
                                         className="text-green-600"
                                       />
                                     </div>
-                                    <span className="text-sm font-medium text-slate-900 dark:text-gray-100 leading-relaxed">
+                                    <span className="text-sm font-medium text-slate-900  leading-relaxed">
                                       {item}
                                     </span>
                                   </div>
@@ -546,7 +525,7 @@ export default function JobDetailPage() {
                                 {(!structBen || !structBen.checklist?.length) &&
                                   job.benefits &&
                                   !job.benefits.startsWith('{"v2":') && (
-                                    <p className="text-sm font-medium text-slate-900 dark:text-gray-100 leading-relaxed whitespace-pre-line">
+                                    <p className="text-sm font-medium text-slate-900  leading-relaxed whitespace-pre-line">
                                       {job.benefits}
                                     </p>
                                   )}
@@ -563,12 +542,12 @@ export default function JobDetailPage() {
 
             {/* Apply form */}
             {showForm && !submitted && (
-              <div className={`${cardClasses} p-6 md:p-8`} id="apply-form">
+              <div className={`${cardClasses} ${s.applyFormCard}`} id="apply-form">
                 <h2 className={`${sectionTitleClasses} mb-6`}>
                   {d.applyTitle}
                 </h2>
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <form onSubmit={handleSubmit} className={s.form}>
+                  <div className={s.fieldGrid}>
                     <div>
                       <label className={`${labelClasses} mb-2 block`}>
                         {d.fullName}
@@ -625,8 +604,8 @@ export default function JobDetailPage() {
                         className={`${inputClasses} h-12`}
                       />
                     </div>
-                    <div className="sm:col-span-2">
-                      <label className={`${labelClasses} mb-2 block`}>
+                    <div className={s.colSpan2}>
+                      <label className={`${labelClasses} ${s.labelBlock}`}>
                         {d.addressLabel}
                       </label>
                       <input
@@ -634,7 +613,7 @@ export default function JobDetailPage() {
                         onChange={(e) =>
                           setForm({ ...form, address: e.target.value })
                         }
-                        className={`${inputClasses} h-12`}
+                        className={`${inputClasses} ${s.inputH12}`}
                         placeholder={d.addressPlaceholder}
                       />
                     </div>
@@ -647,7 +626,7 @@ export default function JobDetailPage() {
                         onChange={(e) =>
                           setForm({ ...form, education: e.target.value })
                         }
-                        className={`${inputClasses} h-12`}
+                        className={`${inputClasses} ${s.inputH12}`}
                       >
                         {eduOptions.map((opt) => (
                           <option
@@ -668,7 +647,7 @@ export default function JobDetailPage() {
                         onChange={(e) =>
                           setForm({ ...form, languageLevel: e.target.value })
                         }
-                        className={`${inputClasses} h-12`}
+                        className={`${inputClasses} ${s.inputH12}`}
                       >
                         {engOptions.map((opt) => (
                           <option
@@ -680,8 +659,8 @@ export default function JobDetailPage() {
                         ))}
                       </select>
                     </div>
-                    <div className="sm:col-span-2">
-                      <label className={`${labelClasses} mb-2 block`}>
+                    <div className={s.colSpan2}>
+                      <label className={`${labelClasses} ${s.labelBlock}`}>
                         {d.experience}
                       </label>
                       <textarea
@@ -689,12 +668,12 @@ export default function JobDetailPage() {
                         onChange={(e) =>
                           setForm({ ...form, experience: e.target.value })
                         }
-                        className={`${inputClasses} h-28 py-3 resize-none`}
+                        className={`${inputClasses} ${s.textarea}`}
                         placeholder={d.expPlaceholder}
                       />
                     </div>
-                    <div className="sm:col-span-2">
-                      <label className={`${labelClasses} mb-2 block`}>
+                    <div className={s.colSpan2}>
+                      <label className={`${labelClasses} ${s.labelBlock}`}>
                         {d.coverLetter}
                       </label>
                       <textarea
@@ -702,32 +681,31 @@ export default function JobDetailPage() {
                         onChange={(e) =>
                           setForm({ ...form, coverLetter: e.target.value })
                         }
-                        className={`${inputClasses} h-28 py-3 resize-none`}
+                        className={`${inputClasses} ${s.textarea}`}
                         placeholder={d.coverPlaceholder}
                       />
                     </div>
-                    <div className="sm:col-span-2">
-                      <label className={`${labelClasses} mb-2 block`}>
+                    <div className={s.colSpan2}>
+                      <label className={`${labelClasses} ${s.labelBlock}`}>
                         CV / Hồ sơ đính kèm (PDF, DOC)
                       </label>
                       <label
-                        className={`flex items-center gap-3 p-4 rounded-xl border-2 border-dashed cursor-pointer transition-colors ${
-                          form.cvUrl
-                            ? "border-green-500/40 bg-green-50 dark:bg-green-500/5"
-                            : "border-slate-300 dark:border-brand-border hover:border-amber-400 dark:hover:border-brand-gold/40 bg-slate-50 dark:bg-brand-dark"
-                        }`}
+                        className={clsx(
+                          s.uploadBox,
+                          form.cvUrl && s.uploadBoxReady,
+                        )}
                       >
                         <input
                           type="file"
                           accept=".pdf,.doc,.docx"
                           onChange={handleCvChange}
-                          className="hidden"
+                          className={s.hiddenInput}
                           disabled={uploadingCv}
                         />
                         {uploadingCv ? (
                           <>
-                            <span className="w-5 h-5 border-2 border-amber-500 dark:border-brand-gold border-t-transparent rounded-full animate-spin shrink-0" />
-                            <span className="text-sm font-medium text-slate-800 dark:text-gray-100">
+                            <span className={`${s.miniSpin} animate-spin`} />
+                            <span className={s.uploadText}>
                               Đang tải lên hệ thống...
                             </span>
                           </>
@@ -735,9 +713,9 @@ export default function JobDetailPage() {
                           <>
                             <FileText
                               size={20}
-                              className="text-green-600 dark:text-green-400 shrink-0"
+                              className={s.uploadSuccess}
                             />
-                            <span className="text-sm text-green-600 dark:text-green-400 font-medium truncate">
+                            <span className={`${s.uploadText} ${s.uploadSuccess}`}>
                               {cvFile?.name || "CV đã được đính kèm"}
                             </span>
                           </>
@@ -745,9 +723,9 @@ export default function JobDetailPage() {
                           <>
                             <Upload
                               size={20}
-                              className="text-slate-400 dark:text-gray-500 shrink-0"
+                              className={s.uploadMuted}
                             />
-                            <span className="text-sm font-medium text-slate-600 dark:text-gray-400">
+                            <span className={`${s.uploadText} ${s.uploadMuted}`}>
                               Click để chọn file CV (Tối đa 10MB)
                             </span>
                           </>
@@ -755,16 +733,16 @@ export default function JobDetailPage() {
                       </label>
                     </div>
                   </div>
-                  <div className="flex gap-4 pt-4 border-t border-slate-100 dark:border-white/5">
+                  <div className={s.formActions}>
                     {/* Bỏ font-bold ở button, dùng font-semibold để gọn mắt hơn */}
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="btn-primary flex-1 py-3.5 text-base font-semibold flex items-center justify-center gap-2 rounded-xl"
+                      className={`btn-primary ${s.submitBtn}`}
                     >
                       {submitting ? (
                         <>
-                          <span className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                          <span className={`${s.submitSpin} animate-spin`} />
                           {d.submitting}
                         </>
                       ) : (
@@ -774,7 +752,7 @@ export default function JobDetailPage() {
                     <button
                       type="button"
                       onClick={() => setShowForm(false)}
-                      className="px-6 py-3.5 rounded-xl font-medium border border-slate-300 dark:border-brand-border text-slate-700 dark:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
+                      className={s.cancelBtn}
                     >
                       {d.cancel}
                     </button>
@@ -784,17 +762,15 @@ export default function JobDetailPage() {
             )}
 
             {submitted && (
-              <div
-                className={`${cardClasses} p-10 text-center border-green-500/30 dark:border-green-500/30`}
-              >
+              <div className={`${cardClasses} ${s.successCard}`}>
                 <CheckCircle
                   size={56}
-                  className="text-green-500 dark:text-green-400 mx-auto mb-4"
+                  className={s.successIcon}
                 />
-                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
+                <h3 className={s.successTitle}>
                   {d.successTitle}
                 </h3>
-                <p className="text-base font-normal text-slate-800 dark:text-gray-100">
+                <p className={s.successSub}>
                   {d.successSub}
                 </p>
               </div>
@@ -802,17 +778,17 @@ export default function JobDetailPage() {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
-            <div className={`${cardClasses} p-6 sticky top-24`}>
-              <div className="text-center mb-6">
-                <p className="text-amber-600 dark:text-brand-gold font-bold text-lg leading-snug mb-1 break-words">
+          <div className={s.sidebar}>
+            <div className={`${cardClasses} ${s.stickyCard}`}>
+              <div className={s.salaryHead}>
+                <p className={s.salaryValue}>
                   {formatSalary(
                     job.salaryMin,
                     job.salaryMax,
                     job.salaryCurrency,
                   )}
                 </p>
-                <p className="text-slate-700 dark:text-gray-200 font-medium text-sm">
+                <p className={s.salarySub}>
                   {d.estSalary}
                 </p>
               </div>
@@ -820,51 +796,51 @@ export default function JobDetailPage() {
               {!submitted ? (
                 job.deadline &&
                 new Date(job.deadline) < new Date(new Date().toDateString()) ? (
-                  <div className="w-full py-3.5 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 text-red-600 dark:text-red-400 text-center text-base font-semibold">
+                  <div className={`${s.statusBox} ${s.statusExpired}`}>
                     {d.expiredBtn || "Đã hết hạn nộp đơn"}
                   </div>
                 ) : (
                   <button
                     onClick={handleApply}
-                    className="btn-primary w-full py-4 text-base font-semibold flex items-center justify-center gap-2 rounded-xl"
+                    className={`btn-primary ${s.applyNowBtn}`}
                   >
                     {d.applyNow}
                   </button>
                 )
               ) : (
-                <div className="w-full py-3.5 rounded-xl bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/30 text-green-600 dark:text-green-400 text-center text-base font-semibold">
+                <div className={`${s.statusBox} ${s.statusApplied}`}>
                   {d.applied}
                 </div>
               )}
 
-              <p className="text-center text-sm font-medium text-slate-700 dark:text-gray-200 mt-4">
+              <p className={s.applyFree}>
                 {d.applyFree}
               </p>
 
-              <div className="mt-6 pt-5 border-t border-slate-200 dark:border-brand-border space-y-3 text-sm">
-                <div className="flex justify-between items-center">
-                  <span className="font-medium text-slate-700 dark:text-gray-200">
+              <div className={s.metaList}>
+                <div className={s.metaRow}>
+                  <span className={s.metaLabel}>
                     {d.posted}
                   </span>
-                  <span className="font-semibold text-slate-900 dark:text-white">
+                  <span className={s.metaValue}>
                     {formatDate(job.createdAt)}
                   </span>
                 </div>
                 {job.deadline && (
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium text-slate-700 dark:text-gray-200">
+                  <div className={s.metaRow}>
+                    <span className={s.metaLabel}>
                       {d.closingDate}
                     </span>
-                    <span className="font-semibold text-amber-600 dark:text-brand-orange">
+                    <span className={`${s.metaValue} ${s.metaAccent}`}>
                       {formatDate(job.deadline)}
                     </span>
                   </div>
                 )}
-                <div className="flex justify-between items-center">
-                  <span className="font-medium text-slate-700 dark:text-gray-200">
+                <div className={s.metaRow}>
+                  <span className={s.metaLabel}>
                     {d.views}
                   </span>
-                  <span className="font-semibold text-slate-900 dark:text-white flex items-center gap-1.5">
+                  <span className={`${s.metaValue} ${s.viewsValue}`}>
                     <Eye size={16} />
                     {job.viewCount}
                   </span>
@@ -873,24 +849,24 @@ export default function JobDetailPage() {
             </div>
 
             {relatedJobs.length > 0 && (
-              <div className={`${cardClasses} p-6`}>
+              <div className={`${cardClasses} ${s.relatedCard}`}>
                 <h3 className={`${sectionTitleClasses} text-lg mb-5`}>
                   {d.related}
                 </h3>
-                <div className="space-y-3">
+                <div className={s.relatedList}>
                   {relatedJobs.map((rj) => (
                     <Link
                       key={rj.id}
                       to={`/jobs/${rj.id}`}
-                      className="block p-4 bg-slate-50 border border-transparent dark:bg-white/5 rounded-xl hover:border-slate-300 dark:hover:border-white/20 transition-all group"
+                      className={s.relatedItem}
                     >
-                      <p className="text-base font-semibold text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-brand-gold transition-colors line-clamp-1">
+                      <p className={s.relatedTitle}>
                         {rj.title}
                       </p>
-                      <p className="text-sm font-medium text-slate-700 dark:text-gray-200 mt-1">
+                      <p className={s.relatedCompany}>
                         {rj.company}
                       </p>
-                      <p className="text-sm font-semibold text-amber-600 dark:text-brand-gold mt-2">
+                      <p className={s.relatedSalary}>
                         {formatSalary(
                           rj.salaryMin,
                           rj.salaryMax,

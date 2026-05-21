@@ -5,6 +5,14 @@ import process from 'process'
 
 export default defineConfig({
   plugins: [react()],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        // Dart Sass 1.x: tránh spam console khi Vite vẫn dùng JS API cũ
+        silenceDeprecations: ['legacy-js-api'],
+      },
+    },
+  },
   resolve: {
     alias: { 
       '@': path.resolve(__dirname, './src'),

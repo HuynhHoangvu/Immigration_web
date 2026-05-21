@@ -19,6 +19,8 @@ import { applicationsApi, usersApi } from "@core/services/api";
 import type { Application } from "@core/types";
 import { APP_STATUS_LABELS, formatDate } from "@core/utils/helpers";
 import toast from "react-hot-toast";
+import clsx from "clsx";
+import s from "./ProfilePage.module.scss";
 
 export default function ProfilePage() {
   const { user, setUser, logout, isAuthenticated } = useAuthStore();
@@ -117,109 +119,72 @@ export default function ProfilePage() {
     }
   };
 
-  // Class dùng chung
-  const cardClasses =
-    "bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl shadow-sm dark:shadow-none";
-  const inputClasses =
-    "w-full h-12 text-sm rounded-xl px-4 bg-slate-100 dark:bg-[#1e1e1e] border border-transparent dark:border-white/5 text-slate-900 dark:text-white placeholder:text-slate-400 focus:bg-white dark:focus:bg-black focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none transition-all";
+  const cardClasses = s.card;
+  const inputClasses = s.input;
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0d1117] transition-colors duration-300 pt-20 pb-16">
-      <div className="max-w-4xl mx-auto px-6 py-10">
-        <div className="grid md:grid-cols-3 gap-6">
-          {/* Left: Avatar & info */}
-          <div className="space-y-4">
-            <div className={`${cardClasses} p-6 text-center`}>
+    <div className={`${s.page} fl-surface-page`}>
+      <div className={`fl-container-4xl ${s.container}`}>
+        <div className={s.layout}>
+          <div className={s.leftCol}>
+            <div className={`${cardClasses} ${s.p6} ${s.textCenter}`}>
               <div
-                className="w-20 h-20 rounded-2xl flex items-center justify-center text-amber-900 text-3xl font-bold mx-auto mb-4 shadow-md"
-                style={{
-                  background: "linear-gradient(135deg,#e4a808,#fdd52f)",
-                }}
+                className={s.avatar}
+                style={{ background: "linear-gradient(135deg,#e4a808,#fdd52f)" }}
               >
                 {user.fullName.charAt(0)}
               </div>
-              <h2 className="font-bold text-slate-900 dark:text-white text-lg">
-                {user.fullName}
-              </h2>
-              <p className="text-slate-700 dark:text-gray-300 text-sm">
-                {user.email}
-              </p>
+              <h2 className={s.name}>{user.fullName}</h2>
+              <p className={s.email}>{user.email}</p>
               <span
-                className={`inline-block mt-3 text-xs px-3 py-1 rounded-full font-medium ${
-                  user.role === "admin"
-                    ? "bg-amber-100 text-amber-800 border border-amber-200 dark:bg-brand-gold/20 dark:text-brand-gold dark:border-brand-gold/30"
-                    : "bg-slate-100 text-slate-600 border border-slate-200 dark:bg-brand-gray-800 dark:text-brand-gray-300 dark:border-brand-gray-700"
-                }`}
+                className={clsx(
+                  s.roleBadge,
+                  user.role === "admin" ? s.roleAdmin : s.roleUser,
+                )}
               >
-                {user.role === "admin" ? "👑 Admin" : "👤 Thành viên"}
+                {user.role === "admin" ? "👑 Admin" : "🙋 Thành viên"}
               </span>
-              <div className="mt-5 pt-4 border-t border-slate-200 dark:border-brand-border text-xs text-slate-700 dark:text-gray-300">
-                Thành viên từ {formatDate(user.createdAt)}
-              </div>
+              <div className={s.memberSince}>Thành viên từ {formatDate(user.createdAt)}</div>
             </div>
 
-            <div className={`${cardClasses} p-4 space-y-3`}>
-              <div className="flex items-center gap-2.5 text-sm text-slate-700 dark:text-gray-300">
-                <Mail
-                  size={14}
-                  className="text-amber-500 dark:text-brand-gold shrink-0"
-                />
-                <span className="truncate">{user.email}</span>
+            <div className={`${cardClasses} ${s.p4} ${s.contactList}`}>
+              <div className={s.contactItem}>
+                <Mail size={14} className={s.contactIcon} />
+                <span className={s.truncate}>{user.email}</span>
               </div>
               {user.phone && (
-                <div className="flex items-center gap-2.5 text-sm text-slate-700 dark:text-gray-300">
-                  <Phone
-                    size={14}
-                    className="text-amber-500 dark:text-brand-gold shrink-0"
-                  />
+                <div className={s.contactItem}>
+                  <Phone size={14} className={s.contactIcon} />
                   {user.phone}
                 </div>
               )}
               {user.address && (
-                <div className="flex items-center gap-2.5 text-sm text-slate-700 dark:text-gray-300">
-                  <MapPin
-                    size={14}
-                    className="text-amber-500 dark:text-brand-gold shrink-0"
-                  />
+                <div className={s.contactItem}>
+                  <MapPin size={14} className={s.contactIcon} />
                   <span>{user.address}</span>
                 </div>
               )}
             </div>
 
             {user.role === "admin" && (
-              <Link
-                to="/admin"
-                className="w-full btn-primary flex items-center justify-center gap-2 py-3 text-sm rounded-xl font-medium"
-              >
-                🛠️ Vào Admin Dashboard
+              <Link to="/admin" className={clsx("btn-primary", s.adminBtn)}>
+                🚀 Vào Admin Dashboard
               </Link>
             )}
 
-            <button
-              onClick={handleLogout}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 dark:border-red-500/30 dark:bg-transparent dark:text-red-400 dark:hover:bg-red-500/10 transition-colors font-medium text-sm"
-            >
+            <button onClick={handleLogout} className={s.logoutBtn}>
               <LogOut size={15} /> Đăng xuất
             </button>
           </div>
 
-          {/* Right */}
-          <div className="md:col-span-2 space-y-5">
-            {/* Edit profile */}
-            <div className={`${cardClasses} p-6`}>
-              <div className="flex items-center justify-between mb-5">
-                <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                  <User
-                    size={16}
-                    className="text-amber-500 dark:text-brand-gold"
-                  />{" "}
-                  Thông tin cá nhân
+          <div className={s.rightCol}>
+            <div className={`${cardClasses} ${s.p6}`}>
+              <div className={s.sectionHead}>
+                <h3 className={s.sectionTitle}>
+                  <User size={16} className={s.titleIcon} /> Thông tin cá nhân
                 </h3>
                 {!editing ? (
-                  <button
-                    onClick={() => setEditing(true)}
-                    className="flex items-center gap-1.5 text-sm font-medium text-amber-600 dark:text-brand-gold hover:text-amber-700 dark:hover:text-brand-orange transition-colors"
-                  >
+                  <button onClick={() => setEditing(true)} className={s.linkBtn}>
                     <Edit3 size={14} /> Chỉnh sửa
                   </button>
                 ) : (
@@ -232,46 +197,30 @@ export default function ProfilePage() {
                         address: user.address || "",
                       });
                     }}
-                    className="flex items-center gap-1.5 text-sm font-medium text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 transition-colors"
+                    className={clsx(s.linkBtn, s.linkBtnDanger)}
                   >
                     <X size={14} /> Hủy
                   </button>
                 )}
               </div>
 
-              <div className="space-y-4">
+              <div className={s.formStack}>
                 {[
-                  {
-                    label: "Họ và tên",
-                    key: "fullName",
-                    placeholder: "Nguyễn Văn A",
-                  },
-                  {
-                    label: "Số điện thoại",
-                    key: "phone",
-                    placeholder: "0901 234 567",
-                  },
-                  {
-                    label: "Địa chỉ",
-                    key: "address",
-                    placeholder: "Quận/Huyện, Tỉnh/TP",
-                  },
+                  { label: "Họ và tên", key: "fullName", placeholder: "Nguyễn Văn A" },
+                  { label: "Số điện thoại", key: "phone", placeholder: "0901 234 567" },
+                  { label: "Địa chỉ", key: "address", placeholder: "Quận/Huyện, Tỉnh/TP" },
                 ].map((f) => (
                   <div key={f.key}>
-                    <label className="text-sm font-medium text-slate-900 dark:text-gray-100 mb-1.5 block">
-                      {f.label}
-                    </label>
+                    <label className={s.label}>{f.label}</label>
                     {editing ? (
                       <input
                         value={form[f.key as keyof typeof form]}
-                        onChange={(e) =>
-                          setForm((fm) => ({ ...fm, [f.key]: e.target.value }))
-                        }
+                        onChange={(e) => setForm((fm) => ({ ...fm, [f.key]: e.target.value }))}
                         className={inputClasses}
                         placeholder={f.placeholder}
                       />
                     ) : (
-                      <p className="text-slate-900 dark:text-white text-sm py-3 px-4 bg-slate-50 dark:bg-[#1e1e1e] border border-slate-200 dark:border-white/5 rounded-xl">
+                      <p className={s.valueBlock}>
                         {(user[f.key as keyof typeof user] as string) || "—"}
                       </p>
                     )}
@@ -279,15 +228,10 @@ export default function ProfilePage() {
                 ))}
 
                 {editing && (
-                  <button
-                    onClick={handleSave}
-                    disabled={saving}
-                    className="btn-primary mt-2 flex items-center gap-2 px-6 py-3 text-sm font-medium"
-                  >
+                  <button onClick={handleSave} disabled={saving} className={clsx("btn-primary", s.saveBtn)}>
                     {saving ? (
                       <>
-                        <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />{" "}
-                        Đang lưu...
+                        <span className={clsx("animate-spin", s.spinnerMini)} /> Đang lưu...
                       </>
                     ) : (
                       <>
@@ -299,69 +243,42 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            {/* Change password */}
-            <div className={`${cardClasses} p-6`}>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                  <Lock
-                    size={16}
-                    className="text-amber-500 dark:text-brand-gold"
-                  />{" "}
-                  Đổi mật khẩu
+            <div className={`${cardClasses} ${s.p6}`}>
+              <div className={s.sectionHead}>
+                <h3 className={s.sectionTitle}>
+                  <Lock size={16} className={s.titleIcon} /> Đổi mật khẩu
                 </h3>
-                <button
-                  onClick={() => setShowChangePass(!showChangePass)}
-                  className="text-sm font-medium text-amber-600 dark:text-brand-gold hover:text-amber-700 dark:hover:text-brand-orange transition-colors"
-                >
+                <button onClick={() => setShowChangePass(!showChangePass)} className={s.linkBtn}>
                   {showChangePass ? "Đóng" : "Đổi mật khẩu"}
                 </button>
               </div>
               {showChangePass && (
-                <form
-                  onSubmit={handleChangePassword}
-                  className="space-y-4 pt-2"
-                >
+                <form onSubmit={handleChangePassword} className={s.passForm}>
                   {[
                     { label: "Mật khẩu hiện tại", key: "currentPassword" },
                     { label: "Mật khẩu mới", key: "newPassword" },
                     { label: "Xác nhận mật khẩu mới", key: "confirmPassword" },
                   ].map((f) => (
                     <div key={f.key}>
-                      <label className="text-sm font-medium text-slate-900 dark:text-gray-100 mb-1.5 block">
-                        {f.label}
-                      </label>
-                      <div className="relative">
+                      <label className={s.label}>{f.label}</label>
+                      <div className={s.inputWrap}>
                         <input
                           type={showPass ? "text" : "password"}
                           value={passForm[f.key as keyof typeof passForm]}
-                          onChange={(e) =>
-                            setPassForm((p) => ({
-                              ...p,
-                              [f.key]: e.target.value,
-                            }))
-                          }
-                          className={`${inputClasses} pr-11`}
+                          onChange={(e) => setPassForm((p) => ({ ...p, [f.key]: e.target.value }))}
+                          className={clsx(inputClasses, s.inputPad)}
                           placeholder="••••••••"
                         />
-                        <button
-                          type="button"
-                          onClick={() => setShowPass(!showPass)}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-300 hover:text-slate-700 dark:hover:text-white transition-colors"
-                        >
+                        <button type="button" onClick={() => setShowPass(!showPass)} className={s.eyeBtn}>
                           {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
                         </button>
                       </div>
                     </div>
                   ))}
-                  <button
-                    type="submit"
-                    disabled={changingPass}
-                    className="btn-primary mt-2 flex items-center gap-2 px-6 py-3 text-sm font-medium"
-                  >
+                  <button type="submit" disabled={changingPass} className={clsx("btn-primary", s.saveBtn)}>
                     {changingPass ? (
                       <>
-                        <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />{" "}
-                        Đang đổi...
+                        <span className={clsx("animate-spin", s.spinnerMini)} /> Đang đổi...
                       </>
                     ) : (
                       <>
@@ -373,60 +290,38 @@ export default function ProfilePage() {
               )}
             </div>
 
-            {/* My applications */}
-            <div className={`${cardClasses} p-6`}>
-              <h3 className="font-semibold text-slate-900 dark:text-white mb-5 flex items-center gap-2">
-                📋 Đơn ứng tuyển của tôi
-              </h3>
+            <div className={`${cardClasses} ${s.p6}`}>
+              <h3 className={s.sectionTitleSemi}>📩 Đơn ứng tuyển của tôi</h3>
 
               {loadingApps ? (
-                <div className="space-y-3">
+                <div className={s.appsLoading}>
                   {[...Array(3)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="h-20 bg-slate-100 dark:bg-[#1e1e1e] rounded-xl animate-pulse"
-                    />
+                    <div key={i} className={clsx("animate-pulse", s.appsSkeleton)} />
                   ))}
                 </div>
               ) : myApps.length === 0 ? (
-                <div className="text-center py-10 bg-slate-50 dark:bg-transparent rounded-2xl border border-dashed border-slate-200 dark:border-white/10">
-                  <p className="text-4xl mb-3">📭</p>
-                  <p className="text-slate-600 dark:text-gray-300 text-sm mb-4">
-                    Bạn chưa có đơn ứng tuyển nào
-                  </p>
-                  <Link
-                    to="/jobs"
-                    className="inline-block btn-primary text-sm px-6 py-2.5"
-                  >
+                <div className={s.emptyApps}>
+                  <p className={s.emptyEmoji}>📦</p>
+                  <p className={s.emptyText}>Bạn chưa có đơn ứng tuyển nào</p>
+                  <Link to="/jobs" className={clsx("btn-primary", s.emptyBtn)}>
                     Tìm việc ngay
                   </Link>
                 </div>
               ) : (
-                <div className="space-y-3">
+                <div className={s.appsList}>
                   {myApps.map((app) => (
-                    <div
-                      key={app.id}
-                      className="flex items-center gap-4 p-4 bg-slate-50 border border-slate-100 dark:bg-[#1e1e1e] dark:border-white/5 rounded-xl transition-all hover:shadow-sm"
-                    >
-                      <div className="flex-1 min-w-0">
-                        <p className="text-slate-900 dark:text-white text-sm font-semibold truncate mb-1">
-                          {app.job?.title}
-                        </p>
-                        <p className="text-slate-700 dark:text-gray-300 text-xs truncate">
+                    <div key={app.id} className={s.appRow}>
+                      <div className={s.appMain}>
+                        <p className={clsx(s.appTitle, s.truncate)}>{app.job?.title}</p>
+                        <p className={clsx(s.appSub, s.truncate)}>
                           {app.job?.company} — {formatDate(app.createdAt)}
                         </p>
                       </div>
-                      <span
-                        className={`shrink-0 text-xs px-3 py-1.5 rounded-full border font-medium ${APP_STATUS_LABELS[app.status]?.color}`}
-                      >
+                      <span className={`shrink-0 text-xs px-3 py-1.5 rounded-full border font-medium ${APP_STATUS_LABELS[app.status]?.color}`}>
                         {APP_STATUS_LABELS[app.status]?.label}
                       </span>
                       {app.status === "pending" && (
-                        <button
-                          onClick={() => handleWithdraw(app.id)}
-                          title="Rút đơn"
-                          className="shrink-0 p-2 text-slate-400 hover:text-red-500 dark:text-slate-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-colors"
-                        >
+                        <button onClick={() => handleWithdraw(app.id)} title="Rút đơn" className={s.withdrawBtn}>
                           <XCircle size={18} />
                         </button>
                       )}

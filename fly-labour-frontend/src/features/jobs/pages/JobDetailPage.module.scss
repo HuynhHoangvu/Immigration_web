@@ -1,0 +1,465 @@
+@use "../../../styles/breakpoints" as bp;
+
+.centerState {
+  min-height: 100vh;
+  padding-top: 7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid var(--accent-primary);
+  border-top-color: transparent;
+  border-radius: 9999px;
+}
+
+.notFound {
+  text-align: center;
+}
+
+.notFoundEmoji {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.notFoundText {
+  color: #0f172a;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.notFoundBtn {
+  display: inline-block;
+  font-size: 0.875rem;
+  padding: 0.5rem 1.25rem;
+  font-weight: 500;
+}
+
+.page {
+  min-height: 100vh;
+  padding-top: 5rem;
+}
+
+.breadcrumb {
+  border-bottom: 1px solid #e2e8f0;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+}
+
+.breadcrumbInner {
+  padding: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #334155;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.breadcrumbLink {
+  transition: color 0.2s ease;
+  &:hover {
+    color: #0f172a;
+  }
+}
+
+.breadcrumbCurrent {
+  color: #0f172a;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 20rem;
+}
+
+.content {
+  padding: 2rem 0;
+}
+
+.layout {
+  display: grid;
+  gap: 2rem;
+  @include bp.mq-lg {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.mainCol {
+  display: grid;
+  gap: 1.5rem;
+  @include bp.mq-lg {
+    grid-column: span 2 / span 2;
+  }
+}
+
+.sidebar {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-xs);
+  overflow: hidden;
+}
+
+.input {
+  width: 100%;
+  font-size: 0.875rem;
+  font-weight: 400;
+  border-radius: 0.75rem;
+  padding: 0 1rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
+  outline: none;
+  transition: all 0.2s ease;
+  &::placeholder {
+    color: #94a3b8;
+  }
+  &:focus {
+    background: #fff;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 1px var(--accent-primary);
+  }
+}
+
+.sectionTitle {
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: #0f172a;
+  @include bp.mq-md {
+    font-size: 1.25rem;
+  }
+}
+
+.bodyText {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #0f172a;
+  line-height: 1.7;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #0f172a;
+}
+
+.value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.stickyCard {
+  padding: 1.5rem;
+  position: sticky;
+  top: 6rem;
+}
+
+.applyFormCard {
+  padding: 1.5rem;
+  @include bp.mq-md {
+    padding: 2rem;
+  }
+}
+
+.form {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.fieldGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  @include bp.mq-sm {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.colSpan2 {
+  @include bp.mq-sm {
+    grid-column: span 2 / span 2;
+  }
+}
+
+.labelBlock {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.inputH12 {
+  height: 3rem;
+}
+
+.textarea {
+  height: 7rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  resize: none;
+}
+
+.uploadBox {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: 2px dashed #cbd5e1;
+  background: #f8fafc;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.uploadBox:hover {
+  border-color: #f59e0b;
+}
+
+.uploadBoxReady {
+  border-color: rgba(34, 197, 94, 0.4);
+  background: #f0fdf4;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.miniSpin {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid #f59e0b;
+  border-top-color: transparent;
+  border-radius: 9999px;
+  flex-shrink: 0;
+}
+
+.uploadText {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.uploadSuccess {
+  color: #16a34a;
+}
+
+.uploadMuted {
+  color: #475569;
+}
+
+.formActions {
+  display: flex;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.submitBtn {
+  flex: 1;
+  padding: 0.875rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+}
+
+.submitSpin {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-top-color: #000;
+  border-radius: 9999px;
+}
+
+.cancelBtn {
+  padding: 0.875rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 500;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  transition: background-color 0.2s ease;
+}
+
+.cancelBtn:hover {
+  background: #f1f5f9;
+}
+
+.successCard {
+  padding: 2.5rem;
+  text-align: center;
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.successIcon {
+  color: #22c55e;
+  margin: 0 auto 1rem;
+}
+
+.successTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.successSub {
+  font-size: 1rem;
+  color: #1e293b;
+}
+
+.salaryHead {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.salaryValue {
+  color: #d97706;
+  font-weight: 700;
+  font-size: 1.125rem;
+  line-height: 1.35;
+  margin-bottom: 0.25rem;
+  word-break: break-word;
+}
+
+.salarySub {
+  color: #334155;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.statusBox {
+  width: 100%;
+  padding: 0.875rem 0;
+  border-radius: 0.75rem;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.statusExpired {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+}
+
+.statusApplied {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #16a34a;
+}
+
+.applyNowBtn {
+  width: 100%;
+  padding: 1rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+}
+
+.applyFree {
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #334155;
+  margin-top: 1rem;
+}
+
+.metaList {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e2e8f0;
+  display: grid;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.metaRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.metaLabel {
+  font-weight: 500;
+  color: #334155;
+}
+
+.metaValue {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.metaAccent {
+  color: #d97706;
+}
+
+.viewsValue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.relatedCard {
+  padding: 1.5rem;
+}
+
+.relatedList {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.relatedItem {
+  display: block;
+  padding: 1rem;
+  background: #f8fafc;
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.relatedItem:hover {
+  border-color: #cbd5e1;
+}
+
+.relatedTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f172a;
+  transition: color 0.2s ease;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.relatedItem:hover .relatedTitle {
+  color: #d97706;
+}
+
+.relatedCompany {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #334155;
+  margin-top: 0.25rem;
+}
+
+.relatedSalary {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #d97706;
+  margin-top: 0.5rem;
+}

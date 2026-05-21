@@ -6,6 +6,7 @@ import { LoginDto } from './dto/login.dto';
 export declare class AuthService {
     private usersRepo;
     private jwtService;
+    private googleClient;
     constructor(usersRepo: Repository<User>, jwtService: JwtService);
     register(dto: RegisterDto): Promise<{
         message: string;
@@ -62,6 +63,26 @@ export declare class AuthService {
         website: string;
         createdAt: Date;
         updatedAt: Date;
+    }>;
+    loginWithGoogle(idToken: string): Promise<{
+        message: string;
+        user: {
+            id: string;
+            email: string;
+            fullName: string;
+            phone: string;
+            avatar: string;
+            address: string;
+            role: UserRole;
+            isActive: boolean;
+            cvUrl: string;
+            companyName: string;
+            companyDescription: string;
+            website: string;
+            createdAt: Date;
+            updatedAt: Date;
+        };
+        token: string;
     }>;
     private signToken;
 }

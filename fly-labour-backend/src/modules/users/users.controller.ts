@@ -14,7 +14,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('JWT')
   @ApiOperation({ summary: 'Cập nhật hồ sơ bản thân' })
-  updateMe(@Request() req: any, @Body() dto: { fullName?: string; phone?: string; address?: string; cvUrl?: string; companyName?: string; companyDescription?: string; website?: string }) {
+  updateMe(@Request() req: any, @Body() dto: { fullName?: string; phone?: string; address?: string; avatar?: string; cvUrl?: string; companyName?: string; companyDescription?: string; website?: string }) {
     return this.usersService.updateProfile(req.user.id, dto)
   }
 
