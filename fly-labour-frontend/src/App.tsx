@@ -18,6 +18,7 @@ import HandbookPage from "@features/news/pages/HandbookPage";
 import StudyPage from "@features/study/StudyPage";
 import StudyDetailPage from "@features/study/pages/StudyDetailPage";
 import TravelPage from "@features/travel/TravelPage";
+import TravelDetailPage from "@features/travel/pages/TravelDetailPage";
 import ContactPage from "@features/contact/pages/ContactPage";
 import LoginPage from "@features/auth/pages/LoginPage";
 import RegisterPage from "@features/auth/pages/RegisterPage";
@@ -103,6 +104,7 @@ export default function App() {
           <Route path="/study" element={<StudyPage />} />
           <Route path="/study/:slug" element={<StudyDetailPage />} />
           <Route path="/travel" element={<TravelPage />} />
+          <Route path="/travel/:slug" element={<TravelDetailPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/process" element={<ProcessPage />} />
