@@ -21,16 +21,16 @@ jobs:
     - name: Build and Push Backend Image
       uses: docker/build-push-action@v5
       with:
-        context: ./backend
-        file: ./backend/Dockerfile
+        context: ./fly-labour-backend
+        file: ./fly-labour-backend/Dockerfile
         push: true
         tags: hoangvu3134/fly-backend:latest
 
     - name: Build and Push Frontend Image
       uses: docker/build-push-action@v5
       with:
-        context: ./frontend # Đường dẫn tới thư mục chứa Dockerfile Frontend
-        file: ./frontend/Dockerfile
+        context: ./fly-labour-frontend
+        file: ./fly-labour-frontend/Dockerfile
         push: true
         tags: hoangvu3134/fly-frontend:latest
         
