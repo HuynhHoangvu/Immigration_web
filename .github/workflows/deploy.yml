@@ -21,7 +21,7 @@ jobs:
     - name: Build and Push Backend Image
       uses: docker/build-push-action@v5
       with:
-        context: ./backend # Đường dẫn tới thư mục chứa Dockerfile Backend (Bạn tự chỉnh lại cho đúng cấu trúc repo của bạn nhé)
+        context: ./backend
         file: ./backend/Dockerfile
         push: true
         tags: hoangvu3134/fly-backend:latest
@@ -33,7 +33,7 @@ jobs:
         file: ./frontend/Dockerfile
         push: true
         tags: hoangvu3134/fly-frontend:latest
-
+        
   deploy-to-k8s:
     needs: build-and-push
     runs-on: k8s-runner 
