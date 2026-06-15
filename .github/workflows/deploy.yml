@@ -3,11 +3,11 @@ name: CI/CD Build and Deploy to On-Premise K8s
 on:
   push:
     branches:
-      - main 
+      - main
 
 jobs:
   build-and-push:
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
@@ -24,7 +24,8 @@ jobs:
         context: ./fly-labour-backend
         file: ./fly-labour-backend/Dockerfile
         push: true
-        tags: hoangvu3134/fly-backend:latest
+        # Đảm bảo bạn đã tạo repo fly-backend trên Docker Hub
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/fly-backend:latest
 
     - name: Build and Push Frontend Image
       uses: docker/build-push-action@v5
@@ -32,18 +33,22 @@ jobs:
         context: ./fly-labour-frontend
         file: ./fly-labour-frontend/Dockerfile
         push: true
-        tags: hoangvu3134/fly-frontend:latest
-        
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/fly-frontend:latest
+        # BƠM BIẾN MÔI TRƯỜNG CHO VITE LÚC BUILD
+        build-args: |
+          VITE_API_URL=http://flyimmigration.local/api
+
   deploy-to-k8s:
     needs: build-and-push
-    runs-on: k8s-runner 
+    runs-on: k8s-runner
     steps:
     - name: Deploy to Cluster
       run: |
+        kubectl apply -f $HOME/k8s-manifests/env-configmap.yaml
+        kubectl apply -f $HOME/k8s-manifests/env-secret.yaml
         kubectl apply -f $HOME/k8s-manifests/apps.yaml
-        kubectl apply -f $HOME/k8s-manifests/ingress.yaml
         
-    - name: Rollout Restart Deployment (Để K8s cập nhật Image mới nhất ngay lập tức)
+    - name: Rollout Restart Deployment
       run: |
         kubectl rollout restart deployment fly-backend
         kubectl rollout restart deployment fly-frontend
