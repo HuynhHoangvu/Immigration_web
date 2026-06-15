@@ -14,12 +14,12 @@ RUN npm ci --only=production && npm cache clean --force
 COPY --from=builder /app/dist ./dist
 RUN mkdir -p uploads/jobs uploads/news uploads/cv
 
-# Tạo entrypoint
-RUN echo '#!/bin/sh' > /entrypoint.sh && \
-    echo 'echo "=== Starting migration ==="' >> /entrypoint.sh && \
-    echo 'node dist/database/migrate.js' >> /entrypoint.sh && \
-    echo 'echo "=== Starting app ==="' >> /entrypoint.sh && \
-    echo 'exec node dist/main' >> /entrypoint.sh && \
+# Tạo entrypoint với proper Unix line endings (LF)
+RUN printf '#!/bin/sh\n' > /entrypoint.sh && \
+    printf 'echo "=== Starting migration ==="\n' >> /entrypoint.sh && \
+    printf 'node dist/database/migrate.js\n' >> /entrypoint.sh && \
+    printf 'echo "=== Starting app ==="\n' >> /entrypoint.sh && \
+    printf 'exec node dist/main\n' >> /entrypoint.sh && \
     chmod +x /entrypoint.sh
 
 EXPOSE 3000
