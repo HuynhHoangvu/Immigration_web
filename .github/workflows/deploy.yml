@@ -45,8 +45,13 @@ jobs:
     needs: build-and-push
     runs-on: k8s-runner
     steps:
+      - name: Verify K8s Connection
+        run: kubectl cluster-info
+
       - name: Deploy to Cluster
         run: |
+          # Kiểm tra thư mục trước khi chạy
+          ls -l $HOME/k8s-manifests/
           kubectl apply -f $HOME/k8s-manifests/env-configmap.yaml
           kubectl apply -f $HOME/k8s-manifests/env-secret.yaml
           kubectl apply -f $HOME/k8s-manifests/apps.yaml
