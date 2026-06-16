@@ -60,11 +60,15 @@ async function migrate() {
     console.log('✅ users_role_enum checked/updated')
   }
 
-  // Add employer company fields to users table (idempotent)
+  // Add employer company fields, phone, and other missing columns to users table (idempotent)
   await ds.query(`
     DO $$
     BEGIN
       IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'users') THEN
+        ALTER TABLE users ADD COLUMN IF NOT EXISTS phone varchar;
+        ALTER TABLE users ADD COLUMN IF NOT EXISTS avatar varchar;
+        ALTER TABLE users ADD COLUMN IF NOT EXISTS address varchar;
+        ALTER TABLE users ADD COLUMN IF NOT EXISTS "cvUrl" varchar;
         ALTER TABLE users ADD COLUMN IF NOT EXISTS "companyName" varchar;
         ALTER TABLE users ADD COLUMN IF NOT EXISTS "companyDescription" text;
         ALTER TABLE users ADD COLUMN IF NOT EXISTS website varchar;

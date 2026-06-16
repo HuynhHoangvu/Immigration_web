@@ -27,7 +27,7 @@ jobs:
           context: ./fly-labour-backend
           file: ./fly-labour-backend/Dockerfile
           push: true
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/fly-backend:latest
 
       - name: Build and Push Frontend Image
@@ -36,7 +36,7 @@ jobs:
           context: ./fly-labour-frontend
           file: ./fly-labour-frontend/Dockerfile
           push: true
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/fly-frontend:latest
           build-args: |
             VITE_API_URL=http://flyimmigration.local/api

@@ -23,4 +23,4 @@ RUN printf '#!/bin/sh\n' > /entrypoint.sh && \
     chmod +x /entrypoint.sh
 
 EXPOSE 3000
-CMD ["/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
