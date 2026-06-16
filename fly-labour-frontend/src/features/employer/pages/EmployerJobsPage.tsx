@@ -171,14 +171,42 @@ export default function EmployerJobsPage() {
     }
   };
 
+  const countryToCurrency: Record<string, string> = {
+    australia: "AUD",
+    canada: "CAD",
+    new_zealand: "NZD",
+    germany: "EUR",
+    japan: "JPY",
+    south_korea: "KRW",
+    us: "USD",
+    uk: "GBP",
+  };
+
   const f =
     (k: string) =>
     (
       e: React.ChangeEvent<
         HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
       >,
-    ) =>
-      setForm((prev) => ({ ...prev, [k]: e.target.value }));
+    ) => {
+      const val = e.target.value;
+      setForm((prev) => {
+        const next = { ...prev, [k]: val };
+        if (k === "country" && countryToCurrency[val]) {
+          next.salaryCurrency = countryToCurrency[val];
+        }
+        return next;
+      });
+    };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    fileRef.current = file;
+    const reader = new FileReader();
+    reader.onload = (ev) => setPreview(ev.target?.result as string);
+    reader.readAsDataURL(file);
+  };
 
   const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const currency = e.target.value;
@@ -320,273 +348,253 @@ export default function EmployerJobsPage() {
             </div>
 
             <div className={clsx(s.modalBody, "custom-scrollbar")}>
-              {/* Vị trí & Công ty */}
-              <div className={s.sectionGrid2}>
-                <div className={s.span2}>
-                  <label className={s.label}>
-                    Tiêu đề tuyển dụng *
-                  </label>
-                  <input
-                    value={form.title}
-                    onChange={f("title")}
-                    className={clsx(inputClasses, s.inputH12)}
-                    placeholder="VD: Công nhân hái trái cây tại Úc"
-                  />
-                </div>
-                <div>
-                  <label className={s.label}>
-                    Tên doanh nghiệp
-                  </label>
-                  <input
-                    value={form.company}
-                    onChange={f("company")}
-                    className={clsx(inputClasses, s.inputH12)}
-                    placeholder="Tên công ty"
-                  />
-                </div>
-                <div>
-                  <label className={s.label}>
-                    Địa điểm cụ thể
-                  </label>
-                  <input
-                    value={form.location}
-                    onChange={f("location")}
-                    className={clsx(inputClasses, s.inputH12)}
-                    placeholder="Thành phố / Bang"
-                  />
-                </div>
-              </div>
-
-              {/* Quốc gia & Loại hình */}
-              <div className={s.sectionGrid2}>
-                <div>
-                  <label className={s.label}>
-                    Quốc gia *
-                  </label>
-                  <select
-                    value={form.country}
-                    onChange={f("country")}
-                    className={clsx(inputClasses, s.inputH12, "appearance-none")}
-                  >
-                    {PRESET_COUNTRIES.map((c) => (
-                      <option key={c.value} value={c.value}>
-                        {c.label}
-                      </option>
-                    ))}
-                    <option value="__other__">Khác...</option>
-                  </select>
-                  {form.country === "__other__" && (
-                    <input
-                      value={form.countryCustom}
-                      onChange={f("countryCustom")}
-                      className={clsx(inputClasses, s.inputH12, "mt-2")}
-                      placeholder="Nhập tên quốc gia"
-                    />
-                  )}
-                </div>
-                <div>
-                  <label className={s.label}>
-                    Loại hình
-                  </label>
-                  <select
-                    value={form.jobType}
-                    onChange={f("jobType")}
-                    className={clsx(inputClasses, s.inputH12, "appearance-none")}
-                  >
-                    {Object.entries(JOBTYPE_LABELS).map(([v, l]) => (
-                      <option key={v} value={v}>
-                        {l}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              {/* Lương & Tiền tệ */}
-              <div className={s.sectionGrid3}>
-                <div>
-                  <label className={s.label}>
-                    Lương tối thiểu
-                  </label>
-                  <input
-                    type="number"
-                    value={form.salaryMin}
-                    onChange={f("salaryMin")}
-                    className={clsx(inputClasses, s.inputH12)}
-                    placeholder="Min"
-                  />
-                </div>
-                <div>
-                  <label className={s.label}>
-                    Lương tối đa
-                  </label>
-                  <input
-                    type="number"
-                    value={form.salaryMax}
-                    onChange={f("salaryMax")}
-                    className={clsx(inputClasses, s.inputH12)}
-                    placeholder="Max"
-                  />
-                </div>
-                <div>
-                  <label className={s.label}>
-                    Tiền tệ
-                  </label>
-                  <select
-                    value={form.salaryCurrency}
-                    onChange={handleCurrencyChange}
-                    className={clsx(inputClasses, s.inputH12, "appearance-none")}
-                  >
-                    <option value="AUD">🇦🇺 AUD (Úc)</option>
-                    <option value="CAD">🇨🇦 CAD (Canada)</option>
-                    <option value="NZD">🇳🇿 NZD (New Zealand)</option>
-                    <option value="VND">🇻🇳 VND (Việt Nam)</option>
-                    <option value="USD">🇺🇸 USD (Mỹ)</option>
-                    <option value="JPY">🇯🇵 JPY (Nhật)</option>
-                    <option value="KRW">🇰🇷 KRW (Hàn)</option>
-                    <option value="EUR">🇪🇺 EUR (Châu Âu)</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Chỉ tiêu & Hạn nộp */}
-              <div className={s.sectionGrid3}>
-                <div>
-                  <label className={s.label}>
-                    Chỉ tiêu
-                  </label>
-                  <input
-                    type="number"
-                    value={form.slots}
-                    onChange={f("slots")}
-                    className={clsx(inputClasses, s.inputH12)}
-                    placeholder="Số lượng"
-                  />
-                </div>
-                <div>
-                  <label className={s.label}>
-                    Hạn nộp
-                  </label>
-                  <input
-                    type="date"
-                    value={form.deadline}
-                    onChange={f("deadline")}
-                    className={clsx(inputClasses, s.inputH12)}
-                  />
-                </div>
-                <div>
-                  <label className={s.label}>
-                    Trạng thái
-                  </label>
-                  <select
-                    value={form.status}
-                    onChange={f("status")}
-                    className={clsx(inputClasses, s.inputH12, "appearance-none font-bold")}
-                  >
-                    <option value="active" className={s.optionGreen}>
-                      Đang tuyển
-                    </option>
-                    <option value="draft" className={s.optionSlate}>
-                      Bản nháp
-                    </option>
-                    <option value="paused" className={s.optionAmber}>
-                      Tạm dừng
-                    </option>
-                    <option value="closed" className={s.optionRed}>
-                      Đã đóng
-                    </option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Ngành nghề & Ảnh */}
-              <div className={s.sectionGrid2}>
-                <div>
-                  <label className={s.label}>
-                    Ngành nghề
-                  </label>
-                  <select
-                    value={form.categoryId}
-                    onChange={f("categoryId")}
-                    className={clsx(inputClasses, s.inputH12, "appearance-none")}
-                  >
-                    <option value="">— Chọn ngành —</option>
-                    {categories.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.icon} {c.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className={s.label}>
-                    Ảnh bìa
-                  </label>
-                  <div className={s.uploadRow}>
-                    <label className={s.uploadBtn}>
-                      <ImageIcon size={16} /> {preview ? "Thay đổi" : "Tải lên"}
+              {/* 1. Ảnh bìa ở trên cùng */}
+              <div className={s.coverUploadContainer}>
+                <label className={s.label}>Ảnh bìa tin tuyển dụng *</label>
+                <div className={s.coverDropzone}>
+                  {preview || form.image ? (
+                    <div className={s.coverPreview}>
+                      <img
+                        src={preview || getImageUrl(form.image)}
+                        alt="Ảnh bìa"
+                        className={s.coverImg}
+                      />
+                      <label className={s.changeCoverBtn}>
+                        <ImageIcon size={16} /> Thay đổi ảnh bìa
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className={s.inputHidden}
+                          onChange={handleFileChange}
+                        />
+                      </label>
+                    </div>
+                  ) : (
+                    <label className={s.uploadPlaceholder}>
+                      <ImageIcon size={32} className="text-slate-400" />
+                      <span className={s.uploadPlaceholderText}>Tải lên ảnh bìa tin tuyển dụng</span>
+                      <span className={s.uploadPlaceholderSub}>Khuyên dùng tỷ lệ 16:9 sắc nét để thu hút ứng viên</span>
                       <input
                         type="file"
                         accept="image/*"
                         className={s.inputHidden}
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (!file) return;
-                          fileRef.current = file;
-                          const reader = new FileReader();
-                          reader.onload = (ev) =>
-                            setPreview(ev.target?.result as string);
-                          reader.readAsDataURL(file);
-                        }}
+                        onChange={handleFileChange}
                       />
                     </label>
-                    {(preview || form.image) && (
-                      <div className={s.previewBox}>
-                        <img
-                          src={preview || getImageUrl(form.image)}
-                          alt=""
-                          className={s.previewImg}
-                        />
-                      </div>
-                    )}
+                  )}
+                </div>
+              </div>
+
+              {/* 2. Nhóm: Thông tin chung */}
+              <div className={s.formSection}>
+                <h3 className={s.sectionTitle}>Thông tin chung</h3>
+                <div className={s.sectionGrid2}>
+                  <div className={s.span2}>
+                    <label className={s.label}>Tiêu đề tuyển dụng *</label>
+                    <input
+                      value={form.title}
+                      onChange={f("title")}
+                      className={clsx(inputClasses, s.inputH12)}
+                      placeholder="Ví dụ: Tuyển thợ xây dựng tay nghề cao tại Melbourne, Úc"
+                    />
+                  </div>
+                  <div>
+                    <label className={s.label}>Tên doanh nghiệp</label>
+                    <input
+                      value={form.company}
+                      onChange={f("company")}
+                      className={clsx(inputClasses, s.inputH12)}
+                      placeholder="Tên công ty tuyển dụng"
+                    />
+                  </div>
+                  <div>
+                    <label className={s.label}>Ngành nghề</label>
+                    <select
+                      value={form.categoryId}
+                      onChange={f("categoryId")}
+                      className={clsx(inputClasses, s.inputH12, "appearance-none")}
+                    >
+                      <option value="">— Chọn ngành nghề phù hợp —</option>
+                      {categories.map((c) => (
+                        <option key={c.id} value={c.id}>
+                          {c.icon} {c.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
               </div>
 
-              {/* Văn bản dài */}
-              <div className={s.fieldGroup}>
-                <div>
-                  <label className={s.label}>
-                    Mô tả công việc *
-                  </label>
-                  <textarea
-                    value={form.description}
-                    onChange={f("description")}
-                    className={clsx(s.textarea, "h-32")}
-                    placeholder="Mô tả nhiệm vụ chính..."
-                  />
+              {/* 3. Nhóm: Địa điểm & Loại hình */}
+              <div className={s.formSection}>
+                <h3 className={s.sectionTitle}>Địa điểm & Loại hình làm việc</h3>
+                <div className={s.sectionGrid2}>
+                  <div>
+                    <label className={s.label}>Quốc gia *</label>
+                    <select
+                      value={form.country}
+                      onChange={f("country")}
+                      className={clsx(inputClasses, s.inputH12, "appearance-none")}
+                    >
+                      {PRESET_COUNTRIES.map((c) => (
+                        <option key={c.value} value={c.value}>
+                          {c.label}
+                        </option>
+                      ))}
+                      <option value="__other__">Khác...</option>
+                    </select>
+                    {form.country === "__other__" && (
+                      <input
+                        value={form.countryCustom}
+                        onChange={f("countryCustom")}
+                        className={clsx(inputClasses, s.inputH12, "mt-2")}
+                        placeholder="Nhập tên quốc gia cụ thể"
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <label className={s.label}>Địa điểm cụ thể</label>
+                    <input
+                      value={form.location}
+                      onChange={f("location")}
+                      className={clsx(inputClasses, s.inputH12)}
+                      placeholder="Ví dụ: Melbourne, Victoria hoặc Sydney"
+                    />
+                  </div>
+                  <div>
+                    <label className={s.label}>Loại hình công việc</label>
+                    <select
+                      value={form.jobType}
+                      onChange={f("jobType")}
+                      className={clsx(inputClasses, s.inputH12, "appearance-none")}
+                    >
+                      {Object.entries(JOBTYPE_LABELS).map(([v, l]) => (
+                        <option key={v} value={v}>
+                          {l}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
-                <div>
-                  <label className={s.label}>
-                    Yêu cầu ứng viên
-                  </label>
-                  <textarea
-                    value={form.requirements}
-                    onChange={f("requirements")}
-                    className={clsx(s.textarea, "h-24")}
-                    placeholder="Kỹ năng, kinh nghiệm..."
-                  />
+              </div>
+
+              {/* 4. Nhóm: Chế độ đãi ngộ & Tuyển dụng */}
+              <div className={s.formSection}>
+                <h3 className={s.sectionTitle}>Chế độ đãi ngộ & Thông tin tuyển dụng</h3>
+                <div className={s.sectionGrid2}>
+                  <div>
+                    <label className={s.label}>Mức lương & Tiền tệ</label>
+                    <div className={s.salaryRow}>
+                      <input
+                        type="number"
+                        value={form.salaryMin}
+                        onChange={f("salaryMin")}
+                        className={clsx(inputClasses, s.inputH12)}
+                        placeholder="Tối thiểu"
+                      />
+                      <input
+                        type="number"
+                        value={form.salaryMax}
+                        onChange={f("salaryMax")}
+                        className={clsx(inputClasses, s.inputH12)}
+                        placeholder="Tối đa"
+                      />
+                      <select
+                        value={form.salaryCurrency}
+                        onChange={handleCurrencyChange}
+                        className={clsx(inputClasses, s.inputH12, "appearance-none")}
+                      >
+                        <option value="AUD">🇦🇺 AUD (Đô Úc)</option>
+                        <option value="CAD">🇨🇦 CAD (Đô Canada)</option>
+                        <option value="NZD">🇳🇿 NZD (Đô NZ)</option>
+                        <option value="VND">🇻🇳 VND (Việt Nam)</option>
+                        <option value="USD">🇺🇸 USD (Đô Mỹ)</option>
+                        <option value="JPY">🇯🇵 JPY (Yên Nhật)</option>
+                        <option value="KRW">🇰🇷 KRW (Won Hàn)</option>
+                        <option value="EUR">🇪🇺 EUR (Euro)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className={s.sectionGrid2} style={{ gap: "0.75rem" }}>
+                      <div>
+                        <label className={s.label}>Chỉ tiêu tuyển dụng</label>
+                        <input
+                          type="number"
+                          value={form.slots}
+                          onChange={f("slots")}
+                          className={clsx(inputClasses, s.inputH12)}
+                          placeholder="Số người"
+                        />
+                      </div>
+                      <div>
+                        <label className={s.label}>Hạn nộp hồ sơ</label>
+                        <input
+                          type="date"
+                          value={form.deadline}
+                          onChange={f("deadline")}
+                          className={clsx(inputClasses, s.inputH12)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={s.span2}>
+                    <label className={s.label}>Trạng thái tuyển dụng</label>
+                    <select
+                      value={form.status}
+                      onChange={f("status")}
+                      className={clsx(inputClasses, s.inputH12, "appearance-none font-bold")}
+                    >
+                      <option value="active" className={s.optionGreen}>
+                        🟢 Đang tuyển (Hiển thị ngay lập tức)
+                      </option>
+                      <option value="draft" className={s.optionSlate}>
+                        ⚫ Bản nháp (Lưu trữ nháp)
+                      </option>
+                      <option value="paused" className={s.optionAmber}>
+                        🟡 Tạm dừng (Ẩn tạm thời)
+                      </option>
+                      <option value="closed" className={s.optionRed}>
+                        🔴 Đã đóng (Ngưng tuyển)
+                      </option>
+                    </select>
+                  </div>
                 </div>
-                <div>
-                  <label className={s.label}>
-                    Quyền lợi
-                  </label>
-                  <textarea
-                    value={form.benefits}
-                    onChange={f("benefits")}
-                    className={clsx(s.textarea, "h-24")}
-                    placeholder="Lương thưởng, bảo hiểm, hỗ trợ..."
-                  />
+              </div>
+
+              {/* 5. Nhóm: Nội dung chi tiết */}
+              <div className={s.formSection}>
+                <h3 className={s.sectionTitle}>Nội dung chi tiết tin tuyển dụng</h3>
+                <div className={s.fieldGroup}>
+                  <div>
+                    <label className={s.label}>Mô tả công việc *</label>
+                    <textarea
+                      value={form.description}
+                      onChange={f("description")}
+                      className={clsx(s.textarea, "h-32")}
+                      placeholder="Nêu rõ các nhiệm vụ, công việc hàng ngày ứng viên phải thực hiện..."
+                    />
+                  </div>
+                  <div>
+                    <label className={s.label}>Yêu cầu ứng viên</label>
+                    <textarea
+                      value={form.requirements}
+                      onChange={f("requirements")}
+                      className={clsx(s.textarea, "h-24")}
+                      placeholder="Độ tuổi, bằng cấp, kinh nghiệm làm việc tối thiểu..."
+                    />
+                  </div>
+                  <div>
+                    <label className={s.label}>Quyền lợi & Chế độ đãi ngộ khác</label>
+                    <textarea
+                      value={form.benefits}
+                      onChange={f("benefits")}
+                      className={clsx(s.textarea, "h-24")}
+                      placeholder="Mức thưởng, trợ cấp nhà ở, bảo hiểm, hỗ trợ vé máy bay..."
+                    />
+                  </div>
                 </div>
               </div>
             </div>
